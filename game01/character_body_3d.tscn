@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://bih2duugo08xc"]
+
+[ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_2pcpi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yhvor"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fx63r"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(0.258824, 0.356863, 0.368627, 1)
+rim = 0.4
+rim_tint = 0.25
+point_size = 5.0
+use_particle_trails = true
+distance_fade_min_distance = 3.0
+distance_fade_max_distance = 5.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xyhjy"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_2pcpi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_yhvor")
+surface_material_override/0 = SubResource("StandardMaterial3D_fx63r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_xyhjy")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 2, 3)
+
+[node name="twist" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Node3D" type="Node3D" parent="twist"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="twist/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)

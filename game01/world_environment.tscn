@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://de8ft2v0jv1ys"]
+
+[sub_resource type="Environment" id="Environment_wo40t"]
+resource_local_to_scene = true
+background_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(0, 0.882353, 0.615686, 1)
+ambient_light_energy = 16.0
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 0.8
+tonemap_white = 0.3
+ssr_enabled = true
+ssr_fade_in = 1862.51
+ssr_fade_out = 90.5096
+ssr_depth_tolerance = 110.21
+ssao_enabled = true
+ssao_power = 5166.47
+ssao_detail = 5.0
+ssao_horizon = 1.0
+ssao_light_affect = 1.0
+ssao_ao_channel_affect = 1.0
+sdfgi_enabled = true
+sdfgi_bounce_feedback = 1.99
+sdfgi_min_cell_size = 0.241504
+glow_enabled = true
+glow_normalized = true
+fog_enabled = true
+fog_light_color = Color(0.352941, 0.639216, 0, 1)
+fog_light_energy = 1.66
+fog_sun_scatter = 0.13
+fog_density = 0.4009
+fog_sky_affect = 0.5
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(1, 1, 0.0784314, 1)
+volumetric_fog_emission = Color(0, 0.631373, 0, 1)
+volumetric_fog_detail_spread = 6.0
+volumetric_fog_temporal_reprojection_amount = 0.535
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_wo40t")

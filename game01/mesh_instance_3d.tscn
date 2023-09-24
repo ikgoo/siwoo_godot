@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqrswu0irgbmy"]
+
+[ext_resource type="Texture2D" uid="uid://pl0as6hbw4yl" path="res://스크린샷 2023-05-04 225539.png" id="1_4mpt2"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4lti0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5loah"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0gdu1"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 2.86174, 0, 0, 0, 1, 0, -0.154836, 0.0347045)
+mesh = SubResource("PlaneMesh_4lti0")
+surface_material_override/0 = SubResource("StandardMaterial3D_5loah")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.0999998, -0.000174533, 7.62907e-12, 0, -4.37114e-09, -0.1, 0.000174533, 0.0999998, -4.37113e-09, 0, 0.001, 0)
+texture = ExtResource("1_4mpt2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_0gdu1")

@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://2vmkoblfiq4v"]
+
+[ext_resource type="PackedScene" uid="uid://bih2duugo08xc" path="res://character_body_3d.tscn" id="1_fitw6"]
+[ext_resource type="PackedScene" uid="uid://cqrswu0irgbmy" path="res://mesh_instance_3d.tscn" id="2_3k2xr"]
+[ext_resource type="PackedScene" uid="uid://de8ft2v0jv1ys" path="res://world_environment.tscn" id="2_toggv"]
+
+[sub_resource type="Environment" id="Environment_mw5ue"]
+resource_local_to_scene = true
+background_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(0, 0.882353, 0.615686, 1)
+ambient_light_energy = 16.0
+reflected_light_source = 2
+tonemap_mode = 3
+tonemap_exposure = 0.8
+tonemap_white = 0.3
+ssr_enabled = true
+ssr_fade_in = 1862.51
+ssr_fade_out = 90.5096
+ssr_depth_tolerance = 110.21
+ssao_enabled = true
+ssao_power = 5166.47
+ssao_detail = 5.0
+ssao_horizon = 1.0
+ssao_light_affect = 1.0
+ssao_ao_channel_affect = 1.0
+sdfgi_enabled = true
+sdfgi_bounce_feedback = 1.99
+sdfgi_min_cell_size = 0.241504
+glow_enabled = true
+glow_normalized = true
+fog_enabled = true
+fog_light_color = Color(0.352941, 0.639216, 0, 1)
+fog_light_energy = 1.66
+fog_sun_scatter = 0.13
+fog_density = 0.4009
+fog_sky_affect = 0.5
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(1, 1, 0.0784314, 1)
+volumetric_fog_emission = Color(0, 0.631373, 0, 1)
+volumetric_fog_detail_spread = 6.0
+volumetric_fog_temporal_reprojection_amount = 0.535
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_iusc1"]
+size = Vector2(100, 100)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3mbfd"]
+data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.99908, -0.0427593, -0.00326563, -0.0428757, 0.997476, 0.0566071, 0.000156403, 0.0105953, -0.186582, -0.17348, 0.0642195, -1.27199)
+shadow_enabled = true
+
+[node name="MeshInstance3D2" parent="." instance=ExtResource("2_3k2xr")]
+transform = Transform3D(-1, 8.74228e-08, 0, 3.82137e-15, 4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 0, 1.09854, 0)
+
+[node name="WorldEnvironment2" parent="." instance=ExtResource("2_toggv")]
+environment = SubResource("Environment_mw5ue")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_fitw6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.06935, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0224588, 0.0703163, -0.161499)
+mesh = SubResource("PlaneMesh_iusc1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_3mbfd")

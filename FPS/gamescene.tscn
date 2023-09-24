@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://du1pljatwcjwe"]
+
+[ext_resource type="PackedScene" uid="uid://ddyxlrw58x26v" path="res://grawnd.tscn" id="1_82lhj"]
+[ext_resource type="PackedScene" uid="uid://dt5uaouud0hc7" path="res://player.tscn" id="2_spi5e"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="StaticBody3D2" parent="." instance=ExtResource("1_82lhj")]
+transform = Transform3D(0.338968, -3.56158, 0, 0.940798, 1.28323, 0, 0, 0, 3.40273, 0, 0, 0)
+
+[node name="StaticBody3D" parent="." instance=ExtResource("1_82lhj")]
+transform = Transform3D(35.7487, 0, 0, 0, 0.438822, 0, 0, 0, 44.5308, 0, 0, 0)
+
+[node name="StaticBody3D3" parent="." instance=ExtResource("1_82lhj")]
+transform = Transform3D(0.888806, 0, 0, 0, 4.11265, 0, 0, 0, 3.13152, 5.58772, 0.281311, -1.35768)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.857248, 0.514903, 0, -0.514903, 0.857248, -1.84061, 6.45606, 9.76113)
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_spi5e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.36312, 0)
+
+[editable path="CharacterBody3D"]
