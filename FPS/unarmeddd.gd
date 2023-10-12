@@ -1,4 +1,4 @@
-extends Weapon
+extends ARMED
 
 
 func fire():
@@ -8,3 +8,5 @@ func reload():
 	pass
 func fire_stop():
 	pass 
+func is_zom():
+	return false

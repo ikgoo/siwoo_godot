@@ -91,22 +91,31 @@ collide_with_areas = true
 debug_shape_custom_color = Color(0, 0, 0.6, 1)
 debug_shape_thickness = 5
 
-[node name="rifle" parent="CharacterBody3D/camroot/weapons" index="0" node_paths=PackedStringArray("test", "boom", "raycast", "charater")]
-test = NodePath("../../../../MeshInstance3D")
+[node name="rifle" parent="CharacterBody3D/camroot/weapons" index="0" node_paths=PackedStringArray("boom", "raycast", "charater")]
+animation_player_path = NodePath("AnimationPlayer")
 boom = NodePath("../../../boom")
 raycast = NodePath("../../Camera3D/RayCast3D")
 charater = NodePath("../../../Timer")
 rays = NodePath("../../Camera3D/RayCast3D")
 weapon_name = "슈뻐 짱짱 엄청 쎈 완전 초 울트라 메가 기가 초전 일렉트릭 썬더 볼트 총"
 
+[node name="root" parent="CharacterBody3D/camroot/weapons/rifle" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
+
 [node name="MeshInstance3D2" parent="CharacterBody3D/camroot/weapons/rifle/root/middle/body/SM_Wep_RifleSwat_01/RootNode/unarmerd/Node3D2/Node3D" index="0"]
-transform = Transform3D(0.977469, -0.15528, -0.142978, 0.210123, 0.651419, 0.729045, -0.0200678, -0.742661, 0.669371, 0.179, -0.247, 0)
+transform = Transform3D(0.977468, -0.15528, -0.142978, 0.210123, 0.651419, 0.729045, -0.0200678, -0.742661, 0.669371, 0.179, -0.247, 0)
 
 [node name="MeshInstance3D5" parent="CharacterBody3D/camroot/weapons/rifle/root/middle/body/SM_Wep_RifleSwat_01/RootNode/unarmerd/Node3D2/Node3D" index="1"]
 transform = Transform3D(0.557164, -0.577508, -0.596709, 0.226078, 0.796924, -0.560187, 0.799042, 0.177212, 0.574577, 0.05, -0.236, -0.336)
 
-[node name="pistol" parent="CharacterBody3D/camroot/weapons" index="2" node_paths=PackedStringArray("test", "boom", "raycast", "charater")]
-test = NodePath("../../../../MeshInstance3D")
+[node name="unarmed" parent="CharacterBody3D/camroot/weapons" index="1" node_paths=PackedStringArray("boom", "raycast", "charater")]
+animation_player_path = NodePath("../pistol/root/middle/body/unarmerd/AnimationPlayer")
+boom = NodePath("../../../boom")
+raycast = NodePath("../../Camera3D/RayCast3D")
+charater = NodePath("../../../Timer")
+
+[node name="pistol" parent="CharacterBody3D/camroot/weapons" index="2" node_paths=PackedStringArray("boom", "raycast", "charater")]
+animation_player_path = NodePath("AnimationPlayer")
 boom = NodePath("../../../boom")
 raycast = NodePath("../../Camera3D/RayCast3D")
 charater = NodePath("../../../Timer")
@@ -140,14 +149,14 @@ shape = SubResource("HeightMapShape3D_syj54")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.29194, 2.38419e-07, 6.94052)
-collision_layer = 8
+collision_layer = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2"]
 shape = SubResource("BoxShape3D_q4tdn")
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.40828, 2.38419e-07, 0.0520828)
-collision_layer = 8
+collision_layer = 4
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
@@ -160,7 +169,7 @@ shape = SubResource("BoxShape3D_1c73w")
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="NavigationRegion3D/StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.43121, 0, 0)
-collision_layer = 8
+collision_layer = 4
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/StaticBody3D3/StaticBody3D3"]
 transform = Transform3D(0.984808, 0, 0.173648, 0, 1, 0, -0.173648, 0, 0.984808, 0, 0, 20)
@@ -198,6 +207,7 @@ mesh = SubResource("CapsuleMesh_n05h2")
 [editable path="CharacterBody3D/camroot/weapons/rifle"]
 [editable path="CharacterBody3D/camroot/weapons/rifle/root/middle/body/SM_Wep_RifleSwat_01"]
 [editable path="CharacterBody3D/camroot/weapons/rifle/root/middle/body/SM_Wep_RifleSwat_01/RootNode/unarmerd"]
+[editable path="CharacterBody3D/camroot/weapons/unarmed"]
 [editable path="CharacterBody3D/camroot/weapons/pistol"]
 [editable path="CharacterBody3D/camroot/weapons/pistol/root/middle/body/unarmerd"]
 [editable path="CharacterBody3D/camroot/weapons/pistol/root/middle/body/SM_Wep_PistolSwat_01"]

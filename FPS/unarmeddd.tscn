@@ -1,6 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://l46x71m5852x"]
+[gd_scene load_steps=7 format=3 uid="uid://l46x71m5852x"]
 
 [ext_resource type="Script" path="res://unarmeddd.gd" id="1_hifub"]
 
+[sub_resource type="Animation" id="Animation_iomwc"]
+resource_name = "equip"
+
+[sub_resource type="Animation" id="Animation_et0bp"]
+resource_name = "run"
+
+[sub_resource type="Animation" id="Animation_5ye2a"]
+resource_name = "unequip"
+
+[sub_resource type="Animation" id="Animation_ij6ky"]
+resource_name = "unrun"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8do8d"]
+_data = {
+"equip": SubResource("Animation_iomwc"),
+"run": SubResource("Animation_et0bp"),
+"unequip": SubResource("Animation_5ye2a"),
+"unrun": SubResource("Animation_ij6ky")
+}
+
 [node name="unarmed" type="Node3D"]
 script = ExtResource("1_hifub")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8do8d")
+}

@@ -142,3 +142,6 @@ func unzoom():
 	if currunt_weapon_slot != "empty":
 		is_zoomed = false
 		currunt_weapon.unzoom()
+func is_zomed():
+	var zoomed = currunt_weapon.is_zom()
+	return zoomed

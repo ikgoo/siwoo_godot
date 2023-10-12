@@ -16,7 +16,10 @@ const GRAVITY = -20
 const JUMP_SPEED = 15
 var jump_counter = 0
 const air_ACCEL = 9.0
-
+var run = 0
+const BOB_FREQ = 1.0
+const BOB_AMP = 0.01
+var t_bob = 0.0
 
 func process_weapons():
 	
@@ -54,6 +57,7 @@ func _physics_process(delta):
 		process_movement_jumps(delta)
 		process_movement(delta)
 		process_weapons()
+		head_bob(delta)
 
 func _process(delta):
 
@@ -94,9 +98,18 @@ func process_movement(delta):
 	if Input.is_action_just_pressed("jump") and jump_counter < 2:
 		jump_counter += 1
 		velocity.y = JUMP_SPEED
-	
-	
-	var speed = sprint_speed if Input.is_action_pressed("sprint") else speeds
+	var speed = 0
+	if Input.is_action_pressed("sprint"):
+		speed = sprint_speed
+		if run == 0:
+			weapon_maneger.currunt_weapon.animation_player.play("run")
+		run = 1
+	else:
+		speed = speeds
+		if weapon_maneger.currunt_weapon_slot != "Empty":
+			if run == 1:
+				weapon_maneger.currunt_weapon.animation_player.play("unrun")
+				run = 0
 	var target_val = dir  * speed
 	
 #		currunt_val = currunt_val.linear_interpolate(target_val,ACCEL * delta)
@@ -130,3 +143,13 @@ func window_activity():
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+func head_bob(delta):
+	if not weapon_maneger.is_zomed():
+		t_bob += delta * velocity.length() * float(is_on_floor())
+		camera.transform.origin = _head_bob(t_bob)
+	else:
+		camera.position.y = 0
+func _head_bob(time) -> Vector3:
+	var pos  = Vector3.ZERO
+	pos.y = sin(time * BOB_FREQ) * BOB_AMP
+	return pos

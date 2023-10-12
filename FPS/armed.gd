@@ -2,8 +2,8 @@ extends Weapon
 
 class_name ARMED
 
-
-var animation_player
+@export var animation_player_path : NodePath
+@onready var animation_player = get_node(animation_player_path)
 @export var test : MeshInstance3D
 @export var my_ammo : int
 @export var boom : GPUParticles3D
@@ -174,4 +174,5 @@ func ray_cast():
 				raycast.get_collider().queue_free()
 				
 		
-		
+func is_zom():
+	return is_zoomed
