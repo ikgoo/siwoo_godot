@@ -1,0 +1,337 @@
+[gd_scene load_steps=10 format=3 uid="uid://ct1ys7lcvfiqp"]
+
+[ext_resource type="Script" path="res://pistol.gd" id="1_remjg"]
+[ext_resource type="PackedScene" uid="uid://sq3jxbrchvad" path="res://pistols.tscn" id="2_7bhvr"]
+[ext_resource type="PackedScene" uid="uid://b5ndx3h05beqm" path="res://muzzle_flash.tscn" id="2_vsb5i"]
+
+[sub_resource type="Animation" id="Animation_7mvwh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("middle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("middle/body:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("middle/body:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.125, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("..:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Mag_01:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Mag_01:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -7.45056e-09, -1.02446e-07)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Slide_01:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Slide_01:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -1.67638e-08)]
+}
+
+[sub_resource type="Animation" id="Animation_eso51"]
+resource_name = "equip"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("middle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.5708, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show_weapon"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_1a5tc"]
+resource_name = "fire"
+length = 0.05
+step = 0.005
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("middle/body:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.025, 0.04, 0.05),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.5), Vector3(0, 0, -0.5), Vector3(0, 0, -0.5), Vector3(0, 0, -0.5), Vector3(0, 0, -0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("middle/body:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.025, 0.04, 0.05),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0872665, 0, 0), Vector3(0.174533, 0, 0), Vector3(0.0872665, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.025),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"fire_bullet"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_y3kre"]
+resource_name = "reload"
+length = 2.3
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 1.525, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.125, 0), Vector3(0, 0.125, 0), Vector3(0, 0.125, 0), Vector3(0, 0.125, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 1.525, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.279113, -4.36069e-09, -0.235707), Vector3(0.279113, -4.36069e-09, -0.235707), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Mag_01:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.175, 0.375, 0.5, 0.625, 0.925, 1.125, 1.2, 1.275, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.00097915, -0.00407689, -0.00737018), Vector3(-0.00015163, -0.153544, -0.0431685), Vector3(0.0554664, -0.282516, -0.0762277), Vector3(0.180921, -0.471005, -0.120357), Vector3(0.180921, -0.471005, -0.120357), Vector3(0.0554664, -0.282516, -0.0762277), Vector3(-0.00015163, -0.153544, -0.0431685), Vector3(-0.00097915, -0.00407689, -0.00737018), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Mag_01:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.375, 0.5, 0.625, 0.925, 1.125, 1.2, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -7.45056e-09, -1.02446e-07), Vector3(2.98025e-08, -2.23518e-08, -4.58211e-07), Vector3(2.98025e-08, -1.86265e-08, -5.53206e-07), Vector3(2.98025e-08, -1.86265e-08, -5.53206e-07), Vector3(2.98025e-08, -1.86265e-08, -5.53206e-07), Vector3(2.98025e-08, -1.86265e-08, -5.53206e-07), Vector3(2.98025e-08, -1.86265e-08, -5.53206e-07)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Slide_01:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.9, 2.025, 2.1, 2.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(6.99519e-09, 0, -0.0800157), Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01/SM_Wep_PistolSwat_Slide_01:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1.9, 2.025, 2.1, 2.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -1.67638e-08), Vector3(0, 0, -1.67638e-08), Vector3(0, 0, -1.67638e-08), Vector3(0, 0, -1.67638e-08)]
+}
+
+[sub_resource type="Animation" id="Animation_vilcd"]
+resource_name = "unequip"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("middle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.5708, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hide_weapon"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq82q"]
+_data = {
+"RESET": SubResource("Animation_7mvwh"),
+"equip": SubResource("Animation_eso51"),
+"fire": SubResource("Animation_1a5tc"),
+"reload": SubResource("Animation_y3kre"),
+"unequip": SubResource("Animation_vilcd")
+}
+
+[node name="pistol" type="Node3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.125, 0)
+script = ExtResource("1_remjg")
+weapon_name = "pistol"
+
+[node name="muzzle flash" parent="." instance=ExtResource("2_vsb5i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0784889, -0.336515)
+
+[node name="root" type="Node3D" parent="."]
+
+[node name="middle" type="Node3D" parent="root"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+
+[node name="body" type="Node3D" parent="root/middle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+
+[node name="SM_Wep_PistolSwat_01" parent="root/middle/body" instance=ExtResource("2_7bhvr")]
+
+[node name="SM_Wep_PistolSwat_Mag_01" parent="root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="1"]
+transform = Transform3D(1, 1.02445e-07, -7.45049e-09, -1.02446e-07, 0.999995, 0, 7.45056e-09, 7.63276e-16, 0.999991, 0, 0, 0)
+
+[node name="SM_Wep_PistolSwat_Slide_01" parent="root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="2"]
+transform = Transform3D(1, 1.67638e-08, 0, -1.67638e-08, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../root")
+libraries = {
+"": SubResource("AnimationLibrary_tq82q")
+}
+
+[editable path="root/middle/body/SM_Wep_PistolSwat_01"]

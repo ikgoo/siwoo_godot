@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://sq3jxbrchvad"]
+
+[ext_resource type="PackedScene" uid="uid://b5atplvnkg2xh" path="res://SM_Wep_PistolSwat_01.fbx" id="1_yyntv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rddad"]
+albedo_color = Color(0.494118, 0.494118, 0.494118, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trhlw"]
+albedo_color = Color(0.658824, 0.658824, 0.658824, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f3wb7"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1uew0"]
+albedo_color = Color(0.270588, 0.270588, 0.270588, 1)
+
+[node name="SM_Wep_PistolSwat_01" instance=ExtResource("1_yyntv")]
+transform = Transform3D(-1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, 0, 0)
+
+[node name="SM_Wep_PistolSwat_01" parent="RootNode" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_rddad")
+
+[node name="SM_Wep_PistolSwat_Trigger_01" parent="RootNode/SM_Wep_PistolSwat_01" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_trhlw")
+
+[node name="SM_Wep_PistolSwat_Mag_01" parent="RootNode/SM_Wep_PistolSwat_01" index="1"]
+surface_material_override/0 = SubResource("StandardMaterial3D_f3wb7")
+
+[node name="SM_Wep_PistolSwat_Slide_01" parent="RootNode/SM_Wep_PistolSwat_01" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_1uew0")

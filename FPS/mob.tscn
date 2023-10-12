@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=3 uid="uid://bixrh5mpmnb2t"]
+
+[ext_resource type="Script" path="res://mob.gd" id="1_gddaq"]
+[ext_resource type="PackedScene" uid="uid://yodj542xtl1n" path="res://low_poly_zombie/scene.gltf" id="2_lu60h"]
+[ext_resource type="AudioStream" uid="uid://dmkql27u1nvjx" path="res://main scene/UIpack/18.마인크래프트 맞음.mp3" id="2_ugdpi"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bfdc0"]
+radius = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v4htp"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7t1la"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vapq"]
+radius = 0.2725
+height = 0.95
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qywa7"]
+radius = 0.53
+height = 1.25
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qmvc1"]
+size = Vector3(1, 2.1, 1)
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_gddaq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_bfdc0")
+
+[node name="scene" parent="." instance=ExtResource("2_lu60h")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1.25, 0, 8.74228e-08, 0, -1, 0.317, 4.217, -0.697)
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_v4htp")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ugdpi")
+
+[node name="mobjump2" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mobjump2"]
+shape = SubResource("BoxShape3D_7t1la")
+
+[node name="mobjump" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mobjump"]
+shape = SubResource("BoxShape3D_7t1la")
+
+[node name="mob_head" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.074078)
+collision_layer = 256
+collision_mask = 64
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="mob_head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.547751, 0.100589)
+shape = SubResource("CapsuleShape3D_3vapq")
+
+[node name="mob_body" type="Area3D" parent="."]
+collision_layer = 576
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mob_body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0401282, -0.23706, -0.0633106)
+shape = SubResource("CapsuleShape3D_qywa7")
+
+[node name="Area3D2" type="Area3D" parent="."]
+collision_layer = 128
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+shape = SubResource("BoxShape3D_qmvc1")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="PlayerHit"]
+[connection signal="area_entered" from="mobjump2" to="." method="_on_mobjump_2_area_entered"]
+[connection signal="area_entered" from="mobjump" to="." method="_on_mobjump_area_entered"]
+[connection signal="area_entered" from="Area3D2" to="." method="_on_area_3d_2_area_entered"]
+[connection signal="area_exited" from="Area3D2" to="." method="_on_area_3d_2_area_exited"]

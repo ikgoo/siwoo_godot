@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://l46x71m5852x"]
+
+[ext_resource type="Script" path="res://unarmeddd.gd" id="1_hifub"]
+
+[node name="unarmed" type="Node3D"]
+script = ExtResource("1_hifub")

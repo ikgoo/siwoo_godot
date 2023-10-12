@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://bo0jog01ftaxp"]
+
+[ext_resource type="PackedScene" uid="uid://dt8rrsntet821" path="res://main scene/main menu.tscn" id="1_lmm4i"]
+[ext_resource type="FontFile" uid="uid://blqekq2udvsd8" path="res://fonts/HeirofLightBold.ttf" id="2_wj0st"]
+
+[sub_resource type="Theme" id="Theme_s8lnc"]
+Button/font_sizes/font_size = 60
+
+[sub_resource type="Theme" id="Theme_1uynf"]
+Button/font_sizes/font_size = 60
+
+[sub_resource type="Theme" id="Theme_0r2ar"]
+Button/font_sizes/font_size = 60
+
+[sub_resource type="LabelSettings" id="LabelSettings_vkhi2"]
+font = ExtResource("2_wj0st")
+font_size = 200
+font_color = Color(0.196078, 0, 0, 0.67451)
+
+[node name="menu" instance=ExtResource("1_lmm4i")]
+
+[node name="VBoxContainer" parent="." index="1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -387.0
+offset_top = -99.37
+offset_right = 374.0
+offset_bottom = 353.63
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="play" parent="VBoxContainer" index="0"]
+theme = SubResource("Theme_s8lnc")
+
+[node name="options" parent="VBoxContainer" index="1"]
+theme = SubResource("Theme_1uynf")
+
+[node name="quit" parent="VBoxContainer" index="2"]
+size_flags_vertical = 8
+theme = SubResource("Theme_0r2ar")
+
+[node name="Label" type="Label" parent="." index="2"]
+layout_mode = 0
+offset_left = 375.0
+offset_top = -46.0
+offset_right = 1336.78
+offset_bottom = 246.0
+text = "FPS"
+label_settings = SubResource("LabelSettings_vkhi2")

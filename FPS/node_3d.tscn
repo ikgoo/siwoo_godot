@@ -19,7 +19,7 @@ size = Vector3(5, 3, 4)
 [sub_resource type="ImageTexture3D" id="ImageTexture3D_rnxej"]
 resource_local_to_scene = true
 
-[sub_resource type="FogMaterial" id="FogMaterial_djyqt"]
+[sub_resource type="FogMaterial" id="FogMaterial_fcitn"]
 density = 8.0
 albedo = Color(0, 0.34902, 0.34902, 1)
 emission = Color(0.501961, 0.152941, 0.0156863, 1)
@@ -28,7 +28,7 @@ edge_fade = 2.34254
 density_texture = SubResource("ImageTexture3D_rnxej")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ybmis"]
-next_pass = SubResource("FogMaterial_djyqt")
+next_pass = SubResource("FogMaterial_fcitn")
 albedo_color = Color(0.0705882, 0.678431, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2g4u2"]
@@ -70,11 +70,6 @@ shape = SubResource("BoxShape3D_2g4u2")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="StaticBody3D2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.26901, 0, 6.88844)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2/StaticBody3D2"]
-transform = Transform3D(0.5, 0, 0, 0, 2, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("BoxMesh_imqrk")
-surface_material_override/0 = SubResource("StandardMaterial3D_ybmis")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2/StaticBody3D2"]
 shape = SubResource("BoxShape3D_my6jl")

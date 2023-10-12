@@ -1,0 +1,99 @@
+[gd_scene load_steps=8 format=3 uid="uid://dpg2igba7od21"]
+
+[ext_resource type="FontFile" uid="uid://blqekq2udvsd8" path="res://fonts/HeirofLightBold.ttf" id="1_3m63j"]
+[ext_resource type="Script" path="res://HUD.gd" id="1_ddou1"]
+[ext_resource type="Texture2D" uid="uid://ds221pjakho8k" path="res://TEN.png" id="3_7ej0v"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_58v2c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i8pdj"]
+font = ExtResource("1_3m63j")
+font_color = Color(0.0980392, 0.0588235, 0.0156863, 1)
+outline_size = 1
+outline_color = Color(0.592157, 0, 0.0588235, 0.486275)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tiqi1"]
+font = ExtResource("1_3m63j")
+font_color = Color(0.0470588, 0.054902, 0, 1)
+outline_size = 3
+outline_color = Color(1, 0, 0, 0.337255)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yjy8l"]
+font = ExtResource("1_3m63j")
+font_color = Color(0.894118, 0, 0, 1)
+outline_size = 3
+outline_color = Color(0.121569, 0, 0.00392157, 1)
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ddou1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("CanvasItemMaterial_58v2c")
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -100.0
+offset_right = 230.0
+offset_bottom = -10.0
+grow_vertical = 0
+color = Color(0, 0, 0, 0.345098)
+metadata/_edit_group_ = true
+
+[node name="weapon" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 38.0
+offset_right = 210.0
+offset_bottom = 92.0
+text = "
+PISTOL 5/25"
+label_settings = SubResource("LabelSettings_i8pdj")
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 93.0
+offset_bottom = 83.0
+
+[node name="weapon_slot" type="Label" parent="ColorRect/ColorRect"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 6.0
+offset_right = 15.0
+offset_bottom = 33.0
+text = "1"
+label_settings = SubResource("LabelSettings_tiqi1")
+
+[node name="health" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 13.0
+offset_right = 199.0
+offset_bottom = 37.0
+text = "HP : 100"
+label_settings = SubResource("LabelSettings_yjy8l")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_7ej0v")

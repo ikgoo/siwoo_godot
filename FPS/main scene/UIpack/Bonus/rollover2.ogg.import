@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://butasgfb4ygp5"
+path="res://.godot/imported/rollover2.ogg-d63d85ec06f7d342eaec062fa5e3b3e2.oggvorbisstr"
+
+[deps]
+
+source_file="res://main scene/UIpack/Bonus/rollover2.ogg"
+dest_files=["res://.godot/imported/rollover2.ogg-d63d85ec06f7d342eaec062fa5e3b3e2.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
