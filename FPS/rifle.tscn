@@ -328,94 +328,6 @@ tracks/7/keys = {
 "values": [Vector3(-0.816922, -0.210438, 0.312026), Vector3(-0.816922, -0.210438, 0.312026), Vector3(-0.816922, -0.210438, 0.312026), Vector3(-0.816922, -0.210438, 0.312026), Vector3(-0.816922, -0.210439, 0.312026), Vector3(-0.816922, -0.210439, 0.312026), Vector3(-0.816922, -0.210439, 0.312026), Vector3(-0.816922, -0.210439, 0.312026), Vector3(-0.816922, -0.210439, 0.312026)]
 }
 
-[sub_resource type="Animation" id="Animation_3xo3u"]
-resource_name = "unequip"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(1.5708, 0, 0)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../..")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"hide_weapon"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_kiu5f"]
-resource_name = "unzoom"
-length = 0.075
-step = 0.005
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/SM_Wep_RifleSwat_01:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.075),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.197, 0.018, -0.283), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/unarmerd:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.075),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.500964, 0, -0.455377), Vector3(0.209766, 0, -0.0504409)]
-}
-
-[sub_resource type="Animation" id="Animation_hsah4"]
-resource_name = "zoom"
-length = 0.075
-step = 0.005
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/SM_Wep_RifleSwat_01:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.07),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.278, 0.05, -0.383)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/unarmerd:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.07),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.209766, 0, -0.0504409), Vector3(0.500964, 0, -0.455377)]
-}
-
 [sub_resource type="Animation" id="Animation_o0355"]
 resource_name = "run"
 length = 0.2
@@ -502,6 +414,36 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0.2, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3xo3u"]
+resource_name = "unequip"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.5708, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hide_weapon"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_kk335"]
@@ -591,6 +533,64 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kiu5f"]
+resource_name = "unzoom"
+length = 0.075
+step = 0.005
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/SM_Wep_RifleSwat_01:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.075),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.197, 0.018, -0.283), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/unarmerd:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.075),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.500964, 0, -0.455377), Vector3(0.209766, 0, -0.0504409)]
+}
+
+[sub_resource type="Animation" id="Animation_hsah4"]
+resource_name = "zoom"
+length = 0.075
+step = 0.005
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/SM_Wep_RifleSwat_01:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.07),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.278, 0.05, -0.383)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("body/SM_Wep_RifleSwat_01/RootNode/unarmerd:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.07),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.209766, 0, -0.0504409), Vector3(0.500964, 0, -0.455377)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ppwdx"]
