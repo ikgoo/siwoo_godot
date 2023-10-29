@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbnhrnvaluvj"]
+
+[ext_resource type="PackedScene" uid="uid://diit40a3yqnqg" path="res://models2/AmoBox_01.glb" id="1_181pv"]
+[ext_resource type="PackedScene" uid="uid://pgu2st5rh6wa" path="res://models2/ATM.glb" id="2_qtrms"]
+[ext_resource type="PackedScene" uid="uid://c4j6c2ooxw8wq" path="res://models2/AutoService_01.glb" id="3_n3331"]
+[ext_resource type="PackedScene" uid="uid://ccfvrd6uqcrvd" path="res://models2/Bank_01.glb" id="4_n4vs6"]
+
+[node name="tiles3" type="Node3D"]
+
+[node name="AmoBox_01" parent="." instance=ExtResource("1_181pv")]
+
+[node name="ATM" parent="." instance=ExtResource("2_qtrms")]
+
+[node name="AutoService_01" parent="." instance=ExtResource("3_n3331")]
+
+[node name="Bank_01" parent="." instance=ExtResource("4_n4vs6")]

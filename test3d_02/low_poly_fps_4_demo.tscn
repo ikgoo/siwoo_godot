@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgayhh3nvtbvg"]
+
+[ext_resource type="PackedScene" uid="uid://c7tgrwu83o1s5" path="res://model3/LowPolyFPS4_Demo.glb" id="1_a8jdd"]
+
+[node name="LowPolyFPS4_Demo" instance=ExtResource("1_a8jdd")]

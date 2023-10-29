@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqccx607u04xt"]
+
+[ext_resource type="Script" path="res://Scenes/main_scene.gd" id="1_6vqvm"]
+[ext_resource type="Texture2D" uid="uid://ilmlxd1k0p58" path="res://New Piskel.png" id="2_kniit"]
+[ext_resource type="Texture2D" uid="uid://1x808fvlxv5x" path="res://redlight.png" id="3_u6lw4"]
+[ext_resource type="Texture2D" uid="uid://bulqad4liakj2" path="res://bluelight.png" id="4_5cjse"]
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_6vqvm")
+
+[node name="NewPiskel" type="Sprite2D" parent="."]
+position = Vector2(91, 94)
+texture = ExtResource("2_kniit")
+
+[node name="Redlight" type="Sprite2D" parent="."]
+position = Vector2(96, 79)
+texture = ExtResource("3_u6lw4")
+
+[node name="Redlight2" type="Sprite2D" parent="."]
+position = Vector2(-78, 164)
+texture = ExtResource("3_u6lw4")
+
+[node name="Bluelight" type="Sprite2D" parent="."]
+position = Vector2(86, 80)
+texture = ExtResource("4_5cjse")

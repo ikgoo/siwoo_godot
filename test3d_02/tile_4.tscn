@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://clng7ljkibw24"]
+
+[ext_resource type="PackedScene" uid="uid://c7tgrwu83o1s5" path="res://model3/LowPolyFPS4_Demo.glb" id="2_o8ujn"]
+
+[node name="tile4" type="Node3D"]
+
+[node name="LowPolyFPS4_Demo" parent="." instance=ExtResource("2_o8ujn")]
