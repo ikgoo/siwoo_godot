@@ -1,25 +1,188 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqccx607u04xt"]
+[gd_scene load_steps=14 format=3 uid="uid://cqccx607u04xt"]
 
 [ext_resource type="Script" path="res://Scenes/main_scene.gd" id="1_6vqvm"]
-[ext_resource type="Texture2D" uid="uid://ilmlxd1k0p58" path="res://New Piskel.png" id="2_kniit"]
-[ext_resource type="Texture2D" uid="uid://1x808fvlxv5x" path="res://redlight.png" id="3_u6lw4"]
-[ext_resource type="Texture2D" uid="uid://bulqad4liakj2" path="res://bluelight.png" id="4_5cjse"]
+[ext_resource type="Texture2D" uid="uid://bj3js5xjgxn46" path="res://pngs/light.png" id="3_3gkrx"]
+[ext_resource type="Script" path="res://Scenes/PointLight2D.gd" id="4_ie3pw"]
+[ext_resource type="PackedScene" uid="uid://doey0pwkqpen2" path="res://start.tscn" id="5_oakf7"]
+[ext_resource type="Texture2D" uid="uid://frwjuawabh3t" path="res://backgrounds/dungeon background 6.png" id="5_x7uia"]
+[ext_resource type="Texture2D" uid="uid://bee2c8s28xjrr" path="res://pngs/The lighter.png" id="6_1mmjk"]
+
+[sub_resource type="Animation" id="Animation_3fgq3"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.584314, 0.545098, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D3:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.47451, 0.435294, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qtwxy"]
+resource_name = "light"
+length = 3.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.7, 1, 1.7, 3, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1.07177, 1),
+"update": 0,
+"values": [Color(1, 0.47451, 0.435294, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.286275, 0.27451, 1), Color(0.92549, 0, 0.12549, 1), Color(0.92549, 0, 0.12549, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D3:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 1.7, 2.1, 3, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.92549, 0, 0.12549, 1), Color(0.92549, 0, 0.12549, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.286275, 0.27451, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g28n5"]
+_data = {
+"RESET": SubResource("Animation_3fgq3"),
+"light": SubResource("Animation_qtwxy")
+}
+
+[sub_resource type="Animation" id="Animation_747dx"]
+resource_name = "Play"
+length = 3.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.545098, 0.482353, 1), Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ni0yy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dagu2"]
+_data = {
+"Play": SubResource("Animation_747dx"),
+"RESET": SubResource("Animation_ni0yy")
+}
+
+[sub_resource type="SphereMesh" id="SphereMesh_a0mmc"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_6vqvm")
 
-[node name="NewPiskel" type="Sprite2D" parent="."]
-position = Vector2(91, 94)
-texture = ExtResource("2_kniit")
+[node name="background" type="Sprite2D" parent="."]
+self_modulate = Color(0.85098, 0.85098, 0.85098, 1)
+position = Vector2(160, 90)
+scale = Vector2(0.208333, 0.175781)
+texture = ExtResource("5_x7uia")
 
-[node name="Redlight" type="Sprite2D" parent="."]
-position = Vector2(96, 79)
-texture = ExtResource("3_u6lw4")
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(103, 87)
+color = Color(0, 0, 0, 1)
+energy = 1.5
+texture = ExtResource("3_3gkrx")
+texture_scale = 0.4
+script = ExtResource("4_ie3pw")
 
-[node name="Redlight2" type="Sprite2D" parent="."]
-position = Vector2(-78, 164)
-texture = ExtResource("3_u6lw4")
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(218, 89)
+editor_only = true
+color = Color(1, 0.371659, 0.346469, 1)
+energy = 1.5
+texture = ExtResource("3_3gkrx")
+texture_scale = 0.4
+script = ExtResource("4_ie3pw")
 
-[node name="Bluelight" type="Sprite2D" parent="."]
-position = Vector2(86, 80)
-texture = ExtResource("4_5cjse")
+[node name="PointLight2D3" type="PointLight2D" parent="."]
+position = Vector2(63, 114)
+color = Color(1, 0.47451, 0.435294, 1)
+energy = 1.5
+texture = ExtResource("3_3gkrx")
+texture_scale = 0.4
+script = ExtResource("4_ie3pw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_g28n5")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_dagu2")
+}
+
+[node name="Control" parent="." instance=ExtResource("5_oakf7")]
+offset_left = 156.0
+offset_top = 125.0
+offset_right = 156.0
+offset_bottom = 125.0
+
+[node name="RichTextLabel" parent="Control" index="1"]
+offset_left = -85.0
+offset_top = 24.0
+offset_right = 75.0
+offset_bottom = 51.0
+
+[node name="PointLight2D4" type="PointLight2D" parent="."]
+position = Vector2(151.5, 62)
+scale = Vector2(1.00195, 0.230469)
+color = Color(1, 1, 0, 1)
+energy = 4.0
+texture = ExtResource("3_3gkrx")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+modulate = Color(1, 1, 0, 0.643137)
+position = Vector2(163.5, 65)
+scale = Vector2(245.278, 20)
+mesh = SubResource("SphereMesh_a0mmc")
+
+[node name="TheLighter" type="Sprite2D" parent="."]
+light_mask = 2
+position = Vector2(169, 64)
+scale = Vector2(1.84, 1.84)
+texture = ExtResource("6_1mmjk")
+
+[editable path="Control"]

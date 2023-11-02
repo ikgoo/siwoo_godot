@@ -2,9 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://b2pttpqb7dqnf" path="res://sprite (1).png" id="1_5uwfy"]
 
-[sub_resource type="Animation" id="Animation_fobcf"]
-resource_name = "nothing"
-
 [sub_resource type="Animation" id="Animation_trxdu"]
 resource_name = "Idle"
 length = 0.8
@@ -37,6 +34,9 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 1)]
 }
+
+[sub_resource type="Animation" id="Animation_fobcf"]
+resource_name = "nothing"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j31kh"]
 _data = {

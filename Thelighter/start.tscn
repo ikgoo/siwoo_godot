@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://doey0pwkqpen2"]
+
+[ext_resource type="Texture2D" uid="uid://uwtpwjtjlotb" path="res://pngs/New Piskel (1).png" id="1_dfxy8"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureButton" type="TextureButton" parent="."]
+modulate = Color(0.643137, 0.262745, 0.290196, 0.694118)
+light_mask = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = 25.0
+offset_right = 71.0
+offset_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = ExtResource("1_dfxy8")
+texture_pressed = ExtResource("1_dfxy8")
+texture_hover = ExtResource("1_dfxy8")
+texture_disabled = ExtResource("1_dfxy8")
+texture_focused = ExtResource("1_dfxy8")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+self_modulate = Color(0.823529, 0.380392, 0.247059, 1)
+layout_mode = 0
+offset_left = 75.0
+offset_top = 115.0
+offset_right = 235.0
+offset_bottom = 142.0
+text = "               start"
