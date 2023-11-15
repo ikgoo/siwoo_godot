@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://drb56y3q1jikk"]
+
+[ext_resource type="Script" path="res://Marker3D.gd" id="1_rv187"]
+
+[node name="Marker3D" type="Marker3D"]
+script = ExtResource("1_rv187")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

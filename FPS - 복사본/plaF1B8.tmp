@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://dt5uaouud0hc7"]
+
+[ext_resource type="PackedScene" uid="uid://ct1ys7lcvfiqp" path="res://pistol.tscn" id="1_7yl28"]
+[ext_resource type="PackedScene" uid="uid://dpg2igba7od21" path="res://HUD.tscn" id="1_21goa"]
+[ext_resource type="PackedScene" uid="uid://ckbp5crb77eey" path="res://rifle.tscn" id="2_8ieh7"]
+[ext_resource type="Script" path="res://weapon_MANEGER.gd" id="2_aqbpm"]
+[ext_resource type="PackedScene" uid="uid://l46x71m5852x" path="res://unarmeddd.tscn" id="3_ev0pn"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ndw2p"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m2vm1"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ndw2p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.00261, 0, 0, 0, 1.00261, 0, 0, 0, 1.00261, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_m2vm1")
+
+[node name="camroot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+
+[node name="Camera3D" type="Camera3D" parent="camroot"]
+near = 0.001
+
+[node name="RayCast3D" type="RayCast3D" parent="camroot/Camera3D"]
+
+[node name="weapons" type="Node3D" parent="camroot"]
+script = ExtResource("2_aqbpm")
+
+[node name="rifle" parent="camroot/weapons" instance=ExtResource("2_8ieh7")]
+transform = Transform3D(-0.999848, 0, 0.0174525, 0, 1, 0, -0.0174525, 0, -0.999848, 0.275, -0.24, -0.41)
+
+[node name="unarmed" parent="camroot/weapons" instance=ExtResource("3_ev0pn")]
+
+[node name="pistol" parent="camroot/weapons" instance=ExtResource("1_7yl28")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.296386, -0.0479989, -0.655228)
+
+[node name="HUD" parent="." instance=ExtResource("1_21goa")]

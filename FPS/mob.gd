@@ -18,6 +18,7 @@ var gra = 0
 const JUMP_SPEED = 30
 const GRAVITY = -5
 var jump = false
+@export var anipl = AnimationPlayer
 @export var target : Marker3D
 
 func _ready():

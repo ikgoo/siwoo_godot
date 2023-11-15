@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://din0rbtxrvi2e"]
+
+[ext_resource type="Script" path="res://bullets.gd" id="1_doexv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gdy2o"]
+albedo_color = Color(0.996078, 0.996078, 0, 1)
+emission_enabled = true
+emission = Color(0.533333, 0.721569, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_v1gpr"]
+material = SubResource("StandardMaterial3D_gdy2o")
+size = Vector3(0.05, 0.05, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5qsvs"]
+size = Vector3(0.05, 0.05, 0.2)
+
+[node name="bullets" type="Node3D"]
+script = ExtResource("1_doexv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_v1gpr")
+
+[node name="bullets coll" type="Area3D" parent="."]
+collision_layer = 1024
+collision_mask = 256
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="bullets coll"]
+shape = SubResource("BoxShape3D_5qsvs")
+
+[connection signal="area_entered" from="bullets coll" to="." method="_on_bullets_coll_area_entered"]

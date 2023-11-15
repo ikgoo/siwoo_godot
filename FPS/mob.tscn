@@ -24,9 +24,10 @@ height = 1.25
 [sub_resource type="BoxShape3D" id="BoxShape3D_qmvc1"]
 size = Vector3(1, 2.1, 1)
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[node name="CharacterBody3D" type="CharacterBody3D" node_paths=PackedStringArray("anipl")]
 collision_layer = 2
 script = ExtResource("1_gddaq")
+anipl = NodePath("scene/AnimationPlayer")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_bfdc0")
@@ -91,3 +92,5 @@ shape = SubResource("BoxShape3D_qmvc1")
 [connection signal="area_entered" from="mobjump" to="." method="_on_mobjump_area_entered"]
 [connection signal="area_entered" from="Area3D2" to="." method="_on_area_3d_2_area_entered"]
 [connection signal="area_exited" from="Area3D2" to="." method="_on_area_3d_2_area_exited"]
+
+[editable path="scene"]

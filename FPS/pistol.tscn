@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ct1ys7lcvfiqp"]
+[gd_scene load_steps=16 format=3 uid="uid://ct1ys7lcvfiqp"]
 
 [ext_resource type="Script" path="res://pistol.gd" id="1_remjg"]
 [ext_resource type="PackedScene" uid="uid://ckigi33xpvldh" path="res://unarmerd.tscn" id="2_3yiuy"]
@@ -237,18 +237,6 @@ tracks/18/keys = {
 "update": 0,
 "values": [Vector3(0.594608, -0.804292, 0.276425)]
 }
-tracks/19/type = "value"
-tracks/19/imported = false
-tracks/19/enabled = true
-tracks/19/path = NodePath("middle:position")
-tracks/19/interp = 1
-tracks/19/loop_wrap = true
-tracks/19/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0.5)]
-}
 
 [sub_resource type="Animation" id="Animation_eso51"]
 resource_name = "equip"
@@ -460,32 +448,32 @@ tracks/9/keys = {
 "values": [Vector3(0.594608, -0.804292, 0.276425), Vector3(0.551664, -0.785787, 0.348639)]
 }
 
-[sub_resource type="Animation" id="Animation_f6hxi"]
+[sub_resource type="Animation" id="Animation_a5g78"]
 resource_name = "run"
-length = 0.2
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("middle:rotation")
+tracks/0/path = NodePath("..:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(1.22173, 0, 0)]
+"values": [Vector3(0, 0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("middle:position")
+tracks/1/path = NodePath("..:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0.5), Vector3(0, -0.45, 0.4)]
+"values": [Vector3(0.296386, -0.0479989, -0.655228)]
 }
 
 [sub_resource type="Animation" id="Animation_vilcd"]
@@ -516,34 +504,6 @@ tracks/1/keys = {
 "args": [],
 "method": &"hide_weapon"
 }]
-}
-
-[sub_resource type="Animation" id="Animation_t1xlv"]
-resource_name = "unrun"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("middle:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, -0.45, 0.4), Vector3(0, 0, 0.5)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("middle:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(1.22173, 0, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_eyolf"]
@@ -622,9 +582,8 @@ _data = {
 "equip": SubResource("Animation_eso51"),
 "fire": SubResource("Animation_1a5tc"),
 "reload": SubResource("Animation_y3kre"),
-"run": SubResource("Animation_f6hxi"),
+"run": SubResource("Animation_a5g78"),
 "unequip": SubResource("Animation_vilcd"),
-"unrun": SubResource("Animation_t1xlv"),
 "unzoom": SubResource("Animation_eyolf"),
 "zoom": SubResource("Animation_5dlpc")
 }
@@ -651,18 +610,19 @@ transform = Transform3D(-0.224951, 0, -0.97437, 0, 1, 0, 0.97437, 0, -0.224951, 
 script = ExtResource("3_ggymx")
 
 [node name="MeshInstance3D2" parent="root/middle/body/unarmerd/Node3D2/Node3D" index="0"]
-transform = Transform3D(0.858825, -0.441801, -0.259297, 0.475261, 0.876069, 0.0814405, 0.191181, -0.193176, 0.962362, 0.161432, -0.223297, -0.0909246)
+transform = Transform3D(0.858825, -0.441801, -0.259297, 0.475261, 0.876068, 0.0814405, 0.191181, -0.193176, 0.962361, 0.161432, -0.223297, -0.0909246)
 
 [node name="MeshInstance3D5" parent="root/middle/body/unarmerd/Node3D2/Node3D" index="1"]
 transform = Transform3D(0.557164, -0.577508, -0.596709, 0.226078, 0.796924, -0.560187, 0.799042, 0.177212, 0.574577, 0.0879523, -0.219872, -0.306932)
 
 [node name="SM_Wep_PistolSwat_01" parent="root/middle/body" instance=ExtResource("2_7bhvr")]
+transform = Transform3D(-1.5, 0, -2.26494e-07, 0, 1.5, 0, 2.26494e-07, 0, -1.5, 0, 0, 0)
 
 [node name="RootNode" parent="root/middle/body/SM_Wep_PistolSwat_01" index="0"]
 transform = Transform3D(1, 0, 2.13163e-14, 0, 0.999998, 0, 2.13163e-14, 0, 0.999998, 0, 0, 0)
 
 [node name="muzzleflash" parent="root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="0" instance=ExtResource("2_vsb5i")]
-transform = Transform3D(-0.666667, -7.37223e-08, 1.68851e-06, 0, 0.66603, 0.0290797, -1.69012e-06, 0.0290797, -0.66603, -0.00253271, 0.0656279, 0.221179)
+transform = Transform3D(-1, -1.10584e-07, 2.53277e-06, 0, 0.999048, 0.0436196, -2.53518e-06, 0.0436196, -0.999048, -0.00253271, 0.0656279, 0.221179)
 
 [node name="SM_Wep_PistolSwat_Mag_01" parent="root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="2"]
 transform = Transform3D(1, 1.02445e-07, -7.45049e-09, -1.02446e-07, 0.999995, 0, 7.45056e-09, 7.63276e-16, 0.999991, 0, 0, 0)

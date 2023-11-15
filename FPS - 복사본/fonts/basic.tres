@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://o85hm82qpalu"]
+
+[ext_resource type="FontFile" uid="uid://blqekq2udvsd8" path="res://fonts/HeirofLightBold.ttf" id="1_3qyei"]
+
+[resource]
+base_font = ExtResource("1_3qyei")

@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://n0t8abwcgelk"]
+
+[ext_resource type="Texture2D" uid="uid://c6krdh3oc7wa8" path="res://pngs/New Piskel.png" id="1_6qo3a"]
+[ext_resource type="Script" path="res://light_attack.gd" id="1_jqnxx"]
+[ext_resource type="Texture2D" uid="uid://1meogf0wt814" path="res://pngs/New Piskel (2).png" id="2_rnd7f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5iry6"]
+size = Vector2(28.3678, 19.309)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_15rau"]
+size = Vector2(28.2757, 53.2558)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gencc"]
+size = Vector2(198.131, 52.6309)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8wkkk"]
+size = Vector2(29.2239, 19.5029)
+
+[node name="light attack2" type="Node2D"]
+script = ExtResource("1_jqnxx")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(154, 85)
+rotation = 1.5708
+scale = Vector2(3.15, 3.15)
+texture = ExtResource("1_6qo3a")
+
+[node name="light attack plate" type="Sprite2D" parent="."]
+position = Vector2(154, 89)
+rotation = 1.5708
+scale = Vector2(2, 2)
+texture = ExtResource("2_rnd7f")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(149.128, 90.8201)
+rotation = 1.5708
+scale = Vector2(0.56402, 0.56402)
+collision_layer = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-3.22713, -48.6271)
+shape = SubResource("RectangleShape2D_5iry6")
+
+[node name="Area2D4" type="Area2D" parent="."]
+position = Vector2(149.128, 90.8201)
+rotation = 1.5708
+scale = Vector2(0.56402, 0.56402)
+collision_layer = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D4"]
+position = Vector2(-3.18077, 76.4985)
+shape = SubResource("RectangleShape2D_15rau")
+
+[node name="Area2D3" type="Area2D" parent="."]
+position = Vector2(148.725, 91.6258)
+rotation = 1.5708
+scale = Vector2(0.302154, 0.302154)
+collision_layer = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
+position = Vector2(-8.46933, -183.097)
+shape = SubResource("RectangleShape2D_gencc")
+
+[node name="Area2D2" type="Area2D" parent="."]
+position = Vector2(149.128, 90.8201)
+rotation = 1.5708
+scale = Vector2(0.56402, 0.56402)
+collision_layer = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(-3.65527, -71.579)
+shape = SubResource("RectangleShape2D_8wkkk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(177, 89)
+scale = Vector2(2, 2)
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(188.989, 89.021)
+scale = Vector2(2.00358, 2.00545)
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+position = Vector2(205.725, 89.6258)
+rotation = 1.5708
+scale = Vector2(0.302154, 0.302154)
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(106.128, 88.8201)
+rotation = 1.5708
+scale = Vector2(0.56402, 0.56402)

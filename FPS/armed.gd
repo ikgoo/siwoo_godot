@@ -1,9 +1,13 @@
 extends Weapon
 
 class_name ARMED
+var bullets = load("res://bullets.tscn")
+var instance
+var animation_player
+@export var superrrrr_node : Node3D
 
 @export var animation_player_path : NodePath
-@onready var animation_player = get_node(animation_player_path)
+@onready var animation_playerr = get_node(animation_player_path)
 @export var test : MeshInstance3D
 @export var my_ammo : int
 @export var boom : GPUParticles3D
@@ -44,12 +48,13 @@ func _process(delta):
 	weapon_maneger.update_hud(weapon_data)
 
 func reload():
+	
 	if not is_zoomed:
 	
 		if my_ammo < my_ammofull:
 			is_fireing = false
 			
-			animation_player.play("reload",-1.0)
+			animation_playerr.play("reload",-1.0)
 			is_reoading = true
 			my_ammo = my_ammofull
 		
@@ -62,8 +67,14 @@ func fire():
 					ok_naw_end = false
 					is_fireing = true
 					audio.play()
+					instance = bullets.instantiate()
+#					instance.global_position = global_position
+#					instance.global_rotation = muzzle_flash.global_rotation
+#					instance.global_transform.basis = global_transform.basis
+					instance.global_transform = muzzle_flash.global_transform
+					get_tree().current_scene.add_child(instance)
 					
-					animation_player.play("fire",-1.0)
+					animation_playerr.play("fire",-1.0)
 					charater.start(0.1)
 					ray_cast()
 				if ammo_in_bag <= 0:
@@ -84,10 +95,10 @@ func fire_bullet():
 
 
 func equip():
-	animation_player.play("equip", -1.0,equip_speed)
+	animation_playerr.play("equip", -1.0,equip_speed)
 	is_reoading = false
 func unequip():
-	animation_player.play("unequip", -1.0,unequip_speed)
+	animation_playerr.play("unequip", -1.0,unequip_speed)
 
 func is_equip_finished():
 	if is_equiped:
@@ -151,12 +162,12 @@ func zoom():
 	if not is_zoomed:
 
 		if not is_reoading:
-			animation_player.play("zoom")
+			animation_playerr.play("zoom")
 			is_zoomed = true
 
 func unzoom():
 	if not is_reoading:
-		animation_player.play("unzoom")
+		animation_playerr.play("unzoom")
 		is_zoomed = false
 
 func ok_naw():

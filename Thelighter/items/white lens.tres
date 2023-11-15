@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="inventory_item" load_steps=3 format=3 uid="uid://c380nfkuce7fq"]
+
+[ext_resource type="Script" path="res://inventoryitem.gd" id="1_ihgw1"]
+[ext_resource type="Texture2D" uid="uid://b1rhcr81rhclv" path="res://pngs/New Piskel (4).png" id="2_6c4ci"]
+
+[resource]
+script = ExtResource("1_ihgw1")
+name = "white lens"
+texture = ExtResource("2_6c4ci")
+what = "lens"

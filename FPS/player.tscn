@@ -13,7 +13,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_72c3o"]
 size = Vector3(2, 2, 2)
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[node name="CharacterBody3D2" type="CharacterBody3D"]
 collision_mask = 4
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

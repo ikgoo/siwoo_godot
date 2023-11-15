@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://cnbn76fjqbm6"]
+
+[ext_resource type="Script" path="res://fight.gd" id="1_4f5xt"]
+[ext_resource type="PackedScene" uid="uid://c8hcdlba538sg" path="res://Scenes/skeleton.tscn" id="2_7chtl"]
+[ext_resource type="Texture2D" uid="uid://c8simjuvi6o8x" path="res://pngs/dungeon background 5 (1).png" id="2_bsso2"]
+[ext_resource type="PackedScene" uid="uid://bkblx0owi833j" path="res://Scenes/player.tscn" id="4_bwbgb"]
+[ext_resource type="PackedScene" uid="uid://n0t8abwcgelk" path="res://light_attack.tscn" id="5_8kqol"]
+[ext_resource type="PackedScene" uid="uid://lv30d8mbpu6u" path="res://inventory.tscn" id="6_nc0er"]
+[ext_resource type="Script" path="res://Sprite2D.gd" id="7_3yu3k"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6mkq3"]
+
+[node name="fight" type="Node2D" node_paths=PackedStringArray("light1", "light2", "battry", "lens")]
+script = ExtResource("1_4f5xt")
+light1 = NodePath("light attack2/Sprite2D")
+light2 = NodePath("light attack2/Sprite2D4")
+battry = NodePath("light attack2/Sprite2D3")
+lens = NodePath("light attack2/Sprite2D5")
+
+[node name="background" type="Sprite2D" parent="."]
+position = Vector2(160, 90)
+scale = Vector2(0.208333, 0.175781)
+texture = ExtResource("2_bsso2")
+
+[node name="skeleton" parent="." instance=ExtResource("2_7chtl")]
+position = Vector2(235, 158)
+
+[node name="player" parent="." instance=ExtResource("4_bwbgb")]
+position = Vector2(72, 141)
+
+[node name="light attack2" parent="." instance=ExtResource("5_8kqol")]
+position = Vector2(6, -43)
+
+[node name="inventory" parent="." instance=ExtResource("6_nc0er")]
+position = Vector2(0, 1)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+script = ExtResource("7_3yu3k")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(68, 52)
+shape = SubResource("CapsuleShape2D_6mkq3")
+
+[connection signal="uneqeup" from="light attack2" to="." method="_on_light_attack_2_uneqeup"]
+[connection signal="itemSct" from="inventory" to="." method="_on_inventory_item_sct"]
+
+[editable path="light attack2"]

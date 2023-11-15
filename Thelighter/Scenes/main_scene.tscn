@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://cqccx607u04xt"]
+[gd_scene load_steps=16 format=3 uid="uid://cqccx607u04xt"]
 
 [ext_resource type="Script" path="res://Scenes/main_scene.gd" id="1_6vqvm"]
+[ext_resource type="Texture2D" uid="uid://dt76c3wus7ldh" path="res://pngs/dungeon background 6 (1).png" id="2_0y8k1"]
 [ext_resource type="Texture2D" uid="uid://bj3js5xjgxn46" path="res://pngs/light.png" id="3_3gkrx"]
 [ext_resource type="Script" path="res://Scenes/PointLight2D.gd" id="4_ie3pw"]
 [ext_resource type="PackedScene" uid="uid://doey0pwkqpen2" path="res://start.tscn" id="5_oakf7"]
-[ext_resource type="Texture2D" uid="uid://frwjuawabh3t" path="res://backgrounds/dungeon background 6.png" id="5_x7uia"]
 [ext_resource type="Texture2D" uid="uid://bee2c8s28xjrr" path="res://pngs/The lighter.png" id="6_1mmjk"]
 
 [sub_resource type="Animation" id="Animation_3fgq3"]
@@ -34,11 +34,207 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 0.47451, 0.435294, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [5.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D3:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D2:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.47451, 0.435294, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PointLight2D2:energy")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PointLight2D:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PointLight2D2:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.3, 0.3)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PointLight2D3:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.3, 0.3)]
+}
+
+[sub_resource type="Animation" id="Animation_42rb4"]
+resource_name = "big"
+length = 1.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PointLight2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.7, 0.7), Vector2(0.7, 0.7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.584314, 0.545098, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D2:color")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.584314, 0.545098, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D2:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.8, 0.8), Vector2(0.8, 0.8)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PointLight2D3:color")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.584314, 0.545098, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PointLight2D3:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.1, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.8, 0.8), Vector2(0.8, 0.8)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PointLight2D2:energy")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PointLight2D3:energy")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5]
+}
 
 [sub_resource type="Animation" id="Animation_qtwxy"]
 resource_name = "light"
 length = 3.5
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -63,10 +259,59 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(0.92549, 0, 0.12549, 1), Color(0.92549, 0, 0.12549, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.286275, 0.27451, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5, 5.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D3:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.9, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [3.0, 2.3, 2.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("PointLight2D2:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.7, 1, 1.7, 3, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.47451, 0.435294, 1), Color(1, 0.47451, 0.435294, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.301961, 0.286275, 1), Color(1, 0.286275, 0.27451, 1), Color(0.92549, 0, 0.12549, 1), Color(0.92549, 0, 0.12549, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PointLight2D2:energy")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 3.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5, 5.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g28n5"]
 _data = {
 "RESET": SubResource("Animation_3fgq3"),
+"big": SubResource("Animation_42rb4"),
 "light": SubResource("Animation_qtwxy")
 }
 
@@ -110,6 +355,8 @@ _data = {
 
 [sub_resource type="SphereMesh" id="SphereMesh_a0mmc"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_fjxs2"]
+
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_6vqvm")
 
@@ -117,20 +364,22 @@ script = ExtResource("1_6vqvm")
 self_modulate = Color(0.85098, 0.85098, 0.85098, 1)
 position = Vector2(160, 90)
 scale = Vector2(0.208333, 0.175781)
-texture = ExtResource("5_x7uia")
+texture = ExtResource("2_0y8k1")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(103, 87)
+scale = Vector2(0.5, 0.5)
 color = Color(0, 0, 0, 1)
-energy = 1.5
+energy = 5.0
 texture = ExtResource("3_3gkrx")
 texture_scale = 0.4
 script = ExtResource("4_ie3pw")
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
 position = Vector2(218, 89)
+scale = Vector2(0.3, 0.3)
 editor_only = true
-color = Color(1, 0.371659, 0.346469, 1)
+color = Color(1, 0.47451, 0.435294, 1)
 energy = 1.5
 texture = ExtResource("3_3gkrx")
 texture_scale = 0.4
@@ -138,6 +387,7 @@ script = ExtResource("4_ie3pw")
 
 [node name="PointLight2D3" type="PointLight2D" parent="."]
 position = Vector2(63, 114)
+scale = Vector2(0.3, 0.3)
 color = Color(1, 0.47451, 0.435294, 1)
 energy = 1.5
 texture = ExtResource("3_3gkrx")
@@ -160,11 +410,12 @@ offset_top = 125.0
 offset_right = 156.0
 offset_bottom = 125.0
 
-[node name="RichTextLabel" parent="Control" index="1"]
-offset_left = -85.0
-offset_top = 24.0
-offset_right = 75.0
-offset_bottom = 51.0
+[node name="PointLight2D" type="PointLight2D" parent="Control"]
+position = Vector2(-9, 39)
+scale = Vector2(0.6875, 0.158203)
+color = Color(0, 0.4, 0.329412, 0.694118)
+energy = 0.0
+texture = ExtResource("3_3gkrx")
 
 [node name="PointLight2D4" type="PointLight2D" parent="."]
 position = Vector2(151.5, 62)
@@ -174,7 +425,7 @@ energy = 4.0
 texture = ExtResource("3_3gkrx")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
-modulate = Color(1, 1, 0, 0.643137)
+modulate = Color(1, 1, 0, 0.443137)
 position = Vector2(163.5, 65)
 scale = Vector2(245.278, 20)
 mesh = SubResource("SphereMesh_a0mmc")
@@ -184,5 +435,13 @@ light_mask = 2
 position = Vector2(169, 64)
 scale = Vector2(1.84, 1.84)
 texture = ExtResource("6_1mmjk")
+
+[node name="MeshInstance2D2" type="MeshInstance2D" parent="."]
+self_modulate = Color(0, 0, 0, 0)
+position = Vector2(158.5, 89.5)
+scale = Vector2(335, 191)
+mesh = SubResource("BoxMesh_fjxs2")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 
 [editable path="Control"]

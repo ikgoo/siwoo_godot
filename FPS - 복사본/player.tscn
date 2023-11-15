@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3 uid="uid://dt5uaouud0hc7"]
+
+[ext_resource type="PackedScene" uid="uid://ct1ys7lcvfiqp" path="res://pistol.tscn" id="1_7yl28"]
+[ext_resource type="PackedScene" uid="uid://dpg2igba7od21" path="res://HUD.tscn" id="1_21goa"]
+[ext_resource type="PackedScene" uid="uid://ckbp5crb77eey" path="res://rifle.tscn" id="2_8ieh7"]
+[ext_resource type="Script" path="res://weapon_MANEGER.gd" id="2_aqbpm"]
+[ext_resource type="PackedScene" uid="uid://l46x71m5852x" path="res://unarmeddd.tscn" id="3_ev0pn"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ndw2p"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m2vm1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_72c3o"]
+size = Vector3(2, 2, 2)
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+collision_mask = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ndw2p")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.00261, 0, 0, 0, 1.00261, 0, 0, 0, 1.00261, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_m2vm1")
+
+[node name="camroot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+
+[node name="Camera3D" type="Camera3D" parent="camroot"]
+near = 0.001
+
+[node name="RayCast3D" type="RayCast3D" parent="camroot/Camera3D"]
+
+[node name="weapons" type="Node3D" parent="camroot"]
+script = ExtResource("2_aqbpm")
+
+[node name="rifle" parent="camroot/weapons" instance=ExtResource("2_8ieh7")]
+transform = Transform3D(-0.999848, 0, 0.0174525, 0, 1, 0, -0.0174525, 0, -0.999848, 0.275, -0.24, -0.41)
+
+[node name="unarmed" parent="camroot/weapons" instance=ExtResource("3_ev0pn")]
+
+[node name="pistol" parent="camroot/weapons" instance=ExtResource("1_7yl28")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.296386, -0.0479989, -0.655228)
+
+[node name="MeshInstance3D2" parent="camroot/weapons/pistol/root/middle/body/unarmerd/Node3D2/Node3D" index="0"]
+transform = Transform3D(0.858825, -0.441801, -0.259297, 0.475261, 0.876069, 0.0814405, 0.191181, -0.193176, 0.962362, 0.161432, -0.223297, -0.0909246)
+
+[node name="MeshInstance3D5" parent="camroot/weapons/pistol/root/middle/body/unarmerd/Node3D2/Node3D" index="1"]
+transform = Transform3D(0.557164, -0.577508, -0.596709, 0.226078, 0.796924, -0.560187, 0.799042, 0.177212, 0.574577, 0.0879523, -0.219872, -0.306932)
+
+[node name="muzzleflash" parent="camroot/weapons/pistol/root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="0"]
+transform = Transform3D(-0.666667, -7.37223e-08, 1.68851e-06, 0, 0.66603, 0.0290797, -1.69012e-06, 0.0290797, -0.66603, -0.00253271, 0.0656279, 0.221179)
+
+[node name="SM_Wep_PistolSwat_Mag_01" parent="camroot/weapons/pistol/root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="2"]
+transform = Transform3D(1, 1.02445e-07, -7.45049e-09, -1.02446e-07, 0.999995, 0, 7.45056e-09, 7.63276e-16, 0.999991, 0, 0, 0)
+
+[node name="SM_Wep_PistolSwat_Slide_01" parent="camroot/weapons/pistol/root/middle/body/SM_Wep_PistolSwat_01/RootNode/SM_Wep_PistolSwat_01" index="3"]
+transform = Transform3D(1, 1.67638e-08, 0, -1.67638e-08, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="HUD" parent="." instance=ExtResource("1_21goa")]
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_72c3o")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[editable path="camroot/weapons/pistol"]
+[editable path="camroot/weapons/pistol/root/middle/body/unarmerd"]
+[editable path="camroot/weapons/pistol/root/middle/body/SM_Wep_PistolSwat_01"]

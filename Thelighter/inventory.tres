@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Inventory" load_steps=14 format=3 uid="uid://w52e0cpmsdbd"]
+
+[ext_resource type="Resource" uid="uid://oxsyypafcmig" path="res://items/black lens.tres" id="1_nbmal"]
+[ext_resource type="Resource" uid="uid://bikxe2fy4e8yf" path="res://items/blue light 1 1.tres" id="2_cmroc"]
+[ext_resource type="Resource" uid="uid://cs0ykyhencsle" path="res://items/blue light 1 2.tres" id="3_mwlat"]
+[ext_resource type="Resource" uid="uid://dgw4f11qkjm4s" path="res://items/blue light 2 1.tres" id="4_y05k4"]
+[ext_resource type="Resource" uid="uid://ock3y46nuunw" path="res://items/blue light 2 2.tres" id="5_xtl2t"]
+[ext_resource type="Resource" uid="uid://bwk3eu032omwd" path="res://items/green light 1 1.tres" id="6_gm3fc"]
+[ext_resource type="Resource" uid="uid://bqx0fp7fv40eb" path="res://items/green light 1 2.tres" id="7_y6qim"]
+[ext_resource type="Resource" uid="uid://p00q5ihe7xif" path="res://items/green light 2 1.tres" id="8_i3k6m"]
+[ext_resource type="Resource" uid="uid://df318y2k7saty" path="res://items/green light 2 2.tres" id="9_owx48"]
+[ext_resource type="Resource" uid="uid://ciw03jkkjpjeb" path="res://items/red light 1 1.tres" id="10_ta200"]
+[ext_resource type="Resource" uid="uid://cdcw5so50hxoh" path="res://items/red light 1 2.tres" id="11_evyd4"]
+[ext_resource type="Resource" uid="uid://g8d0a4ughi58" path="res://items/red light 2 1.tres" id="12_0r0iu"]
+[ext_resource type="Script" path="res://inventoryreal.gd" id="15_mj84d"]
+
+[resource]
+script = ExtResource("15_mj84d")
+item = Array[Resource("res://inventoryitem.gd")]([ExtResource("1_nbmal"), null, ExtResource("2_cmroc"), ExtResource("3_mwlat"), ExtResource("4_y05k4"), ExtResource("5_xtl2t"), ExtResource("6_gm3fc"), ExtResource("7_y6qim"), ExtResource("8_i3k6m"), ExtResource("9_owx48"), ExtResource("10_ta200"), ExtResource("11_evyd4"), ExtResource("12_0r0iu"), null, null])

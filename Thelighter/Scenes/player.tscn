@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkblx0owi833j"]
+[gd_scene load_steps=9 format=3 uid="uid://bkblx0owi833j"]
 
 [ext_resource type="Texture2D" uid="uid://b2pttpqb7dqnf" path="res://sprite (1).png" id="1_5uwfy"]
+[ext_resource type="Script" path="res://Scenes/player.gd" id="1_oymtc"]
+[ext_resource type="Resource" uid="uid://w52e0cpmsdbd" path="res://inventory.tres" id="2_0glx0"]
 
 [sub_resource type="Animation" id="Animation_trxdu"]
 resource_name = "Idle"
@@ -50,9 +52,12 @@ size = Vector2(15, 18)
 
 [node name="player" type="CharacterBody2D"]
 position = Vector2(36, 35)
+script = ExtResource("1_oymtc")
+inventory = ExtResource("2_0glx0")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.8, 1.8)
 texture = ExtResource("1_5uwfy")
 hframes = 4
 vframes = 3

@@ -1,6 +1,157 @@
-[gd_scene load_steps=2 format=3 uid="uid://doey0pwkqpen2"]
+[gd_scene load_steps=9 format=3 uid="uid://doey0pwkqpen2"]
 
+[ext_resource type="Script" path="res://start.gd" id="1_bfmpv"]
 [ext_resource type="Texture2D" uid="uid://uwtpwjtjlotb" path="res://pngs/New Piskel (1).png" id="1_dfxy8"]
+
+[sub_resource type="Animation" id="Animation_jgtcw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.427451, 0.635294, 0.419608, 0.694118)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../MeshInstance2D2:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qwnfe"]
+resource_name = "enter"
+length = 0.5
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.427451, 0.635294, 0.419608, 0.694118), Color(0.643137, 0.913725, 0.290196, 0.694118)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 7.0]
+}
+
+[sub_resource type="Animation" id="Animation_5snv3"]
+resource_name = "exit"
+length = 0.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.643137, 0.913725, 0.290196, 0.694118), Color(0.427451, 0.635294, 0.419608, 0.694118)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [7.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_hm3ip"]
+resource_name = "out"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.643137, 0.913725, 0.290196, 0.694118)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../MeshInstance2D2:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_64te2"]
+resource_name = "press"
+length = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.168627, 0.278431, 0.164706, 0.694118)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ponf0"]
+_data = {
+"RESET": SubResource("Animation_jgtcw"),
+"enter": SubResource("Animation_qwnfe"),
+"exit": SubResource("Animation_5snv3"),
+"out": SubResource("Animation_hm3ip"),
+"press": SubResource("Animation_64te2")
+}
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -9,9 +160,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_bfmpv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ponf0")
+}
 
 [node name="TextureButton" type="TextureButton" parent="."]
-modulate = Color(0.643137, 0.262745, 0.290196, 0.694118)
+self_modulate = Color(0.427451, 0.635294, 0.419608, 0.694118)
 light_mask = 2
 layout_mode = 1
 anchors_preset = 8
@@ -26,18 +183,18 @@ offset_bottom = 49.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = ExtResource("1_dfxy8")
-texture_pressed = ExtResource("1_dfxy8")
-texture_hover = ExtResource("1_dfxy8")
-texture_disabled = ExtResource("1_dfxy8")
-texture_focused = ExtResource("1_dfxy8")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-self_modulate = Color(0.823529, 0.380392, 0.247059, 1)
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureButton"]
+self_modulate = Color(0.501961, 0.654902, 0.588235, 1)
 layout_mode = 0
-offset_left = 75.0
-offset_top = 115.0
-offset_right = 235.0
-offset_bottom = 142.0
-text = "               start"
+offset_right = 143.0
+offset_bottom = 24.0
+mouse_filter = 1
+text = "            start"
+
+[connection signal="button_down" from="TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_up" from="TextureButton" to="." method="_on_texture_button_button_up"]
+[connection signal="mouse_entered" from="TextureButton" to="." method="_on_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="TextureButton" to="." method="_on_texture_button_mouse_exited"]

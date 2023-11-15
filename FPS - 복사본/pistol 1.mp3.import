@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b3wcncb061wvj"
+path="res://.godot/imported/pistol 1.mp3-20268c1679afe560b3ed353323316fd3.mp3str"
+
+[deps]
+
+source_file="res://pistol 1.mp3"
+dest_files=["res://.godot/imported/pistol 1.mp3-20268c1679afe560b3ed353323316fd3.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
