@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3enf4tnas0o2"]
+
+[ext_resource type="Texture2D" uid="uid://c5uc0lle6najj" path="res://png/pixelCardAssest_V01.png" id="1_c1m48"]
+
+[node name="store_card" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_c1m48")
+region_enabled = true
+region_rect = Rect2(366, 4, 100, 128)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(5, 5)
+texture = ExtResource("1_c1m48")
+region_enabled = true
+region_rect = Rect2(482, 157, 10, 11)

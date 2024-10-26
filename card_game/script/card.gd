@@ -1,6 +1,12 @@
 @tool
 extends Node2D
 
+var energy = 0
+
+var speed = 0
+
+var faith = 0
+
 @onready var main_image: Sprite2D = $main_image
 
 @export var entity : Entity :

@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dep7fpfofr33"]
 
-[ext_resource type="Script" path="res://script/chararter.gd" id="1_agrof"]
-[ext_resource type="Resource" uid="uid://rae4ve1cbkgb" path="res://tres/golemic.tres" id="2_x1xli"]
+[ext_resource type="Script" path="res://script/card.gd" id="1_agrof"]
+[ext_resource type="Resource" uid="uid://dtbwipy3yjach" path="res://tres/archer.tres" id="2_klfxe"]
 
 [node name="chararter" type="Node2D"]
 script = ExtResource("1_agrof")
-entity = ExtResource("2_x1xli")
+entity = ExtResource("2_klfxe")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
