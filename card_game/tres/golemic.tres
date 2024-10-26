@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://rae4ve1cbkgb"]
+
+[ext_resource type="Script" path="res://root_scripts/entity.gd" id="1_025sl"]
+[ext_resource type="PackedScene" uid="uid://bcv8h3hr2x2oa" path="res://tscn/mob_card_silver.tscn" id="1_t0wju"]
+[ext_resource type="PackedScene" uid="uid://5ccuvp5dhmxj" path="res://tscn/images/golemic.tscn" id="2_ukgpr"]
+
+[resource]
+script = ExtResource("1_025sl")
+image = ExtResource("2_ukgpr")
+back_card = ExtResource("1_t0wju")

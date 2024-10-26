@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://dtbwipy3yjach"]
+
+[ext_resource type="Script" path="res://root_scripts/entity.gd" id="1_1yj0i"]
+[ext_resource type="PackedScene" uid="uid://cn1dkw8hfdmc" path="res://tscn/charater_card_silver.tscn" id="1_j2oqg"]
+[ext_resource type="PackedScene" uid="uid://bbbkfsn50ee5d" path="res://tscn/images/archer.tscn" id="1_uyk0x"]
+
+[resource]
+script = ExtResource("1_1yj0i")
+image = ExtResource("1_uyk0x")
+back_card = ExtResource("1_j2oqg")

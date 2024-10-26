@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbbkfsn50ee5d"]
+
+[ext_resource type="Texture2D" uid="uid://ptlsmcw8y2nr" path="res://png/Soldier.png" id="1_0vyuh"]
+
+[node name="archer" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_0vyuh")
+region_enabled = true
+region_rect = Rect2(41, 39, 15, 18)

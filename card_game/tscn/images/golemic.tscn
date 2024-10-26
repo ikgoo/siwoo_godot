@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://5ccuvp5dhmxj"]
+
+[ext_resource type="Texture2D" uid="uid://csibgptnddtvj" path="res://png/Golem_Armor_Ability.png" id="1_04jc0"]
+
+[node name="golemic" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("1_04jc0")
+region_enabled = true
+region_rect = Rect2(21, 21, 23, 25)

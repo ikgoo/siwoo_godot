@@ -1,11 +1,7 @@
 extends card
 
-class_name entity
+class_name Entity
 
-#@export var imgae = Sprite2D
+@export var image = CompressedTexture2D
 
-@export var energy : int
-
-@export var speed : int
-
-@export var sinangsim : int
+@export var back_card = CompressedTexture2D
