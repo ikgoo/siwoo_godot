@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhi4ctcn3iees"]
+
+[ext_resource type="Texture2D" uid="uid://bvf1bbjjnagx5" path="res://New Piskel (9).png" id="1_4484l"]
+[ext_resource type="Script" path="res://tree.gd" id="1_jwr1e"]
+[ext_resource type="Shader" path="res://tree.gdshader" id="2_ji2jj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nul1p"]
+shader = ExtResource("2_ji2jj")
+shader_parameter/bend_strength = 0.3
+shader_parameter/bend_height = 0.5
+
+[node name="tree" type="Node2D"]
+script = ExtResource("1_jwr1e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(0, 7)
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_nul1p")
+position = Vector2(0, -7)
+texture = ExtResource("1_4484l")
