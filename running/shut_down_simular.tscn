@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://depo2jfvgb1bx"]
+
+[ext_resource type="Script" path="res://shut_down_simular.gd" id="1_euhsk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8wwdt"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wjw8j"]
+material = SubResource("StandardMaterial3D_8wwdt")
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_euhsk")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(2052, 1132)
+scale = Vector2(5128.5, 3080.5)
+mesh = SubResource("BoxMesh_wjw8j")

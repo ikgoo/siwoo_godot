@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://1mvcmhvqm1lc"]
+
+[ext_resource type="Script" path="res://game_scene.gd" id="1_veruf"]
+[ext_resource type="Script" path="res://node_3d.gd" id="4_fmo0v"]
+[ext_resource type="PackedScene" uid="uid://l56osbthf0op" path="res://charater.tscn" id="4_r3atd"]
+[ext_resource type="Script" path="res://control.gd" id="5_bclpx"]
+[ext_resource type="PackedScene" path="res://fbx/test_3d_01.tscn" id="5_wqm4b"]
+
+[sub_resource type="Environment" id="Environment_chegi"]
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_length = 65.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_813k6"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_im8mf"]
+material = SubResource("StandardMaterial3D_813k6")
+size = Vector2(500, 500)
+
+[sub_resource type="LabelSettings" id="LabelSettings_t67ho"]
+line_spacing = 10.0
+
+[node name="game_scene" type="Node3D"]
+script = ExtResource("1_veruf")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.01
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_chegi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0716476, 1.88633, 8.14611)
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("4_fmo0v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -0.024)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -250)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -50, 0, 0.011)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 50, 0, -0.024)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 50, 0)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 1.82978e-15, -3.04527e-15, 0, 0.857167, 0.515038, 3.55271e-15, -0.515038, 0.857167, -7.10543e-15, 0.795, 1.68)
+
+[node name="Jet" parent="." instance=ExtResource("4_r3atd")]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -4.0
+offset_top = 12.0
+offset_right = 313.0
+offset_bottom = 120.0
+script = ExtResource("5_bclpx")
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 721.0
+offset_top = 58.0
+offset_right = 1209.0
+offset_bottom = 197.0
+label_settings = SubResource("LabelSettings_t67ho")
+
+[node name="Node3D2" parent="." instance=ExtResource("5_wqm4b")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

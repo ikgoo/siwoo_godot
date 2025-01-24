@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://d3brrjtgppf1u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s437x"]
+size = Vector3(0.364258, 0.421875, 0.385742)
+
+[sub_resource type="Gradient" id="Gradient_xi1ev"]
+colors = PackedColorArray(0, 0.0823529, 0, 1, 1, 1, 1, 0.0196078)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_103hi"]
+gradient = SubResource("Gradient_xi1ev")
+
+[sub_resource type="Curve" id="Curve_k1eyg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.99, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rx8qr"]
+curve = SubResource("Curve_k1eyg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e3trc"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 0.5, 10)
+direction = Vector3(0, -1, 0)
+spread = 5.0
+initial_velocity_min = 15.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_curve = SubResource("CurveTexture_rx8qr")
+color_ramp = SubResource("GradientTexture1D_103hi")
+turbulence_noise_strength = 0.1
+turbulence_noise_scale = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2lbv6"]
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_i2o0n"]
+material = SubResource("StandardMaterial3D_2lbv6")
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.960216, -0.241846, 0.13963, 2.78059e-08, 0.5, 0.866025, -0.279259, -0.831571, 0.480108, 0, 10.1003, 4.80329)
+shadow_enabled = true
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("BoxShape3D_s437x")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.984257, 0.176741, 0, -0.176741, 0.984257, 0, 0.467826, 1)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1.31134e-07, 1, 0, -1, 1.31134e-07, -0.451861, 0, -18.3796)
+amount = 50
+randomness = 0.22
+process_material = SubResource("ParticleProcessMaterial_e3trc")
+draw_pass_1 = SubResource("BoxMesh_i2o0n")

@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://db7e0gi1k3rwk"]
+
+[ext_resource type="Shader" path="res://portal.gdshader" id="1_0bcs8"]
+[ext_resource type="Texture2D" uid="uid://20dh5201rcdc" path="res://portal_gradient.tres" id="2_pcygm"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_0bcs8")
+shader_parameter/viewport_sampler = ExtResource("2_pcygm")

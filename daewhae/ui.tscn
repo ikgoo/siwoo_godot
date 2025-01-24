@@ -1,0 +1,280 @@
+[gd_scene load_steps=11 format=3 uid="uid://c1upoah8ohe43"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_r6k25"]
+[ext_resource type="PackedScene" uid="uid://dv5auek8djlnd" path="res://water.tscn" id="2_2ockv"]
+[ext_resource type="FontFile" uid="uid://c1j5c56kjk888" path="res://Tilesets/neodgm.ttf" id="2_23142"]
+[ext_resource type="PackedScene" uid="uid://bfhu1dc6yvbqj" path="res://sun.tscn" id="3_tv4va"]
+[ext_resource type="PackedScene" uid="uid://dktgf2x21aj1l" path="res://pop_up.tscn" id="5_rraap"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0fvob"]
+font = ExtResource("2_23142")
+font_size = 45
+
+[sub_resource type="Animation" id="Animation_n8wut"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("show_me_the_p:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1812, 1301)]
+}
+
+[sub_resource type="Animation" id="Animation_e8415"]
+resource_name = "coming_down"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("show_me_the_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1812, 1150), Vector2(1812, 1130), Vector2(1812, 1301)]
+}
+
+[sub_resource type="Animation" id="Animation_1n6yt"]
+resource_name = "coming_up"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("show_me_the_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1812, 1301), Vector2(1812, 1140), Vector2(1812, 1150)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rmnkx"]
+_data = {
+"RESET": SubResource("Animation_n8wut"),
+"coming_down": SubResource("Animation_e8415"),
+"coming_up": SubResource("Animation_1n6yt")
+}
+
+[node name="Node2D2" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r6k25")
+
+[node name="first_p" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -115.0
+offset_right = 576.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="water" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 18.0
+offset_right = 203.0
+offset_bottom = 82.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "비"
+
+[node name="sun" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 242.0
+offset_top = 18.0
+offset_right = 435.0
+offset_bottom = 82.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "햇빛"
+
+[node name="worm" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 474.0
+offset_top = 18.0
+offset_right = 667.0
+offset_bottom = 82.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "미생물"
+
+[node name="seeds" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 706.0
+offset_top = 18.0
+offset_right = 899.0
+offset_bottom = 82.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "씨앗"
+
+[node name="terrains" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 18.0
+offset_right = 1131.0
+offset_bottom = 82.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "지형"
+
+[node name="Button" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_top = 1184.0
+offset_right = 339.0
+offset_bottom = 1288.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 40
+text = "포세이돈의 눈"
+
+[node name="Button2" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_top = 1040.0
+offset_right = 339.0
+offset_bottom = 1144.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 40
+text = "농사신의 눈"
+
+[node name="Button3" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_top = 902.0
+offset_right = 339.0
+offset_bottom = 1006.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 40
+text = "나무의 감각"
+
+[node name="show_me_the_p" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1812.0
+offset_top = 1301.0
+offset_right = 2246.0
+offset_bottom = 1432.0
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/UI/show_me_the_p"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.5
+offset_top = 11.0
+offset_right = 168.5
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+step = 5.0
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/show_me_the_p"]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 27.0
+offset_right = 326.0
+offset_bottom = 57.0
+text = "10%"
+label_settings = SubResource("LabelSettings_0fvob")
+
+[node name="pop_up" parent="CanvasLayer/UI" instance=ExtResource("5_rraap")]
+layout_mode = 1
+offset_left = -200.0
+offset_top = 160.0
+offset_right = 200.0
+offset_bottom = 200.0
+
+[node name="seed_p" type="Panel" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 576.0
+offset_top = 1181.0
+offset_right = 1728.0
+offset_bottom = 1296.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="terrain_p" type="Panel" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 576.0
+offset_top = 1181.0
+offset_right = 1728.0
+offset_bottom = 1296.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CanvasLayer/UI")
+libraries = {
+"": SubResource("AnimationLibrary_rmnkx")
+}
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="sun" parent="Node2D" instance=ExtResource("3_tv4va")]
+z_index = 5
+position = Vector2(0, -225.9)
+scale = Vector2(200.805, 200.805)
+
+[node name="water_n" type="Node2D" parent="."]
+
+[node name="watering" parent="water_n" instance=ExtResource("2_2ockv")]
+position = Vector2(0, -50)
+emitting = false
+
+[connection signal="mouse_entered" from="CanvasLayer/UI/first_p" to="CanvasLayer/UI" method="_on_first_p_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/first_p" to="CanvasLayer/UI" method="_on_first_p_mouse_exited"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/water" to="CanvasLayer/UI" method="_on_water_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/sun" to="CanvasLayer/UI" method="_on_sun_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_button_down"]
+[connection signal="mouse_entered" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_mouse_exited"]
+[connection signal="button_down" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_button_down"]
+[connection signal="mouse_entered" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_mouse_exited"]
+[connection signal="button_down" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_button_down"]
+[connection signal="mouse_entered" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/UI/show_me_the_p" to="CanvasLayer/UI" method="_on_show_me_the_p_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/show_me_the_p" to="CanvasLayer/UI" method="_on_show_me_the_p_mouse_exited"]
+[connection signal="value_changed" from="CanvasLayer/UI/show_me_the_p/HSlider" to="CanvasLayer/UI" method="_on_h_slider_value_changed"]

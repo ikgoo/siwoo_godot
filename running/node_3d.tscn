@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://8p2srh0e2mxy"]
+
+[ext_resource type="Script" path="res://charater.gd" id="1_a4xjb"]
+[ext_resource type="PackedScene" uid="uid://c34e0kx7gv1kv" path="res://trail.tscn" id="3_bsnml"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_euq85"]
+emission_shape = 1
+emission_sphere_radius = 0.15
+gravity = Vector3(0, 0, 0.2)
+
+[sub_resource type="SphereMesh" id="SphereMesh_xsx07"]
+radius = 0.01
+height = 0.02
+
+[sub_resource type="SphereMesh" id="SphereMesh_6xfh6"]
+radius = 0.025
+height = 0.05
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6wwai"]
+radius = 0.025
+
+[node name="charater" type="CharacterBody3D"]
+script = ExtResource("1_a4xjb")
+metadata/_edit_group_ = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00024876, 0.000485957, 0.169411)
+amount = 15
+lifetime = 5.0
+speed_scale = 50.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_euq85")
+draw_pass_1 = SubResource("SphereMesh_xsx07")
+
+[node name="Node3D" parent="." instance=ExtResource("3_bsnml")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.183938)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_6xfh6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_6wwai")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://co3nxxlykov6u"]
+
+[ext_resource type="Script" path="res://jang_ae_water.gd" id="1_yimid"]
+
+[node name="jang_ae_water" type="Node3D"]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0)
+script = ExtResource("1_yimid")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

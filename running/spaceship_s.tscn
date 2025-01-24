@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c51avmqmqn0ch"]
+
+[ext_resource type="AudioStream" uid="uid://cfbwra1b5udrs" path="res://1. Into The Spaceship.wav" id="1_ghsqa"]
+[ext_resource type="Script" path="res://spaceship_s.gd" id="2_qjjss"]
+
+[node name="Node" type="Node"]
+script = ExtResource("2_qjjss")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_ghsqa")
+autoplay = true
+
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://3m5gy4qmrflh"]
+
+[ext_resource type="Script" path="res://tree.gd" id="1_n3efj"]
+
+[node name="tree" type="Node3D"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+script = ExtResource("1_n3efj")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

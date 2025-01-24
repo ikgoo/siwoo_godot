@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=3 uid="uid://1mvcmhvqm1lc"]
+
+[ext_resource type="Script" path="res://game_scene.gd" id="1_veruf"]
+[ext_resource type="Texture2D" uid="uid://cpju6rnnabg31" path="res://fbx/ringed_gas_giant_planet.png" id="2_1kw0s"]
+[ext_resource type="Script" path="res://camera_3d_2.gd" id="3_x05wi"]
+[ext_resource type="PackedScene" uid="uid://l56osbthf0op" path="res://charater.tscn" id="4_r3atd"]
+[ext_resource type="Script" path="res://control.gd" id="5_bclpx"]
+[ext_resource type="PackedScene" uid="uid://d3brrjtgppf1u" path="res://fbx/test_3d_01.tscn" id="5_wqm4b"]
+[ext_resource type="AudioStream" uid="uid://cfbwra1b5udrs" path="res://1. Into The Spaceship.wav" id="7_bx1eu"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_j82by"]
+panorama = ExtResource("2_1kw0s")
+
+[sub_resource type="Sky" id="Sky_4pm1x"]
+sky_material = SubResource("PanoramaSkyMaterial_j82by")
+
+[sub_resource type="Environment" id="Environment_chegi"]
+background_mode = 2
+background_energy_multiplier = 16.0
+sky = SubResource("Sky_4pm1x")
+sky_rotation = Vector3(0, 2.12057, 0)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_length = 60.0
+volumetric_fog_sky_affect = 0.869
+
+[sub_resource type="LabelSettings" id="LabelSettings_t67ho"]
+line_spacing = 10.0
+font_size = 166
+
+[node name="game_scene" type="Node3D"]
+script = ExtResource("1_veruf")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.01
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_chegi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0716476, 1.88633, 8.14611)
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 1.82978e-15, -3.04527e-15, -1.24407e-15, 0.983249, 0.18227, 3.32777e-15, -0.18227, 0.983249, -7.10543e-15, 0.795, 1.68)
+script = ExtResource("3_x05wi")
+
+[node name="Jet" parent="." instance=ExtResource("4_r3atd")]
+
+[node name="Node3D4" parent="Jet" instance=ExtResource("5_wqm4b")]
+transform = Transform3D(-4.37114e-07, 0, 10, 0, 10, 0, -10, 0, -4.37114e-07, 11.1, 11.1, -4.85196e-07)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -4.0
+offset_top = 12.0
+offset_right = 7785.0
+offset_bottom = 1737.0
+script = ExtResource("5_bclpx")
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 721.0
+offset_top = 58.0
+offset_right = 1209.0
+offset_bottom = 197.0
+label_settings = SubResource("LabelSettings_t67ho")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_bx1eu")
+autoplay = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

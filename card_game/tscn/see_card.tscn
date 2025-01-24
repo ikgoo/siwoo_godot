@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpmb0it1pncf5"]
+
+[ext_resource type="Texture2D" uid="uid://c5uc0lle6najj" path="res://png/pixelCardAssest_V01.png" id="1_me8i1"]
+
+[node name="see_card" type="Sprite2D"]
+texture_filter = 1
+texture = ExtResource("1_me8i1")
+region_enabled = true
+region_rect = Rect2(14, 4, 100, 128)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+show_behind_parent = true
+z_index = 1
+texture_filter = 1
+position = Vector2(-19.5454, -11.2102)
+rotation = 0.785398
+scale = Vector2(3.125, 3.125)
+texture = ExtResource("1_me8i1")
+region_enabled = true
+region_rect = Rect2(377, 184, 19, 18)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(10.919, -0.188982)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_me8i1")
+region_enabled = true
+region_rect = Rect2(241, 304, 77, 15)

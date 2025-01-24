@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cn1dkw8hfdmc"]
+[gd_scene load_steps=4 format=3 uid="uid://cn1dkw8hfdmc"]
 
 [ext_resource type="Texture2D" uid="uid://c5uc0lle6najj" path="res://png/pixelCardAssest_V01.png" id="1_dyg0a"]
 [ext_resource type="Texture2D" uid="uid://b1gj1g45f4r56" path="res://png/test.png" id="2_nm4sn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a5ara"]
 
 [node name="charater_card" type="Node2D"]
 
 [node name="card_main" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_a5ara")
 texture = ExtResource("1_dyg0a")
 region_enabled = true
 region_rect = Rect2(250, 4, 100, 128)

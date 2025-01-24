@@ -1,3 +1,66 @@
-[gd_scene format=3 uid="uid://qmeuovm4p8rl"]
+[gd_scene load_steps=9 format=3 uid="uid://qmeuovm4p8rl"]
+
+[ext_resource type="Script" path="res://script/game_scene.gd" id="1_3h26w"]
+[ext_resource type="Texture2D" uid="uid://c5uc0lle6najj" path="res://png/pixelCardAssest_V01.png" id="2_4fbie"]
+[ext_resource type="FontFile" uid="uid://xjedn0dm46y3" path="res://fonts/neodgm.ttf" id="3_5f44g"]
+[ext_resource type="Texture2D" uid="uid://cygcs7mpo4sot" path="res://png/coin4_16x16.png" id="4_32s72"]
+[ext_resource type="PackedScene" uid="uid://dep7fpfofr33" path="res://tscn/chararter.tscn" id="5_yd0qv"]
+[ext_resource type="PackedScene" uid="uid://6222mdmvsws4" path="res://tscn/flip_card_stand.tscn" id="6_rubr2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dw3ie"]
+font = ExtResource("3_5f44g")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wufta"]
+radius = 6.32456
 
 [node name="game_scene" type="Node2D"]
+script = ExtResource("1_3h26w")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(420, -270)
+scale = Vector2(3, 3)
+texture = ExtResource("2_4fbie")
+region_enabled = true
+region_rect = Rect2(252, 223, 96, 29)
+
+[node name="Node2D" type="Node2D" parent="Sprite2D"]
+scale = Vector2(1.2, 1.2)
+
+[node name="Label" type="Label" parent="Sprite2D/Node2D"]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -27.0
+offset_top = -7.0
+offset_right = 40.0
+offset_bottom = 12.0
+text = "0"
+label_settings = SubResource("LabelSettings_dw3ie")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+position = Vector2(-35, 0)
+texture = ExtResource("4_32s72")
+offset = Vector2(1, 0)
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="chararter" parent="." instance=ExtResource("5_yd0qv")]
+position = Vector2(306, 109)
+
+[node name="chararter2" parent="." instance=ExtResource("5_yd0qv")]
+position = Vector2(4, 115)
+
+[node name="chararter3" parent="." instance=ExtResource("5_yd0qv")]
+position = Vector2(-283, 113)
+
+[node name="flip_card_stand" parent="." instance=ExtResource("6_rubr2")]
+position = Vector2(5, -167)
+scale = Vector2(0.8, 0.8)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_wufta")

@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://dktgf2x21aj1l"]
+
+[ext_resource type="FontFile" uid="uid://c1j5c56kjk888" path="res://Tilesets/neodgm.ttf" id="1_q6hnx"]
+[ext_resource type="Script" path="res://pop_up.gd" id="2_7cscw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fsqxr"]
+font = ExtResource("1_q6hnx")
+font_size = 40
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_q6d4t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_3wnuc"]
+resource_name = "pop_up"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.7, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_c0o2q"]
+_data = {
+"RESET": SubResource("Animation_q6d4t"),
+"pop_up": SubResource("Animation_3wnuc")
+}
+
+[node name="pop_up" type="Label"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -1152.0
+offset_right = -652.0
+offset_bottom = 51.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+text = "산불이 일어났습니다!"
+label_settings = SubResource("LabelSettings_fsqxr")
+horizontal_alignment = 1
+script = ExtResource("2_7cscw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_c0o2q")
+}

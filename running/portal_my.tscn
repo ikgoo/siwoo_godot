@@ -1,0 +1,105 @@
+[gd_scene load_steps=19 format=3 uid="uid://vgyg0t0mo7gb"]
+
+[ext_resource type="Material" uid="uid://dfaj4kndfaotf" path="res://portal_deformation_mat.tres" id="1_pqlg2"]
+[ext_resource type="Shader" path="res://portal_edge.gdshader" id="2_dm7nu"]
+[ext_resource type="Texture2D" uid="uid://20dh5201rcdc" path="res://portal_gradient.tres" id="3_ao1ck"]
+[ext_resource type="Material" uid="uid://cqjg8qvsx1n4q" path="res://outer_edge_mat.tres" id="4_lcb52"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xn1u8"]
+size = Vector3(3, 3, 2)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1nekx"]
+size = Vector2(2.4, 2.4)
+orientation = 2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_txe7i"]
+top_radius = 2.8
+bottom_radius = 1.0
+height = 0.001
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="Curve" id="Curve_nk2b2"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4, 0.05), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_d7xoy"]
+curve = SubResource("Curve_nk2b2")
+
+[sub_resource type="Curve" id="Curve_c4xk4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.4, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_ich8s"]
+max_value = 4.0
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(0.4, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_xn3hi"]
+_data = [Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_bjxw6"]
+curve_x = SubResource("Curve_c4xk4")
+curve_y = SubResource("Curve_ich8s")
+curve_z = SubResource("Curve_xn3hi")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p3kq8"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h54wp"]
+width = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_p3kq8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epun0"]
+render_priority = 0
+shader = ExtResource("2_dm7nu")
+shader_parameter/uv_offset = null
+shader_parameter/uv_scale = Vector2(1, 0.5)
+shader_parameter/swirl_scale = 0.3
+shader_parameter/time_scale = 0.1
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_h54wp")
+shader_parameter/noise_edge = SubResource("CurveXYZTexture_bjxw6")
+shader_parameter/alpha_curve = SubResource("CurveTexture_d7xoy")
+shader_parameter/albedo_gradient = ExtResource("3_ao1ck")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_q5bi8"]
+top_radius = 2.25
+bottom_radius = 1.0
+height = 0.2
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_m16gh"]
+top_radius = 1.8
+bottom_radius = 0.98
+height = 0.4
+cap_top = false
+cap_bottom = false
+
+[node name="Portal" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xn1u8")
+
+[node name="PortalMesh" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_pqlg2")
+material_overlay = ExtResource("1_pqlg2")
+mesh = SubResource("PlaneMesh_1nekx")
+
+[node name="Deform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.04, 0.162, -0.28)
+material_override = ExtResource("1_pqlg2")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_txe7i")
+
+[node name="OuterEdge" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.1)
+material_override = SubResource("ShaderMaterial_epun0")
+mesh = SubResource("CylinderMesh_q5bi8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.2)
+material_override = ExtResource("4_lcb52")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_m16gh")

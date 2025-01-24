@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://1mvcmhvqm1lc"]
+
+[ext_resource type="PackedScene" uid="uid://8p2srh0e2mxy" path="res://node_3d.tscn" id="1_7pfs1"]
+[ext_resource type="Script" path="res://game_scene.gd" id="1_veruf"]
+[ext_resource type="PackedScene" uid="uid://co3nxxlykov6u" path="res://jang_ae_water.tscn" id="3_3dcsa"]
+[ext_resource type="Script" path="res://node_3d.gd" id="4_fmo0v"]
+
+[sub_resource type="Environment" id="Environment_chegi"]
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1891
+volumetric_fog_albedo = Color(0.145098, 0.290196, 0.286275, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8hpi"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_im8mf"]
+material = SubResource("StandardMaterial3D_o8hpi")
+size = Vector2(100, 100)
+
+[node name="game_scene" type="Node3D"]
+script = ExtResource("1_veruf")
+
+[node name="charater" parent="." instance=ExtResource("1_7pfs1")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.882948, 0.469472, 0, -0.469472, 0.882948, 0.00185317, 0.756852, 1.78227)
+
+[node name="jang_ae_water" parent="." instance=ExtResource("3_3dcsa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -13.69)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_chegi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0716476, 1.88633, 8.14611)
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("4_fmo0v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -0.024)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -48.409)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, -50, 0, 0.011)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, 50, 0, -0.024)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 50, 0)
+mesh = SubResource("PlaneMesh_im8mf")
+skeleton = NodePath("../..")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

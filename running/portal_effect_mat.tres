@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://chi0sbolmv75g"]
+
+[ext_resource type="Shader" path="res://portal_effect.gdshader" id="1_75t3y"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_75t3y")
+shader_parameter/opening = 0.0
+shader_parameter/heightmap_scale = null
+shader_parameter/heightmap_min_layers = null
+shader_parameter/heightmap_max_layers = null
+shader_parameter/heightmap_flip = null
+shader_parameter/time_offset = 8.0

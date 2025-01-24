@@ -1,0 +1,207 @@
+[gd_scene load_steps=10 format=3 uid="uid://c34e0kx7gv1kv"]
+
+[ext_resource type="Shader" path="res://addons/GPUTrail-main/shaders/trail.gdshader" id="1_1yb3i"]
+[ext_resource type="Script" path="res://trail.gd" id="1_n8ltl"]
+[ext_resource type="Shader" path="res://addons/GPUTrail-main/shaders/trail_draw_pass.gdshader" id="2_ho1j1"]
+[ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail-main/defaults/texture.tres" id="3_0xyfe"]
+[ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail-main/defaults/curve.tres" id="4_3l10g"]
+[ext_resource type="Script" path="res://addons/GPUTrail-main/GPUTrail3D.gd" id="5_ju7cg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dy1uw"]
+shader = ExtResource("1_1yb3i")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oagr2"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_ho1j1")
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 40
+shader_parameter/tex = ExtResource("3_0xyfe")
+shader_parameter/color_ramp = ExtResource("3_0xyfe")
+shader_parameter/curve = ExtResource("4_3l10g")
+
+[sub_resource type="QuadMesh" id="QuadMesh_p264s"]
+material = SubResource("ShaderMaterial_oagr2")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_n8ltl")
+
+[node name="GPUTrail3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D2" type="GPUParticles3D" parent="."]
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D4" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D5" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.927184, -0.374607, 0, 0.374607, 0.927184, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D6" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.927184, 0.374607, 0, -0.374607, 0.927184, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D7" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.981627, -0.190809, 0, 0.190809, 0.981627, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D8" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.981627, 0.190809, 0, -0.190809, 0.981627, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D9" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.996195, -0.0871557, 0, 0.0871557, 0.996195, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D10" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D11" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.999048, -0.0436194, 0, 0.0436194, 0.999048, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true
+
+[node name="GPUTrail3D12" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.999048, 0.0436194, 0, -0.0436194, 0.999048, 0, 0, 0, 1, 0, 0, 0)
+amount = 500
+lifetime = 500.0
+explosiveness = 1.0
+fixed_fps = 59
+process_material = SubResource("ShaderMaterial_dy1uw")
+draw_pass_1 = SubResource("QuadMesh_p264s")
+script = ExtResource("5_ju7cg")
+length = 500
+length_seconds = 8.47458
+color_ramp = ExtResource("3_0xyfe")
+curve = ExtResource("4_3l10g")
+_defaults_have_been_set = true

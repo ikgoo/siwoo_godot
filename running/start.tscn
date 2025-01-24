@@ -1,0 +1,133 @@
+[gd_scene load_steps=20 format=3 uid="uid://6vtxe2fj785q"]
+
+[ext_resource type="Script" path="res://node_2d.gd" id="1_pyp7p"]
+[ext_resource type="FontFile" uid="uid://bfyfd8ygvg2u8" path="res://Danjo-bold-Regular.otf" id="2_jvoif"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pyhwh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7j0jq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aj18c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fcf65"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asrid"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ncpj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_whlmp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2mdld"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_whif7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ohka3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5a3r"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vso66"]
+font = ExtResource("2_jvoif")
+font_size = 100
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6eoai"]
+
+[sub_resource type="Animation" id="Animation_odckl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8ixe7"]
+resource_name = "down"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(100, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_g35ax"]
+resource_name = "up"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(100, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vn3vj"]
+_data = {
+"RESET": SubResource("Animation_odckl"),
+"down": SubResource("Animation_8ixe7"),
+"up": SubResource("Animation_g35ax")
+}
+
+[node name="Node2D" type="Node2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_pyp7p")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 100.0
+offset_right = 618.0
+offset_bottom = 94.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_pyhwh")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_7j0jq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_aj18c")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_fcf65")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_asrid")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_8ncpj")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_whlmp")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_2mdld")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_whif7")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ohka3")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_j5a3r")
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 0
+offset_left = 183.0
+offset_right = 814.0
+offset_bottom = 100.0
+text = "start"
+label_settings = SubResource("LabelSettings_vso66")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Button"]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(90, 59)
+scale = Vector2(172.22, 26.665)
+mesh = SubResource("BoxMesh_6eoai")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vn3vj")
+}
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
+[connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_button_mouse_exited"]

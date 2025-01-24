@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dwugx8kr551sw"]
+
+[ext_resource type="Shader" path="res://halo_light.gdshader" id="1_02n1i"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_02n1i")
+shader_parameter/color = null
+shader_parameter/intensity = 1.0
+shader_parameter/alpha = 0.0

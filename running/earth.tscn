@@ -1,0 +1,141 @@
+[gd_scene load_steps=18 format=3 uid="uid://cswrwqdvcgvcn"]
+
+[ext_resource type="Script" path="res://grass_plane.gd" id="1_hro76"]
+[ext_resource type="Script" path="res://earth.gd" id="1_xw0xx"]
+[ext_resource type="PackedScene" uid="uid://bl3hs3xh08fe6" path="res://grass.tscn" id="2_stiuj"]
+[ext_resource type="PackedScene" uid="uid://l56osbthf0op" path="res://charater.tscn" id="2_xkahb"]
+[ext_resource type="Texture2D" uid="uid://kpbcbbvr43ht" path="res://sunny.png" id="4_oo352"]
+
+[sub_resource type="Gradient" id="Gradient_oc1ya"]
+colors = PackedColorArray(0, 0.948096, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3rw3u"]
+gradient = SubResource("Gradient_oc1ya")
+fill_from = Vector2(0.492877, 0)
+fill_to = Vector2(0.535613, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p4f8l"]
+albedo_texture = SubResource("GradientTexture2D_3rw3u")
+use_particle_trails = true
+
+[sub_resource type="Curve" id="Curve_sk5ru"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.180049, 1), 0.0, 0.0, 0, 0, Vector2(0.805353, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_p58e7"]
+curve = SubResource("Curve_sk5ru")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e3cxh"]
+emission_shape = 3
+emission_box_extents = Vector3(5, 1, 1)
+spread = 0.0
+initial_velocity_min = 0.1
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 8)
+scale_min = 0.4
+scale_curve = SubResource("CurveTexture_p58e7")
+turbulence_enabled = true
+turbulence_noise_strength = 0.1
+turbulence_noise_scale = 3.0
+turbulence_influence_min = 0.01
+turbulence_influence_max = 0.02
+
+[sub_resource type="Curve" id="Curve_6jxjh"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.497, 1.25), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_v5xp4"]
+shape = 0
+size = 0.04
+section_length = 0.25
+curve = SubResource("Curve_6jxjh")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_5c5eo"]
+panorama = ExtResource("4_oo352")
+energy_multiplier = 1.2
+
+[sub_resource type="Sky" id="Sky_gkgd5"]
+sky_material = SubResource("PanoramaSkyMaterial_5c5eo")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_reqmo"]
+background_mode = 2
+sky = SubResource("Sky_gkgd5")
+sky_rotation = Vector3(0, 1.5708, 0)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.04
+volumetric_fog_emission = Color(0.615686, 0.862745, 1, 1)
+volumetric_fog_emission_energy = 0.5
+volumetric_fog_length = 153.37
+
+[sub_resource type="LabelSettings" id="LabelSettings_0o4kx"]
+font_size = 166
+
+[node name="earth" type="Node3D"]
+script = ExtResource("1_xw0xx")
+
+[node name="Node3D" type="Node3D" parent="."]
+script = ExtResource("1_hro76")
+
+[node name="1" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, 0)
+
+[node name="2" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -15)
+
+[node name="3" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -30)
+
+[node name="4" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -45)
+
+[node name="5" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -60)
+
+[node name="6" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -75)
+
+[node name="7" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -90)
+
+[node name="8" parent="Node3D" instance=ExtResource("2_stiuj")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -10, -105)
+
+[node name="Jet" parent="." instance=ExtResource("2_xkahb")]
+transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.18557e-09, 0, -9.559, 3.703)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Jet"]
+transform = Transform3D(-8.74228e-07, 0, 20, 0, 20, 0, -20, 0, -8.74228e-07, -258.877, 16.2426, 38.1543)
+material_override = SubResource("StandardMaterial3D_p4f8l")
+amount = 64
+lifetime = 2.0
+transform_align = 3
+trail_enabled = true
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_e3cxh")
+draw_pass_1 = SubResource("RibbonTrailMesh_v5xp4")
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 1.82978e-15, -3.04527e-15, 2.54089e-18, 0.856799, 0.515652, 3.55271e-15, -0.515652, 0.856799, -7.10543e-15, 0.795, 1.68)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_reqmo")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 4440.0
+offset_bottom = 1015.0
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 2263.0
+offset_bottom = 970.0
+text = "128795"
+label_settings = SubResource("LabelSettings_0o4kx")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

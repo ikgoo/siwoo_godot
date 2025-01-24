@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://wohp5p6n64ck"]
+
+[ext_resource type="Shader" path="res://portal_edge.gdshader" id="1_s6h6w"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_s6h6w")
+shader_parameter/uv_offset = null
+shader_parameter/uv_scale = Vector2(1, 1)
+shader_parameter/swirl_scale = 1.0
+shader_parameter/time_scale = 0.1

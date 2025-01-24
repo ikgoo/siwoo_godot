@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://1xjtedawhw2h"]
+
+[ext_resource type="Texture2D" uid="uid://c5uc0lle6najj" path="res://png/pixelCardAssest_V01.png" id="1_465rg"]
+
+[node name="store" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_465rg")
+region_enabled = true
+region_rect = Rect2(17, 299, 97, 29)

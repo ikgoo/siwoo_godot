@@ -1,0 +1,152 @@
+[gd_scene load_steps=9 format=3 uid="uid://dec3i23fg4gth"]
+
+[ext_resource type="Script" path="res://ranking.gd" id="1_ugljb"]
+[ext_resource type="AudioStream" uid="uid://v8lqiqpsqp2o" path="res://3. Goodbye Sweet Alien.wav" id="2_6hgun"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3pppj"]
+font_size = 161
+font_color = Color(1, 1, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(-6.145, 8.84)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j3awr"]
+font_size = 161
+font_color = Color(0.794828, 0.794828, 0.794828, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(-6.145, 8.84)
+
+[sub_resource type="LabelSettings" id="LabelSettings_yfbsv"]
+font_size = 161
+font_color = Color(0.560784, 0.45098, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(-6.145, 8.84)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rdxju"]
+font_size = 161
+
+[sub_resource type="LabelSettings" id="LabelSettings_rn5ib"]
+font_size = 156
+
+[sub_resource type="LabelSettings" id="LabelSettings_01xxa"]
+font_size = 221
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(-15.96, -13.015)
+
+[node name="ranking" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ugljb")
+
+[node name="1" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 69.0
+offset_right = 5514.0
+offset_bottom = 290.0
+text = "1."
+label_settings = SubResource("LabelSettings_3pppj")
+
+[node name="2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 319.0
+offset_right = 5514.0
+offset_bottom = 540.0
+text = "1."
+label_settings = SubResource("LabelSettings_j3awr")
+
+[node name="3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 569.0
+offset_right = 5514.0
+offset_bottom = 790.0
+text = "1."
+label_settings = SubResource("LabelSettings_yfbsv")
+
+[node name="4" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 819.0
+offset_right = 5514.0
+offset_bottom = 1040.0
+text = "1."
+label_settings = SubResource("LabelSettings_rdxju")
+
+[node name="5" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 1069.0
+offset_right = 5514.0
+offset_bottom = 1290.0
+text = "1."
+label_settings = SubResource("LabelSettings_rdxju")
+
+[node name="6" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 1319.0
+offset_right = 5514.0
+offset_bottom = 1540.0
+text = "1."
+label_settings = SubResource("LabelSettings_rdxju")
+
+[node name="7" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 1569.0
+offset_right = 5514.0
+offset_bottom = 1790.0
+text = "1."
+label_settings = SubResource("LabelSettings_rdxju")
+
+[node name="8" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1514.0
+offset_top = 1819.0
+offset_right = 5514.0
+offset_bottom = 2040.0
+text = "1."
+label_settings = SubResource("LabelSettings_rdxju")
+
+[node name="out" type="Button" parent="."]
+layout_mode = 0
+offset_left = 243.0
+offset_top = 1788.0
+offset_right = 971.0
+offset_bottom = 1967.0
+
+[node name="Label" type="Label" parent="out"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "exit"
+label_settings = SubResource("LabelSettings_rn5ib")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 104.0
+offset_right = 1297.0
+offset_bottom = 547.0
+text = "rankers"
+label_settings = SubResource("LabelSettings_01xxa")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_6hgun")
+volume_db = -6.572
+autoplay = true
+
+[connection signal="button_down" from="out" to="." method="_on_out_button_down"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

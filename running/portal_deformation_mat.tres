@@ -1,0 +1,33 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dfaj4kndfaotf"]
+
+[ext_resource type="Shader" path="res://portal_deformation.gdshader" id="1_ih0cb"]
+
+[sub_resource type="Curve" id="Curve_5vqqe"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oxnae"]
+curve = SubResource("Curve_5vqqe")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p6ynr"]
+seed = 2
+fractal_type = 3
+fractal_octaves = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_53tyw"]
+width = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_p6ynr")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ih0cb")
+shader_parameter/uv_offset = null
+shader_parameter/uv_scale = Vector2(1, 0.5)
+shader_parameter/swirl_scale = 1.0
+shader_parameter/time_scale = 0.25
+shader_parameter/r_displacement = Vector2(0.01, 0)
+shader_parameter/g_displacement = Vector2(0, 0.01)
+shader_parameter/b_displacement = Vector2(0.01, 0)
+shader_parameter/noise_sampler = SubResource("NoiseTexture2D_53tyw")
+shader_parameter/alpha_curve = SubResource("CurveTexture_oxnae")

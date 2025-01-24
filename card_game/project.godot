@@ -11,9 +11,19 @@ config_version=5
 [application]
 
 config/name="card_game"
+run/main_scene="res://tscn/game_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://png/icon.svg"
 
 [autoload]
 
 Gamemaneger="*res://root_scripts/gamemaneger.gd"
+
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="ignore"
+
+[rendering]
+
+textures/canvas_textures/default_texture_repeat=1

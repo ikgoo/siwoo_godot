@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgtkmvwnugi06"]
+
+[ext_resource type="Script" path="res://jang_ae_eat.gd" id="1_hehe4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_clhps"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_klvdy"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_qpvns"]
+material = SubResource("StandardMaterial3D_klvdy")
+radius = 1.0
+height = 2.0
+
+[node name="jang_ae_eat" type="Node3D"]
+script = ExtResource("1_hehe4")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_clhps")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_qpvns")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

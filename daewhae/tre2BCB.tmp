@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://dsfywhe0881h2"]
+
+[ext_resource type="Script" path="res://tree.gd" id="1_1ujmp"]
+[ext_resource type="Texture2D" uid="uid://b6risn01jnsi" path="res://godot_tree_f/purple/New Piskel (1).png" id="1_muydl"]
+[ext_resource type="Shader" path="res://tree.gdshader" id="1_s603q"]
+[ext_resource type="Script" path="res://tree_wind.gd" id="2_k42gc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_solpv"]
+shader = ExtResource("1_s603q")
+shader_parameter/bend_speed = 1.0
+shader_parameter/bend_strength = 0.01
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8cd3w"]
+size = Vector2(6.92308, 3.84616)
+
+[node name="tree" type="Node2D"]
+scale = Vector2(1.3, 1.3)
+script = ExtResource("1_1ujmp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+y_sort_enabled = true
+texture_filter = 1
+material = SubResource("ShaderMaterial_solpv")
+texture = ExtResource("1_muydl")
+script = ExtResource("2_k42gc")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.384616, 5.76923)
+shape = SubResource("RectangleShape2D_8cd3w")

@@ -1,0 +1,515 @@
+[gd_scene load_steps=40 format=3 uid="uid://ssnmkkfh54vd"]
+
+[ext_resource type="FontFile" uid="uid://bfyfd8ygvg2u8" path="res://Danjo-bold-Regular.otf" id="1_3r1xv"]
+[ext_resource type="Script" path="res://nodde_3d.gd" id="2_jpaj6"]
+[ext_resource type="Texture2D" uid="uid://cpju6rnnabg31" path="res://fbx/ringed_gas_giant_planet.png" id="3_dp7nl"]
+[ext_resource type="Script" path="res://button.gd" id="4_rxbm5"]
+[ext_resource type="PackedScene" uid="uid://ca7unlqc366gn" path="res://Challenger.fbx" id="5_02pno"]
+[ext_resource type="AudioStream" uid="uid://dik8ib1ng5oqe" path="res://2. Satellite Interruption.wav" id="6_slgop"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lc4ty"]
+panorama = ExtResource("3_dp7nl")
+
+[sub_resource type="Sky" id="Sky_upvp3"]
+sky_material = SubResource("PanoramaSkyMaterial_lc4ty")
+
+[sub_resource type="Environment" id="Environment_8wb52"]
+background_mode = 2
+background_energy_multiplier = 16.0
+sky = SubResource("Sky_upvp3")
+sky_rotation = Vector3(0, 2.28289, 0)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0, 0, 0, 1)
+volumetric_fog_length = 60.0
+volumetric_fog_sky_affect = 0.869
+
+[sub_resource type="LabelSettings" id="LabelSettings_ecsni"]
+font = ExtResource("1_3r1xv")
+font_size = 270
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y3elu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0khql"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dnbmx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1qpgl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c7i7a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tw1vo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q38hi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bg6ve"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dp0ax"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f6io0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vrm50"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_u5tvm"]
+font = ExtResource("1_3r1xv")
+font_size = 235
+
+[sub_resource type="BoxMesh" id="BoxMesh_yahwu"]
+size = Vector3(3.073, 3.073, 3.073)
+
+[sub_resource type="Animation" id="Animation_2gven"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -300)]
+}
+
+[sub_resource type="Animation" id="Animation_qdhkj"]
+resource_name = "down"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(100, -300), Vector2(0, -300)]
+}
+
+[sub_resource type="Animation" id="Animation_qd8fq"]
+resource_name = "up"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -300), Vector2(100, -300)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x7yha"]
+_data = {
+"RESET": SubResource("Animation_2gven"),
+"down": SubResource("Animation_qdhkj"),
+"up": SubResource("Animation_qd8fq")
+}
+
+[sub_resource type="Animation" id="Animation_odckl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Button2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 150)]
+}
+
+[sub_resource type="Animation" id="Animation_8ixe7"]
+resource_name = "down"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Button2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(100, 150), Vector2(0, 150)]
+}
+
+[sub_resource type="Animation" id="Animation_g35ax"]
+resource_name = "up"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Button2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 150), Vector2(100, 150)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vn3vj"]
+_data = {
+"RESET": SubResource("Animation_odckl"),
+"down": SubResource("Animation_8ixe7"),
+"up": SubResource("Animation_g35ax")
+}
+
+[sub_resource type="Animation" id="Animation_c8yxb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 600)]
+}
+
+[sub_resource type="Animation" id="Animation_g8sf4"]
+resource_name = "down"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(100, 600), Vector2(0, 600)]
+}
+
+[sub_resource type="Animation" id="Animation_oqvo0"]
+resource_name = "up"
+length = 0.05
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 600), Vector2(100, 600)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eq2v5"]
+_data = {
+"RESET": SubResource("Animation_c8yxb"),
+"down": SubResource("Animation_g8sf4"),
+"up": SubResource("Animation_oqvo0")
+}
+
+[sub_resource type="Animation" id="Animation_mcr1o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.457, -0.455, -1.979)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_x8jj7"]
+resource_name = "coming"
+length = 2.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(4.397, -0.455, -1.979), Vector3(1.41, -0.455, -1.979), Vector3(1.457, -0.455, -1.979)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"animate"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_er82w"]
+resource_name = "hundulllim"
+length = 9.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1.457, -0.455, -1.979), Vector3(1.457, -0.455, -2.279), Vector3(1.457, -0.455, -1.619)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3, 6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -1.5708, 0), Vector3(0, -1.5708, -0.233874), Vector3(0, -1.5708, 0.197222)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xuhge"]
+_data = {
+"RESET": SubResource("Animation_mcr1o"),
+"coming": SubResource("Animation_x8jj7"),
+"hundulllim": SubResource("Animation_er82w")
+}
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("2_jpaj6")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8wb52")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="Node3D2" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="Node3D2"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Node3D2/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -646.0
+offset_top = 142.0
+offset_right = 590.0
+offset_bottom = 412.0
+grow_horizontal = 2
+text = "jet flying"
+label_settings = SubResource("LabelSettings_ecsni")
+
+[node name="Control" type="Control" parent="Node3D2/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1680.0
+offset_top = -1115.0
+offset_right = -174.0
+offset_bottom = -771.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Button" type="Button" parent="Node3D2/Control/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -472.0
+offset_right = 1461.0
+offset_bottom = -264.0
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y3elu")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_0khql")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_dnbmx")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_1qpgl")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_c7i7a")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tw1vo")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_q38hi")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_bg6ve")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dp0ax")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_f6io0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vrm50")
+script = ExtResource("4_rxbm5")
+
+[node name="Label2" type="Label" parent="Node3D2/Control/Control/Button"]
+layout_mode = 0
+offset_left = 385.0
+offset_top = -26.0
+offset_right = 1033.0
+offset_bottom = 209.0
+text = "start"
+label_settings = SubResource("LabelSettings_u5tvm")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Node3D2/Control/Control/Button"]
+position = Vector2(178, 99)
+scale = Vector2(107.913, 26.665)
+mesh = SubResource("BoxMesh_yahwu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node3D2/Control/Control/Button"]
+libraries = {
+"": SubResource("AnimationLibrary_x7yha")
+}
+
+[node name="Button2" type="Button" parent="Node3D2/Control/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -22.0
+offset_right = 1461.0
+offset_bottom = 186.0
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y3elu")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_0khql")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_dnbmx")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_1qpgl")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_c7i7a")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tw1vo")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_q38hi")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_bg6ve")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dp0ax")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_f6io0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vrm50")
+script = ExtResource("4_rxbm5")
+
+[node name="Label2" type="Label" parent="Node3D2/Control/Control/Button2"]
+layout_mode = 0
+offset_left = 385.0
+offset_top = -26.0
+offset_right = 1033.0
+offset_bottom = 209.0
+text = "ranking"
+label_settings = SubResource("LabelSettings_u5tvm")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Node3D2/Control/Control/Button2"]
+position = Vector2(178, 99)
+scale = Vector2(107.913, 26.665)
+mesh = SubResource("BoxMesh_yahwu")
+
+[node name="AnimationPlayer_2" type="AnimationPlayer" parent="Node3D2/Control/Control/Button2"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_vn3vj")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="Node3D2/Control/Control/Button2"]
+
+[node name="Button3" type="Button" parent="Node3D2/Control/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 428.0
+offset_right = 1461.0
+offset_bottom = 636.0
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y3elu")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_0khql")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_dnbmx")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_1qpgl")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_c7i7a")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_tw1vo")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_q38hi")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_bg6ve")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dp0ax")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_f6io0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vrm50")
+script = ExtResource("4_rxbm5")
+
+[node name="Label2" type="Label" parent="Node3D2/Control/Control/Button3"]
+layout_mode = 0
+offset_left = 385.0
+offset_top = -26.0
+offset_right = 1033.0
+offset_bottom = 209.0
+text = "exit"
+label_settings = SubResource("LabelSettings_u5tvm")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Node3D2/Control/Control/Button3"]
+position = Vector2(178, 99)
+scale = Vector2(107.913, 26.665)
+mesh = SubResource("BoxMesh_yahwu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node3D2/Control/Control/Button3"]
+libraries = {
+"": SubResource("AnimationLibrary_eq2v5")
+}
+
+[node name="Challenger" parent="." instance=ExtResource("5_02pno")]
+transform = Transform3D(-3.80099e-07, 0, -0.105, 0, 0.105, 0, 0.105, 0, -3.80099e-07, 1.457, -0.455, -1.979)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Challenger"]
+libraries = {
+"": SubResource("AnimationLibrary_xuhge")
+}
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_slgop")
+autoplay = true
+
+[connection signal="button_down" from="Node3D2/Control/Control/Button" to="." method="_on_button_button_down"]
+[connection signal="mouse_entered" from="Node3D2/Control/Control/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Node3D2/Control/Control/Button" to="." method="_on_button_mouse_exited"]
+[connection signal="button_down" from="Node3D2/Control/Control/Button2" to="." method="_on_button_2_button_down"]
+[connection signal="mouse_entered" from="Node3D2/Control/Control/Button2" to="." method="_on_button_2_mouse_entered"]
+[connection signal="mouse_exited" from="Node3D2/Control/Control/Button2" to="." method="_on_button_2_mouse_exited"]
+[connection signal="button_down" from="Node3D2/Control/Control/Button3" to="." method="_on_button_3_button_down"]
+[connection signal="mouse_entered" from="Node3D2/Control/Control/Button3" to="." method="_on_button_3_mouse_entered"]
+[connection signal="mouse_exited" from="Node3D2/Control/Control/Button3" to="." method="_on_button_3_mouse_exited"]
+[connection signal="finished" from="AudioStreamPlayer3D" to="." method="_on_audio_stream_player_3d_finished"]

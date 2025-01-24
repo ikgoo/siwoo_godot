@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1upoah8ohe43"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_r6k25"]
+[ext_resource type="PackedScene" uid="uid://dv5auek8djlnd" path="res://water.tscn" id="2_2ockv"]
+[ext_resource type="PackedScene" uid="uid://bfhu1dc6yvbqj" path="res://sun.tscn" id="3_tv4va"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xetbr"]
+radius = 100.0
+height = 200.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_prm6d"]
+radius = 100.0
+
+[node name="Node2D2" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r6k25")
+
+[node name="first_p" type="Panel" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -115.0
+offset_right = 576.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="water" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 18.0
+offset_right = 203.0
+offset_bottom = 82.0
+text = "water"
+
+[node name="sun" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 242.0
+offset_top = 18.0
+offset_right = 435.0
+offset_bottom = 82.0
+text = "light"
+
+[node name="dirt" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 474.0
+offset_top = 18.0
+offset_right = 667.0
+offset_bottom = 82.0
+text = "dirt"
+
+[node name="seeds" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 706.0
+offset_top = 18.0
+offset_right = 899.0
+offset_bottom = 82.0
+text = "seeds"
+
+[node name="terrains" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 938.0
+offset_top = 18.0
+offset_right = 1131.0
+offset_bottom = 82.0
+text = "terrains"
+
+[node name="following" type="MeshInstance2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.0313726)
+mesh = SubResource("SphereMesh_xetbr")
+
+[node name="Area2D" type="Area2D" parent="following"]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="following/Area2D"]
+shape = SubResource("CircleShape2D_prm6d")
+
+[node name="seed_p" type="Panel" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 576.0
+offset_top = 1181.0
+offset_right = 1728.0
+offset_bottom = 1296.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="terrain_p" type="Panel" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 576.0
+offset_top = 1181.0
+offset_right = 1728.0
+offset_bottom = 1296.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CanvasLayer/UI")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="sun" parent="Node2D" instance=ExtResource("3_tv4va")]
+position = Vector2(0, -225.9)
+scale = Vector2(200.805, 200.805)
+
+[node name="water_n" type="Node2D" parent="."]
+
+[node name="watering" parent="water_n" instance=ExtResource("2_2ockv")]
+position = Vector2(0, -50)
+
+[connection signal="button_up" from="CanvasLayer/UI/first_p/water" to="CanvasLayer/UI" method="_on_button_button_up"]
+[connection signal="button_up" from="CanvasLayer/UI/first_p/sun" to="CanvasLayer/UI" method="_on_light_button_up"]
+[connection signal="body_entered" from="following/Area2D" to="CanvasLayer/UI" method="_on_area_2d_body_entered"]

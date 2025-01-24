@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://6mcog7vakm7y"]
+
+[ext_resource type="Script" path="res://grass_detail.gd" id="1_7dye2"]
+[ext_resource type="Texture2D" uid="uid://ercecjfpf4kp" path="res://Tilesets/UI books & more.png" id="1_f0oa6"]
+[ext_resource type="FontFile" uid="uid://c1j5c56kjk888" path="res://Tilesets/neodgm.ttf" id="3_abth5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_53kea"]
+font = ExtResource("3_abth5")
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_pnckb"]
+font = ExtResource("3_abth5")
+font_size = 35
+
+[sub_resource type="LabelSettings" id="LabelSettings_hycaa"]
+font = ExtResource("3_abth5")
+font_size = 35
+
+[node name="grass_detail" type="Node2D"]
+script = ExtResource("1_7dye2")
+
+[node name="terrain" type="Label" parent="."]
+z_index = 10
+offset_left = -34.0
+offset_top = -48.8
+offset_right = 306.0
+offset_bottom = 20.2
+scale = Vector2(0.2, 0.2)
+text = "산지 지형"
+label_settings = SubResource("LabelSettings_53kea")
+horizontal_alignment = 1
+
+[node name="water" type="Label" parent="."]
+z_index = 10
+offset_left = -34.0
+offset_top = -18.0
+offset_right = 229.0
+offset_bottom = 18.0
+scale = Vector2(0.2, 0.2)
+text = "수분:"
+label_settings = SubResource("LabelSettings_pnckb")
+
+[node name="tempe" type="Label" parent="."]
+z_index = 2
+offset_left = 1.6
+offset_top = -18.0
+offset_right = 183.6
+offset_bottom = 18.0
+scale = Vector2(0.2, 0.2)
+text = "온도:"
+label_settings = SubResource("LabelSettings_hycaa")
+
+[node name="grass_detail" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_f0oa6")
+region_enabled = true
+region_rect = Rect2(656, 80, 48, 64)
+script = ExtResource("1_7dye2")
+
+[node name="oxyen" type="Label" parent="."]
+offset_left = -34.4
+offset_top = -2.0
+offset_right = 147.6
+offset_bottom = 34.0
+scale = Vector2(0.2, 0.2)
+text = "산소:"
+label_settings = SubResource("LabelSettings_hycaa")

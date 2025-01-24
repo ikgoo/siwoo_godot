@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://m6r3xmwg3mpn"]
+
+[ext_resource type="Texture2D" uid="uid://48uesv6l6adl" path="res://tree/Textures/T_Trees_temp_climate.png" id="1_a4cni"]
+
+[resource]
+albedo_texture = ExtResource("1_a4cni")

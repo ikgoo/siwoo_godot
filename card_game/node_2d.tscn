@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bs01lir2y1e8i"]
+
+[ext_resource type="Shader" path="res://3d.gdshader" id="1_2iave"]
+[ext_resource type="Texture2D" uid="uid://c2yn6k083aj87" path="res://png/sword_card_b.png" id="2_7vsd4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_05h72"]
+shader = ExtResource("1_2iave")
+shader_parameter/fov = 90.0
+shader_parameter/cull_back = true
+shader_parameter/y_rot = 0.0
+shader_parameter/x_rot = 0.0
+shader_parameter/inset = 0.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_05h72")
+texture = ExtResource("2_7vsd4")

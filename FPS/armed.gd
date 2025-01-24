@@ -71,7 +71,7 @@ func fire():
 #					instance.global_position = global_position
 #					instance.global_rotation = muzzle_flash.global_rotation
 #					instance.global_transform.basis = global_transform.basis
-					instance.global_transform = muzzle_flash.global_transform
+					#instance.global_transform = muzzle_flash.global_transform
 					get_tree().current_scene.add_child(instance)
 					
 					animation_playerr.play("fire",-1.0)

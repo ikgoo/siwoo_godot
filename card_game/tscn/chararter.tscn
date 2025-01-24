@@ -1,11 +1,95 @@
-[gd_scene load_steps=3 format=3 uid="uid://dep7fpfofr33"]
+[gd_scene load_steps=11 format=3 uid="uid://dep7fpfofr33"]
 
-[ext_resource type="Script" path="res://script/card.gd" id="1_agrof"]
+[ext_resource type="Script" path="res://script/chararter.gd" id="1_agrof"]
 [ext_resource type="Resource" uid="uid://dtbwipy3yjach" path="res://tres/archer.tres" id="2_klfxe"]
+[ext_resource type="FontFile" uid="uid://xjedn0dm46y3" path="res://fonts/neodgm.ttf" id="3_nhau7"]
+[ext_resource type="Texture2D" uid="uid://c7urp1ftsr7e7" path="res://png/attack_line.png" id="4_wdboi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3s48w"]
+font = ExtResource("3_nhau7")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4rj0a"]
+size = Vector2(100, 128)
+
+[sub_resource type="Animation" id="Animation_27tcu"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_g2n4j"]
+resource_name = "down"
+length = 0.025
+step = 0.025
+
+[sub_resource type="Animation" id="Animation_mxfu8"]
+resource_name = "up"
+length = 0.025
+step = 0.025
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xulal"]
+_data = {
+"RESET": SubResource("Animation_27tcu"),
+"down": SubResource("Animation_g2n4j"),
+"up": SubResource("Animation_mxfu8")
+}
 
 [node name="chararter" type="Node2D"]
 script = ExtResource("1_agrof")
 entity = ExtResource("2_klfxe")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+[node name="Node2D" type="Node2D" parent="."]
+scale = Vector2(0.5, 0.5)
+
+[node name="Label" type="Label" parent="Node2D"]
+texture_filter = 1
+offset_left = -86.0
+offset_top = 46.0
+offset_right = 10.0
+offset_bottom = 69.0
+text = "energy : 100"
+label_settings = SubResource("LabelSettings_3s48w")
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Node2D"]
+texture_filter = 1
+offset_left = -86.0
+offset_top = 64.0
+offset_right = 10.0
+offset_bottom = 87.0
+text = "speed : 100"
+label_settings = SubResource("LabelSettings_3s48w")
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Label3" type="Label" parent="Node2D"]
+texture_filter = 1
+offset_left = -86.0
+offset_top = 80.0
+offset_right = 10.0
+offset_bottom = 103.0
+text = "sinangsim : 100"
+label_settings = SubResource("LabelSettings_3s48w")
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Line2D" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(0, 0, 0, 0)
+width = 24.0
+texture = ExtResource("4_wdboi")
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_4rj0a")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xulal")
+}
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

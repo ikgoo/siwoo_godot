@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dqxch7y0vq0qq"]
+
+[ext_resource type="Shader" path="res://trail_particles.gdshader" id="1_ngc6q"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ngc6q")
+shader_parameter/color = null
+shader_parameter/intensity = 1.0

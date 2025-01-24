@@ -8,3 +8,6 @@
 script = ExtResource("1_1yj0i")
 image = ExtResource("1_uyk0x")
 back_card = ExtResource("1_j2oqg")
+energy = 0
+speed = 0
+sinangsim = 0

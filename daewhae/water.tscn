@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dv5auek8djlnd"]
+
+[sub_resource type="Curve" id="Curve_svnm2"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8bc2y"]
+curve = SubResource("Curve_svnm2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c3vqc"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 100.0
+gravity = Vector3(0, 2000, 0)
+scale_min = 2.0
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_8bc2y")
+
+[node name="watering" type="GPUParticles2D"]
+self_modulate = Color(0, 0.733333, 1, 0.627451)
+position = Vector2(0, -100)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_c3vqc")
+lifetime = 0.2

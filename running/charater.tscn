@@ -1,0 +1,556 @@
+[gd_scene load_steps=21 format=3 uid="uid://l56osbthf0op"]
+
+[ext_resource type="Script" path="res://charater.gd" id="1_18g6i"]
+[ext_resource type="PackedScene" uid="uid://c34e0kx7gv1kv" path="res://trail.tscn" id="2_g061y"]
+[ext_resource type="PackedScene" uid="uid://vgyg0t0mo7gb" path="res://portal_my.tscn" id="3_mg2ea"]
+[ext_resource type="PackedScene" uid="uid://ca7unlqc366gn" path="res://Challenger.fbx" id="3_vssah"]
+[ext_resource type="AudioStream" uid="uid://d25het1h27y8c" path="res://Collectable_01.wav" id="5_qkmsr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xlr4y"]
+radius = 2.33497
+height = 11.4542
+
+[sub_resource type="Animation" id="Animation_i1n4q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("for_rot:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(11, 11.099, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("for_rot/for_rot2/fire_part:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("for_rot/for_rot2/portal:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(20, 20, 20)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("for_rot/for_rot2/portal:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("for_rot/for_rot2/portal:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("for_rot/for_rot2:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 3.55271e-15, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_d6knf"]
+resource_name = "down"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot/for_rot2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.174533)]
+}
+
+[sub_resource type="Animation" id="Animation_2ofgl"]
+resource_name = "front"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot/for_rot2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 3.55271e-15, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_re1sf"]
+resource_name = "go_to_planet"
+length = 3.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("for_rot:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.7, 2.7, 2.8, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(11, 11.099, 0), Vector3(30, 11.099, 0), Vector3(30, 11.099, 0), Vector3(-70, 11.099, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("for_rot/for_rot2/fire_part:visible")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.7),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 2.7, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [],
+"method": &"going_planet_f"
+}, {
+"args": [],
+"method": &"all_down"
+}, {
+"args": [],
+"method": &"all_up"
+}, {
+"args": [],
+"method": &"go_earth"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("for_rot/for_rot2/portal:scale")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(20, 20, 20)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("for_rot/for_rot2/portal:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("for_rot/for_rot2/portal:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ji75f"]
+resource_name = "left"
+length = 0.1
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.349066, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rw4io"]
+resource_name = "right"
+length = 0.1
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.349066, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_oqevt"]
+resource_name = "ud_front"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tu1da"]
+resource_name = "up"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_rot/for_rot2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 3.55271e-15, 0), Vector3(0, 0, -0.174533)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrk35"]
+_data = {
+"RESET": SubResource("Animation_i1n4q"),
+"down": SubResource("Animation_d6knf"),
+"front": SubResource("Animation_2ofgl"),
+"go_to_planet": SubResource("Animation_re1sf"),
+"left": SubResource("Animation_ji75f"),
+"right": SubResource("Animation_rw4io"),
+"ud_front": SubResource("Animation_oqevt"),
+"up": SubResource("Animation_tu1da")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a2q1d"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_105c6"]
+font_size = 296
+font_color = Color(0.678431, 0.678431, 0.678431, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_lajvd"]
+font_size = 91
+font_color = Color(0.680321, 0.680321, 0.680321, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_6bd1y"]
+font_size = 86
+
+[sub_resource type="LabelSettings" id="LabelSettings_u5gwt"]
+font_size = 76
+
+[node name="Jet" type="CharacterBody3D"]
+transform = Transform3D(-2.18557e-09, 0, -0.05, 0, 0.05, 0, 0.05, 0, -2.18557e-09, 0, -0.555, -0.555)
+script = ExtResource("1_18g6i")
+
+[node name="for_rot" parent="." instance=ExtResource("2_g061y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11.099, 0)
+
+[node name="for_rot2" type="Node3D" parent="for_rot"]
+transform = Transform3D(1, 0, 3.55271e-15, 0, 1, 0, -3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="The_Challenger" parent="for_rot/for_rot2" instance=ExtResource("3_vssah")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="hitbox" type="Area3D" parent="for_rot/for_rot2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="for_rot/for_rot2/hitbox"]
+transform = Transform3D(-4.37114e-08, -1, 4.47035e-08, 0, -4.47035e-08, -1, 1, -4.37114e-08, 1.33227e-15, -1.92586, 0.654781, 8.61085e-08)
+shape = SubResource("CapsuleShape3D_xlr4y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="for_rot/for_rot2"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_xrk35")
+}
+
+[node name="fire_part" parent="for_rot/for_rot2" instance=ExtResource("2_g061y")]
+transform = Transform3D(1, 0, -2.84217e-14, 0, 1, 0, 2.84217e-14, 0, 1, 1.7762, 0.0189006, 0.0348304)
+
+[node name="portal" parent="for_rot/for_rot2" instance=ExtResource("3_mg2ea")]
+transform = Transform3D(-7.23998e-05, 0, 20, 0, 20, 0, -20, 0, -7.23998e-05, -54.0241, 6.6777, 1.88064e-06)
+visible = false
+collision_layer = 0
+collision_mask = 0
+
+[node name="fire_part_2" parent="for_rot/for_rot2" instance=ExtResource("2_g061y")]
+transform = Transform3D(1, 0, -1.77636e-14, 0, 1, 0, 2.13163e-14, 0, 1, 1.5393, -0.0406993, -5.4811e-07)
+
+[node name="for_cha" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1e+06, 0, 0)
+shape = SubResource("BoxShape3D_a2q1d")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="high_l" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 660.0
+offset_right = 3028.0
+offset_bottom = 1064.0
+text = "high score:"
+label_settings = SubResource("LabelSettings_105c6")
+horizontal_alignment = 1
+
+[node name="score_l" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 846.0
+offset_top = 67.0
+offset_right = 3036.0
+offset_bottom = 493.0
+text = "score:"
+label_settings = SubResource("LabelSettings_105c6")
+horizontal_alignment = 1
+
+[node name="restart" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1536.0
+offset_top = 1472.0
+offset_right = 2254.0
+offset_bottom = 1591.0
+
+[node name="restart_l" type="Label" parent="CanvasLayer/UI/restart"]
+layout_mode = 0
+offset_left = 189.0
+offset_top = -10.0
+offset_right = 489.0
+offset_bottom = 115.0
+text = "restart"
+label_settings = SubResource("LabelSettings_lajvd")
+
+[node name="rank_p" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1539.0
+offset_top = 1668.0
+offset_right = 2257.0
+offset_bottom = 1787.0
+
+[node name="rank_s_l" type="Label" parent="CanvasLayer/UI/rank_p"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = -14.0
+offset_right = 598.0
+offset_bottom = 111.0
+text = "rank score"
+label_settings = SubResource("LabelSettings_lajvd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lobby" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1541.0
+offset_top = 1835.0
+offset_right = 2259.0
+offset_bottom = 1954.0
+
+[node name="lobby_l" type="Label" parent="CanvasLayer/UI/lobby"]
+layout_mode = 0
+offset_left = 97.0
+offset_top = -14.0
+offset_right = 598.0
+offset_bottom = 111.0
+text = "lobby"
+label_settings = SubResource("LabelSettings_lajvd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="not_8" type="Label" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = 261.0
+offset_right = 288.0
+offset_bottom = 379.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "your not in rank!"
+label_settings = SubResource("LabelSettings_6bd1y")
+
+[node name="Label2" type="Label" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 934.0
+offset_top = 1123.0
+offset_right = 934.0
+offset_bottom = 1228.0
+grow_horizontal = 2
+text = "text your name"
+label_settings = SubResource("LabelSettings_u5gwt")
+
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/UI/Label2"]
+layout_mode = 0
+offset_left = -11.0
+offset_top = 97.0
+offset_right = 1942.0
+offset_bottom = 302.0
+theme_override_font_sizes/font_size = 56
+indent_wrapped_lines = true
+
+[node name="succeed" type="Label" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = 261.0
+offset_right = 288.0
+offset_bottom = 379.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "successfully in!"
+label_settings = SubResource("LabelSettings_6bd1y")
+horizontal_alignment = 1
+
+[node name="succeed2" type="Label" parent="CanvasLayer/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = 261.0
+offset_right = 288.0
+offset_bottom = 379.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "you can't write more than 10 letters!"
+label_settings = SubResource("LabelSettings_6bd1y")
+horizontal_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_qkmsr")
+volume_db = 80.0
+unit_size = 100.0
+bus = &"impact"
+
+[connection signal="area_entered" from="for_rot/for_rot2/hitbox" to="." method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="for_rot/for_rot2/hitbox" to="." method="_on_area_3d_body_entered"]
+[connection signal="button_down" from="CanvasLayer/UI/restart" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/rank_p" to="." method="_on_rank_p_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/lobby" to="." method="_on_lobby_button_down"]
+[connection signal="text_changed" from="CanvasLayer/UI/Label2/TextEdit" to="." method="_on_text_edit_text_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

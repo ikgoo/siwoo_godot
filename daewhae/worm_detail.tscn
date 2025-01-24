@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7hirdbyi65wc"]
+
+[ext_resource type="FontFile" uid="uid://c1j5c56kjk888" path="res://Tilesets/neodgm.ttf" id="1_alhsq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_nhm0x"]
+font = ExtResource("1_alhsq")
+font_size = 40
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 273.0
+offset_bottom = 472.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -91.0
+offset_top = 32.0
+offset_right = 91.0
+offset_bottom = 102.0
+grow_horizontal = 2
+text = "화암균"
+label_settings = SubResource("LabelSettings_nhm0x")
+horizontal_alignment = 1
