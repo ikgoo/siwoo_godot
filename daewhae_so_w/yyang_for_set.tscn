@@ -1,0 +1,510 @@
+[gd_scene load_steps=4 format=3 uid="uid://snxrabb4jekc"]
+
+[ext_resource type="Script" path="res://yyang_for_set.gd" id="1_qtkbt"]
+[ext_resource type="Texture2D" uid="uid://dcf4sjfant10j" path="res://png/star_bbul.png" id="2_lnsiu"]
+[ext_resource type="Script" path="res://first.gd" id="3_8qdeg"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_qtkbt")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite2D9" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D11" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D12" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D13" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D14" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D15" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D16" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D17" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D18" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D19" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D20" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D21" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D22" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D23" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D24" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D25" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D26" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D27" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D28" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D29" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D30" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D31" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D32" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D33" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D34" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D35" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D36" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D37" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D38" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D39" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D40" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D41" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D42" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D43" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D44" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D45" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D46" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D47" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D48" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D49" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D50" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D51" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D52" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D53" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D54" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D55" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D56" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D57" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D58" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D59" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D60" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D61" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D62" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D63" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D64" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D65" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D66" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D67" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D68" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D69" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D70" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D71" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D72" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D73" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D74" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D75" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D76" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D77" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D78" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D79" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D80" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="Sprite2D81" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_lnsiu")
+script = ExtResource("3_8qdeg")
+
+[node name="1" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(460, 66)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("2_lnsiu")
+
+[node name="2" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(554, 88)
+texture = ExtResource("2_lnsiu")
+
+[node name="3" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(664, 122)
+texture = ExtResource("2_lnsiu")
+
+[node name="4" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(674, 152)
+texture = ExtResource("2_lnsiu")
+
+[node name="6" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(378, 176)
+texture = ExtResource("2_lnsiu")
+
+[node name="5" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(434, 148)
+texture = ExtResource("2_lnsiu")
+
+[node name="fir_plus_seo" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(460, 66, 554, 88)
+width = 1.0
+
+[node name="seo_plus_third" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(554, 88, 664, 122)
+width = 1.0
+
+[node name="third_plus_four" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(664, 122, 674, 152)
+width = 1.0
+
+[node name="fir_plus_five" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(460, 66, 434, 148)
+width = 1.0
+
+[node name="five_plus_six" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(434, 148, 378, 176)
+width = 1.0

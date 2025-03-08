@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dv810jwphyghj"]
+
+[sub_resource type="Gradient" id="Gradient_rocxy"]
+offsets = PackedFloat32Array(0.325545, 0.995327)
+colors = PackedColorArray(0.243569, 0.243569, 0.243569, 1, 0.427493, 0.427493, 0.427493, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mwvyo"]
+gradient = SubResource("Gradient_rocxy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gw2to"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 100.0
+gravity = Vector3(0, -1000, 0)
+scale_min = 2.0
+scale_max = 4.0
+color_ramp = SubResource("GradientTexture1D_mwvyo")
+
+[node name="water_disap" type="GPUParticles2D"]
+z_index = -1
+position = Vector2(0, -4)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_gw2to")
+lifetime = 0.2

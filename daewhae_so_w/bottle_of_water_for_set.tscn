@@ -1,0 +1,686 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2bf8ff6tyoan"]
+
+[ext_resource type="Script" path="res://bottle_of_water_for_set.gd" id="1_2yk5o"]
+[ext_resource type="Texture2D" uid="uid://dcf4sjfant10j" path="res://png/star_bbul.png" id="2_bdsw5"]
+[ext_resource type="Script" path="res://first.gd" id="3_0aoym"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_2yk5o")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Sprite2D8" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D11" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D12" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D13" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D14" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D15" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D16" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D17" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D18" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D19" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D20" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D21" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D22" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D23" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D24" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D25" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D26" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(228.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D27" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D28" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D29" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D30" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D31" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D32" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D33" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D34" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D35" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D36" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D37" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D38" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D39" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D40" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D41" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D42" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D43" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D44" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D45" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D46" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D47" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D48" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D49" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D50" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D51" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D52" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D53" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D54" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D55" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D56" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D57" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D58" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D59" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D60" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D61" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D62" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D63" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D64" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D65" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D66" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D67" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D68" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D69" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D70" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D71" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D72" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D73" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D74" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D75" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D76" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D77" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D78" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D79" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D80" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D81" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D82" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D83" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D84" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D85" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D86" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D87" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D88" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D89" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D90" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="Sprite2D91" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+texture = ExtResource("2_bdsw5")
+script = ExtResource("3_0aoym")
+
+[node name="1" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(734, 308)
+texture = ExtResource("2_bdsw5")
+
+[node name="2" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(682, 292)
+texture = ExtResource("2_bdsw5")
+
+[node name="3" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(662, 274)
+texture = ExtResource("2_bdsw5")
+
+[node name="4" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(602, 274)
+texture = ExtResource("2_bdsw5")
+
+[node name="5" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(590, 318)
+texture = ExtResource("2_bdsw5")
+
+[node name="6" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(548, 250)
+texture = ExtResource("2_bdsw5")
+
+[node name="7" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(548, 228)
+texture = ExtResource("2_bdsw5")
+
+[node name="8" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(568, 214)
+texture = ExtResource("2_bdsw5")
+
+[node name="9" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(576, 186)
+texture = ExtResource("2_bdsw5")
+
+[node name="10" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(612, 146)
+texture = ExtResource("2_bdsw5")
+
+[node name="11" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(656, 104)
+texture = ExtResource("2_bdsw5")
+
+[node name="12" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(634, 200)
+texture = ExtResource("2_bdsw5")
+
+[node name="13" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(666, 172)
+texture = ExtResource("2_bdsw5")
+
+[node name="fir_plus_seo" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(734, 308, 682, 292)
+width = 1.0
+
+[node name="seo_plus_third" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(682, 292, 662, 274)
+width = 1.0
+
+[node name="third_plus_four" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(662, 274, 602, 274)
+width = 1.0
+
+[node name="four_plus_five" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(602, 274, 590, 318)
+width = 1.0
+
+[node name="five_plus_six" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(590, 318, 548, 250)
+width = 1.0
+
+[node name="six_plus_seven" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(548, 250, 548, 228)
+width = 1.0
+
+[node name="seven_plus_eight" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(548, 228, 568, 214)
+width = 1.0
+
+[node name="eight_plus_nine" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(568, 214, 576, 186)
+width = 1.0
+
+[node name="nine_plus_ten" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(576, 186, 612, 146)
+width = 1.0
+
+[node name="ten_plus_eleven" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(612, 146, 656, 104)
+width = 1.0
+
+[node name="nine_plus_twelve" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(576, 186, 634, 200)
+width = 1.0
+
+[node name="twelve_plus_thirteen" type="Line2D" parent="."]
+texture_filter = 1
+points = PackedVector2Array(634, 200, 666, 172)
+width = 1.0

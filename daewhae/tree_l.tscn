@@ -107,6 +107,42 @@ tracks/7/keys = {
 "update": 0,
 "values": [Vector2(0.015, 1e-05)]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Node2D/AnimatedSprite2D:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Node2D/AnimatedSprite2D2:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Node2D/AnimatedSprite2D3:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_iqgij"]
 resource_name = "grow"
@@ -266,6 +302,42 @@ tracks/8/keys = {
 "update": 0,
 "values": [Vector2(0.015, 0.015)]
 }
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Node2D/AnimatedSprite2D:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Node2D/AnimatedSprite2D2:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Node2D/AnimatedSprite2D3:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_6s0wf"]
 resource_name = "on_fire_up"
@@ -412,6 +484,42 @@ tracks/10/keys = {
 "method": &"fire_a"
 }]
 }
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Node2D/AnimatedSprite2D:visible")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Node2D/AnimatedSprite2D2:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Node2D/AnimatedSprite2D3:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pca26"]
 _data = {
@@ -463,7 +571,7 @@ animations = [{
 }]
 
 [node name="tree_l" type="Node2D"]
-z_index = 4096
+z_index = 20
 script = ExtResource("1_hgwcj")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -491,6 +599,7 @@ texture = ExtResource("3_rygns")
 script = ExtResource("4_a5s6h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Node2D"]
+visible = false
 z_index = 100
 texture_filter = 1
 position = Vector2(-4, -3)
@@ -498,11 +607,13 @@ scale = Vector2(0.015, 1e-05)
 sprite_frames = SubResource("SpriteFrames_1aqaj")
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Node2D"]
+visible = false
 position = Vector2(2, -1)
 scale = Vector2(0.015, 1e-05)
 sprite_frames = SubResource("SpriteFrames_1aqaj")
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="Node2D"]
+visible = false
 position = Vector2(-1, 4)
 scale = Vector2(0.015, 1e-05)
 sprite_frames = SubResource("SpriteFrames_1aqaj")

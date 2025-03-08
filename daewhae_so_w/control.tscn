@@ -1,0 +1,588 @@
+[gd_scene load_steps=20 format=3 uid="uid://cp6pvw7xkkkcg"]
+
+[ext_resource type="Script" path="res://control.gd" id="1_dk1i6"]
+[ext_resource type="FontFile" uid="uid://63e5s1utb0pk" path="res://neodgm.ttf" id="2_oojv6"]
+[ext_resource type="PackedScene" uid="uid://b103sojb0g3bb" path="res://bbul_set.tscn" id="3_mpoiy"]
+[ext_resource type="Texture2D" uid="uid://dsoqj46xbksiu" path="res://스크린샷 2025-02-22 183256.png" id="4_4kbel"]
+[ext_resource type="PackedScene" uid="uid://bv6f5nlsglmmm" path="res://dictionary_for_see.tscn" id="4_f132a"]
+[ext_resource type="AudioStream" uid="uid://dtcptu5xvu87e" path="res://MUSCMisc_Minor-Gamelan Dreams_HY_Trnqlty_[cut_3sec].mp3" id="6_6apxt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tp0il"]
+font = ExtResource("2_oojv6")
+font_size = 36
+
+[sub_resource type="LabelSettings" id="LabelSettings_6mgui"]
+font = ExtResource("2_oojv6")
+
+[sub_resource type="LabelSettings" id="LabelSettings_rnko3"]
+font = ExtResource("2_oojv6")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_in0nm"]
+font = ExtResource("2_oojv6")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_3c688"]
+font = ExtResource("2_oojv6")
+font_size = 100
+
+[sub_resource type="Animation" id="Animation_bwymj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(183, 935)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bb_up:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(183, 1079)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Node2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Label:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("name:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("name:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_xaijt"]
+resource_name = "bb_up_down"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(183, 1079), Vector2(183, 935)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bb_up:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(183, 935), Vector2(183, 1079)]
+}
+
+[sub_resource type="Animation" id="Animation_73dvn"]
+resource_name = "bb_up_up"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(183, 935), Vector2(183, 1079)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bb_up:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(183, 1079), Vector2(183, 935)]
+}
+
+[sub_resource type="Animation" id="Animation_3mcyr"]
+resource_name = "naga"
+length = 5.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 4.6, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(183, 935), Vector2(183, 1079), Vector2(183, 1079), Vector2(183, 935)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bb_up:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(183, 1079)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Label:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"gof"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("name:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1, 1.5, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("name:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_vfk1g"]
+resource_name = "name_see"
+length = 5.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("name:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.2, 0.7, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_cwae7"]
+resource_name = "see_bb_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_6yvfr"]
+resource_name = "see_bb_set"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h5xjr"]
+_data = {
+"RESET": SubResource("Animation_bwymj"),
+"bb_up_down": SubResource("Animation_xaijt"),
+"bb_up_up": SubResource("Animation_73dvn"),
+"naga": SubResource("Animation_3mcyr"),
+"name_see": SubResource("Animation_vfk1g"),
+"see_bb_out": SubResource("Animation_cwae7"),
+"see_bb_set": SubResource("Animation_6yvfr")
+}
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dk1i6")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1443.0
+offset_top = 33.0
+offset_right = 1803.0
+offset_bottom = 117.0
+text = "스타 더스트:"
+label_settings = SubResource("LabelSettings_tp0il")
+
+[node name="Panel" type="Panel" parent="."]
+z_index = -1
+layout_mode = 0
+offset_left = 183.0
+offset_top = 935.0
+offset_right = 1784.0
+offset_bottom = 1032.0
+
+[node name="Button2" type="Button" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1185.0
+offset_top = 15.0
+offset_right = 1462.51
+offset_bottom = 88.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "별빛 강화"
+
+[node name="Button3" type="Button" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 657.0
+offset_top = 15.0
+offset_right = 934.51
+offset_bottom = 88.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "별자리 지도"
+
+[node name="dict" type="Button" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 129.0
+offset_top = 15.0
+offset_right = 406.51
+offset_bottom = 88.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "도감"
+
+[node name="tutorial_b" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 41.0
+offset_right = 101.0
+offset_bottom = 87.0
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 40
+text = "?"
+
+[node name="bb_up" type="Panel" parent="."]
+z_index = -1
+layout_mode = 0
+offset_left = 183.0
+offset_top = 1079.0
+offset_right = 1784.0
+offset_bottom = 1192.0
+
+[node name="speed_upgrade" type="Button" parent="bb_up"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 817.0
+offset_top = 15.0
+offset_right = 1094.51
+offset_bottom = 88.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "속도 증가"
+
+[node name="Button5" type="Button" parent="bb_up"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1289.0
+offset_top = 64.0
+offset_right = 1506.0
+offset_bottom = 101.0
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 20
+text = "돌아가기"
+
+[node name="spawn_upgrade" type="Button" parent="bb_up"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 353.0
+offset_top = 15.0
+offset_right = 630.51
+offset_bottom = 88.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "별빛 생성"
+
+[node name="Label" type="Label" parent="bb_up"]
+layout_mode = 0
+offset_left = 392.0
+offset_top = 88.0
+offset_right = 575.0
+offset_bottom = 111.0
+text = "150g"
+label_settings = SubResource("LabelSettings_6mgui")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="bb_up"]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 88.0
+offset_right = 1055.0
+offset_bottom = 111.0
+text = "150g"
+label_settings = SubResource("LabelSettings_6mgui")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Node2D" parent="." instance=ExtResource("3_mpoiy")]
+position = Vector2(108, 104)
+
+[node name="outing" type="Button" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 440.0
+offset_top = 782.0
+offset_right = 717.51
+offset_bottom = 855.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "메인으로 가기"
+
+[node name="Button6" type="Button" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1136.0
+offset_top = 782.0
+offset_right = 1413.51
+offset_bottom = 855.56
+theme_override_fonts/font = ExtResource("2_oojv6")
+theme_override_font_sizes/font_size = 30
+text = "계속하기"
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -268.0
+offset_top = 172.0
+offset_right = 252.0
+offset_bottom = 212.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "모든별자리를 해금했습니다!"
+label_settings = SubResource("LabelSettings_rnko3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="."]
+visible = false
+z_index = 3999
+layout_mode = 0
+offset_left = -75.0
+offset_top = -62.0
+offset_right = 2032.0
+offset_bottom = 1268.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel2"]
+modulate = Color(2, 2, 2, 0.967)
+position = Vector2(1030.25, 468.25)
+scale = Vector2(6.5922, 4.56135)
+texture = ExtResource("4_4kbel")
+
+[node name="tutorial" type="Label" parent="."]
+top_level = true
+z_index = 4000
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -457.5
+offset_top = -383.0
+offset_right = 457.5
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "[기본 조작]
+-wasd 및 드래그로 움직이세요
+-마우스로 별을 클릭하여 스타더스트를 모으세요
+-ESC 키로 게임을 일시정지할 수 있습니다
+
+[별자리 만들기]
+'별자리 지도' 버튼을 눌러 별자리 모드로 진입
+-'모양 보여주기'로 완성할 별자리 모양 확인
+-필요한 스타더스트를 모은 후, 별자리를 별들속에서 찾아 클릭
+
+[강화]
+'별빛 강화'에서 2가지 능력을 강화할 수 있습니다
+-별빛 생성 . 별빛 개수 증가
+-속도 증가 . 별빛 속도 증가
+
+[유성우]
+-게임에서 자동으로 별자리가 완성될때마다 
+그에맞는 유성우가 떨어집니다
+-유성우를 클릭하면 색에 따라 1초에 1번,총 20번 
+스타더스트를획득합니다
+
+"
+label_settings = SubResource("LabelSettings_in0nm")
+
+[node name="dictionary_for_see" parent="." instance=ExtResource("4_f132a")]
+visible = false
+position = Vector2(108, 104)
+scale = Vector2(2, 2)
+
+[node name="name" type="Label" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+offset_left = 442.0
+offset_top = 735.0
+offset_right = 1428.0
+offset_bottom = 925.0
+text = "작은 곰자리"
+label_settings = SubResource("LabelSettings_3c688")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h5xjr")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_6apxt")
+volume_db = 20.0
+max_distance = 9.22337e+18
+attenuation = 1.57969e-05
+
+[connection signal="button_down" from="Panel/Button2" to="." method="_on_button_2_button_down"]
+[connection signal="button_down" from="Panel/Button3" to="." method="_on_button_3_button_down"]
+[connection signal="button_down" from="Panel/dict" to="." method="_on_dict_button_down"]
+[connection signal="button_down" from="Panel/tutorial_b" to="." method="_on_tutorial_b_button_down"]
+[connection signal="button_down" from="bb_up/speed_upgrade" to="." method="_on_speed_upgrade_button_down"]
+[connection signal="button_down" from="bb_up/Button5" to="." method="_on_button_5_button_down"]
+[connection signal="button_down" from="bb_up/spawn_upgrade" to="." method="_on_spawn_upgrade_button_down"]
+[connection signal="button_down" from="outing" to="." method="_on_outing_button_down"]
+[connection signal="button_down" from="Button6" to="." method="_on_button_6_button_down"]

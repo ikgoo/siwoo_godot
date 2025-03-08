@@ -1,13 +1,15 @@
 extends Camera2D
 
-var min_zoom = Vector2(0.2, 0.2)
-var max_zoom = Vector2(4, 4)
-var zoom_speed = 0.1
+var min_zoom = Vector2(1, 1)
+var max_zoom = Vector2(6, 6)
+var zoom_speed = 0.15
 var zoom_target = Vector2(1, 1)
 var zoom_smoothness = 15.0
 
 # 카메라 이동 관련 변수
 var move_speed = 300  # 카메라 이동 속도
+const MIN_POSITION = Vector2(-820, -820)  # 최소 위치
+const MAX_POSITION = Vector2(800, 800)    # 최대 위치
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -19,6 +21,7 @@ func _unhandled_input(event):
 			zoom_target = zoom_target - Vector2(zoom_speed, zoom_speed)
 			zoom_target = zoom_target.clamp(min_zoom, max_zoom)
 			Gamemanger.camera_zoom = zoom_target
+
 func _process(delta):
 	# 부드러운 줌 효과
 	zoom = zoom.lerp(zoom_target, delta * zoom_smoothness)
@@ -35,10 +38,11 @@ func _process(delta):
 	if Input.is_action_pressed("ui_right") or Input.is_key_pressed(KEY_D):
 		input_dir.x += 1000
 	
-	# 대각선 이동시 속도 정규화
-	input_dir = input_dir
-	
-
-	
 	# 카메라 위치 업데이트
-	position += input_dir * delta
+	var new_position = position + input_dir * delta
+	
+	# 위치 제한 적용
+	new_position.x = clamp(new_position.x, MIN_POSITION.x, MAX_POSITION.x)
+	new_position.y = clamp(new_position.y, MIN_POSITION.y, MAX_POSITION.y)
+	
+	position = new_position

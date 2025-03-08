@@ -1,0 +1,123 @@
+[gd_scene load_steps=10 format=3 uid="uid://3vs6a6j2n22g"]
+
+[ext_resource type="Script" path="res://mob.gd" id="1_diboj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tcvaa"]
+radius = 0.1
+height = 0.4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yhr52"]
+radius = 0.1
+height = 0.4
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xvfum"]
+radius = 0.1
+height = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_do0a8"]
+radius = 16.861
+
+[sub_resource type="Animation" id="Animation_8cl0c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nrmwc"]
+resource_name = "die"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.129408, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.5708, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_143au"]
+resource_name = "hurt"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(0.183011, 0.0980731, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(2.03854, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wbo56"]
+_data = {
+"RESET": SubResource("Animation_8cl0c"),
+"die": SubResource("Animation_nrmwc"),
+"hurt": SubResource("Animation_143au")
+}
+
+[node name="mob" type="CharacterBody3D"]
+collision_layer = 6
+script = ExtResource("1_diboj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_tcvaa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 2
+mesh = SubResource("CapsuleMesh_yhr52")
+skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_xvfum")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="Area3D2" type="Area3D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+shape = SubResource("SphereShape3D_do0a8")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wbo56")
+}
+
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
+[connection signal="area_entered" from="Area3D2" to="." method="_on_area_3d_2_area_entered"]
+[connection signal="area_exited" from="Area3D2" to="." method="_on_area_3d_2_area_exited"]

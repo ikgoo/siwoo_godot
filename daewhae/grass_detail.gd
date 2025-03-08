@@ -12,12 +12,10 @@ var terrain
 func _ready():
 	pass # Replace with function body.
 
-func thing_get(t : String,w : int,te : int,oxyen_l : int):
+func thing_get(t : String,w : int,oxyen_l : int):
 	terrain = t
-	tempe = te
 	water = w
 	terrain_l.text = str(terrain)
-	tempe_l.text = "온도 : " + str(tempe)
 	water_l.text = "수분 : " + str(water)
 	oxyen.text = "산소 : " + str(oxyen_l)
 	global_position = get_global_mouse_position()

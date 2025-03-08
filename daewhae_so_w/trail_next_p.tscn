@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://dksd8o6uauu4g"]
+
+[sub_resource type="Curve" id="Curve_hx11o"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.466368, 0.799257), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_geqnw"]
+curve = SubResource("Curve_hx11o")
+
+[sub_resource type="Curve" id="Curve_3ovrs"]
+max_value = 3.0
+_data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(0.533632, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_g8888"]
+curve = SubResource("Curve_3ovrs")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljaj6"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(20, 20, 1)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 0.8
+scale_curve = SubResource("CurveTexture_geqnw")
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 1.0
+scale_over_velocity_curve = SubResource("CurveTexture_g8888")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+self_modulate = Color(0.278431, 0.831373, 0.27451, 1)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_ljaj6")
+lifetime = 2.0
+local_coords = true

@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://bmtcgoelmmmgd"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_vwcgs"]
+[ext_resource type="Texture2D" uid="uid://dreu4w0e6bvfd" path="res://Cold Sunset Equirect.png" id="2_5o0g0"]
+[ext_resource type="PackedScene" uid="uid://3vs6a6j2n22g" path="res://mob.tscn" id="2_bvsu1"]
+[ext_resource type="PackedScene" uid="uid://ch53lfdv3tyxd" path="res://UI.tscn" id="3_l6vwc"]
+[ext_resource type="PackedScene" uid="uid://bnb7tq0u3wway" path="res://terrain.tscn" id="5_srum5"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7clwj"]
+panorama = ExtResource("2_5o0g0")
+
+[sub_resource type="Sky" id="Sky_beqlr"]
+sky_material = SubResource("PanoramaSkyMaterial_7clwj")
+
+[sub_resource type="Environment" id="Environment_m8ts0"]
+background_mode = 2
+sky = SubResource("Sky_beqlr")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_s2fu6"]
+cell_size = 0.1
+cell_height = 0.1
+agent_radius = 0.1
+agent_max_climb = 0.5
+vertices_per_polygon = 100.0
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_vwcgs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_m8ts0")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ui" parent="CanvasLayer" instance=ExtResource("3_l6vwc")]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.56636, 0)
+navigation_mesh = SubResource("NavigationMesh_s2fu6")
+
+[node name="Node3D" parent="NavigationRegion3D" instance=ExtResource("5_srum5")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, -1.105, 0)
+
+[node name="mob" parent="." instance=ExtResource("2_bvsu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.16636, -0.170244)

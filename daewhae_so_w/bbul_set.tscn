@@ -1,0 +1,521 @@
+[gd_scene load_steps=20 format=3 uid="uid://b103sojb0g3bb"]
+
+[ext_resource type="Script" path="res://bbul_set.gd" id="1_dr2s3"]
+[ext_resource type="Texture2D" uid="uid://um8d1fty61kj" path="res://png/panel_bb.png" id="4_56vlg"]
+[ext_resource type="FontFile" uid="uid://63e5s1utb0pk" path="res://neodgm.ttf" id="4_x4415"]
+[ext_resource type="Texture2D" uid="uid://udou36detk3b" path="res://png/pixelart_starfield.png" id="5_2112g"]
+[ext_resource type="PackedScene" uid="uid://dtsefn137dj5v" path="res://crab_for_set.tscn" id="6_q2d1k"]
+[ext_resource type="PackedScene" uid="uid://cajl7ln855p8p" path="res://chun_ching_for_set.tscn" id="6_ya8oh"]
+[ext_resource type="PackedScene" uid="uid://d2bf8ff6tyoan" path="res://bottle_of_water_for_set.tscn" id="7_4thoo"]
+[ext_resource type="PackedScene" uid="uid://bda1u78v0dsrm" path="res://small_bear_for_set.tscn" id="7_5ysxh"]
+[ext_resource type="PackedScene" uid="uid://snxrabb4jekc" path="res://yyang_for_set.tscn" id="8_edku4"]
+[ext_resource type="PackedScene" uid="uid://bfub6dcqyo8vc" path="res://big_cow_for_set.tscn" id="9_6bjqf"]
+[ext_resource type="Texture2D" uid="uid://dsoqj46xbksiu" path="res://스크린샷 2025-02-22 183256.png" id="11_6yo7h"]
+
+[sub_resource type="Environment" id="Environment_emov5"]
+background_mode = 3
+glow_enabled = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_o13mu"]
+font = ExtResource("4_x4415")
+font_size = 30
+font_color = Color(0, 0, 0.662745, 1)
+outline_size = 1
+outline_color = Color(0.215686, 0.517647, 1, 1)
+
+[sub_resource type="Animation" id="Animation_asbfx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("for_see_back:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_iq48w"]
+resource_name = "for_see"
+length = 3.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("for_see_back:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"is_it"
+}, {
+"args": [],
+"method": &"all_see_off"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_srvlb"]
+resource_name = "out"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"all_see_off"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("for_see_back:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_lde0y"]
+resource_name = "up"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"all_see_off"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("for_see_back:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tvggj"]
+_data = {
+"RESET": SubResource("Animation_asbfx"),
+"for_see": SubResource("Animation_iq48w"),
+"out": SubResource("Animation_srvlb"),
+"up": SubResource("Animation_lde0y")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_m1afr"]
+font = ExtResource("4_x4415")
+font_size = 25
+
+[node name="Node2D2" type="Node2D"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-196, -33)
+scale = Vector2(2, 2)
+script = ExtResource("1_dr2s3")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_emov5")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(2, -2.5)
+
+[node name="PanelBb" type="Sprite2D" parent="Node2D"]
+self_modulate = Color(1, 1.5, 1.2, 1)
+texture_filter = 1
+position = Vector2(417.5, 179.5)
+scale = Vector2(14.325, 14.325)
+texture = ExtResource("4_56vlg")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+z_index = -1
+texture_filter = 1
+position = Vector2(420, 178.5)
+scale = Vector2(2.39062, 1.06563)
+texture = ExtResource("5_2112g")
+
+[node name="left" type="Button" parent="."]
+texture_filter = 1
+offset_left = 54.5
+offset_top = 341.5
+offset_right = 105.5
+offset_bottom = 388.5
+theme_override_fonts/font = ExtResource("4_x4415")
+theme_override_font_sizes/font_size = 40
+text = "<"
+metadata/_edit_use_anchors_ = true
+
+[node name="moyang" type="Button" parent="."]
+texture_filter = 1
+offset_left = 138.5
+offset_top = 341.5
+offset_right = 189.5
+offset_bottom = 389.5
+theme_override_fonts/font = ExtResource("4_x4415")
+theme_override_font_sizes/font_size = 30
+text = "모양 모여주기"
+metadata/_edit_use_anchors_ = true
+
+[node name="right" type="Button" parent="."]
+texture_filter = 1
+offset_left = 734.5
+offset_top = 340.0
+offset_right = 785.5
+offset_bottom = 387.0
+theme_override_fonts/font = ExtResource("4_x4415")
+theme_override_font_sizes/font_size = 40
+text = ">"
+metadata/_edit_use_anchors_ = true
+
+[node name="thing" type="Label" parent="."]
+modulate = Color(1, 1, 20, 1)
+texture_filter = 1
+offset_left = 237.0
+offset_top = 343.0
+offset_right = 619.0
+offset_bottom = 389.0
+text = "천칭자리"
+label_settings = SubResource("LabelSettings_o13mu")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Node2D2" parent="." instance=ExtResource("6_ya8oh")]
+
+[node name="Line2D2" parent="Node2D2" index="1"]
+position = Vector2(72, 32)
+
+[node name="Line2D3" parent="Node2D2" index="2"]
+position = Vector2(72, 32)
+
+[node name="Line2D4" parent="Node2D2" index="3"]
+position = Vector2(72, 32)
+
+[node name="Line2D5" parent="Node2D2" index="4"]
+position = Vector2(72, 32)
+
+[node name="Line2D6" parent="Node2D2" index="5"]
+position = Vector2(72, 32)
+
+[node name="Line2D7" parent="Node2D2" index="6"]
+position = Vector2(72, 32)
+
+[node name="Line2D8" parent="Node2D2" index="7"]
+position = Vector2(72, 32)
+
+[node name="Line2D9" parent="Node2D2" index="8"]
+position = Vector2(72, 32)
+
+[node name="1" parent="Node2D2" index="9"]
+position = Vector2(127.5, 199.5)
+
+[node name="2" parent="Node2D2" index="10"]
+position = Vector2(141.5, 215.5)
+
+[node name="3" parent="Node2D2" index="11"]
+position = Vector2(187.5, 205.5)
+
+[node name="4" parent="Node2D2" index="12"]
+position = Vector2(221.5, 169.5)
+
+[node name="5" parent="Node2D2" index="13"]
+position = Vector2(243.5, 237.5)
+
+[node name="6" parent="Node2D2" index="14"]
+position = Vector2(209.5, 265.5)
+
+[node name="7" parent="Node2D2" index="15"]
+position = Vector2(205.5, 279.5)
+
+[node name="8" parent="Node2D2" index="16"]
+position = Vector2(255.5, 193.5)
+
+[node name="Node2D3" parent="." instance=ExtResource("7_5ysxh")]
+
+[node name="1" parent="Node2D3" index="0"]
+position = Vector2(324, 160.5)
+
+[node name="2" parent="Node2D3" index="1"]
+position = Vector2(372, 192.5)
+
+[node name="3" parent="Node2D3" index="2"]
+position = Vector2(420, 192.5)
+
+[node name="4" parent="Node2D3" index="3"]
+position = Vector2(468, 184.5)
+
+[node name="5" parent="Node2D3" index="4"]
+position = Vector2(484, 208.5)
+
+[node name="6" parent="Node2D3" index="5"]
+position = Vector2(524, 168.5)
+
+[node name="7" parent="Node2D3" index="6"]
+position = Vector2(500, 152.5)
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(55, 23.5)
+
+[node name="Marker2D" type="Marker2D" parent="Marker2D"]
+position = Vector2(710, 287.5)
+
+[node name="Node2D4" parent="." instance=ExtResource("6_q2d1k")]
+
+[node name="Node2D5" parent="." instance=ExtResource("7_4thoo")]
+
+[node name="Node2D6" parent="." instance=ExtResource("8_edku4")]
+
+[node name="Node2D7" parent="." instance=ExtResource("9_6bjqf")]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 45.5
+offset_top = -6.0
+offset_right = 460.5
+offset_bottom = 56.0
+text = "남은 별자리 별 수 : "
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tvggj")
+}
+
+[node name="for_see" parent="." instance=ExtResource("6_ya8oh")]
+visible = false
+z_index = 3
+position = Vector2(239.5, -46)
+script = null
+
+[node name="Line2D2" parent="for_see" index="1"]
+position = Vector2(72, 32)
+
+[node name="Line2D3" parent="for_see" index="2"]
+position = Vector2(72, 32)
+
+[node name="Line2D4" parent="for_see" index="3"]
+position = Vector2(72, 32)
+
+[node name="Line2D5" parent="for_see" index="4"]
+position = Vector2(72, 32)
+
+[node name="Line2D6" parent="for_see" index="5"]
+position = Vector2(72, 32)
+
+[node name="Line2D7" parent="for_see" index="6"]
+position = Vector2(72, 32)
+
+[node name="Line2D8" parent="for_see" index="7"]
+position = Vector2(72, 32)
+
+[node name="Line2D9" parent="for_see" index="8"]
+position = Vector2(72, 32)
+
+[node name="1" parent="for_see" index="9"]
+position = Vector2(127.5, 199.5)
+
+[node name="2" parent="for_see" index="10"]
+position = Vector2(141.5, 215.5)
+
+[node name="3" parent="for_see" index="11"]
+position = Vector2(187.5, 205.5)
+
+[node name="4" parent="for_see" index="12"]
+position = Vector2(221.5, 169.5)
+
+[node name="5" parent="for_see" index="13"]
+position = Vector2(243.5, 237.5)
+
+[node name="6" parent="for_see" index="14"]
+position = Vector2(209.5, 265.5)
+
+[node name="7" parent="for_see" index="15"]
+position = Vector2(205.5, 279.5)
+
+[node name="8" parent="for_see" index="16"]
+position = Vector2(255.5, 193.5)
+
+[node name="for_see2" parent="." instance=ExtResource("7_5ysxh")]
+visible = false
+z_index = 3
+position = Vector2(15.5, -14)
+script = null
+
+[node name="1" parent="for_see2" index="0"]
+position = Vector2(324, 160.5)
+
+[node name="2" parent="for_see2" index="1"]
+position = Vector2(372, 192.5)
+
+[node name="3" parent="for_see2" index="2"]
+position = Vector2(420, 192.5)
+
+[node name="4" parent="for_see2" index="3"]
+position = Vector2(468, 184.5)
+
+[node name="5" parent="for_see2" index="4"]
+position = Vector2(484, 208.5)
+
+[node name="6" parent="for_see2" index="5"]
+position = Vector2(524, 168.5)
+
+[node name="7" parent="for_see2" index="6"]
+position = Vector2(500, 152.5)
+
+[node name="for_see3" parent="." instance=ExtResource("6_q2d1k")]
+visible = false
+z_index = 3
+position = Vector2(207.5, 74)
+script = null
+
+[node name="for_see4" parent="." instance=ExtResource("7_4thoo")]
+visible = false
+z_index = 3
+position = Vector2(-184.5, -38)
+script = null
+
+[node name="for_see5" parent="." instance=ExtResource("8_edku4")]
+visible = false
+z_index = 3
+position = Vector2(-84.5, 46)
+script = null
+
+[node name="for_see6" parent="." instance=ExtResource("9_6bjqf")]
+visible = false
+z_index = 3
+position = Vector2(167.5, -54)
+script = null
+
+[node name="for_see_back" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 2
+position = Vector2(446, 174)
+scale = Vector2(2.65957, 1.45399)
+texture = ExtResource("11_6yo7h")
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 500.0
+offset_top = 360.0
+offset_right = 540.0
+offset_bottom = 383.0
+text = "150g"
+label_settings = SubResource("LabelSettings_m1afr")
+
+[connection signal="button_down" from="left" to="." method="_on_left_button_down"]
+[connection signal="button_down" from="moyang" to="." method="_on_moyang_button_down"]
+[connection signal="button_down" from="right" to="." method="_on_right_button_down"]
+[connection signal="mouse_entered" from="thing" to="." method="_on_thing_mouse_entered"]
+
+[editable path="Node2D2"]
+[editable path="Node2D3"]
+[editable path="for_see"]
+[editable path="for_see2"]

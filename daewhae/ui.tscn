@@ -1,14 +1,26 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1upoah8ohe43"]
+[gd_scene load_steps=18 format=3 uid="uid://c1upoah8ohe43"]
 
 [ext_resource type="Script" path="res://ui.gd" id="1_r6k25"]
-[ext_resource type="PackedScene" uid="uid://dv5auek8djlnd" path="res://water.tscn" id="2_2ockv"]
 [ext_resource type="FontFile" uid="uid://c1j5c56kjk888" path="res://Tilesets/neodgm.ttf" id="2_23142"]
 [ext_resource type="PackedScene" uid="uid://bfhu1dc6yvbqj" path="res://sun.tscn" id="3_tv4va"]
+[ext_resource type="PackedScene" uid="uid://dv5auek8djlnd" path="res://water.tscn" id="4_8v2mc"]
 [ext_resource type="PackedScene" uid="uid://dktgf2x21aj1l" path="res://pop_up.tscn" id="5_rraap"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0fvob"]
 font = ExtResource("2_23142")
 font_size = 45
+
+[sub_resource type="LabelSettings" id="LabelSettings_yi0w6"]
+font = ExtResource("2_23142")
+font_size = 55
+
+[sub_resource type="LabelSettings" id="LabelSettings_oyjj7"]
+font = ExtResource("2_23142")
+font_size = 55
+
+[sub_resource type="LabelSettings" id="LabelSettings_617wx"]
+line_spacing = 5.0
+font = ExtResource("2_23142")
 
 [sub_resource type="Animation" id="Animation_n8wut"]
 length = 0.001
@@ -23,6 +35,42 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1812, 1301)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("first_p:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(576, 1181)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../seed_p:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(576, 1301)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../worm_p:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(576, 1301)]
 }
 
 [sub_resource type="Animation" id="Animation_e8415"]
@@ -59,11 +107,127 @@ tracks/0/keys = {
 "values": [Vector2(1812, 1301), Vector2(1812, 1140), Vector2(1812, 1150)]
 }
 
+[sub_resource type="Animation" id="Animation_yrags"]
+resource_name = "seed_down"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("first_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1301), Vector2(576, 1181)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../seed_p:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1181), Vector2(576, 1301)]
+}
+
+[sub_resource type="Animation" id="Animation_enyaa"]
+resource_name = "seed_up"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("first_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1181), Vector2(576, 1301)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../seed_p:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1301), Vector2(576, 1181)]
+}
+
+[sub_resource type="Animation" id="Animation_1kbwl"]
+resource_name = "worm_down"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("first_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1301), Vector2(576, 1181)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../worm_p:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1181), Vector2(576, 1301)]
+}
+
+[sub_resource type="Animation" id="Animation_yx835"]
+resource_name = "worm_up"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("first_p:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1181), Vector2(576, 1301)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../worm_p:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(576, 1301), Vector2(576, 1181)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rmnkx"]
 _data = {
 "RESET": SubResource("Animation_n8wut"),
 "coming_down": SubResource("Animation_e8415"),
-"coming_up": SubResource("Animation_1n6yt")
+"coming_up": SubResource("Animation_1n6yt"),
+"seed_down": SubResource("Animation_yrags"),
+"seed_up": SubResource("Animation_enyaa"),
+"worm_down": SubResource("Animation_1kbwl"),
+"worm_up": SubResource("Animation_yx835")
 }
 
 [node name="Node2D2" type="Node2D"]
@@ -77,6 +241,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_r6k25")
 
 [node name="first_p" type="Panel" parent="CanvasLayer/UI"]
@@ -92,60 +257,65 @@ offset_right = 576.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="water" type="Button" parent="CanvasLayer/UI/first_p"]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 18.0
-offset_right = 203.0
-offset_bottom = 82.0
-focus_mode = 0
-theme_override_fonts/font = ExtResource("2_23142")
-theme_override_font_sizes/font_size = 30
-text = "비"
-
-[node name="sun" type="Button" parent="CanvasLayer/UI/first_p"]
-layout_mode = 0
-offset_left = 242.0
-offset_top = 18.0
-offset_right = 435.0
-offset_bottom = 82.0
-focus_mode = 0
-theme_override_fonts/font = ExtResource("2_23142")
-theme_override_font_sizes/font_size = 30
-text = "햇빛"
-
 [node name="worm" type="Button" parent="CanvasLayer/UI/first_p"]
 layout_mode = 0
-offset_left = 474.0
+offset_left = 690.0
 offset_top = 18.0
-offset_right = 667.0
+offset_right = 883.0
 offset_bottom = 82.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("2_23142")
 theme_override_font_sizes/font_size = 30
 text = "미생물"
 
 [node name="seeds" type="Button" parent="CanvasLayer/UI/first_p"]
 layout_mode = 0
-offset_left = 706.0
+offset_left = 922.0
 offset_top = 18.0
-offset_right = 899.0
+offset_right = 1115.0
 offset_bottom = 82.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("2_23142")
 theme_override_font_sizes/font_size = 30
 text = "씨앗"
 
-[node name="terrains" type="Button" parent="CanvasLayer/UI/first_p"]
+[node name="sun" type="Button" parent="CanvasLayer/UI/first_p"]
 layout_mode = 0
-offset_left = 938.0
+offset_left = 258.0
 offset_top = 18.0
-offset_right = 1131.0
+offset_right = 451.0
 offset_bottom = 82.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("2_23142")
 theme_override_font_sizes/font_size = 30
-text = "지형"
+text = "햇빛"
+
+[node name="diction" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 18.0
+offset_right = 219.0
+offset_bottom = 82.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "도감"
+
+[node name="water" type="Button" parent="CanvasLayer/UI/first_p"]
+layout_mode = 0
+offset_left = 474.0
+offset_top = 18.0
+offset_right = 667.0
+offset_bottom = 82.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "물"
 
 [node name="Button" type="Button" parent="CanvasLayer/UI"]
 layout_mode = 0
@@ -153,29 +323,32 @@ offset_top = 1184.0
 offset_right = 339.0
 offset_bottom = 1288.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("2_23142")
 theme_override_font_sizes/font_size = 40
 text = "포세이돈의 눈"
 
-[node name="Button2" type="Button" parent="CanvasLayer/UI"]
-layout_mode = 0
-offset_top = 1040.0
-offset_right = 339.0
-offset_bottom = 1144.0
-focus_mode = 0
-theme_override_fonts/font = ExtResource("2_23142")
-theme_override_font_sizes/font_size = 40
-text = "농사신의 눈"
-
 [node name="Button3" type="Button" parent="CanvasLayer/UI"]
 layout_mode = 0
-offset_top = 902.0
+offset_top = 1054.0
 offset_right = 339.0
-offset_bottom = 1006.0
+offset_bottom = 1158.0
 focus_mode = 0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("2_23142")
 theme_override_font_sizes/font_size = 40
 text = "나무의 감각"
+
+[node name="Button4" type="Button" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_top = 926.0
+offset_right = 339.0
+offset_bottom = 1030.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 40
+text = "풀의 느낌"
 
 [node name="show_me_the_p" type="Panel" parent="CanvasLayer/UI"]
 layout_mode = 0
@@ -215,33 +388,232 @@ offset_top = 160.0
 offset_right = 200.0
 offset_bottom = 200.0
 
+[node name="tmepe" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1330.0
+offset_top = 54.0
+offset_right = 1721.0
+offset_bottom = 166.0
+text = "온도 : 60°C"
+label_settings = SubResource("LabelSettings_yi0w6")
+
+[node name="onshil" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 0
+offset_left = 1764.0
+offset_top = 48.0
+offset_right = 2550.0
+offset_bottom = 160.0
+text = "온실가스량: 100"
+label_settings = SubResource("LabelSettings_oyjj7")
+
+[node name="water_n" type="Node2D" parent="CanvasLayer/UI"]
+
+[node name="watering" parent="CanvasLayer/UI/water_n" instance=ExtResource("4_8v2mc")]
+emitting = false
+amount = 1000
+
 [node name="seed_p" type="Panel" parent="."]
-visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = 576.0
-offset_top = 1181.0
+offset_top = 1301.0
 offset_right = 1728.0
-offset_bottom = 1296.0
+offset_bottom = 1416.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="terrain_p" type="Panel" parent="."]
-visible = false
+[node name="fire_seed" type="Button" parent="seed_p"]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 22.0
+offset_right = 234.0
+offset_bottom = 89.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "온대 씨앗"
+
+[node name="fire_seed2" type="Button" parent="seed_p"]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 22.0
+offset_right = 482.0
+offset_bottom = 89.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "열대 씨앗"
+
+[node name="fire_seed3" type="Button" parent="seed_p"]
+layout_mode = 0
+offset_left = 523.0
+offset_top = 22.0
+offset_right = 722.0
+offset_bottom = 89.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "설원 씨앗"
+
+[node name="fire_seed4" type="Button" parent="seed_p"]
+layout_mode = 0
+offset_left = 763.0
+offset_top = 22.0
+offset_right = 962.0
+offset_bottom = 89.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "습지 씨앗"
+
+[node name="back" type="Button" parent="seed_p"]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 50.0
+offset_right = 1134.0
+offset_bottom = 103.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 25
+text = "돌아가기"
+
+[node name="worm_p" type="Panel" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = 576.0
-offset_top = 1181.0
+offset_top = 1301.0
 offset_right = 1728.0
-offset_bottom = 1296.0
+offset_bottom = 1416.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="ice" type="Button" parent="worm_p"]
+self_modulate = Color(0.454902, 0.470588, 1, 1)
+layout_mode = 0
+offset_left = 35.0
+offset_top = 6.0
+offset_right = 234.0
+offset_bottom = 73.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "빙환균"
+
+[node name="fire" type="Button" parent="worm_p"]
+self_modulate = Color(1, 0.470588, 0.478431, 1)
+layout_mode = 0
+offset_left = 531.0
+offset_top = 6.0
+offset_right = 730.0
+offset_bottom = 73.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "화암균"
+
+[node name="iceco" type="Button" parent="worm_p"]
+self_modulate = Color(0.454902, 0.470588, 1, 1)
+layout_mode = 0
+offset_left = 283.0
+offset_top = 6.0
+offset_right = 482.0
+offset_bottom = 73.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "빙절균"
+
+[node name="fireco" type="Button" parent="worm_p"]
+self_modulate = Color(1, 0.470588, 0.478431, 1)
+layout_mode = 0
+offset_left = 771.0
+offset_top = 6.0
+offset_right = 970.0
+offset_bottom = 73.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 30
+text = "화선균"
+
+[node name="back_w" type="Button" parent="worm_p"]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 58.0
+offset_right = 1134.0
+offset_bottom = 111.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 25
+text = "돌아가기"
+
+[node name="back_w2" type="Button" parent="worm_p"]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 2.0
+offset_right = 1134.0
+offset_bottom = 55.0
+focus_mode = 0
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("2_23142")
+theme_override_font_sizes/font_size = 20
+text = "모든 미생물 
+없에기"
+
+[node name="Label" type="Label" parent="worm_p"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 80.0
+offset_right = 205.0
+offset_bottom = 103.0
+text = "온실가스 생성"
+label_settings = SubResource("LabelSettings_617wx")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="worm_p"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 80.0
+offset_right = 461.0
+offset_bottom = 103.0
+text = "온실가스 제거"
+label_settings = SubResource("LabelSettings_617wx")
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="worm_p"]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 80.0
+offset_right = 701.0
+offset_bottom = 103.0
+text = "산소 생성"
+label_settings = SubResource("LabelSettings_617wx")
+horizontal_alignment = 1
+
+[node name="Label4" type="Label" parent="worm_p"]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 80.0
+offset_right = 941.0
+offset_bottom = 103.0
+text = "산소 제거"
+label_settings = SubResource("LabelSettings_617wx")
+horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../CanvasLayer/UI")
@@ -256,25 +628,37 @@ z_index = 5
 position = Vector2(0, -225.9)
 scale = Vector2(200.805, 200.805)
 
-[node name="water_n" type="Node2D" parent="."]
-
-[node name="watering" parent="water_n" instance=ExtResource("2_2ockv")]
-position = Vector2(0, -50)
-emitting = false
-
 [connection signal="mouse_entered" from="CanvasLayer/UI/first_p" to="CanvasLayer/UI" method="_on_first_p_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/UI/first_p" to="CanvasLayer/UI" method="_on_first_p_mouse_exited"]
-[connection signal="button_down" from="CanvasLayer/UI/first_p/water" to="CanvasLayer/UI" method="_on_water_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/worm" to="CanvasLayer/UI" method="_on_worm_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/seeds" to="CanvasLayer/UI" method="_on_seeds_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/first_p/sun" to="CanvasLayer/UI" method="_on_sun_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/diction" to="CanvasLayer/UI" method="_on_diction_button_down"]
+[connection signal="button_down" from="CanvasLayer/UI/first_p/water" to="CanvasLayer/UI" method="_on_water_button_down"]
 [connection signal="button_down" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_button_down"]
 [connection signal="mouse_entered" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/UI/Button" to="CanvasLayer/UI" method="_on_button_mouse_exited"]
-[connection signal="button_down" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_button_down"]
-[connection signal="mouse_entered" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/UI/Button2" to="CanvasLayer/UI" method="_on_button_2_mouse_exited"]
 [connection signal="button_down" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_button_down"]
 [connection signal="mouse_entered" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/UI/Button3" to="CanvasLayer/UI" method="_on_button_3_mouse_exited"]
+[connection signal="button_down" from="CanvasLayer/UI/Button4" to="CanvasLayer/UI" method="_on_button_4_button_down"]
+[connection signal="mouse_entered" from="CanvasLayer/UI/Button4" to="CanvasLayer/UI" method="_on_button_4_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/UI/Button4" to="CanvasLayer/UI" method="_on_button_4_mouse_exited"]
 [connection signal="mouse_entered" from="CanvasLayer/UI/show_me_the_p" to="CanvasLayer/UI" method="_on_show_me_the_p_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/UI/show_me_the_p" to="CanvasLayer/UI" method="_on_show_me_the_p_mouse_exited"]
 [connection signal="value_changed" from="CanvasLayer/UI/show_me_the_p/HSlider" to="CanvasLayer/UI" method="_on_h_slider_value_changed"]
+[connection signal="mouse_entered" from="seed_p" to="CanvasLayer/UI" method="_on_seed_p_mouse_entered"]
+[connection signal="mouse_exited" from="seed_p" to="CanvasLayer/UI" method="_on_seed_p_mouse_exited"]
+[connection signal="button_down" from="seed_p/fire_seed" to="CanvasLayer/UI" method="_on_fire_seed_button_down"]
+[connection signal="button_down" from="seed_p/fire_seed2" to="CanvasLayer/UI" method="_on_fire_seed_2_button_down"]
+[connection signal="button_down" from="seed_p/fire_seed3" to="CanvasLayer/UI" method="_on_fire_seed_3_button_down"]
+[connection signal="button_down" from="seed_p/fire_seed4" to="CanvasLayer/UI" method="_on_fire_seed_4_button_down"]
+[connection signal="button_down" from="seed_p/back" to="CanvasLayer/UI" method="_on_back_button_down"]
+[connection signal="mouse_entered" from="worm_p" to="CanvasLayer/UI" method="_on_seed_p_mouse_entered"]
+[connection signal="mouse_exited" from="worm_p" to="CanvasLayer/UI" method="_on_seed_p_mouse_exited"]
+[connection signal="button_down" from="worm_p/ice" to="CanvasLayer/UI" method="_on_ice_button_down"]
+[connection signal="button_down" from="worm_p/fire" to="CanvasLayer/UI" method="_on_fire_button_down"]
+[connection signal="button_down" from="worm_p/iceco" to="CanvasLayer/UI" method="_on_iceco_button_down"]
+[connection signal="button_down" from="worm_p/fireco" to="CanvasLayer/UI" method="_on_fireco_button_down"]
+[connection signal="button_down" from="worm_p/back_w" to="CanvasLayer/UI" method="_on_back_w_button_down"]
+[connection signal="button_down" from="worm_p/back_w2" to="CanvasLayer/UI" method="_on_back_w_2_button_down"]

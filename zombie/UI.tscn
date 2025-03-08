@@ -1,0 +1,96 @@
+[gd_scene load_steps=7 format=3 uid="uid://ch53lfdv3tyxd"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_abgij"]
+[ext_resource type="FontFile" uid="uid://chtv3rb2pmaod" path="res://NotoSerifKR-ExtraBold.ttf" id="1_dehcq"]
+[ext_resource type="Texture2D" uid="uid://bggbkymvqkvbg" path="res://New Piskel (5).png" id="1_r4pek"]
+[ext_resource type="Texture2D" uid="uid://c54dtmpqi12h4" path="res://cew Piskel (6).png" id="3_e3uj7"]
+[ext_resource type="Texture2D" uid="uid://chywlfgsweulw" path="res://Ncew Piskel (6).png" id="4_bns8l"]
+[ext_resource type="PackedScene" uid="uid://brqcrmhohso6x" path="res://items/inv_ui.tscn" id="6_ipdlj"]
+
+[node name="ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_abgij")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 502.0
+offset_right = 161.0
+offset_bottom = 539.0
+text = "status"
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.596078)
+layout_mode = 0
+offset_left = 8.0
+offset_top = 535.0
+offset_right = 384.0
+offset_bottom = 634.0
+
+[node name="enery_bar" type="ProgressBar" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 48.0
+offset_top = 39.0
+offset_right = 556.0
+offset_bottom = 67.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("1_dehcq")
+
+[node name="health_bar" type="ProgressBar" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 48.0
+offset_top = 7.0
+offset_right = 556.0
+offset_bottom = 35.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("1_dehcq")
+value = 100.0
+
+[node name="food_bar" type="ProgressBar" parent="Panel"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 48.0
+offset_top = 71.0
+offset_right = 556.0
+offset_bottom = 99.0
+scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("1_dehcq")
+
+[node name="Panel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 2.0
+offset_right = 40.0
+offset_bottom = 92.0
+
+[node name="CewPiskel(6)" type="Sprite2D" parent="Panel/Panel"]
+texture_filter = 1
+position = Vector2(15, 15)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("3_e3uj7")
+
+[node name="energy_icon" type="Sprite2D" parent="Panel/Panel"]
+texture_filter = 1
+position = Vector2(15, 45)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("1_r4pek")
+
+[node name="NcewPiskel(6)" type="Sprite2D" parent="Panel/Panel"]
+texture_filter = 1
+position = Vector2(15, 75)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("4_bns8l")
+
+[node name="inv_ui" parent="." instance=ExtResource("6_ipdlj")]
+layout_mode = 1
+offset_right = -0.00012207
+offset_bottom = -6.10352e-05
+mouse_filter = 2

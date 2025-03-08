@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://clelj43mrd5dr"]
+
+[ext_resource type="Script" path="res://gpu_particles_2d.gd" id="1_pomuq"]
+
+[sub_resource type="Curve" id="Curve_k8fjg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.835366, 0.762313), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_xunpb"]
+curve = SubResource("Curve_k8fjg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uv4pt"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(5, 5, 5)
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_xunpb")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+z_index = 2515
+amount = 60
+process_material = SubResource("ParticleProcessMaterial_uv4pt")
+lifetime = 2.0
+script = ExtResource("1_pomuq")

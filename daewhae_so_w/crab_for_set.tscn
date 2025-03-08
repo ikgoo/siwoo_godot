@@ -1,0 +1,666 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtsefn137dj5v"]
+
+[ext_resource type="Texture2D" uid="uid://dcf4sjfant10j" path="res://png/star_bbul.png" id="1_eaaav"]
+[ext_resource type="Script" path="res://crab_for_set.gd" id="1_jmdl4"]
+[ext_resource type="Script" path="res://first.gd" id="2_q2tf8"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_jmdl4")
+
+[node name="1" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(173.5, 64.5)
+texture = ExtResource("1_eaaav")
+
+[node name="2" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(227.5, 98.5)
+texture = ExtResource("1_eaaav")
+
+[node name="3" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(245.5, 118.5)
+texture = ExtResource("1_eaaav")
+
+[node name="4" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(237.5, 154.5)
+texture = ExtResource("1_eaaav")
+
+[node name="5" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+position = Vector2(323.5, 132.5)
+texture = ExtResource("1_eaaav")
+
+[node name="Node2D" type="Node2D" parent="."]
+modulate = Color(2, 2, 2, 1)
+
+[node name="Sprite2D8" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D11" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D12" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D13" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D14" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D15" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D16" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D17" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D18" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D19" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D20" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D21" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D22" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D23" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D24" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D25" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D26" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-379.5, 160.5)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D27" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D28" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D29" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D30" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D31" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D32" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D33" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D34" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D35" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D36" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D37" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D38" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D39" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D40" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D41" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D42" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D43" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D44" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D45" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D46" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D47" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D48" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D49" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D50" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D51" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D52" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D53" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D54" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D55" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D56" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D57" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D58" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D59" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D60" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D61" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D62" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D63" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D64" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D65" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D66" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D67" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D68" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D69" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D70" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D71" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D72" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D73" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D74" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D75" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D76" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D77" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D78" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D79" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D80" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D81" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D82" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D83" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D84" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D85" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D86" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D87" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D88" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D89" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D90" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="Sprite2D91" type="Sprite2D" parent="Node2D"]
+z_index = 1
+texture_filter = 1
+position = Vector2(-608, 0)
+texture = ExtResource("1_eaaav")
+script = ExtResource("2_q2tf8")
+
+[node name="fir_plus_seo" type="Line2D" parent="."]
+position = Vector2(62, 48)
+points = PackedVector2Array(112, 16, 166, 50)
+width = 1.0
+
+[node name="seo_plus_third" type="Line2D" parent="."]
+position = Vector2(62, 48)
+points = PackedVector2Array(166, 50, 184, 70)
+width = 1.0
+
+[node name="third_plus_four" type="Line2D" parent="."]
+position = Vector2(62, 48)
+points = PackedVector2Array(184, 70, 176, 106)
+width = 1.0
+
+[node name="third_plus_fifth" type="Line2D" parent="."]
+position = Vector2(62, 48)
+points = PackedVector2Array(184, 70, 262, 84)
+width = 1.0

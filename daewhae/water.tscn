@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://dv5auek8djlnd"]
+[gd_scene load_steps=5 format=3 uid="uid://dv5auek8djlnd"]
+
+[ext_resource type="PackedScene" uid="uid://dv810jwphyghj" path="res://water_disap.tscn" id="1_oay6d"]
 
 [sub_resource type="Curve" id="Curve_svnm2"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -17,8 +19,12 @@ scale_max = 4.0
 scale_curve = SubResource("CurveTexture_8bc2y")
 
 [node name="watering" type="GPUParticles2D"]
-self_modulate = Color(0, 0.733333, 1, 0.627451)
+self_modulate = Color(0.356863, 0.843137, 1, 0.835294)
 position = Vector2(0, -100)
 amount = 500
 process_material = SubResource("ParticleProcessMaterial_c3vqc")
 lifetime = 0.2
+
+[node name="water_disap" parent="." instance=ExtResource("1_oay6d")]
+position = Vector2(0, 92)
+emitting = false

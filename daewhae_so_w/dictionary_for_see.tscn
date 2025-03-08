@@ -1,0 +1,158 @@
+[gd_scene load_steps=13 format=3 uid="uid://bv6f5nlsglmmm"]
+
+[ext_resource type="Script" path="res://dictionary_for_see.gd" id="1_1mu6x"]
+[ext_resource type="Texture2D" uid="uid://um8d1fty61kj" path="res://png/panel_bb.png" id="2_qiknq"]
+[ext_resource type="Texture2D" uid="uid://udou36detk3b" path="res://png/pixelart_starfield.png" id="3_v2m86"]
+[ext_resource type="PackedScene" uid="uid://cajl7ln855p8p" path="res://chun_ching_for_set.tscn" id="4_00wn7"]
+[ext_resource type="PackedScene" uid="uid://bda1u78v0dsrm" path="res://small_bear_for_set.tscn" id="5_6sxw7"]
+[ext_resource type="PackedScene" uid="uid://dtsefn137dj5v" path="res://crab_for_set.tscn" id="6_mdiqv"]
+[ext_resource type="PackedScene" uid="uid://d2bf8ff6tyoan" path="res://bottle_of_water_for_set.tscn" id="7_pvrgi"]
+[ext_resource type="PackedScene" uid="uid://snxrabb4jekc" path="res://yyang_for_set.tscn" id="8_41kqu"]
+[ext_resource type="PackedScene" uid="uid://bfub6dcqyo8vc" path="res://big_cow_for_set.tscn" id="9_71a1i"]
+[ext_resource type="FontFile" uid="uid://63e5s1utb0pk" path="res://neodgm.ttf" id="10_7yowx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wwp5w"]
+font = ExtResource("10_7yowx")
+font_size = 30
+font_color = Color(0, 0, 0.662745, 1)
+outline_size = 1
+outline_color = Color(0.215686, 0.517647, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ejtps"]
+font = ExtResource("10_7yowx")
+
+[node name="dictionary_for_see" type="Node2D"]
+script = ExtResource("1_1mu6x")
+
+[node name="PanelBb" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1.5, 1.2, 1)
+texture_filter = 1
+position = Vector2(417.5, 179.5)
+scale = Vector2(14.325, 14.325)
+texture = ExtResource("2_qiknq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(420, 178.5)
+scale = Vector2(2.39062, 1.06563)
+texture = ExtResource("3_v2m86")
+
+[node name="for_see" parent="." instance=ExtResource("4_00wn7")]
+visible = false
+z_index = 3
+position = Vector2(307, -14)
+script = null
+
+[node name="for_see2" parent="." instance=ExtResource("5_6sxw7")]
+z_index = 3
+position = Vector2(15.5, -14)
+script = null
+
+[node name="1" parent="for_see2" index="0"]
+position = Vector2(324.5, 160.5)
+
+[node name="2" parent="for_see2" index="1"]
+position = Vector2(372.5, 192.5)
+
+[node name="3" parent="for_see2" index="2"]
+position = Vector2(420.5, 192.5)
+
+[node name="4" parent="for_see2" index="3"]
+position = Vector2(468.5, 184.5)
+
+[node name="5" parent="for_see2" index="4"]
+position = Vector2(484.5, 208.5)
+
+[node name="6" parent="for_see2" index="5"]
+position = Vector2(524.5, 168.5)
+
+[node name="7" parent="for_see2" index="6"]
+position = Vector2(500.5, 152.5)
+
+[node name="for_see3" parent="." instance=ExtResource("6_mdiqv")]
+visible = false
+z_index = 3
+position = Vector2(207.5, 74)
+script = null
+
+[node name="for_see4" parent="." instance=ExtResource("7_pvrgi")]
+visible = false
+z_index = 3
+position = Vector2(-184.5, -38)
+script = null
+
+[node name="for_see5" parent="." instance=ExtResource("8_41kqu")]
+visible = false
+z_index = 3
+position = Vector2(-84.5, 46)
+script = null
+
+[node name="for_see6" parent="." instance=ExtResource("9_71a1i")]
+visible = false
+z_index = 3
+position = Vector2(167.5, -54)
+script = null
+
+[node name="left" type="Button" parent="."]
+offset_left = 112.0
+offset_top = 288.0
+offset_right = 153.0
+offset_bottom = 327.0
+theme_override_fonts/font = ExtResource("10_7yowx")
+theme_override_font_sizes/font_size = 30
+text = "<"
+
+[node name="right" type="Button" parent="."]
+offset_left = 688.0
+offset_top = 288.0
+offset_right = 729.0
+offset_bottom = 327.0
+theme_override_fonts/font = ExtResource("10_7yowx")
+theme_override_font_sizes/font_size = 30
+text = ">"
+
+[node name="detail_b" type="Button" parent="."]
+texture_filter = 1
+offset_left = 496.0
+offset_top = 304.0
+offset_right = 587.0
+offset_bottom = 328.0
+theme_override_fonts/font = ExtResource("10_7yowx")
+theme_override_font_sizes/font_size = 15
+text = "별자리 정보"
+
+[node name="thing" type="Label" parent="."]
+modulate = Color(1, 1, 20, 1)
+texture_filter = 1
+offset_left = 237.0
+offset_top = 287.0
+offset_right = 619.0
+offset_bottom = 333.0
+text = "천칭자리"
+label_settings = SubResource("LabelSettings_wwp5w")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="detail_p" type="Panel" parent="."]
+z_index = 5
+offset_left = 69.0
+offset_top = 70.0
+offset_right = 768.0
+offset_bottom = 289.0
+
+[node name="detail_l" type="Label" parent="."]
+z_index = 5
+offset_left = 81.0
+offset_top = 75.0
+offset_right = 756.0
+offset_bottom = 275.0
+label_settings = SubResource("LabelSettings_ejtps")
+autowrap_mode = 1
+
+[connection signal="button_down" from="left" to="." method="_on_left_button_down"]
+[connection signal="button_down" from="right" to="." method="_on_right_button_down"]
+[connection signal="button_down" from="detail_b" to="." method="_on_detail_b_button_down"]
+
+[editable path="for_see2"]

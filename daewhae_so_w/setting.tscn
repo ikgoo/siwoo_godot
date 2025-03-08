@@ -1,0 +1,157 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvwg5lq15bqda"]
+
+[ext_resource type="FontFile" uid="uid://63e5s1utb0pk" path="res://neodgm.ttf" id="1_0biy7"]
+[ext_resource type="Script" path="res://setting.gd" id="1_e53er"]
+[ext_resource type="Texture2D" uid="uid://d1ohmiieg1k2c" path="res://png/pixelart_starfield_corona.png" id="3_d5pw1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_20kco"]
+font = ExtResource("1_0biy7")
+font_size = 35
+
+[sub_resource type="LabelSettings" id="LabelSettings_u2uvj"]
+font = ExtResource("1_0biy7")
+font_size = 200
+
+[node name="setting" type="Node2D"]
+script = ExtResource("1_e53er")
+
+[node name="master_volume" type="Panel" parent="."]
+offset_left = 302.0
+offset_top = 495.0
+offset_right = 1229.58
+offset_bottom = 553.0
+
+[node name="Label" type="Label" parent="master_volume"]
+layout_mode = 0
+offset_left = -45.0
+offset_top = 2.0
+offset_right = 342.0
+offset_bottom = 56.0
+text = "마스터 볼륨"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2m" type="Label" parent="master_volume"]
+layout_mode = 0
+offset_left = 635.0
+offset_top = 2.0
+offset_right = 1022.0
+offset_bottom = 56.0
+text = "100%"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="master" type="HScrollBar" parent="master_volume"]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 23.0
+offset_right = 735.0
+offset_bottom = 32.0
+step = 10.0
+
+[node name="music_volume" type="Panel" parent="."]
+offset_left = 302.0
+offset_top = 575.0
+offset_right = 1229.58
+offset_bottom = 633.0
+
+[node name="Label" type="Label" parent="music_volume"]
+layout_mode = 0
+offset_left = -45.0
+offset_top = 2.0
+offset_right = 342.0
+offset_bottom = 56.0
+text = "음악 볼륨"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2mu" type="Label" parent="music_volume"]
+layout_mode = 0
+offset_left = 635.0
+offset_top = 2.0
+offset_right = 1022.0
+offset_bottom = 56.0
+text = "100%"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="music" type="HScrollBar" parent="music_volume"]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 23.0
+offset_right = 735.0
+offset_bottom = 32.0
+step = 10.0
+
+[node name="sound_volume" type="Panel" parent="."]
+offset_left = 302.0
+offset_top = 655.0
+offset_right = 1229.58
+offset_bottom = 713.0
+
+[node name="Label" type="Label" parent="sound_volume"]
+layout_mode = 0
+offset_left = -45.0
+offset_top = 2.0
+offset_right = 342.0
+offset_bottom = 56.0
+text = "효과음 볼륨"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2s" type="Label" parent="sound_volume"]
+layout_mode = 0
+offset_left = 635.0
+offset_top = 2.0
+offset_right = 1022.0
+offset_bottom = 56.0
+text = "100%"
+label_settings = SubResource("LabelSettings_20kco")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="sound" type="HScrollBar" parent="sound_volume"]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 23.0
+offset_right = 735.0
+offset_bottom = 32.0
+step = 10.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 368.0
+offset_top = 141.0
+offset_right = 1450.0
+offset_bottom = 341.0
+text = "settings"
+label_settings = SubResource("LabelSettings_u2uvj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(962.5, 538.5)
+scale = Vector2(6.12188, 3.45938)
+texture = ExtResource("3_d5pw1")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 1287.0
+offset_top = 897.0
+offset_right = 1712.0
+offset_bottom = 982.0
+theme_override_fonts/font = ExtResource("1_0biy7")
+theme_override_font_sizes/font_size = 40
+text = "돌아가기"
+
+[connection signal="changed" from="master_volume/master" to="." method="_on_master_changed"]
+[connection signal="value_changed" from="master_volume/master" to="." method="_on_master_value_changed"]
+[connection signal="changed" from="music_volume/music" to="." method="_on_music_changed"]
+[connection signal="value_changed" from="music_volume/music" to="." method="_on_music_value_changed"]
+[connection signal="changed" from="sound_volume/sound" to="." method="_on_sound_changed"]
+[connection signal="value_changed" from="sound_volume/sound" to="." method="_on_sound_value_changed"]
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

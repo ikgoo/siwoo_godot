@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://gnj5ynglev8c"]
+
+[ext_resource type="Script" path="res://slot.gd" id="1_gv467"]
+[ext_resource type="Texture2D" uid="uid://cpfi33ggn7ith" path="res://Nasdfew Piskel (6).png" id="1_t6t7h"]
+
+[node name="slot" type="Panel"]
+self_modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+custom_minimum_size = Vector2(64, 64)
+offset_right = 32.0
+offset_bottom = 32.0
+script = ExtResource("1_gv467")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_t6t7h")
+centered = false
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="item_display" type="Sprite2D" parent="CenterContainer/Panel"]
+scale = Vector2(2, 2)

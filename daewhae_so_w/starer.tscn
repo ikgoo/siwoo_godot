@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfsnrocuqvvo1"]
+
+[ext_resource type="Script" path="res://starer.gd" id="1_hjtao"]
+[ext_resource type="Texture2D" uid="uid://bbuu2alj0wm5h" path="res://New Piskel (4).png" id="2_pwx4d"]
+[ext_resource type="PackedScene" uid="uid://dksd8o6uauu4g" path="res://trail_next_p.tscn" id="3_qbqlt"]
+
+[node name="starer" type="Node2D"]
+script = ExtResource("1_hjtao")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.811765)
+texture_filter = 1
+scale = Vector2(4, 4)
+texture = ExtResource("2_pwx4d")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("3_qbqlt")]
+z_index = 1
+amount = 200
+local_coords = false
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

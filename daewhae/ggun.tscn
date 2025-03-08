@@ -58,7 +58,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -76,7 +76,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -110,13 +110,14 @@ _data = {
 radius = 5.59017
 
 [node name="ggun" type="Node2D"]
+z_index = 4096
 scale = Vector2(0.4, 0.4)
 script = ExtResource("1_fdri0")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="sprite" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_32l0e")
-animation = &"red"
+animation = &"blue"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

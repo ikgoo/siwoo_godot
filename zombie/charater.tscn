@@ -1,0 +1,170 @@
+[gd_scene load_steps=13 format=3 uid="uid://rf1awt5k5oan"]
+
+[ext_resource type="Script" path="res://charater.gd" id="1_geug0"]
+[ext_resource type="Resource" uid="uid://c11ccry6cxqgq" path="res://items/player_inv.tres" id="2_ew0lq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_25la0"]
+radius = 0.1
+height = 0.4
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xuc5q"]
+radius = 0.1
+height = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_ed14u"]
+size = Vector3(0.04, 0.04, 0.15)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yjw00"]
+radius = 0.005
+height = 0.2
+
+[sub_resource type="Animation" id="Animation_hxrlq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/MeshInstance3D3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0977033, -0.0751007, -0.0421238)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/MeshInstance3D3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.338988, 0.321128, 0.287248)]
+}
+
+[sub_resource type="Animation" id="Animation_hw4l8"]
+resource_name = "ppuk"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/MeshInstance3D3:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15, 0.5, 0.6),
+"transitions": PackedFloat32Array(0.307786, 0.353553, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.0977033, -0.0751007, -0.0421238), Vector3(0.0977033, -0.0751007, -0.0421238), Vector3(0.068, -0.082, -0.052), Vector3(0.088, -0.082, -0.052), Vector3(0.0977033, -0.0751007, -0.0421238)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/MeshInstance3D3:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15, 0.5, 0.6),
+"transitions": PackedFloat32Array(0.203063, 0.307786, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.338988, 0.321128, 0.287248), Vector3(0.496543, -0.0889967, 0.281977), Vector3(-0.153589, 0.584685, 0.322886), Vector3(0.136136, 0.523599, 0.612611), Vector3(0.338988, 0.321128, 0.287248)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0axpe"]
+_data = {
+"RESET": SubResource("Animation_hxrlq"),
+"ppuk": SubResource("Animation_hw4l8")
+}
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qx8ib"]
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 180.0
+initial_velocity_min = -1.0
+initial_velocity_max = 1.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.8
+sub_emitter_mode = 1
+sub_emitter_frequency = 4.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_xsjp2"]
+size = Vector3(1, 1, 0.01)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pawni"]
+radius = 0.1
+height = 0.4
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
+collision_mask = 7
+script = ExtResource("1_geug0")
+inv = ExtResource("2_ew0lq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_25la0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xuc5q")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(0.939738, -0.168172, 0.297675, 0.267191, 0.904451, -0.332533, -0.213309, 0.39203, 0.894881, 0.0977033, -0.0751007, -0.0421238)
+mesh = SubResource("BoxMesh_ed14u")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D/MeshInstance3D3"]
+transform = Transform3D(0.939739, 0.331791, -0.0825018, -0.168172, 0.658678, 0.73339, 0.297674, -0.67532, 0.674783, 0.0168551, 0.0437033, -0.0997025)
+mesh = SubResource("CapsuleMesh_yjw00")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(0.962364, -0.267539, 0.0477204, 0.26789, 0.904381, -0.332161, 0.0457085, 0.332444, 0.942015, -0.092, -0.075, -0.042)
+mesh = SubResource("BoxMesh_ed14u")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D/MeshInstance3D4"]
+transform = Transform3D(0.939739, 0.331791, -0.0825018, -0.168172, 0.658678, 0.73339, 0.297674, -0.67532, 0.674783, 0.0168551, 0.0437033, -0.0997025)
+mesh = SubResource("CapsuleMesh_yjw00")
+skeleton = NodePath("../..")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -0.5)
+collision_mask = 10
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0axpe")
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.8
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.666212)
+emitting = false
+amount = 100
+lifetime = 5.0
+one_shot = true
+explosiveness = 1.0
+trail_lifetime = 3.88
+process_material = SubResource("ParticleProcessMaterial_qx8ib")
+draw_pass_1 = SubResource("BoxMesh_xsjp2")
+
+[node name="stamina_timer" type="Timer" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 18
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_pawni")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="stamina_timer" to="." method="_on_stamina_timer_timeout"]

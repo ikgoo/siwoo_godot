@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://jepfjbr24thl"
+path="res://.godot/imported/MUSCMisc_Minor-Gamelan Dreams_HY_Trnqlty.wav-ff3e7e81fb82b4c750a680f176068b28.sample"
+
+[deps]
+
+source_file="res://MUSCMisc_Minor-Gamelan Dreams_HY_Trnqlty.wav"
+dest_files=["res://.godot/imported/MUSCMisc_Minor-Gamelan Dreams_HY_Trnqlty.wav-ff3e7e81fb82b4c750a680f176068b28.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

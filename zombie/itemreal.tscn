@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://chlrw2err6tvq"]
+
+[ext_resource type="Script" path="res://itemreal.gd" id="1_0yipn"]
+[ext_resource type="Script" path="res://items/inventory_item.gd" id="2_ggnwv"]
+[ext_resource type="Texture2D" uid="uid://chywlfgsweulw" path="res://Ncew Piskel (6).png" id="3_j2u36"]
+[ext_resource type="PackedScene" uid="uid://brgt2pgiscbr0" path="res://pole.tscn" id="4_vp543"]
+
+[sub_resource type="Resource" id="Resource_s0ept"]
+script = ExtResource("2_ggnwv")
+name = "bone"
+texture = ExtResource("3_j2u36")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t5lsb"]
+radius = 0.015
+height = 0.55
+
+[node name="itemreal" type="Node3D"]
+script = ExtResource("1_0yipn")
+item = SubResource("Resource_s0ept")
+mesh_i = ExtResource("4_vp543")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_t5lsb")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="area_shape_entered" from="Area3D" to="." method="_on_area_3d_area_shape_entered"]
+[connection signal="area_shape_exited" from="Area3D" to="." method="_on_area_3d_area_shape_exited"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
+[connection signal="body_shape_exited" from="Area3D" to="." method="_on_area_3d_body_shape_exited"]
