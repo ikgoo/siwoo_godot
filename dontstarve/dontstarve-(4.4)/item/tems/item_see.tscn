@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://d06wbdk4hy4t4"]
+
+[ext_resource type="Script" uid="uid://bk0nhqm6nqt6a" path="res://item/tems/item_see.gd" id="1_jrmt7"]
+[ext_resource type="Texture2D" uid="uid://meoakk1y0yh0" path="res://item_see.png" id="1_wf8bt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wf8bt"]
+font_size = 9
+
+[node name="item_see" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_jrmt7")
+
+[node name="Label" type="Label" parent="."]
+z_index = 1
+texture_filter = 1
+layout_mode = 0
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 60.0
+offset_bottom = 31.0
+label_settings = SubResource("LabelSettings_wf8bt")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2, 3)
+texture = ExtResource("1_wf8bt")

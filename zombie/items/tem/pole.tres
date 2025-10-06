@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="Inven_Item" load_steps=3 format=3 uid="uid://dcg3y6uuhnyyl"]
+[gd_resource type="Resource" script_class="Inven_Item" load_steps=3 format=3 uid="uid://bcmbwwb8md4iv"]
 
-[ext_resource type="Script" path="res://items/inventory_item.gd" id="1_x11sh"]
+[ext_resource type="Script" uid="uid://gfcqr5qangdt" path="res://items/inventory_item.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://chywlfgsweulw" path="res://Ncew Piskel (6).png" id="2_c0ljh"]
 
 [resource]
-script = ExtResource("1_x11sh")
-name = "pole"
+script = ExtResource("1_script")
+name_i = "pole"
 texture = ExtResource("2_c0ljh")
+value = 10000
+type = 0

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="entity" load_steps=4 format=3 uid="uid://cgitg6blohyoe"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_fyiua"]
+[ext_resource type="Texture2D" uid="uid://b1w0b44xf48hv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Characters/Free Cow Sprites.png" id="2_52002"]
+[ext_resource type="Script" uid="uid://dugjogc771sh2" path="res://entity/entity_thing.gd" id="2_oqoe4"]
+
+[resource]
+script = ExtResource("2_oqoe4")
+hp = 40
+entity_name = "소"
+sulmung = "대"
+attack_dam = 4
+speed = 2
+attack_delay = 5
+img = ExtResource("2_52002")
+drop_item = Array[ExtResource("1_fyiua")]([])
+attack_type = 0
+size = 2
+frames = 3
+y_frames = 2
+metadata/_custom_type_script = "uid://dugjogc771sh2"

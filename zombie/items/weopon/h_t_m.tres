@@ -1,0 +1,2 @@
+@export var type = 1  # 0에서 1로 변경 (무기에서 음식으로)
+@export var name_i = "h_t_m"  # 이름은 그대로 유지 

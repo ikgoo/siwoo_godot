@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://brgt2pgiscbr0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mfkdh"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pgpvm"]
+material = SubResource("StandardMaterial3D_mfkdh")
+radius = 0.01
+height = 0.2
+
+[node name="pole3" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0897203, 0)
+mesh = SubResource("CapsuleMesh_pgpvm")

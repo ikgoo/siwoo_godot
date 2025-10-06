@@ -1,0 +1,131 @@
+[gd_scene load_steps=9 format=3 uid="uid://dhhx3g50y0cr0"]
+
+[ext_resource type="Script" uid="uid://cmuuen4uthmhg" path="res://item_maker_veiw.gd" id="1_56a7v"]
+[ext_resource type="Texture2D" uid="uid://meoakk1y0yh0" path="res://item_see.png" id="2_gcio3"]
+[ext_resource type="Texture2D" uid="uid://y0bm1t34nfxc" path="res://resorce/item/ChickenThighMoving1.png" id="3_gcio3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t5cok"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gcio3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yk0ro"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ya0s1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_74gfx"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="item_maker_veiw" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_56a7v")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 240.0
+scale = Vector2(2, 3)
+texture = ExtResource("2_gcio3")
+
+[node name="thing_name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 96.0
+offset_right = 337.0
+offset_bottom = 119.0
+text = "안녕한가"
+label_settings = SubResource("LabelSettings_t5cok")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="thing_img" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 157.0
+offset_top = 113.0
+offset_right = 297.0
+offset_bottom = 253.0
+texture = ExtResource("3_gcio3")
+
+[node name="mete_1" type="Label" parent="."]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 280.0
+offset_right = 301.935
+offset_bottom = 303.0
+text = "나무 x 2"
+label_settings = SubResource("LabelSettings_gcio3")
+
+[node name="mete_2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 338.0
+offset_right = 296.935
+offset_bottom = 361.0
+text = "z"
+label_settings = SubResource("LabelSettings_yk0ro")
+
+[node name="mete_3" type="Label" parent="."]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 408.0
+offset_right = 293.935
+offset_bottom = 431.0
+text = "z"
+label_settings = SubResource("LabelSettings_ya0s1")
+
+[node name="mete_4" type="Label" parent="."]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 472.0
+offset_right = 293.935
+offset_bottom = 495.0
+text = "z"
+label_settings = SubResource("LabelSettings_74gfx")
+
+[node name="mete_img_1" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 99.0
+offset_top = 255.0
+offset_right = 163.0
+offset_bottom = 319.0
+texture = ExtResource("3_gcio3")
+
+[node name="mete_img_2" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 99.0
+offset_top = 320.0
+offset_right = 163.0
+offset_bottom = 384.0
+texture = ExtResource("3_gcio3")
+
+[node name="mete_img_3" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 99.0
+offset_top = 385.0
+offset_right = 163.0
+offset_bottom = 449.0
+texture = ExtResource("3_gcio3")
+
+[node name="mete_img_4" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 99.0
+offset_top = 450.0
+offset_right = 163.0
+offset_bottom = 514.0
+texture = ExtResource("3_gcio3")
+
+[node name="make" type="Button" parent="."]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 551.0
+offset_right = 389.0
+offset_bottom = 608.0
+
+[connection signal="button_down" from="make" to="." method="_on_make_button_down"]

@@ -1,0 +1,321 @@
+[gd_scene load_steps=19 format=3 uid="uid://baocjrlsbuusk"]
+
+[ext_resource type="Script" uid="uid://4wbtann40kq8" path="res://drawer.gd" id="1_71w65"]
+[ext_resource type="Texture2D" uid="uid://ccua4mq31w6ls" path="res://wall3.png" id="1_qe6j5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71w65"]
+albedo_color = Color(0.853755, 0.391243, 0, 1)
+albedo_texture = ExtResource("1_qe6j5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kj86r"]
+albedo_texture = ExtResource("1_qe6j5")
+uv1_scale = Vector3(0.27, 0.27, 0.27)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lt7lr"]
+albedo_color = Color(0.586078, 0.295103, 0.13251, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kj86r"]
+size = Vector3(0.823792, 0.351318, 1.00208)
+
+[sub_resource type="Animation" id="Animation_e7edr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("drawer_2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("drawer_3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5ono6"]
+resource_name = "first_c"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_1:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.641197), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_o3ddy"]
+resource_name = "first_o"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_1:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.641197)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hvipv"]
+_data = {
+&"RESET": SubResource("Animation_e7edr"),
+&"first_c": SubResource("Animation_5ono6"),
+&"first_o": SubResource("Animation_o3ddy")
+}
+
+[sub_resource type="Animation" id="Animation_kj86r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0666667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_lt7lr"]
+resource_name = "se_c"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_2:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.641), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_71w65"]
+resource_name = "se_o"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_2:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.641)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o3ddy"]
+_data = {
+&"RESET": SubResource("Animation_kj86r"),
+&"se_c": SubResource("Animation_lt7lr"),
+&"se_o": SubResource("Animation_71w65")
+}
+
+[sub_resource type="Animation" id="Animation_hrljh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2tx8y"]
+resource_name = "third_c"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_3:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.641), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7thqc"]
+resource_name = "third_o"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("drawer_3:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.641)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1ysw4"]
+_data = {
+&"RESET": SubResource("Animation_hrljh"),
+&"third_c": SubResource("Animation_2tx8y"),
+&"third_o": SubResource("Animation_7thqc")
+}
+
+[node name="drawer" type="CSGCombiner3D"]
+script = ExtResource("1_71w65")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00231028, -2.38419e-07, 0.00209808)
+size = Vector3(1, 1.32837, 0.958008)
+material = SubResource("StandardMaterial3D_71w65")
+
+[node name="drawer_1" type="CSGCombiner3D" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="drawer_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.418565, 0.0305792)
+size = Vector3(0.818604, 0.350586, 0.958008)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="drawer_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.418565, 0.0428607)
+size = Vector3(0.0368652, 0.0371094, 0.958008)
+material = SubResource("StandardMaterial3D_lt7lr")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="drawer_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00140381, 0.451552, 0.0610968)
+operation = 2
+size = Vector3(0.719849, 0.350586, 0.830566)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="Area3D" type="Area3D" parent="drawer_1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.641197)
+collision_layer = 2097184
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="drawer_1/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00161743, 0.419399, 0.649923)
+shape = SubResource("BoxShape3D_kj86r")
+
+[node name="drawer_2" type="CSGCombiner3D" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="drawer_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0305792)
+size = Vector3(0.818604, 0.350586, 0.958008)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="drawer_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0019515, 0.0428607)
+size = Vector3(0.0368652, 0.0371094, 0.958008)
+material = SubResource("StandardMaterial3D_lt7lr")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="drawer_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00140381, 0.0431525, 0.0610968)
+operation = 2
+size = Vector3(0.719849, 0.350586, 0.830566)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="Area3Dc" type="Area3D" parent="drawer_2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.416795, -0.641197)
+collision_layer = 4194336
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="drawer_2/Area3Dc"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00161743, 0.419399, 0.649923)
+shape = SubResource("BoxShape3D_kj86r")
+
+[node name="drawer_3" type="CSGCombiner3D" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="drawer_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.411288, 0.0305792)
+size = Vector3(0.818604, 0.350586, 0.958008)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="drawer_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.411883, 0.0428607)
+size = Vector3(0.0368652, 0.0371094, 0.958008)
+material = SubResource("StandardMaterial3D_lt7lr")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="drawer_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00140381, -0.372097, 0.0610968)
+operation = 2
+size = Vector3(0.719849, 0.350586, 0.830566)
+material = SubResource("StandardMaterial3D_kj86r")
+
+[node name="Area3Dd" type="Area3D" parent="drawer_3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.830945, -0.641197)
+collision_layer = 8388640
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="drawer_3/Area3Dd"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00161743, 0.419399, 0.649923)
+shape = SubResource("BoxShape3D_kj86r")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_hvipv")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_o3ddy")
+}
+
+[node name="AnimationPlayer3" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1ysw4")
+}
+
+[connection signal="area_entered" from="drawer_1/Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="drawer_1/Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="area_entered" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_area_entered"]
+[connection signal="area_exited" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_area_exited"]
+[connection signal="area_shape_entered" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_area_shape_entered"]
+[connection signal="body_entered" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_body_entered"]
+[connection signal="body_exited" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_body_exited"]
+[connection signal="body_shape_entered" from="drawer_2/Area3Dc" to="." method="_on_area_3_dc_body_shape_entered"]
+[connection signal="area_entered" from="drawer_3/Area3Dd" to="." method="_on_area_3_dd_area_entered"]
+[connection signal="area_exited" from="drawer_3/Area3Dd" to="." method="_on_area_3_dd_area_exited"]

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="entity" load_steps=6 format=3 uid="uid://cgitg6blohyoe"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_fyiua"]
+[ext_resource type="Texture2D" uid="uid://b1w0b44xf48hv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Characters/Free Cow Sprites.png" id="2_52002"]
+[ext_resource type="Script" uid="uid://dugjogc771sh2" path="res://entity/entity_thing.gd" id="2_oqoe4"]
+[ext_resource type="Resource" uid="uid://biof5yd3us4w3" path="res://item/tems/meat.tres" id="2_tkcfw"]
+[ext_resource type="Script" uid="uid://c44cft5c86ou6" path="res://entity/entity_drop.gd" id="3_tkcfw"]
+
+[resource]
+script = ExtResource("2_oqoe4")
+hp = 40
+entity_name = "소"
+sulmung = "대"
+attack_dam = 4
+speed = 2
+attack_delay = 5
+img = ExtResource("2_52002")
+drop_item = Array[ExtResource("1_fyiua")]([ExtResource("2_tkcfw"), ExtResource("2_tkcfw")])
+size = 2
+frames = 3
+y_frames = 2
+e_speed = 0.4
+my_animation_attack = "cow_attack"
+my_animation_walk = "cow_walk"
+attack_speed = 0.3
+metadata/_custom_type_script = "uid://dugjogc771sh2"

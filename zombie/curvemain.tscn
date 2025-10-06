@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqt0jvtbni63e"]
+
+[ext_resource type="ArrayMesh" uid="uid://bq8hbfijn6d7c" path="res://tunnel.res" id="1_ytskf"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Tunnel" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+lod_bias = 128.0
+mesh = ExtResource("1_ytskf")
+
+[node name="Tunnel2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+cast_shadow = 0
+lod_bias = 118.813
+mesh = ExtResource("1_ytskf")
+
+[node name="Tunnel3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -22)
+cast_shadow = 0
+lod_bias = 128.0
+mesh = ExtResource("1_ytskf")

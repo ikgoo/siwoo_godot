@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://ch53lfdv3tyxd"]
+[gd_scene load_steps=8 format=3 uid="uid://ch53lfdv3tyxd"]
 
-[ext_resource type="Script" path="res://ui.gd" id="1_abgij"]
+[ext_resource type="Script" uid="uid://do8jb1anwhxen" path="res://ui.gd" id="1_abgij"]
 [ext_resource type="FontFile" uid="uid://chtv3rb2pmaod" path="res://NotoSerifKR-ExtraBold.ttf" id="1_dehcq"]
 [ext_resource type="Texture2D" uid="uid://bggbkymvqkvbg" path="res://New Piskel (5).png" id="1_r4pek"]
 [ext_resource type="Texture2D" uid="uid://c54dtmpqi12h4" path="res://cew Piskel (6).png" id="3_e3uj7"]
 [ext_resource type="Texture2D" uid="uid://chywlfgsweulw" path="res://Ncew Piskel (6).png" id="4_bns8l"]
 [ext_resource type="PackedScene" uid="uid://brqcrmhohso6x" path="res://items/inv_ui.tscn" id="6_ipdlj"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_0mc3e"]
 
 [node name="ui" type="Control"]
 layout_mode = 3
@@ -94,3 +96,8 @@ layout_mode = 1
 offset_right = -0.00012207
 offset_bottom = -6.10352e-05
 mouse_filter = 2
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+position = Vector2(574, 326)
+scale = Vector2(4, 4)
+mesh = SubResource("SphereMesh_0mc3e")

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Inven_Item" load_steps=2 format=3 uid="uid://b4qixcmyvwqfy"]
+
+[ext_resource type="Script" uid="uid://gfcqr5qangdt" path="res://items/inventory_item.gd" id="1_isdjb"]
+
+[resource]
+script = ExtResource("1_isdjb")
+name_i = "punch"
+value = 5
+type = 0

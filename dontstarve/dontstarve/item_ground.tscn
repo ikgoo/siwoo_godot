@@ -1,0 +1,106 @@
+[gd_scene load_steps=9 format=3 uid="uid://h46qqq4th6om"]
+
+[ext_resource type="Script" uid="uid://d3bmqgglfgd00" path="res://item_ground.gd" id="1_4tyrh"]
+[ext_resource type="Resource" uid="uid://bttc5udsim1sb" path="res://item/tems/apple.tres" id="2_57yun"]
+[ext_resource type="Texture2D" uid="uid://1w2fg3tpox8e" path="res://resorce/item/AppleMoving1.png" id="3_oeu4m"]
+
+[sub_resource type="Animation" id="Animation_bgol6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_57yun"]
+resource_name = "drop"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(4.75683, 4.14106),
+"update": 0,
+"values": [Vector3(0, 0.1, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_oeu4m"]
+resource_name = "spread"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(3.0314333, 5.4641604, 78.79325),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.15976399, 0.056878507, 0), Vector3(0.33041635, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oeu4m"]
+_data = {
+&"RESET": SubResource("Animation_bgol6"),
+&"drop": SubResource("Animation_57yun"),
+&"spread": SubResource("Animation_oeu4m")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_oeu4m"]
+radius = 0.0390294
+
+[node name="item_ground" type="Node3D"]
+script = ExtResource("1_4tyrh")
+thing = ExtResource("2_57yun")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_oeu4m")
+}
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("3_oeu4m")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_oeu4m")

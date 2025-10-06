@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="resipi" load_steps=6 format=3 uid="uid://dm2t0dm8dxaim"]
+
+[ext_resource type="Resource" uid="uid://cvfdg70mglph3" path="res://item/tems/battle_ground_winner.tres" id="1_2bj51"]
+[ext_resource type="Script" uid="uid://jjj57xxmamn6" path="res://resipi/resipi.gd" id="1_qg70g"]
+[ext_resource type="Resource" uid="uid://bttc5udsim1sb" path="res://item/tems/apple.tres" id="2_f471u"]
+[ext_resource type="Script" uid="uid://cgc3l2gtyqulk" path="res://resipi/resipi_resource.gd" id="3_ulcfr"]
+
+[sub_resource type="Resource" id="Resource_us71v"]
+script = ExtResource("3_ulcfr")
+r_item = ExtResource("2_f471u")
+count = 5
+metadata/_custom_type_script = "uid://cgc3l2gtyqulk"
+
+[resource]
+script = ExtResource("1_qg70g")
+item_need = Array[ExtResource("3_ulcfr")]([SubResource("Resource_us71v")])
+end_tem = ExtResource("1_2bj51")
+type = 2
+metadata/_custom_type_script = "uid://jjj57xxmamn6"

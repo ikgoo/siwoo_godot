@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="entity" load_steps=3 format=3 uid="uid://cg5eu47jqa21b"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_8m6hg"]
+[ext_resource type="Script" uid="uid://dugjogc771sh2" path="res://entity/entity_thing.gd" id="2_ijurh"]
+
+[resource]
+script = ExtResource("2_ijurh")
+hp = 20
+entity_name = "좀비"
+sulmung = "좀비좀비좀비좀비좀비좀"
+attack_dam = 10
+speed = 2
+attack_delay = 1
+drop_item = Array[ExtResource("1_8m6hg")]([])
+attack_type = 0
+size = 0
+metadata/_custom_type_script = "uid://dugjogc771sh2"

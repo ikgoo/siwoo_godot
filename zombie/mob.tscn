@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://3vs6a6j2n22g"]
+[gd_scene load_steps=12 format=3 uid="uid://3vs6a6j2n22g"]
 
-[ext_resource type="Script" path="res://mob.gd" id="1_diboj"]
+[ext_resource type="Script" uid="uid://cr8j0p4mteehj" path="res://mob.gd" id="1_diboj"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tcvaa"]
 radius = 0.1
@@ -14,8 +14,8 @@ height = 0.4
 radius = 0.1
 height = 0.4
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_do0a8"]
-radius = 16.861
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dy6sc"]
+points = PackedVector3Array(2.585, 0, 0, 1.735, 0, -1.605, 1.735, 0, 1.605, 0.6, 0, 0, 0, 0, 0.795, -0.525, 0, 0.79, -1.01, 0, 0, 0, 0, -0.795)
 
 [sub_resource type="Animation" id="Animation_8cl0c"]
 length = 0.001
@@ -81,12 +81,20 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wbo56"]
 _data = {
-"RESET": SubResource("Animation_8cl0c"),
-"die": SubResource("Animation_nrmwc"),
-"hurt": SubResource("Animation_143au")
+&"RESET": SubResource("Animation_8cl0c"),
+&"die": SubResource("Animation_nrmwc"),
+&"hurt": SubResource("Animation_143au")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dy6sc"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nokgg"]
+material = SubResource("StandardMaterial3D_dy6sc")
+size = Vector3(0.05, 0.05, 0.05)
+
 [node name="mob" type="CharacterBody3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 collision_layer = 6
 script = ExtResource("1_diboj")
 
@@ -107,15 +115,28 @@ shape = SubResource("CapsuleShape3D_xvfum")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [node name="Area3D2" type="Area3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 collision_layer = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
-shape = SubResource("SphereShape3D_do0a8")
+shape = SubResource("ConvexPolygonShape3D_dy6sc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_wbo56")
+&"": SubResource("AnimationLibrary_wbo56")
 }
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.0443979, 0.0870741, -0.107527)
+mesh = SubResource("BoxMesh_nokgg")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.0308721, 0.0870741, -0.0949783)
+mesh = SubResource("BoxMesh_nokgg")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.00851224, -0.00274519, -0.0987061)
+mesh = SubResource("BoxMesh_nokgg")
 
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]

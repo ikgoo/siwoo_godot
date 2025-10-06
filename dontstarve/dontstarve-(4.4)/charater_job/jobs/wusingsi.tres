@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="job" load_steps=4 format=3 uid="uid://c5hkwie5a2jqj"]
+
+[ext_resource type="Script" uid="uid://jjj57xxmamn6" path="res://resipi/resipi.gd" id="1_l3s4m"]
+[ext_resource type="Script" uid="uid://b0qxbgmggyrtq" path="res://charater_job/job.gd" id="2_ngt0i"]
+[ext_resource type="Texture2D" uid="uid://1w2fg3tpox8e" path="res://resorce/item/AppleMoving1.png" id="3_ngt0i"]
+
+[resource]
+script = ExtResource("2_ngt0i")
+hp = 150
+stamina = 200
+hunger = 150
+fun = 100
+name = "워싱시"
+craft = Array[ExtResource("1_l3s4m")]([])
+select_img = ExtResource("3_ngt0i")
+metadata/_custom_type_script = "uid://b0qxbgmggyrtq"

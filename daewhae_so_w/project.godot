@@ -12,7 +12,7 @@ config_version=5
 
 config/name="star_space"
 run/main_scene="res://title.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://스크린샷 2025-02-24 223915.png"
 
@@ -46,5 +46,5 @@ ui_zoom_out={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.301961, 0.301961, 0.301961, 1)
 viewport/hdr_2d=true
+environment/defaults/default_clear_color=Color(0.301961, 0.301961, 0.301961, 1)

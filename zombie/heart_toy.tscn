@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://cu6a8rhwobsda"]
+
+[ext_resource type="Script" uid="uid://d1vlyg8hrmkch" path="res://itemreal.gd" id="1_ft7r0"]
+[ext_resource type="Script" uid="uid://gfcqr5qangdt" path="res://items/inventory_item.gd" id="2_u0d4s"]
+[ext_resource type="Texture2D" uid="uid://c54dtmpqi12h4" path="res://cew Piskel (6).png" id="3_u0d4s"]
+[ext_resource type="PackedScene" uid="uid://dhgpgylck1c6s" path="res://items/weopon/h_t_m.tscn" id="4_u0d4s"]
+
+[sub_resource type="Resource" id="Resource_s0ept"]
+script = ExtResource("2_u0d4s")
+name_i = ""
+texture = ExtResource("3_u0d4s")
+type = 1
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_u0d4s"]
+points = PackedVector3Array(-0.0209299, 0.0687818, -0.0897106, 0.0183014, 0.0976939, 0.0976939, 0.0304892, 0.0975872, 0.0945304, 0.0240041, -0.096024, 0.0450042, -0.0976936, 0.0976935, 0.0183032, 0.0945322, 0.097573, -0.0304736, -0.0179064, -0.0955691, -0.0477845, -0.0329643, -0.0958861, 0.0389514, 0.0416404, -0.095215, -0.02975, 0.0304879, 0.0975831, -0.0945265, 0.0910611, 0.0971312, 0.0394459, -0.088169, 0.0972924, -0.0455987, -0.051407, 0.0967871, 0.0846792, -0.0512563, -0.0934803, -0.00602672, 0.0512553, -0.0934842, 0.00602697, 0.070316, 0.0978447, -0.0703187, -0.0514089, 0.0967906, -0.0846823, -0.00602823, -0.093481, 0.0512559, 0.0179049, -0.0955773, -0.0477887, 0.0670608, 0.0975675, 0.0731756, -0.0881605, 0.097283, 0.0455942, -0.0416487, -0.0951843, -0.0297404, 0.071865, 0.1, 0.0374902, -0.018304, 0.0976911, 0.0976911, 0.0416367, -0.0952065, 0.0297474, -0.0477851, -0.0955686, 0.0179051, 0.0963887, 0.0873338, 0.00902022, -0.0976913, 0.0976913, -0.0183028, 0.00903749, 0.0873536, -0.0963928, -0.0744888, 0.0893861, 0.0625777, -0.068219, 0.086021, -0.0682185, -0.0183044, 0.0976933, -0.0976933)
+
+[node name="heart_toy" type="Node3D"]
+script = ExtResource("1_ft7r0")
+item = SubResource("Resource_s0ept")
+mesh_i = ExtResource("4_u0d4s")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("ConvexPolygonShape3D_u0d4s")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="area_shape_entered" from="Area3D" to="." method="_on_area_3d_area_shape_entered"]
+[connection signal="area_shape_exited" from="Area3D" to="." method="_on_area_3d_area_shape_exited"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
+[connection signal="body_shape_exited" from="Area3D" to="." method="_on_area_3d_body_shape_exited"]

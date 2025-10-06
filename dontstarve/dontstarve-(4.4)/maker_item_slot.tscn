@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgpnn8ys265d3"]
+
+[ext_resource type="Script" uid="uid://c2nfqliuq0qf6" path="res://maker_item_slot.gd" id="1_l1pxn"]
+[ext_resource type="Resource" uid="uid://dm2t0dm8dxaim" path="res://resipi/resipis/chiken_winner.tres" id="2_h82nn"]
+[ext_resource type="Texture2D" uid="uid://yfcyhfiq7x0p" path="res://one_slot.png" id="3_vv0vr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jmo5"]
+size = Vector2(40, 40)
+
+[node name="maker_item_slot" type="Control"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 3
+anchor_right = 0.039
+anchor_bottom = 0.052
+offset_right = -40.443
+offset_bottom = -39.936
+script = ExtResource("1_l1pxn")
+item_make = ExtResource("2_h82nn")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_vv0vr")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 35.0
+offset_bottom = 35.0
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(20, 20)
+shape = SubResource("RectangleShape2D_4jmo5")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

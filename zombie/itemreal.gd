@@ -3,14 +3,15 @@ extends Node3D
 var mesh_instance = null
 @export var mesh_i : PackedScene
 func _ready():
-	var d = mesh_i.instantiate()
-	if d.mesh and d.mesh.surface_get_material(0):
-		# 메테리얼 복제
-		var material = d.mesh.surface_get_material(0).duplicate()
-		# 복제된 메테리얼을 설정
-		d.set_surface_override_material(0, material)
+	mesh_instance = mesh_i.instantiate()
+	if mesh_instance.mesh:
+	  # 메시 자체를 복제
+		mesh_instance.mesh = mesh_instance.mesh.duplicate()
+	  # 메테리얼 복제
+		var material = StandardMaterial3D.new()
+	  # 복제된 메테리얼을 메시에 설정
+		mesh_instance.mesh.surface_set_material(0, material)
+	  # 초기 색상 설정
+		material.albedo_color = Color(randf_range(0, 1), 0, 0)
 
-		# 예시: 빨간색으로 변경
-
-	add_child(d)
-	mesh_instance = d
+	add_child(mesh_instance)

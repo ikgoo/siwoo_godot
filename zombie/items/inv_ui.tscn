@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://brqcrmhohso6x"]
+[gd_scene load_steps=6 format=3 uid="uid://brqcrmhohso6x"]
 
-[ext_resource type="Script" path="res://inv_ui.gd" id="1_x5wna"]
+[ext_resource type="Script" uid="uid://qoqjyinhpmm0" path="res://inv_ui.gd" id="1_x5wna"]
 [ext_resource type="Texture2D" uid="uid://cpfi33ggn7ith" path="res://Nasdfew Piskel (6).png" id="2_ey5ln"]
 [ext_resource type="PackedScene" uid="uid://gnj5ynglev8c" path="res://slot.tscn" id="3_kywx8"]
+[ext_resource type="PackedScene" uid="uid://drdudk6huy15l" path="res://equip_slot.tscn" id="4_qlnal"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_yy4we"]
 
@@ -19,7 +20,7 @@ script = ExtResource("1_x5wna")
 self_modulate = Color(0.352941, 0.352941, 0.352941, 0.541176)
 texture_filter = 1
 position = Vector2(575.5, 323.5)
-scale = Vector2(787, 195.5)
+scale = Vector2(1191, 195.5)
 mesh = SubResource("CapsuleMesh_yy4we")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
@@ -30,9 +31,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -308.0
+offset_left = -244.0
 offset_top = -148.0
-offset_right = 308.0
+offset_right = 372.0
 offset_bottom = 148.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -145,3 +146,39 @@ layout_mode = 2
 
 [node name="slot32" parent="NinePatchRect/GridContainer" instance=ExtResource("3_kywx8")]
 layout_mode = 2
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -461.0
+offset_top = -148.0
+offset_right = -307.0
+offset_bottom = 148.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ey5ln")
+patch_margin_left = 30
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="equip_slot" parent="." instance=ExtResource("4_qlnal")]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 231.0
+offset_right = 222.0
+offset_bottom = 295.0
+
+[node name="equip_slot2" parent="." instance=ExtResource("4_qlnal")]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 348.0
+offset_right = 225.0
+offset_bottom = 412.0

@@ -1,0 +1,350 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxkaqpvqk7nde"]
+
+[ext_resource type="Script" uid="uid://dftqqx57far2d" path="res://inventory.gd" id="1_psafj"]
+[ext_resource type="Texture2D" uid="uid://yc01hobseef2" path="res://inventroy.png" id="2_5tt2m"]
+[ext_resource type="PackedScene" uid="uid://vqiqk47n5dvv" path="res://item_slot.tscn" id="4_dw5ng"]
+[ext_resource type="Texture2D" uid="uid://m5cxewhij6kt" path="res://tem_e.png" id="4_mrqgh"]
+
+[node name="inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_psafj")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = 5
+texture_filter = 1
+layout_mode = 0
+offset_top = 712.0
+offset_right = 40.0
+offset_bottom = 752.0
+scale = Vector2(3, 3)
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="TextureRect"]
+z_index = 5
+layout_mode = 0
+offset_left = 26.666662
+offset_top = 18.666656
+offset_right = 66.666664
+offset_bottom = 41.666656
+mouse_filter = 0
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -90.99994
+offset_right = 999.455
+offset_bottom = -41.0
+grow_vertical = 0
+scale = Vector2(1.835, 1.835)
+texture = ExtResource("2_5tt2m")
+
+[node name="item_slot" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -21.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot2" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 14.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot3" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 80.0
+offset_top = 10.0
+offset_right = 49.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot4" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 115.0
+offset_top = 10.0
+offset_right = 84.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot5" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 150.0
+offset_top = 10.0
+offset_right = 119.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot6" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 185.0
+offset_top = 10.0
+offset_right = 154.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot7" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 220.0
+offset_top = 10.0
+offset_right = 189.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot8" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 255.0
+offset_top = 10.0
+offset_right = 224.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot9" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 290.0
+offset_top = 10.0
+offset_right = 259.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot10" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 325.0
+offset_top = 10.0
+offset_right = 294.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot11" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 360.0
+offset_top = 10.0
+offset_right = 329.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot12" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 395.0
+offset_top = 10.0
+offset_right = 364.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot13" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 430.0
+offset_top = 10.0
+offset_right = 399.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot14" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 465.0
+offset_top = 10.0
+offset_right = 434.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot15" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 500.0
+offset_top = 10.0
+offset_right = 469.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot16" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 535.0
+offset_top = 10.0
+offset_right = 504.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot17" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 570.0
+offset_top = 10.0
+offset_right = 539.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot18" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 605.0
+offset_top = 10.0
+offset_right = 574.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot19" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 640.0
+offset_top = 10.0
+offset_right = 609.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot20" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 675.0
+offset_top = 10.0
+offset_right = 644.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot21" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 710.0
+offset_top = 10.0
+offset_right = 679.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot22" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 745.0
+offset_top = 10.0
+offset_right = 714.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot23" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 780.0
+offset_top = 10.0
+offset_right = 749.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot24" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 815.0
+offset_top = 10.0
+offset_right = 784.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot25" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 850.0
+offset_top = 10.0
+offset_right = 819.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot26" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 885.0
+offset_top = 10.0
+offset_right = 854.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot27" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 920.0
+offset_top = 10.0
+offset_right = 889.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="item_slot28" parent="TextureRect2" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 955.0
+offset_top = 10.0
+offset_right = 924.0
+offset_bottom = 7.45
+scale = Vector2(0.968, 0.968)
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 22.0
+offset_top = 858.0
+offset_right = -1785.0
+offset_bottom = 908.0
+grow_horizontal = 2
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("4_mrqgh")
+
+[node name="item_slot" parent="TextureRect4" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 4.497
+offset_bottom = 7.85
+is_thing = 3
+
+[node name="item_slot2" parent="TextureRect4" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 42.0
+offset_top = 10.0
+offset_right = 38.497
+offset_bottom = 7.85
+is_thing = 1
+
+[node name="item_slot3" parent="TextureRect4" instance=ExtResource("4_dw5ng")]
+layout_mode = 1
+offset_left = 74.0
+offset_top = 10.0
+offset_right = 70.497
+offset_bottom = 7.85
+is_thing = 2
+
+[node name="hp" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1439.0
+offset_top = 23.0
+offset_right = 1550.0
+offset_bottom = 75.0
+mouse_filter = 0
+text = "hp:"
+
+[node name="stamina" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1623.0
+offset_top = 23.0
+offset_right = 1734.0
+offset_bottom = 75.0
+mouse_filter = 0
+text = "stamina:"
+
+[node name="fun" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1439.0
+offset_top = 143.0
+offset_right = 1550.0
+offset_bottom = 195.0
+mouse_filter = 0
+text = "fun:"
+
+[node name="hunger" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1622.0
+offset_top = 143.0
+offset_right = 1733.0
+offset_bottom = 195.0
+mouse_filter = 0
+text = "hunger"
+
+[connection signal="mouse_entered" from="TextureRect2" to="." method="_on_texture_rect_2_mouse_entered"]
+[connection signal="mouse_exited" from="TextureRect2" to="." method="_on_texture_rect_2_mouse_exited"]
+[connection signal="mouse_entered" from="TextureRect4" to="." method="_on_texture_rect_2_mouse_entered"]
+[connection signal="mouse_exited" from="TextureRect4" to="." method="_on_texture_rect_2_mouse_exited"]

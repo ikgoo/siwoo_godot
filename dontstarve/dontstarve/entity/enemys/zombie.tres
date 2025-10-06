@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="entity" load_steps=8 format=3 uid="uid://cg5eu47jqa21b"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_p52yg"]
+[ext_resource type="Resource" uid="uid://biof5yd3us4w3" path="res://item/tems/meat.tres" id="2_ipd4h"]
+[ext_resource type="Script" uid="uid://c44cft5c86ou6" path="res://entity/entity_drop.gd" id="3_nlhrn"]
+[ext_resource type="Script" uid="uid://dugjogc771sh2" path="res://entity/entity_thing.gd" id="4_dtdh0"]
+[ext_resource type="Texture2D" uid="uid://c8bvq6pgp5tsd" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Characters/Basic Charakter Spritesheet.png" id="4_ipd4h"]
+[ext_resource type="Resource" uid="uid://c373y1eux1u5y" path="res://item/tems/stone.tres" id="4_nlhrn"]
+
+[sub_resource type="Resource" id="Resource_dtdh0"]
+script = ExtResource("3_nlhrn")
+get_item = ExtResource("4_nlhrn")
+min_count = 1
+max_count = 45
+drop_chance = 0.2
+metadata/_custom_type_script = "uid://c44cft5c86ou6"
+
+[resource]
+script = ExtResource("4_dtdh0")
+hp = 20
+entity_name = "좀비"
+sulmung = "좀비좀비좀비좀비좀비좀"
+attack_dam = 10
+speed = 2
+attack_delay = 1
+img = ExtResource("4_ipd4h")
+drop_item = Array[ExtResource("1_p52yg")]([ExtResource("2_ipd4h")])
+drops = Array[ExtResource("3_nlhrn")]([SubResource("Resource_dtdh0")])
+size = 2
+frames = 4
+y_frames = 4
+e_speed = 0.4
+metadata/_custom_type_script = "uid://dugjogc771sh2"

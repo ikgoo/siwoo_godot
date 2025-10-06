@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://f73ynbaimcwh"]
+
+[ext_resource type="Script" uid="uid://cvog20tddbehw" path="res://obsticle.gd" id="1_8hjg8"]
+[ext_resource type="Texture2D" uid="uid://bglf6kdp1wg0f" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Basic_Grass_Biom_things.png" id="3_owy4p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8r2t"]
+atlas = ExtResource("3_owy4p")
+region = Rect2(129, 18, 15, 11)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8hjg8"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="obsticle" type="StaticBody3D"]
+script = ExtResource("1_8hjg8")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+offset = Vector2(0, 18.55)
+billboard = 1
+texture_filter = 0
+texture = SubResource("AtlasTexture_k8r2t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0417057, 0)
+shape = SubResource("BoxShape3D_8hjg8")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0417057, 0)
+shape = SubResource("BoxShape3D_8hjg8")

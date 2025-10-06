@@ -17,16 +17,20 @@ func _on_area_3d_2_area_entered(area):
 func _on_area_3d_2_area_exited(area):
 	my_cha = null
 func _physics_process(delta):
-	if hp > 0:
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	if hp > 0: 	
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 		if my_cha:
 			var cha_pos = Charater.global_position
 			navigation_agent_3d.set_target_position(cha_pos)
+			look_at(my_cha.global_position)
+			rotation.x = 0
 		
 		var des = navigation_agent_3d.get_next_path_position()
 		var local_des = des - global_position
 		var dir = local_des.normalized()
 		
-		velocity = dir * 1
+		velocity = dir * 4
 		move_and_slide()

@@ -1,0 +1,276 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxkaqpvqk7nde"]
+
+[ext_resource type="Script" uid="uid://doeol4en3x7na" path="res://inventory.gd" id="1_psafj"]
+[ext_resource type="Texture2D" uid="uid://yc01hobseef2" path="res://inventroy.png" id="2_5tt2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_psafj"]
+size = Vector2(35, 30)
+
+[node name="inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_psafj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(576, 624)
+scale = Vector2(5, 5)
+texture = ExtResource("2_5tt2m")
+
+[node name="areas" type="Node2D" parent="."]
+
+[node name="first" type="Area2D" parent="areas"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first2" type="Area2D" parent="areas"]
+position = Vector2(35, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first2"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first3" type="Area2D" parent="areas"]
+position = Vector2(70, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first3"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first4" type="Area2D" parent="areas"]
+position = Vector2(105, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first4"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first5" type="Area2D" parent="areas"]
+position = Vector2(140, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first5"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first6" type="Area2D" parent="areas"]
+position = Vector2(175, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first6"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first7" type="Area2D" parent="areas"]
+position = Vector2(210, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first7"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first8" type="Area2D" parent="areas"]
+position = Vector2(245, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first8"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first9" type="Area2D" parent="areas"]
+position = Vector2(280, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first9"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first10" type="Area2D" parent="areas"]
+position = Vector2(315, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first10"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first11" type="Area2D" parent="areas"]
+position = Vector2(350, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first11"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first12" type="Area2D" parent="areas"]
+position = Vector2(385, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first12"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first13" type="Area2D" parent="areas"]
+position = Vector2(420, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first13"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first14" type="Area2D" parent="areas"]
+position = Vector2(455, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first14"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first15" type="Area2D" parent="areas"]
+position = Vector2(490, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first15"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first16" type="Area2D" parent="areas"]
+position = Vector2(525, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first16"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first17" type="Area2D" parent="areas"]
+position = Vector2(560, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first17"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first18" type="Area2D" parent="areas"]
+position = Vector2(595, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first18"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first19" type="Area2D" parent="areas"]
+position = Vector2(630, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first19"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first20" type="Area2D" parent="areas"]
+position = Vector2(665, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first20"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first21" type="Area2D" parent="areas"]
+position = Vector2(700, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first21"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first22" type="Area2D" parent="areas"]
+position = Vector2(735, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first22"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first23" type="Area2D" parent="areas"]
+position = Vector2(770, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first23"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first24" type="Area2D" parent="areas"]
+position = Vector2(805, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first24"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first25" type="Area2D" parent="areas"]
+position = Vector2(840, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first25"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first26" type="Area2D" parent="areas"]
+position = Vector2(875, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first26"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first27" type="Area2D" parent="areas"]
+position = Vector2(910, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first27"]
+position = Vector2(101, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[node name="first28" type="Area2D" parent="areas"]
+position = Vector2(945, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="areas/first28"]
+position = Vector2(103.5, 624)
+shape = SubResource("RectangleShape2D_psafj")
+
+[connection signal="area_entered" from="areas/first" to="." method="_on_first_area_entered"]
+[connection signal="area_exited" from="areas/first" to="." method="_on_first_area_exited"]
+[connection signal="area_entered" from="areas/first2" to="." method="_on_first_2_area_entered"]
+[connection signal="area_exited" from="areas/first2" to="." method="_on_first_2_area_exited"]
+[connection signal="area_entered" from="areas/first3" to="." method="_on_first_3_area_entered"]
+[connection signal="area_exited" from="areas/first3" to="." method="_on_first_3_area_exited"]
+[connection signal="area_entered" from="areas/first4" to="." method="_on_first_4_area_entered"]
+[connection signal="area_exited" from="areas/first4" to="." method="_on_first_4_area_exited"]
+[connection signal="area_entered" from="areas/first5" to="." method="_on_first_5_area_entered"]
+[connection signal="area_exited" from="areas/first5" to="." method="_on_first_5_area_exited"]
+[connection signal="area_entered" from="areas/first6" to="." method="_on_first_6_area_entered"]
+[connection signal="area_exited" from="areas/first6" to="." method="_on_first_6_area_exited"]
+[connection signal="area_entered" from="areas/first7" to="." method="_on_first_7_area_entered"]
+[connection signal="area_exited" from="areas/first7" to="." method="_on_first_7_area_exited"]
+[connection signal="area_entered" from="areas/first8" to="." method="_on_first_8_area_entered"]
+[connection signal="area_exited" from="areas/first8" to="." method="_on_first_8_area_exited"]
+[connection signal="area_entered" from="areas/first9" to="." method="_on_first_9_area_entered"]
+[connection signal="area_exited" from="areas/first9" to="." method="_on_first_9_area_exited"]
+[connection signal="area_entered" from="areas/first10" to="." method="_on_first_10_area_entered"]
+[connection signal="area_exited" from="areas/first10" to="." method="_on_first_10_area_exited"]
+[connection signal="area_entered" from="areas/first11" to="." method="_on_first_11_area_entered"]
+[connection signal="area_exited" from="areas/first11" to="." method="_on_first_11_area_exited"]
+[connection signal="area_entered" from="areas/first12" to="." method="_on_first_12_area_entered"]
+[connection signal="area_exited" from="areas/first12" to="." method="_on_first_12_area_exited"]
+[connection signal="area_entered" from="areas/first13" to="." method="_on_first_13_area_entered"]
+[connection signal="area_exited" from="areas/first13" to="." method="_on_first_13_area_exited"]
+[connection signal="area_entered" from="areas/first14" to="." method="_on_first_14_area_entered"]
+[connection signal="area_exited" from="areas/first14" to="." method="_on_first_14_area_exited"]
+[connection signal="area_entered" from="areas/first15" to="." method="_on_first_15_area_entered"]
+[connection signal="area_exited" from="areas/first15" to="." method="_on_first_15_area_exited"]
+[connection signal="area_entered" from="areas/first16" to="." method="_on_first_16_area_entered"]
+[connection signal="area_exited" from="areas/first16" to="." method="_on_first_16_area_exited"]
+[connection signal="area_entered" from="areas/first17" to="." method="_on_first_17_area_entered"]
+[connection signal="area_exited" from="areas/first17" to="." method="_on_first_17_area_exited"]
+[connection signal="area_entered" from="areas/first18" to="." method="_on_first_18_area_entered"]
+[connection signal="area_exited" from="areas/first18" to="." method="_on_first_18_area_exited"]
+[connection signal="area_entered" from="areas/first19" to="." method="_on_first_19_area_entered"]
+[connection signal="area_exited" from="areas/first19" to="." method="_on_first_19_area_exited"]
+[connection signal="area_entered" from="areas/first20" to="." method="_on_first_20_area_entered"]
+[connection signal="area_exited" from="areas/first20" to="." method="_on_first_20_area_exited"]
+[connection signal="area_entered" from="areas/first21" to="." method="_on_first_21_area_entered"]
+[connection signal="area_exited" from="areas/first21" to="." method="_on_first_21_area_exited"]
+[connection signal="area_entered" from="areas/first22" to="." method="_on_first_22_area_entered"]
+[connection signal="area_exited" from="areas/first22" to="." method="_on_first_22_area_exited"]
+[connection signal="area_entered" from="areas/first23" to="." method="_on_first_23_area_entered"]
+[connection signal="area_exited" from="areas/first23" to="." method="_on_first_23_area_exited"]
+[connection signal="area_entered" from="areas/first24" to="." method="_on_first_24_area_entered"]
+[connection signal="area_exited" from="areas/first24" to="." method="_on_first_24_area_exited"]
+[connection signal="area_entered" from="areas/first25" to="." method="_on_first_25_area_entered"]
+[connection signal="area_exited" from="areas/first25" to="." method="_on_first_25_area_exited"]
+[connection signal="area_entered" from="areas/first26" to="." method="_on_first_26_area_entered"]
+[connection signal="area_exited" from="areas/first26" to="." method="_on_first_26_area_exited"]
+[connection signal="area_entered" from="areas/first27" to="." method="_on_first_27_area_entered"]
+[connection signal="area_exited" from="areas/first27" to="." method="_on_first_27_area_exited"]
+[connection signal="area_entered" from="areas/first28" to="." method="_on_first_28_area_entered"]
+[connection signal="area_exited" from="areas/first28" to="." method="_on_first_28_area_exited"]

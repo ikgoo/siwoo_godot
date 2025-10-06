@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://biof5yd3us4w3"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_bbxwe"]
+[ext_resource type="Texture2D" uid="uid://c3e5wbl3nsmmv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Egg_item.png" id="1_wffya"]
+
+[resource]
+script = ExtResource("1_bbxwe")
+name = "meat"
+img = ExtResource("1_wffya")
+eatable = true
+count = 1
+max_count = 5
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

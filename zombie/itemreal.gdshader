@@ -8,7 +8,7 @@ void vertex() {
     // 버텍스를 법선 방향으로 확장
     vec4 clip_position = PROJECTION_MATRIX * (MODELVIEW_MATRIX * vec4(VERTEX, 1.0));
     vec3 clip_normal = normalize(mat3(PROJECTION_MATRIX) * (mat3(MODELVIEW_MATRIX) * NORMAL));
-    
+
     // 외곽선 생성을 위한 버텍스 확장
     VERTEX += NORMAL * outline_width;
 }
@@ -16,7 +16,7 @@ void vertex() {
 void fragment() {
     // 외곽선 색상 설정
     ALBEDO = outline_color.rgb;
-    
+
     // 외곽선의 알파값 설정
     ALPHA = outline_color.a;
 }

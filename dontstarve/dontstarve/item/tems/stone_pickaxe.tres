@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://uyxdl5xk4i7t"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_jbyan"]
+[ext_resource type="Texture2D" uid="uid://caq21cg4kdl4" path="res://resorce/item/BigManaPotionMoving1.png" id="1_s7irc"]
+
+[resource]
+script = ExtResource("1_jbyan")
+name = "돌 곡괭이"
+img = ExtResource("1_s7irc")
+wear = 0
+eatable = false
+negudo = true
+wear_img = ExtResource("1_s7irc")
+count = 1
+max_count = 1
+can_hand = true
+tool = 1
+damage = 14
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

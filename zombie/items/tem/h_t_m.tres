@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Inven_Item" load_steps=3 format=3 uid="uid://c26ixiujnt35p"]
+
+[ext_resource type="Script" uid="uid://gfcqr5qangdt" path="res://items/inventory_item.gd" id="1_oxgbj"]
+[ext_resource type="Texture2D" uid="uid://c54dtmpqi12h4" path="res://cew Piskel (6).png" id="2_3163g"]
+
+[resource]
+script = ExtResource("1_oxgbj")
+name_i = "h_t_m"
+texture = ExtResource("2_3163g")
+value = 30
+type = 1

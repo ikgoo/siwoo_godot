@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cteylktbl4kaa"]
+
+[ext_resource type="Script" uid="uid://bf1haafb5no2y" path="res://control.gd" id="1_0fbet"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0fbet")
+
+[node name="go" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="end" type="Button" parent="."]
+layout_mode = 0
+offset_right = 345.0
+offset_bottom = 167.0
+
+[node name="TextEdit" type="TextEdit" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[connection signal="button_up" from="go" to="." method="_on_button_button_up"]
+[connection signal="button_up" from="end" to="." method="_on_button_2_button_up"]

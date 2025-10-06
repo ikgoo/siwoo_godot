@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cvfdg70mglph3"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_dlef7"]
+[ext_resource type="Texture2D" uid="uid://y0bm1t34nfxc" path="res://resorce/item/ChickenThighMoving1.png" id="1_sfh0e"]
+
+[resource]
+script = ExtResource("1_dlef7")
+name = "이겼닭 오늘 저녁은 치킨이닭"
+img = ExtResource("1_sfh0e")
+wear = 0
+eatable = true
+negudo = true
+wear_img = ExtResource("1_sfh0e")
+count = 0
+max_count = 0
+can_hand = true
+tool = 3
+damage = 21
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

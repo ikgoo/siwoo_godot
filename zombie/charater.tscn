@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://rf1awt5k5oan"]
+[gd_scene load_steps=16 format=3 uid="uid://rf1awt5k5oan"]
 
-[ext_resource type="Script" path="res://charater.gd" id="1_geug0"]
+[ext_resource type="Script" uid="uid://cjqmovg6grl4i" path="res://charater.gd" id="1_geug0"]
 [ext_resource type="Resource" uid="uid://c11ccry6cxqgq" path="res://items/player_inv.tres" id="2_ew0lq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_25la0"]
@@ -14,16 +14,12 @@ height = 0.4
 [sub_resource type="BoxMesh" id="BoxMesh_ed14u"]
 size = Vector3(0.04, 0.04, 0.15)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_yjw00"]
-radius = 0.005
-height = 0.2
-
 [sub_resource type="Animation" id="Animation_hxrlq"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/MeshInstance3D3:position")
+tracks/0/path = NodePath("Camera3D/Node3D/Hand:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -35,11 +31,134 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/MeshInstance3D3:rotation")
+tracks/1/path = NodePath("Camera3D/Node3D/Hand:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.338988, 0.321128, 0.287248)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/Node3D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D/Node3D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kipbe"]
+resource_name = "eating"
+length = 1.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/Node3D/Hand:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.0977033, -0.0751007, -0.0421238), Vector3(0.089, -0.09, -0.079), Vector3(0.089, -0.075, -0.079), Vector3(0.089, -0.09, -0.079), Vector3(0.089, -0.075, -0.079), Vector3(0.089, -0.09, -0.079), Vector3(0.089, -0.075, -0.079), Vector3(0.089, -0.09, -0.079), Vector3(0.089, -0.075, -0.079), Vector3(0.089, -0.09, -0.079), Vector3(0.089, -0.075, -0.079), Vector3(0.089, -0.09, -0.079), Vector3(0.0977033, -0.0751007, -0.0421238)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/Node3D/Hand:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.338988, 0.321128, 0.287248), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.55676, 1.52542, 0.0575959), Vector3(0.338988, 0.321128, 0.287248)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"eaten"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_xg3e0"]
+resource_name = "none"
+step = 0.05
+
+[sub_resource type="Animation" id="Animation_fxnej"]
+resource_name = "pole"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/Node3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1998),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.1, 0.055), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/Node3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1998),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.628319, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/Node3D/Hand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0977033, -0.0751007, -0.0421238)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Camera3D/Node3D/Hand:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0.338988, 0.321128, 0.287248)]
@@ -52,7 +171,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/MeshInstance3D3:position")
+tracks/0/path = NodePath("Camera3D/Node3D/Hand:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -64,7 +183,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/MeshInstance3D3:rotation")
+tracks/1/path = NodePath("Camera3D/Node3D/Hand:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -74,10 +193,56 @@ tracks/1/keys = {
 "values": [Vector3(0.338988, 0.321128, 0.287248), Vector3(0.496543, -0.0889967, 0.281977), Vector3(-0.153589, 0.584685, 0.322886), Vector3(0.136136, 0.523599, 0.612611), Vector3(0.338988, 0.321128, 0.287248)]
 }
 
+[sub_resource type="Animation" id="Animation_fa6su"]
+resource_name = "swap"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/Node3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.1, 0.055), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D/Node3D:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.628319, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"swap"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0axpe"]
 _data = {
-"RESET": SubResource("Animation_hxrlq"),
-"ppuk": SubResource("Animation_hw4l8")
+&"RESET": SubResource("Animation_hxrlq"),
+&"eating": SubResource("Animation_kipbe"),
+&"none": SubResource("Animation_xg3e0"),
+&"pole": SubResource("Animation_fxnej"),
+&"ppuk": SubResource("Animation_hw4l8"),
+&"swap": SubResource("Animation_fa6su")
 }
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qx8ib"]
@@ -101,6 +266,7 @@ radius = 0.1
 height = 0.4
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
 collision_mask = 7
 script = ExtResource("1_geug0")
 inv = ExtResource("2_ew0lq")
@@ -112,36 +278,28 @@ shape = SubResource("CapsuleShape3D_25la0")
 mesh = SubResource("CapsuleMesh_xuc5q")
 
 [node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114681, -0.0733417)
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Camera3D"]
+[node name="Node3D" type="Node3D" parent="Camera3D"]
+
+[node name="Hand" type="MeshInstance3D" parent="Camera3D/Node3D"]
 transform = Transform3D(0.939738, -0.168172, 0.297675, 0.267191, 0.904451, -0.332533, -0.213309, 0.39203, 0.894881, 0.0977033, -0.0751007, -0.0421238)
 mesh = SubResource("BoxMesh_ed14u")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D/MeshInstance3D3"]
-transform = Transform3D(0.939739, 0.331791, -0.0825018, -0.168172, 0.658678, 0.73339, 0.297674, -0.67532, 0.674783, 0.0168551, 0.0437033, -0.0997025)
-mesh = SubResource("CapsuleMesh_yjw00")
-skeleton = NodePath("../..")
+[node name="Marker3D" type="Marker3D" parent="Camera3D/Node3D/Hand"]
+transform = Transform3D(0.990301, 0.105608, 0.0902829, -0.131835, 0.919372, 0.370641, -0.0438608, -0.378949, 0.924378, -0.000144519, 1.45286e-06, -0.0622264)
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Camera3D"]
-transform = Transform3D(0.962364, -0.267539, 0.0477204, 0.26789, 0.904381, -0.332161, 0.0457085, 0.332444, 0.942015, -0.092, -0.075, -0.042)
-mesh = SubResource("BoxMesh_ed14u")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D/MeshInstance3D4"]
-transform = Transform3D(0.939739, 0.331791, -0.0825018, -0.168172, 0.658678, 0.73339, 0.297674, -0.67532, 0.674783, 0.0168551, 0.0437033, -0.0997025)
-mesh = SubResource("CapsuleMesh_yjw00")
-skeleton = NodePath("../..")
-
-[node name="RayCast3D" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -0.5)
-collision_mask = 10
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000319004, 0.0733417)
+target_position = Vector3(0, 0, -10)
+collision_mask = 42
 collide_with_areas = true
 collide_with_bodies = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0axpe")
+&"": SubResource("AnimationLibrary_0axpe")
 }
 
 [node name="Timer" type="Timer" parent="."]

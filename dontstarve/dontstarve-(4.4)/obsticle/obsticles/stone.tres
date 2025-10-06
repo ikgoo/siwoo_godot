@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="obsticle" load_steps=7 format=3 uid="uid://jvrn7qlh4lgb"]
+
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_5r5su"]
+[ext_resource type="Texture2D" uid="uid://bglf6kdp1wg0f" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Basic_Grass_Biom_things.png" id="1_43cqt"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3_43cqt"]
+[ext_resource type="Resource" uid="uid://c373y1eux1u5y" path="res://item/tems/stone.tres" id="4_k8r2t"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8r2t"]
+atlas = ExtResource("1_43cqt")
+region = Rect2(129, 18, 15, 11)
+
+[sub_resource type="Resource" id="Resource_xjnt8"]
+script = ExtResource("3_43cqt")
+get_item = ExtResource("4_k8r2t")
+min_count = 2
+max_count = 4
+drop_chance = 1.0
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[resource]
+script = ExtResource("1_5r5su")
+name = "돌 무더기"
+img = SubResource("AtlasTexture_k8r2t")
+sulmung = "돌무더기 둘무 더기 돌무더 기"
+moving = false
+type = 2
+times_mine = 5
+things = Array[ExtResource("3_43cqt")]([SubResource("Resource_xjnt8")])
+offset = 5.8
+metadata/_custom_type_script = "uid://cf5n230tj81oq"

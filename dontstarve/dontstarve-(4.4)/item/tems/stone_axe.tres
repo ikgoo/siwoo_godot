@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cdckk6i502l7l"]
+
+[ext_resource type="Texture2D" uid="uid://d0p8qrskwx0et" path="res://resorce/item/BlueCrystalMoving1.png" id="1_codtq"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_wjpsf"]
+
+[resource]
+script = ExtResource("1_wjpsf")
+name = "stone_axe"
+img = ExtResource("1_codtq")
+wear = 0
+eatable = false
+negudo = true
+wear_img = ExtResource("1_codtq")
+count = 1
+max_count = 1
+can_hand = true
+tool = 2
+damage = 14
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

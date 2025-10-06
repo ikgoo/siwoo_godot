@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1ewg0dh0j2yi"]
+
+[ext_resource type="Script" uid="uid://cv358sme2spi4" path="res://maker.gd" id="1_8hhea"]
+[ext_resource type="Texture2D" uid="uid://meoakk1y0yh0" path="res://item_see.png" id="1_wfpd0"]
+[ext_resource type="PackedScene" uid="uid://dhhx3g50y0cr0" path="res://item_maker_veiw.tscn" id="2_h6umh"]
+
+[node name="maker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_8hhea")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1738.0
+offset_top = 851.0
+offset_right = 1890.0
+offset_bottom = 1007.0
+focus_mode = 0
+text = "제작"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.456
+anchor_bottom = 0.411
+offset_left = 8.0
+offset_top = 602.0
+offset_right = 603.52
+offset_bottom = 1525.0
+rotation = -1.5708
+mouse_filter = 2
+texture = ExtResource("1_wfpd0")
+expand_mode = 1
+
+[node name="item_maker_veiw" parent="Control" instance=ExtResource("2_h6umh")]
+layout_mode = 1
+offset_left = 933.0
+offset_top = 3.0
+offset_right = 933.0
+offset_bottom = 3.0
+mouse_filter = 2
+
+[node name="GridContainer" type="GridContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 69.0
+offset_top = 69.0
+offset_right = 866.0
+offset_bottom = 534.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+columns = 9
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

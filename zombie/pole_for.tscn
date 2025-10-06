@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://chlrw2err6tvq"]
+
+[ext_resource type="Script" uid="uid://d1vlyg8hrmkch" path="res://itemreal.gd" id="1_0yipn"]
+[ext_resource type="Resource" uid="uid://bcmbwwb8md4iv" path="res://items/tem/pole.tres" id="2_p3qvl"]
+[ext_resource type="PackedScene" uid="uid://brgt2pgiscbr0" path="res://items/weopon/pole.tscn" id="3_h2aa1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t5lsb"]
+radius = 0.015
+height = 0.55
+
+[node name="itemreal" type="Node3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+script = ExtResource("1_0yipn")
+item = ExtResource("2_p3qvl")
+mesh_i = ExtResource("3_h2aa1")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_t5lsb")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="area_shape_entered" from="Area3D" to="." method="_on_area_3d_area_shape_entered"]
+[connection signal="area_shape_exited" from="Area3D" to="." method="_on_area_3d_area_shape_exited"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_shape_entered" from="Area3D" to="." method="_on_area_3d_body_shape_entered"]
+[connection signal="body_shape_exited" from="Area3D" to="." method="_on_area_3d_body_shape_exited"]
