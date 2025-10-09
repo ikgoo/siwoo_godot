@@ -3,6 +3,7 @@ extends Node3D
 @onready var sprite_3d = $Sprite3D
 const MAKING_NOTE = preload("uid://di76m0xa8r77h")
 
+
 # 클릭 입력을 무시하기 위한 플래그
 var ignore_next_click = false
 var resipis : resipi

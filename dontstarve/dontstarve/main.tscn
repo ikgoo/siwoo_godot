@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://jvrn7qlh4lgb" path="res://obsticle/obsticles/stone.tres" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://c3e5wbl3nsmmv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Egg_item.png" id="6_ycdy4"]
 [ext_resource type="Resource" uid="uid://c5fredjmniwtb" path="res://obsticle/obsticles/tree.tres" id="7_272bh"]
-[ext_resource type="PackedScene" uid="uid://833wcgwovcmw" path="res://making_need.tscn" id="7_vivmo"]
+[ext_resource type="PackedScene" path="res://making_need.tscn" id="7_vivmo"]
 [ext_resource type="Texture2D" uid="uid://du8tvftqb7ejv" path="res://icon.svg" id="7_w48qg"]
 [ext_resource type="PackedScene" uid="uid://d4dfde0pxblf3" path="res://entity/entity.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://cgitg6blohyoe" path="res://entity/enemys/cow.tres" id="10_4c57u"]
@@ -98,10 +98,10 @@ text = "밤
 label_settings = SubResource("LabelSettings_ycdy4")
 
 [node name="making_need" parent="CanvasLayer" instance=ExtResource("7_vivmo")]
-offset_left = 1399.2261
-offset_top = 350.2977
-offset_right = 1399.2261
-offset_bottom = 350.29773
+offset_left = 888.0
+offset_top = 181.0
+offset_right = 888.0
+offset_bottom = 181.0
 
 [node name="Area3D" type="Area3D" parent="."]
 
