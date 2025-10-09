@@ -15,7 +15,8 @@ var now_time = "day"
 @onready var maker_ui = $CanvasLayer/maker
 @onready var world_environment = $WorldEnvironment
 @onready var texture_rect2 = $CanvasLayer/TextureRect2
-
+@onready var mouse_ray = $cam_angle/Camera3D/mouse_ray
+var is_click_move = true
 func _ready():
 	# UI의 mouse_filter를 IGNORE로 설정하여 빈 영역 클릭이 통과되도록 함
 	if inventory_ui:
@@ -71,8 +72,9 @@ func get_camera_basis() -> Basis:
 # dir: 이동 방향 벡터 (Vector3)
 
 func _physics_process(delta):
+	cam_ray()
 	if Input.is_action_just_pressed('clicks'):
-		handle_mouse_click(get_viewport().get_mouse_position())
+		handle_mouse_click()
 
 	marker_3d.global_position = character_body_3d.global_position
 	cam_angle.global_position = lerp(cam_angle.global_position, marker_3d.global_position, 0.08)
@@ -139,9 +141,13 @@ func update_rot(delta):
 		var dir_sign = sign(angle_diff)
 		cam_angle.rotation_degrees.y += dir_sign * rot_amount
 
-# 마우스 클릭 시 GridMap과의 충돌 위치를 계산하는 함수
-# mouse_pos: 마우스 화면 좌표 (Vector2)
-func handle_mouse_click(mouse_pos: Vector2):
+# 마우스 클릭 시 mouse_ray의 충돌 위치를 사용하는 함수
+func handle_mouse_click():
+	# 클릭 이동이 비활성화되어 있으면 리턴
+	if not is_click_move:
+		print("클릭 이동 비활성화 - 이동 취소")
+		return
+	
 	# UI 위에서 클릭했는지 확인
 	update_ui_mouse_status()
 	print("UI 위에 있음: ", is_mouse_over_any_ui)
@@ -149,19 +155,21 @@ func handle_mouse_click(mouse_pos: Vector2):
 		print("UI 클릭 - 이동 취소")
 		return
 	
-	# GridMap 이동 로직
-	var world_pos = get_gridmap_intersection(mouse_pos)
-	print("월드 위치: ", world_pos)
-	if world_pos != Vector3.ZERO:
-		
-		# 손에 아이템이 있으면 그 위치로 가서 아이템 떨어뜨리기
-		if InventoryManeger.now_hand:
-			move_and_drop_item(world_pos)
-		else:
-			# 손에 아이템이 없으면 단순 이동
-			
-			
-			character_body_3d.move_to_position(world_pos)
+	# mouse_ray가 충돌했는지 확인
+	if not mouse_ray.is_colliding():
+		print("mouse_ray 충돌 없음 - 이동 취소")
+		return
+	
+	# mouse_ray의 충돌 위치 사용
+	var world_pos = mouse_ray.get_collision_point()
+	print("월드 위치 (mouse_ray): ", world_pos)
+	
+	# 손에 아이템이 있으면 그 위치로 가서 아이템 떨어뜨리기
+	if InventoryManeger.now_hand:
+		move_and_drop_item(world_pos)
+	else:
+		# 손에 아이템이 없으면 단순 이동
+		character_body_3d.move_to_position(world_pos)
 
 # 마우스 위치에서 GridMap과의 교차점을 찾는 함수
 # mouse_pos: 마우스 화면 좌표 (Vector2)
@@ -423,3 +431,13 @@ func find_all_obsticles(node: Node) -> Array:
 		result.append_array(find_all_obsticles(child))
 	
 	return result
+
+## 매 프레임 마우스 위치를 추적하여 mouse_ray를 업데이트하는 함수
+func cam_ray():
+	var mouse_pos = get_viewport().get_mouse_position()
+	mouse_ray.target_position = camera_3d.project_local_ray_normal(mouse_pos) * 100.0
+	mouse_ray.force_raycast_update()
+	
+	# 충돌 시 Globals에 월드 좌표 저장
+	if mouse_ray.is_colliding():
+		Globals.mouse_pos = mouse_ray.get_collision_point()

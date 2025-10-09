@@ -10,9 +10,8 @@
 [sub_resource type="Resource" id="Resource_dtdh0"]
 script = ExtResource("3_nlhrn")
 get_item = ExtResource("4_nlhrn")
-min_count = 1
-max_count = 45
-drop_chance = 0.2
+min_count = 1000
+max_count = 5000
 metadata/_custom_type_script = "uid://c44cft5c86ou6"
 
 [resource]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://hpdsu5prhegj"]
+[gd_scene load_steps=19 format=3 uid="uid://hpdsu5prhegj"]
 
 [ext_resource type="Script" uid="uid://b2uaqdh6c08bf" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bpauduny6qd1p" path="res://chararter.tscn" id="1_ig7tw"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://jvrn7qlh4lgb" path="res://obsticle/obsticles/stone.tres" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://c3e5wbl3nsmmv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Egg_item.png" id="6_ycdy4"]
 [ext_resource type="Resource" uid="uid://c5fredjmniwtb" path="res://obsticle/obsticles/tree.tres" id="7_272bh"]
+[ext_resource type="PackedScene" uid="uid://833wcgwovcmw" path="res://making_need.tscn" id="7_vivmo"]
 [ext_resource type="Texture2D" uid="uid://du8tvftqb7ejv" path="res://icon.svg" id="7_w48qg"]
 [ext_resource type="PackedScene" uid="uid://d4dfde0pxblf3" path="res://entity/entity.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://cgitg6blohyoe" path="res://entity/enemys/cow.tres" id="10_4c57u"]
@@ -38,7 +39,13 @@ script = ExtResource("1_0xm2m")
 [node name="cam_angle" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="cam_angle"]
-transform = Transform3D(1, 0, 0, 0, 0.47101194, 0.88212687, 0, -0.88212687, 0.47101194, 9.596348e-05, 0.71839, 0.47077024)
+transform = Transform3D(1, 0, 0, 0, 0.47101194, 0.88212687, 0, -0.88212687, 0.47101194, 9.596348e-05, 0.9217843, 0.7910591)
+
+[node name="mouse_ray" type="RayCast3D" parent="cam_angle/Camera3D"]
+target_position = Vector3(0, 0, 0)
+collision_mask = 4096
+hit_from_inside = true
+collide_with_areas = true
 
 [node name="Marker3D" type="Marker3D" parent="."]
 
@@ -89,6 +96,12 @@ offset_bottom = 415.0
 text = "밤
 "
 label_settings = SubResource("LabelSettings_ycdy4")
+
+[node name="making_need" parent="CanvasLayer" instance=ExtResource("7_vivmo")]
+offset_left = 1399.2261
+offset_top = 350.2977
+offset_right = 1399.2261
+offset_bottom = 350.29773
 
 [node name="Area3D" type="Area3D" parent="."]
 

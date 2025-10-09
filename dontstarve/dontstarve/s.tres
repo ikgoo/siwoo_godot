@@ -1,4 +1,4 @@
-[gd_resource type="MeshLibrary" load_steps=6 format=3 uid="uid://d0vwtmr6st5je"]
+[gd_resource type="MeshLibrary" load_steps=7 format=3 uid="uid://d0vwtmr6st5je"]
 
 [ext_resource type="Texture2D" uid="uid://b3v7qwij885xh" path="res://split_tiles/18.png" id="1_ph3h3"]
 
@@ -6,7 +6,7 @@
 albedo_texture = ExtResource("1_ph3h3")
 albedo_texture_force_srgb = true
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ygk5y"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_ph3h3"]
 lightmap_size_hint = Vector2i(12, 12)
 material = SubResource("StandardMaterial3D_nsmjb")
 
@@ -19,15 +19,18 @@ data = {
 "width": 64
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ofkpn"]
+[sub_resource type="ImageTexture" id="ImageTexture_2xmmp"]
 image = SubResource("Image_ph3h3")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_1i3gi"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [resource]
 item/0/name = "dirt"
-item/0/mesh = SubResource("PlaneMesh_ygk5y")
+item/0/mesh = SubResource("PlaneMesh_ph3h3")
 item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/0/mesh_cast_shadow = 1
-item/0/shapes = []
+item/0/shapes = [SubResource("ConcavePolygonShape3D_1i3gi"), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)]
 item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 item/0/navigation_layers = 1
-item/0/preview = SubResource("ImageTexture_ofkpn")
+item/0/preview = SubResource("ImageTexture_2xmmp")

@@ -155,7 +155,10 @@ func _physics_process(_delta):
 			start_attack(nearest_entity)
 		else:
 			pass
-
+	
+	# Tab 키 처리 - making_need UI 열기/닫기
+	if Input.is_action_just_pressed("ui_focus_next"):  # Tab 키
+		handle_making_need_ui()
 	
 	# 스페이스바 처리 - 상호작용 (채굴 vs 줍기 구별)
 	# 채굴 중이거나 이동 중일 때는 스페이스바 입력을 막음
@@ -959,3 +962,36 @@ func _on_description_timer_timeout():
 	if text_timer:
 		text_timer.queue_free()
 		text_timer = null
+
+
+## making_need UI를 열거나 닫는 함수
+## making_note 근처에 있을 때만 작동
+func handle_making_need_ui():
+	# making_note 근처에 있는지 확인
+	if not Globals.is_near_making_note:
+		print("making_note 근처에 없습니다")
+		return
+	
+	# resipis 정보가 없으면 리턴
+	if not Globals.ob_re_resipis:
+		print("레시피 정보가 없습니다")
+		return
+	
+	# 메인 씬에서 making_need UI 찾기
+	var main_scene = get_tree().current_scene
+	var making_need_ui = main_scene.get_node_or_null("CanvasLayer/making_need")
+	
+	if not making_need_ui:
+		print("making_need UI를 찾을 수 없습니다")
+		return
+	
+	# UI 토글 (보이기/숨기기)
+	making_need_ui.visible = !making_need_ui.visible
+	
+	# UI를 열 때 재료 정보 업데이트
+	if making_need_ui.visible:
+		if making_need_ui.has_method("update_materials"):
+			making_need_ui.update_materials(Globals.ob_re_resipis)
+		print("making_need UI 열림")
+	else:
+		print("making_need UI 닫힘")

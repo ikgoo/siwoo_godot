@@ -52,11 +52,12 @@ func veiwing():
 	# 현재 보고 있는 레시피가 없으면 함수 종료
 	if now_veiwing == null:
 		return
-	
-	# 완성품 정보 설정
-	thing_name.text = now_veiwing.end_tem.name
-	thing_img.texture = now_veiwing.end_tem.img
-	
+	if now_veiwing.type == resipi.r_type.obsticles:
+		thing_name.text = now_veiwing.end_obsticle.name
+		thing_img.texture = now_veiwing.end_obsticle.img
+	else:
+		thing_name.text = now_veiwing.end_tem.name
+		thing_img.texture = now_veiwing.end_tem.img
 	# 재료 슬롯들을 배열로 묶어서 관리하기 쉽게 함
 	var mete_slots = [mete_1, mete_2, mete_3, mete_4]
 	var mete_img_slots = [mete_img_1, mete_img_2, mete_img_3, mete_img_4]
@@ -139,14 +140,21 @@ func _on_make_button_down():
 		return
 	
 	# 모든 재료가 충분한지 확인
-	if not check_all_materials_available():
-		return
+	if not now_veiwing.type == resipi.r_type.obsticles:
+		if not check_all_materials_available():
+			return
+		
+		# 재료 소모
+		consume_materials()
 	
-	# 재료 소모
-	consume_materials()
-	
-	# 완성품을 인벤토리에 추가
-	add_crafted_item_to_inventory()
+	# 레시피 타입에 따라 처리
+	if now_veiwing.type == resipi.r_type.obsticles:
+		# obsticle 타입이면 making_veiw에 전달
+		handle_obsticle_recipe()
+		get_parent().visible = false
+	else:
+		# 일반 아이템이면 인벤토리에 추가
+		add_crafted_item_to_inventory()
 	
 	# UI 업데이트 (재료 색상 다시 체크)
 	update_material_colors()
@@ -209,6 +217,29 @@ func consume_materials():
 				# 손에 든 아이템이 0개가 되면 제거
 				if InventoryManeger.now_hand.count <= 0:
 					InventoryManeger.now_hand = null
+
+# obsticle 타입 레시피를 처리하는 함수
+## making_veiw를 찾아서 end_obsticle을 전달합니다
+func handle_obsticle_recipe():
+	# end_obsticle이 없으면 리턴
+	if not now_veiwing.end_obsticle:
+		print("경고: obsticle 타입 레시피인데 end_obsticle이 없습니다!")
+		return
+	
+	# 메인 씬에서 making_veiw 노드 찾기
+	var main_scene = get_tree().current_scene
+	var making_veiw = main_scene.get_node_or_null("making_veiw")
+	
+	if not making_veiw:
+		print("경고: making_veiw 노드를 찾을 수 없습니다!")
+		return
+	
+	# making_veiw의 thing에 end_obsticle 설정
+	making_veiw.thing = now_veiwing.end_obsticle
+	# making_veiw를 보이게 설정
+	making_veiw.visible = true
+	making_veiw.resipis = now_veiwing
+	print("obsticle 제작 완료: ", now_veiwing.end_obsticle.name if now_veiwing.end_obsticle else "이름 없음")
 
 # 완성품을 인벤토리의 빈 슬롯에 추가하는 함수
 func add_crafted_item_to_inventory():

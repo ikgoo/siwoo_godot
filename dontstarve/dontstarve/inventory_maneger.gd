@@ -50,7 +50,8 @@ func initialize_default_recipes():
 	var recipe_paths = [
 		"res://resipi/resipis/chiken_winner.tres",
 		"res://resipi/resipis/stone_axe.tres", 
-		"res://resipi/resipis/stone_pickaxe.tres"
+		"res://resipi/resipis/stone_pickaxe.tres",
+		"res://resipi/resipis/house.tres"
 	]
 	
 	# 각 레시피 파일을 로드하고 추가

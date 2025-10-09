@@ -61,6 +61,7 @@ offset_right = 866.0
 offset_bottom = 534.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 columns = 9
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

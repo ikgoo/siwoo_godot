@@ -2,7 +2,6 @@ extends Control
 
 @export var item_make : resipi
 @onready var item_texture_rect : TextureRect = $TextureRect/TextureRect
-var is_mouse = false
 var item_maker_view_node # item_maker_veiw 노드를 참조할 변수
 func _ready():
 	update_item_image()
@@ -32,12 +31,6 @@ func clear_recipe() -> void:
 
 
 
-func _on_area_2d_mouse_entered():
-	is_mouse = true
-
-
-func _on_area_2d_mouse_exited():
-	is_mouse = false
 
 # item_maker_veiw 노드를 찾는 함수
 func find_item_maker_view():
@@ -56,6 +49,15 @@ func _gui_input(event):
 # 슬롯이 클릭되었을 때 실행되는 함수
 func on_slot_clicked():
 	
+	# 레시피가 있고 item_maker_view 노드가 존재할 때
+	if item_make and item_maker_view_node:
+		# item_maker_veiw의 now_veiwing을 현재 슬롯의 레시피로 설정
+		item_maker_view_node.now_veiwing = item_make
+		# 뷰 업데이트
+		item_maker_view_node.veiwing()
+
+
+func _on_button_button_down():
 	# 레시피가 있고 item_maker_view 노드가 존재할 때
 	if item_make and item_maker_view_node:
 		# item_maker_veiw의 now_veiwing을 현재 슬롯의 레시피로 설정

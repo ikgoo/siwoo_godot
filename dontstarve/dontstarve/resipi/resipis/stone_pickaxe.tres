@@ -22,5 +22,4 @@ metadata/_custom_type_script = "uid://cgc3l2gtyqulk"
 script = ExtResource("2_p2f6x")
 item_need = Array[ExtResource("1_tnvqp")]([SubResource("Resource_iqtdr"), SubResource("Resource_75mn1")])
 end_tem = ExtResource("1_cbi2p")
-type = 0
 metadata/_custom_type_script = "uid://jjj57xxmamn6"

@@ -126,11 +126,21 @@ func _on_mouse_entered():
 	is_entered = true
 	sprite.modulate = Color(0.784, 0.784, 0.784, 1.0)
 	
+	# 메인 씬의 is_click_move를 true로 설정
+	var main_scene = get_tree().current_scene
+	if main_scene and main_scene.has_method("set"):
+		main_scene.is_click_move = false
+	
 
 
 func _on_mouse_exited():
 	is_entered = false
 	sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	
+	# 메인 씬의 is_click_move를 false로 설정
+	var main_scene = get_tree().current_scene
+	if main_scene and main_scene.has_method("set"):
+		main_scene.is_click_move = true
 
 func _process(_delta):
 	if is_entered:
