@@ -14,9 +14,10 @@
 [node name="main" type="Node2D"]
 
 [node name="TileMap" parent="." instance=ExtResource("1_0xm2m")]
+scale = Vector2(0.5, 0.5)
 
 [node name="character" parent="." instance=ExtResource("2_h2yge")]
-position = Vector2(2263, 3094)
+position = Vector2(74, 108)
 
 [node name="rock" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(19, 198)
@@ -84,5 +85,5 @@ teleport_destination = Vector2(2263, 3094)
 action_text = "채굴소 가기"
 
 [node name="teleport2" parent="." instance=ExtResource("10_4c57u")]
-position = Vector2(1971, 3058)
+position = Vector2(136, 187)
 action_text = "집가기"

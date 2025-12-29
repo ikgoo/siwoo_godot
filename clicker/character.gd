@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 300.0
+const SPEED = 100.0
 const JUMP_VELOCITY = -400.0
 
 # 플랫폼 레이어 마스크

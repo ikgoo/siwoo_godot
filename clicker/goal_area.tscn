@@ -17,6 +17,7 @@ shape = SubResource("RectangleShape2D_fever")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 0.5, 0, 0.5)
 texture_filter = 1
+scale = Vector2(2.625, 3)
 texture = ExtResource("2_h52ya")
 region_enabled = true
 region_rect = Rect2(720, 720, 16, 16)
