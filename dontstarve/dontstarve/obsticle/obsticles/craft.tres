@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="obsticle" load_steps=10 format=3 uid="uid://vyrmkale4rn6"]
+
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_ajgr1"]
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="2_yma8i"]
+[ext_resource type="Texture2D" uid="uid://k6f6ds22kwmv" path="res://livingroom_LRK.png" id="3_ajgr1"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3_jws6c"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="5_ajgr1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2pba"]
+atlas = ExtResource("3_ajgr1")
+region = Rect2(288, 160, 48, 32)
+
+[sub_resource type="Resource" id="Resource_m2pba"]
+script = ExtResource("5_ajgr1")
+metadata/_custom_type_script = "uid://cih1jufpcvkes"
+
+[sub_resource type="Resource" id="Resource_3mh36"]
+script = ExtResource("3_jws6c")
+get_item = SubResource("Resource_m2pba")
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[sub_resource type="Resource" id="Resource_w36f3"]
+script = ExtResource("3_jws6c")
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[resource]
+script = ExtResource("2_yma8i")
+tier = 1
+name = "작업대"
+img = SubResource("AtlasTexture_m2pba")
+sulmung = "설"
+type = 5
+times_mine = 4
+things = Array[ExtResource("3_jws6c")]([SubResource("Resource_3mh36"), SubResource("Resource_w36f3")])
+metadata/_custom_type_script = "uid://cf5n230tj81oq"

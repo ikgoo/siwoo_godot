@@ -24,4 +24,5 @@ item_need = Array[ExtResource("1_oanib")]([SubResource("Resource_q7lw1"), SubRes
 type = 3
 where = 2
 end_obsticle = ExtResource("1_emmx2")
+required_tier = 1
 metadata/_custom_type_script = "uid://jjj57xxmamn6"

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ObGrowthStage" load_steps=3 format=3 uid="uid://cfhfpwdya6t5e"]
+
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="1"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="2_3grq1"]
+
+[resource]
+script = ExtResource("1")
+stage_name = "성숙한 베리나무"

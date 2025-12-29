@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://dcl2fomcqpqpt"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_n2kh8"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_oohk3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r81hd"]
+atlas = ExtResource("1_oohk3")
+region = Rect2(64, 3232, 32, 32)
+
+[resource]
+script = ExtResource("1_n2kh8")
+name = "달도끼"
+img = SubResource("AtlasTexture_r81hd")
+negudo = true
+wear_img = SubResource("AtlasTexture_r81hd")
+count = 1
+max_count = 1
+can_hand = true
+tool = 3
+damage = 12
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

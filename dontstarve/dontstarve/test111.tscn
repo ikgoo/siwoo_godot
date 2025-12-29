@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://lmomamc4eyyv"]
+
+[ext_resource type="Texture2D" uid="uid://d1kjm8njycsco" path="res://KakaoTalk_20250830_150432691.png" id="1_nh3tl"]
+[ext_resource type="Script" uid="uid://cu3bcfeda77kc" path="res://sprite_3d.gd" id="2_1pg5i"]
+[ext_resource type="Script" uid="uid://iyyajf0a7upt" path="res://camera_3d.gd" id="3_nh3tl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(6.708008, 6.6970215, 0.01)
+
+[node name="Test111" type="Node3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.04, 0, 0)
+offset = Vector2(0, 75.905)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("1_nh3tl")
+script = ExtResource("2_1pg5i")
+
+[node name="Area3D" type="Area3D" parent="Sprite3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sprite3D/Area3D"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Crosshair" type="ColorRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.8)
+
+[node name="Sprite3D2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+visible = false
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.18223552, 0, 0.9832549, 0, 1, 0, -0.9832549, 0, 0.18223552, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.98885185, -0.104132235, 0.10643596, -0.09362596, 0.9906373, 0.09935629, -0.11578565, 0.08828348, -0.98934317, 0.25715053, 0.64494854, -1.3769797)
+script = ExtResource("3_nh3tl")

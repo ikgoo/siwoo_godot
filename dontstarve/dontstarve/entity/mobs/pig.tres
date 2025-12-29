@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="neutral_entity" load_steps=4 format=3 uid="uid://ctii3skcnpuj1"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_cqg1t"]
+[ext_resource type="Script" uid="uid://cufwsul6qtvf7" path="res://entity/types/neutral_entity.gd" id="1_neutral"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_neutral")
+revenge_duration = 0.5
+description = "와 푸"
+hp = 30
+scale = Vector3i(1, 1, 1)
+recog = 1
+img = ExtResource("2_texture")
+img_xy = Vector2i(8, 3)
+

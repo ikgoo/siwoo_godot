@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 InventoryManeger="*res://inventory_maneger.gd"
 Globals="*res://globals.gd"
+GridOn="*res://grid_fold/grid_on.gd"
 
 [display]
 
@@ -104,6 +105,9 @@ tab={
 3d_physics/layer_6="entity"
 3d_physics/layer_7="entity_recognize"
 3d_physics/layer_8="player_space"
+3d_physics/layer_9="making_ob"
+3d_physics/layer_13="obsticle_space"
+3d_physics/layer_14="x"
 
 [rendering]
 

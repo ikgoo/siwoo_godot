@@ -1,22 +1,30 @@
 extends Control
 var on_area = [false, -1]
 const ITEM_SLOT = preload("res://item_slot.tscn")
-@onready var mouse = $mouse
-@onready var areas = $areas
+@onready var mouse = get_node_or_null("mouse")
+@onready var areas = get_node_or_null("areas")
 @onready var sprite_2d_2 = $TextureRect
 @onready var texture_rect = $TextureRect2
 const STONE_PICKAXE = preload("res://item/tems/stone_pickaxe.tres")
 @onready var label = $TextureRect/Label
 const STONE_AXE = preload("res://item/tems/stone_axe.tres")
 const APPLE = preload("res://item/tems/apple.tres")
+const POTATO = preload("res://item/tems/potato.tres")
+
+const SOLBELL = preload("uid://cba2kooq26r25")
+
 @onready var item_slot = $TextureRect4/item_slot
 @onready var item_slot_2 = $TextureRect4/item_slot2
 @onready var item_slot_3 = $TextureRect4/item_slot3
 const BATTLE_GROUND_WINNER = preload("res://item/tems/battle_ground_winner.tres")
 @onready var hp = $hp
 @onready var stamina = $stamina
-@onready var fun = $fun
+@onready var sleep = $sleep
 @onready var hunger = $hunger
+@onready var moon = $moon
+@onready var sun = $sun
+@onready var animation_player = $AnimationPlayer
+
 
 func _ready():
 	InventoryManeger.hand = item_slot
@@ -35,7 +43,10 @@ func _ready():
 	# 초기 라벨 업데이트
 	update_stamina_label()
 	update_hp_label()
-
+	update_sleep_label()
+	
+	# 초기 해/달 상태 설정 (게임 시작 시 day이므로 해 표시)
+	call_deferred("update_celestial_body")
 	
 	var c = texture_rect.get_children()
 	for index in range(c.size()):
@@ -55,15 +66,24 @@ func _ready():
 	apple3.count = 7
 	c[2].thing = apple3
 	
+	var solbell = SOLBELL.duplicate()
+	solbell.count = 3
+	c[3].thing = solbell
+	
+	var potato = POTATO.duplicate()
+	potato.count = 2
+	c[4].thing = potato
+	
 	var stone_axe = STONE_AXE.duplicate()
 	stone_axe.count = 1
-	c[4].thing = stone_axe
+	c[5].thing = stone_axe
+	
 	var stone_paxe = STONE_PICKAXE.duplicate()
 	c[6].thing = stone_paxe
 	
 	var battle_ground_winner = BATTLE_GROUND_WINNER.duplicate()
 	battle_ground_winner.count = 1
-	c[5].thing = battle_ground_winner
+	c[7].thing = battle_ground_winner
 func change_now_hand(item: Item):
 	if item:
 		sprite_2d_2.texture = item.img
@@ -75,10 +95,15 @@ func change_now_hand(item: Item):
 func drop(thing):
 	get_parent().get_parent().drop(thing)
 
-func _process(delta):
+func _process(_delta):
+	moon.frame = Globals.now_moon
 	# 글로벌 마우스 위치를 현재 노드 좌표계로 변환
 	sprite_2d_2.position = get_local_mouse_position()
 	sprite_2d_2.position -= Vector2(60,60)
+	
+	# 수면 스태미나 라벨 업데이트 (매 프레임)
+	update_sleep_label()
+	
 	
 	##if Input.is_action_just_pressed("clicks"):
 		##if on_area[0]:  # 슬롯 위에서 클릭
@@ -207,5 +232,61 @@ func update_stamina_label():
 func update_hp_label():
 	if hp:
 		hp.text = str(InventoryManeger.player_hp)
-			 
-			
+
+# 수면 스태미나 라벨을 업데이트하는 함수
+func update_sleep_label():
+	if sleep:
+		# 플레이어 노드 찾기
+		var player = get_tree().get_first_node_in_group("player")
+		if player and "sleep_stamina" in player:
+			# 정수로 표시 (소수점 제거)
+			sleep.text = str(int(player.sleep_stamina))
+
+## 시간대에 따라 해 또는 달을 표시하는 함수
+## 
+## 시간대별 표시:
+## - day (낮): 해 표시
+## - afternoon (오후): 달 표시
+## - night (밤): 달 표시
+## - midnight (자정): 해 표시
+## 
+## sun ↔ moon 전환 시에만 애니메이션 재생
+## moon → moon, sun → sun 전환 시에는 애니메이션 없이 그대로 유지
+func update_celestial_body():
+	if not animation_player:
+		print("❌ AnimationPlayer를 찾을 수 없습니다!")
+		return
+	
+	# 현재 표시 중인 천체 확인 (sun이 보이면 true, moon이 보이면 false)
+	var is_currently_sun = sun.visible
+	
+	# 시간대에 따라 표시해야 할 천체 결정
+	# day와 midnight에는 해, afternoon과 night에는 달
+	var should_show_sun = (Globals.now_time == Globals.time_of_day.day or 
+						   Globals.now_time == Globals.time_of_day.midnight)
+	
+	# 현재 상태와 표시해야 할 상태가 다르면 애니메이션 재생
+	if should_show_sun and not is_currently_sun:
+		# moon → sun 전환
+		print("☀️ moon → sun 애니메이션 재생")
+		animation_player.play("change_sun")
+	elif not should_show_sun and is_currently_sun:
+		# sun → moon 전환
+		print("🌙 sun → moon 애니메이션 재생")
+		animation_player.play("change_moon")
+	else:
+		# 같은 천체 유지 (애니메이션 생략)
+		if should_show_sun:
+			print("☀️ 이미 sun 표시 중 (애니메이션 생략)")
+		else:
+			print("🌙 이미 moon 표시 중 (애니메이션 생략)")
+
+# 달 위상에 따라 moon 스프라이트의 프레임을 업데이트하는 함수
+# Globals.now_moon 값에 따라 적절한 프레임을 설정합니다.
+# 
+# 프레임 매핑:
+# - nothing (삭): frame 0
+# - small (상현): frame 1
+# - middle (망 직전): frame 2
+# - high (망): frame 3
+# - middle_end (망 직전): frame 4

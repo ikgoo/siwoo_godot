@@ -11,6 +11,5 @@ stamina = 200
 hunger = 150
 fun = 100
 name = "워싱시"
-craft = Array[ExtResource("1_l3s4m")]([])
 select_img = ExtResource("3_ngt0i")
 metadata/_custom_type_script = "uid://b0qxbgmggyrtq"

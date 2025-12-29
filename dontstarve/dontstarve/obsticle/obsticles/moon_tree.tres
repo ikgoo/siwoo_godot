@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="obsticle" load_steps=8 format=3 uid="uid://dp8s6tc3g78x1"]
+
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_moon_tree"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_xgt84"]
+[ext_resource type="Texture2D" uid="uid://n4alvneysro" path="res://KakaoTalk_20250830_150432691 (1).png" id="2_moon_tree"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_n6c2s"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3_moon_tree"]
+[ext_resource type="Resource" uid="uid://bw2b215udyey7" path="res://item/tems/wood.tres" id="4_moon_tree"]
+
+[sub_resource type="Resource" id="Resource_moon_tree"]
+script = ExtResource("3_moon_tree")
+get_item = ExtResource("4_moon_tree")
+min_count = 2
+max_count = 4
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[resource]
+script = ExtResource("1_moon_tree")
+name = "moon_tree"
+img = ExtResource("2_moon_tree")
+sulmung = "달나무다! moon_axe로만 벌 수 있어"
+moving = true
+type = 4
+times_mine = 5
+things = Array[ExtResource("3_moon_tree")]([SubResource("Resource_moon_tree")])
+offset = 15.88
+metadata/_custom_type_script = "uid://cf5n230tj81oq"

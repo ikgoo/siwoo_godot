@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://vqiqk47n5dvv"]
+[gd_scene load_steps=5 format=3 uid="uid://vqiqk47n5dvv"]
 
 [ext_resource type="Script" uid="uid://csabnkp55fqag" path="res://inventory_slot.gd" id="1_n6cxc"]
 
@@ -7,6 +7,9 @@ font_size = 32
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0myub"]
 size = Vector2(2.82847, 2.82847)
+
+[sub_resource type="LabelSettings" id="LabelSettings_n6cxc"]
+font_size = 10
 
 [node name="item_slot" type="Control"]
 texture_filter = 1
@@ -26,12 +29,10 @@ offset_top = 17.0
 offset_right = 60.615
 offset_bottom = 62.0
 scale = Vector2(0.3, 0.3)
-mouse_filter = 2
 label_settings = SubResource("LabelSettings_i83bl")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(0, 4)
-input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(15.5, 11.5)
@@ -43,6 +44,16 @@ layout_mode = 0
 offset_right = 31.0
 offset_bottom = 31.0
 mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="percent" type="Label" parent="."]
+layout_mode = 0
+offset_top = 17.0
+offset_right = 31.0
+offset_bottom = 31.0
+label_settings = SubResource("LabelSettings_n6cxc")
+horizontal_alignment = 1
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

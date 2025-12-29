@@ -1,19 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cb7oqdg5ircmf"]
+[gd_scene load_steps=2 format=3 uid="uid://cb7oqdg5ircmf"]
 
-[ext_resource type="Script" uid="uid://ddbjcg4fmmc6y" path="res://static_body_3d.gd" id="1_a202f"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_noarx"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_4xowi"]
+size = Vector2(0.04, 0.04)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-script = ExtResource("1_a202f")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_noarx")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5446928)
-
-[connection signal="mouse_entered" from="StaticBody3D" to="StaticBody3D" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="StaticBody3D" to="StaticBody3D" method="_on_mouse_exited"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_4xowi")

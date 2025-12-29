@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://bw2b215udyey7"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://bw2b215udyey7"]
 
 [ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_nn5bv"]
-[ext_resource type="Texture2D" uid="uid://bqbday7xnvjgm" path="res://resorce/item/GreenCrystalMoving1.png" id="1_vbmu5"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_vbmu5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wplhj"]
+atlas = ExtResource("1_vbmu5")
+region = Rect2(288, 384, 32, 32)
 
 [resource]
 script = ExtResource("1_nn5bv")
 name = "나무"
-img = ExtResource("1_vbmu5")
-wear = 0
-eatable = false
-negudo = false
+img = SubResource("AtlasTexture_wplhj")
 count = 1
 max_count = 10
-can_hand = false
-tool = 0
 metadata/_custom_type_script = "uid://cih1jufpcvkes"

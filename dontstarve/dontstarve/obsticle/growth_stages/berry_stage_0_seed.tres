@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ObGrowthStage" load_steps=4 format=3 uid="uid://c6ol1264f886i"]
+
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://co8hpytcrlfxc" path="res://resorce/mine/New Piskel (1).png" id="2"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="2_vajpb"]
+
+[resource]
+script = ExtResource("1")
+stage_name = "씨앗"
+stage_img = ExtResource("2")
+stage_offset = 10.0
+is_mineable = false
+growth_time_min = 5.0
+growth_time_max = 10.0

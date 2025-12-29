@@ -17,3 +17,7 @@ enum where_type {
 @export var type : r_type
 @export var where : where_type
 @export var end_obsticle : obsticle
+
+@export_group("제작 요구사항")
+## 제작에 필요한 제작대 tier (0 = 제작대 불필요, 1+ = 해당 tier 제작대 필요)
+@export var required_tier : int = 0

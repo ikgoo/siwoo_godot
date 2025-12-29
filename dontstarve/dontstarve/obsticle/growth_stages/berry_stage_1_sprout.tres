@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ObGrowthStage" load_steps=6 format=3 uid="uid://dbekjchc5a5yi"]
+
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dyso8ivafncqw" path="res://resorce/mine/New Piskel (2).png" id="2"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3"]
+[ext_resource type="Resource" uid="uid://bw2b215udyey7" path="res://item/tems/wood.tres" id="4"]
+
+[sub_resource type="Resource" id="drop_wood"]
+script = ExtResource("3")
+get_item = ExtResource("4")
+min_count = 1
+max_count = 1
+
+[resource]
+script = ExtResource("1")
+stage_name = "새싹"
+stage_img = ExtResource("2")
+stage_drops = Array[ExtResource("3")]([SubResource("drop_wood")])
+stage_times_mine = 1
+stage_offset = 12.0
+growth_time_min = 10.0
+growth_time_max = 20.0

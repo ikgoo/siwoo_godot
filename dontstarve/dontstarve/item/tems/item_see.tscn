@@ -6,7 +6,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_wf8bt"]
 font_size = 9
 
-[node name="item_see" type="Control"]
+[node name="item_see2" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,7 +16,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_jrmt7")
 
-[node name="Label" type="Label" parent="."]
+[node name="item_see3" type="Label" parent="."]
 z_index = 1
 texture_filter = 1
 layout_mode = 0
@@ -29,7 +29,7 @@ label_settings = SubResource("LabelSettings_wf8bt")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="item_see2" type="TextureRect" parent="."]
 texture_filter = 1
 layout_mode = 0
 offset_right = 40.0

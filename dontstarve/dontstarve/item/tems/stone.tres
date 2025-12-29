@@ -1,17 +1,16 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://c373y1eux1u5y"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://c373y1eux1u5y"]
 
 [ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_3ktw7"]
-[ext_resource type="Texture2D" uid="uid://cx15fbr5afbhn" path="res://resorce/item/HeartMoving1.png" id="1_ypob5"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_ypob5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ayvy8"]
+atlas = ExtResource("1_ypob5")
+region = Rect2(320, 32, 32, 32)
 
 [resource]
 script = ExtResource("1_3ktw7")
 name = "stone"
-img = ExtResource("1_ypob5")
-wear = 0
-eatable = false
-negudo = false
+img = SubResource("AtlasTexture_ayvy8")
 count = 1
 max_count = 40
-can_hand = false
-tool = 0
 metadata/_custom_type_script = "uid://cih1jufpcvkes"

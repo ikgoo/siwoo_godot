@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="obsticle" load_steps=9 format=3 uid="uid://dhiissqwdplvt"]
+
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_0ya8l"]
+[ext_resource type="Resource" uid="uid://bttc5udsim1sb" path="res://item/tems/apple.tres" id="2_80nac"]
+[ext_resource type="Texture2D" uid="uid://d4dm7h71am2r3" path="res://resorce/mine/berry_tree.png" id="3_fiaqi"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="3_k4l5s"]
+[ext_resource type="Texture2D" uid="uid://dyso8ivafncqw" path="res://resorce/mine/New Piskel (2).png" id="4_fiaqi"]
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="4_k4l5s"]
+[ext_resource type="Texture2D" uid="uid://co8hpytcrlfxc" path="res://resorce/mine/New Piskel (1).png" id="5_k4l5s"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="5_no26j"]
+
+[resource]
+script = ExtResource("4_k4l5s")
+name = "베리나"
+img = ExtResource("3_fiaqi")
+sulmung = "와 나무"
+type = 6
+times_mine = 4
+collectable_thing = Array[ExtResource("1_0ya8l")]([ExtResource("2_80nac")])
+is_collectable = 1
+img_before_collect = ExtResource("5_k4l5s")
+img_after_collect = ExtResource("4_fiaqi")
+metadata/_custom_type_script = "uid://cf5n230tj81oq"

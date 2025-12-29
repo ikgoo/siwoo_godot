@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="moon_creature" load_steps=4 format=3 uid="uid://cgpuwwcife3le"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_b32pm"]
+[ext_resource type="Script" uid="uid://d56yloi6h5pl" path="res://entity/types/moon_creature.gd" id="1_moon"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_moon")
+moonlight_damage_boost = 1.2
+moonlight_speed_boost = 1.15
+howl_on_spawn = false
+damage = 12
+att_cool = 0.5
+aggro_range = 12.0
+description = "오멘충
+"
+hp = 35
+speed = 5
+scale = Vector3i(1, 1, 1)
+recog = 10
+img = ExtResource("2_texture")
+img_xy = Vector2i(8, 3)
+moon_phase_spawn = 3
+moon_phase_power_boost = 1.3
+
+
+
+
+
+
+
+
+
+
+
+
+

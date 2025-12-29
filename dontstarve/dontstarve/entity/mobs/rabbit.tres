@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="fleeing_entity" load_steps=4 format=3 uid="uid://ny4q8gyd6lk"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_8y75g"]
+[ext_resource type="Script" uid="uid://dxa0bbutffa27" path="res://entity/types/fleeing_entity.gd" id="1_flee"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_flee")
+description = "동방?"
+hp = 5
+speed = 7
+scale = Vector3i(1, 1, 1)
+recog = 6
+img = ExtResource("2_texture")
+img_xy = Vector2i(8, 3)
+
+
+
+
+
+
+
+
+
+
+
+
+

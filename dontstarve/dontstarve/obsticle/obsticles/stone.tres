@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="obsticle" load_steps=7 format=3 uid="uid://jvrn7qlh4lgb"]
+[gd_resource type="Resource" script_class="obsticle" load_steps=9 format=3 uid="uid://jvrn7qlh4lgb"]
 
 [ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_5r5su"]
 [ext_resource type="Texture2D" uid="uid://bglf6kdp1wg0f" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Basic_Grass_Biom_things.png" id="1_43cqt"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_xjnt8"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_60a4f"]
 [ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3_43cqt"]
 [ext_resource type="Resource" uid="uid://c373y1eux1u5y" path="res://item/tems/stone.tres" id="4_k8r2t"]
 
@@ -22,6 +24,7 @@ name = "돌 무더기"
 img = SubResource("AtlasTexture_k8r2t")
 sulmung = "돌무더기 둘무 더기 돌무더 기"
 type = 2
+suitable_tool = 1
 times_mine = 5
 things = Array[ExtResource("3_43cqt")]([SubResource("Resource_xjnt8")])
 offset = 5.8

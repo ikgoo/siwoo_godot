@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://uyxdl5xk4i7t"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://uyxdl5xk4i7t"]
 
 [ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_jbyan"]
-[ext_resource type="Texture2D" uid="uid://caq21cg4kdl4" path="res://resorce/item/BigManaPotionMoving1.png" id="1_s7irc"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_s7irc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0mb8c"]
+atlas = ExtResource("1_s7irc")
+region = Rect2(32, 2912, 32, 32)
 
 [resource]
 script = ExtResource("1_jbyan")
 name = "돌 곡괭이"
-img = ExtResource("1_s7irc")
-wear = 0
-eatable = false
+img = SubResource("AtlasTexture_0mb8c")
 negudo = true
-wear_img = ExtResource("1_s7irc")
+wear_img = SubResource("AtlasTexture_0mb8c")
 count = 1
 max_count = 1
 can_hand = true

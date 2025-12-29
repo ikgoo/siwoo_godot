@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="boss_entity" load_steps=4 format=3 uid="uid://bl1vjgr6mfjwb"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_0klah"]
+[ext_resource type="Script" uid="uid://da8meyvm8ns76" path="res://entity/types/boss_entity.gd" id="1_boss"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_boss")
+damage = 25
+att_cool = 3.0
+aggro_range = 20.0
+chase_speed_multiplier = 1.1
+description = "spider dance"
+hp = 200
+speed = 3
+scale = Vector3i(2, 2, 2)
+recog = 20
+img = ExtResource("2_texture")
+img_xy = Vector2i(8, 3)
+
+
+
+
+
+
+
+
+
+
+
+
+

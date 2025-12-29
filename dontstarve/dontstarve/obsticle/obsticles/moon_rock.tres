@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="obsticle" load_steps=8 format=3 uid="uid://cfifr707lvaqv"]
+
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_2tu6g"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_t6x7a"]
+[ext_resource type="Texture2D" uid="uid://denasyf1ks31s" path="res://resorce/mine/moon_rock.png" id="1_u035h"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_ikpwa"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="2_u035h"]
+[ext_resource type="Resource" uid="uid://c7ptfbjudajmw" path="res://item/tems/moonstone.tres" id="4_vpbnr"]
+
+[sub_resource type="Resource" id="Resource_t6x7a"]
+script = ExtResource("2_u035h")
+get_item = ExtResource("4_vpbnr")
+min_count = 2
+max_count = 4
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[resource]
+script = ExtResource("1_2tu6g")
+name = "moon_rock"
+img = ExtResource("1_u035h")
+sulmung = "와 달돌이다"
+type = 3
+suitable_tool = 1
+times_mine = 6
+things = Array[ExtResource("2_u035h")]([SubResource("Resource_t6x7a")])
+metadata/_custom_type_script = "uid://cf5n230tj81oq"

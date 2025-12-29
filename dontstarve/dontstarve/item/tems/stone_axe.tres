@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cdckk6i502l7l"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cdckk6i502l7l"]
 
-[ext_resource type="Texture2D" uid="uid://d0p8qrskwx0et" path="res://resorce/item/BlueCrystalMoving1.png" id="1_codtq"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_codtq"]
 [ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_wjpsf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yidg4"]
+atlas = ExtResource("1_codtq")
+region = Rect2(64, 2912, 32, 32)
 
 [resource]
 script = ExtResource("1_wjpsf")
 name = "stone_axe"
-img = ExtResource("1_codtq")
-wear = 0
-eatable = false
+img = SubResource("AtlasTexture_yidg4")
 negudo = true
-wear_img = ExtResource("1_codtq")
+wear_img = SubResource("AtlasTexture_yidg4")
 count = 1
 max_count = 1
 can_hand = true

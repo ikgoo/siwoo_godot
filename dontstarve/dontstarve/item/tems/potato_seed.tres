@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://cba2kooq26r25"]
+
+[ext_resource type="Texture2D" uid="uid://c70p334r4wl36" path="res://resorce/plants/crops/potato.png" id="1_eojks"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="2_ypxvu"]
+[ext_resource type="Resource" uid="uid://digfa75d6xttm" path="res://obsticle/obsticles/poatatos.tres" id="3_tsxti"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bsnea"]
+atlas = ExtResource("1_eojks")
+region = Rect2(0, 16, 16, 16)
+
+[resource]
+script = ExtResource("2_ypxvu")
+name = "감자싹"
+img = SubResource("AtlasTexture_bsnea")
+count = 1
+max_count = 5
+is_setable = true
+set_obsticle = ExtResource("3_tsxti")
+metadata/_custom_type_script = "uid://cih1jufpcvkes"

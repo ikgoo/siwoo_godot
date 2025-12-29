@@ -32,11 +32,11 @@ func _ready():
 	add_child(update_timer)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 # 인벤토리 변경 시 호출되는 함수
-func _on_inventory_changed(item: Item):
+func _on_inventory_changed(_item: Item):
 	# 재료 색상 즉시 업데이트
 	update_material_colors()
 
@@ -49,9 +49,14 @@ func _on_update_timer_timeout():
 # 현재 선택된 레시피를 UI에 표시하는 함수
 # now_veiwing 레시피의 재료들과 완성품 정보를 화면에 보여줌
 func veiwing():
-	# 현재 보고 있는 레시피가 없으면 함수 종료
+	# 현재 보고 있는 레시피가 없으면 모든 UI 숨기고 함수 종료
 	if now_veiwing == null:
+		hide_all_ui()
 		return
+	
+	# 레시피가 있으면 UI 표시
+	show_all_ui()
+	
 	if now_veiwing.type == resipi.r_type.obsticles:
 		thing_name.text = now_veiwing.end_obsticle.name
 		thing_img.texture = now_veiwing.end_obsticle.img
@@ -102,6 +107,27 @@ func update_text_color(label: Label, color: Color):
 	# modulate를 사용하여 색상 변경 (더 간단함)
 	label.modulate = color
 
+## 모든 UI 요소를 숨기는 함수
+## null 레시피일 때 호출됨
+func hide_all_ui():
+	thing_name.visible = false
+	thing_img.visible = false
+	mete_1.visible = false
+	mete_2.visible = false
+	mete_3.visible = false
+	mete_4.visible = false
+	mete_img_1.visible = false
+	mete_img_2.visible = false
+	mete_img_3.visible = false
+	mete_img_4.visible = false
+
+## 모든 UI 요소를 표시하는 함수
+## 유효한 레시피가 있을 때 호출됨
+func show_all_ui():
+	thing_name.visible = true
+	thing_img.visible = true
+	# 재료 슬롯들은 veiwing() 함수에서 개별적으로 제어됨
+
 # 레시피를 설정하고 UI를 업데이트하는 함수
 # recipe: 설정할 레시피
 func set_recipe(recipe: resipi):
@@ -139,20 +165,20 @@ func _on_make_button_down():
 	if now_veiwing == null:
 		return
 	
-	# 모든 재료가 충분한지 확인
-	if not now_veiwing.type == resipi.r_type.obsticles:
+	# 레시피 타입에 따라 처리
+	if now_veiwing.type == resipi.r_type.obsticles:
+		# obsticle 타입: 재료는 체크하지만 소비하지 않음 (making_need에서 소비)
+		# obsticle 타입이면 making_veiw에 전달
+		handle_obsticle_recipe()
+		get_parent().visible = false
+	else:
+		# 일반 아이템: 재료 체크 및 소비
 		if not check_all_materials_available():
 			return
 		
 		# 재료 소모
 		consume_materials()
-	
-	# 레시피 타입에 따라 처리
-	if now_veiwing.type == resipi.r_type.obsticles:
-		# obsticle 타입이면 making_veiw에 전달
-		handle_obsticle_recipe()
-		get_parent().visible = false
-	else:
+		
 		# 일반 아이템이면 인벤토리에 추가
 		add_crafted_item_to_inventory()
 	

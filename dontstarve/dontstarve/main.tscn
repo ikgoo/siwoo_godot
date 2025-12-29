@@ -1,20 +1,21 @@
-[gd_scene load_steps=19 format=3 uid="uid://hpdsu5prhegj"]
+[gd_scene load_steps=22 format=3 uid="uid://hpdsu5prhegj"]
 
 [ext_resource type="Script" uid="uid://b2uaqdh6c08bf" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bpauduny6qd1p" path="res://chararter.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://iyyajf0a7upt" path="res://camera_3d.gd" id="3_074og"]
 [ext_resource type="PackedScene" uid="uid://c1ewg0dh0j2yi" path="res://maker.tscn" id="5_5vw27"]
 [ext_resource type="PackedScene" uid="uid://bxkaqpvqk7nde" path="res://inventory.tscn" id="5_7mycd"]
-[ext_resource type="PackedScene" uid="uid://f73ynbaimcwh" path="res://obsticle.tscn" id="5_272bh"]
-[ext_resource type="Resource" uid="uid://jvrn7qlh4lgb" path="res://obsticle/obsticles/stone.tres" id="6_7mycd"]
-[ext_resource type="Texture2D" uid="uid://c3e5wbl3nsmmv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Egg_item.png" id="6_ycdy4"]
-[ext_resource type="Resource" uid="uid://c5fredjmniwtb" path="res://obsticle/obsticles/tree.tres" id="7_272bh"]
-[ext_resource type="PackedScene" path="res://making_need.tscn" id="7_vivmo"]
-[ext_resource type="Texture2D" uid="uid://du8tvftqb7ejv" path="res://icon.svg" id="7_w48qg"]
-[ext_resource type="PackedScene" uid="uid://d4dfde0pxblf3" path="res://entity/entity.tscn" id="9_kek77"]
-[ext_resource type="Resource" uid="uid://cgitg6blohyoe" path="res://entity/enemys/cow.tres" id="10_4c57u"]
-[ext_resource type="Resource" uid="uid://cg5eu47jqa21b" path="res://entity/enemys/zombie.tres" id="11_efxa6"]
-[ext_resource type="PackedScene" uid="uid://1pa03h4l3n8t" path="res://grid_map.tscn" id="13_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://yfsqci6wqgyb" path="res://resorce/mine/clock_vanul.png" id="6_w48qg"]
+[ext_resource type="PackedScene" uid="uid://833wcgwovcmw" path="res://making_need.tscn" id="7_vivmo"]
+[ext_resource type="Texture2D" uid="uid://d1oqo1v7jrqdu" path="res://resorce/mine/clock.png" id="7_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://br3wqtqixabl" path="res://resorce/mine/black.png" id="8_w48qg"]
+[ext_resource type="PackedScene" uid="uid://frirnjibo006" path="res://entity.tscn" id="14_vivmo"]
 [ext_resource type="PackedScene" uid="uid://b8f5g3olqr01k" path="res://making_veiw.tscn" id="14_w48qg"]
+[ext_resource type="Resource" uid="uid://ci7klvb2lvxf1" path="res://entity/mobs/moon_wolf.tres" id="15_2cqfq"]
+[ext_resource type="PackedScene" uid="uid://lvdsh8inhi60" path="res://moon_rock.tscn" id="15_vivmo"]
+[ext_resource type="PackedScene" uid="uid://c51spuptnd8rp" path="res://grid_map[.tscn" id="17_yaehf"]
+[ext_resource type="Script" uid="uid://wp5hem2uxdtv" path="res://obstacle_grid.gd" id="18_obstacle"]
+[ext_resource type="PackedScene" uid="uid://dibbajkjbe33k" path="res://map_make_progress.tscn" id="19_progress"]
 
 [sub_resource type="Environment" id="Environment_efxa6"]
 glow_enabled = true
@@ -23,27 +24,72 @@ fog_light_color = Color(0, 0, 0, 1)
 fog_light_energy = 16.0
 fog_density = 0.0
 
-[sub_resource type="LabelSettings" id="LabelSettings_ycdy4"]
-font_size = 61
-font_color = Color(0, 0, 0, 1)
+[sub_resource type="Animation" id="Animation_vivmo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_1bvp3"]
-size = Vector3(29.9514, 0.001, 29.6758)
+[sub_resource type="Animation" id="Animation_w48qg"]
+resource_name = "open"
+length = 4.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 3.5, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2cqfq"]
+_data = {
+&"RESET": SubResource("Animation_vivmo"),
+&"open": SubResource("Animation_w48qg")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_obstacle_ground"]
+size = Vector3(100, 0.1, 100)
+
+[node name="Node3D2" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00180101, 2.38419e-07, 0.000293553)
 script = ExtResource("1_0xm2m")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_ig7tw")]
+sleep_regen_per_sec = 0.2
 
 [node name="cam_angle" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="cam_angle"]
-transform = Transform3D(1, 0, 0, 0, 0.47101194, 0.88212687, 0, -0.88212687, 0.47101194, 9.596348e-05, 0.9217843, 0.7910591)
+transform = Transform3D(1, 0, 0, 0, 0.5299193, 0.8480481, 0, -0.8480482, 0.52991927, 0, 0.865, 0.625)
+script = ExtResource("3_074og")
+zoom_speed = 0.1
+zoom_min = 0.4
+zoom_max = 1.5
 
 [node name="mouse_ray" type="RayCast3D" parent="cam_angle/Camera3D"]
 target_position = Vector3(0, 0, 0)
-collision_mask = 4096
+collision_mask = 2
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="obsticle_ray" type="RayCast3D" parent="cam_angle/Camera3D"]
+target_position = Vector3(0, 0, 0)
+collision_mask = 8194
 hit_from_inside = true
 collide_with_areas = true
 
@@ -59,93 +105,74 @@ environment = SubResource("Environment_efxa6")
 [node name="maker" parent="CanvasLayer" instance=ExtResource("5_5vw27")]
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-texture_filter = 1
-offset_left = 1495.0
-offset_top = 193.0
-offset_right = 1695.0
-offset_bottom = 393.0
-mouse_filter = 2
-texture = ExtResource("6_ycdy4")
-
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
-texture_filter = 1
-offset_left = 1591.0001
-offset_top = 285.0
-offset_right = 1719.0001
-offset_bottom = 785.0
-rotation = 3.1415927
-scale = Vector2(0.3, 0.3)
-mouse_filter = 2
-texture = ExtResource("7_w48qg")
-
-[node name="Label" type="Label" parent="CanvasLayer"]
-offset_left = 1640.0
-offset_top = 251.0
-offset_right = 1701.0
-offset_bottom = 423.0
-text = "낮
-"
-label_settings = SubResource("LabelSettings_ycdy4")
-
-[node name="Label2" type="Label" parent="CanvasLayer"]
-offset_left = 1487.0
-offset_top = 243.0
-offset_right = 1548.0
-offset_bottom = 415.0
-text = "밤
-"
-label_settings = SubResource("LabelSettings_ycdy4")
-
 [node name="making_need" parent="CanvasLayer" instance=ExtResource("7_vivmo")]
+visible = false
 offset_left = 888.0
 offset_top = 181.0
 offset_right = 888.0
 offset_bottom = 181.0
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+texture_filter = 1
+position = Vector2(1608.0001, 301)
+rotation = 1.5707964
+scale = Vector2(7, 7)
+texture = ExtResource("6_w48qg")
+centered = false
+offset = Vector2(-22.55, -3.415)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0717891, -9.23721)
-shape = SubResource("BoxShape3D_1bvp3")
+[node name="Clock" type="Sprite2D" parent="CanvasLayer"]
+z_index = -1
+texture_filter = 1
+position = Vector2(1607, 300)
+scale = Vector2(20, 20)
+texture = ExtResource("7_ycdy4")
 
-[node name="obsticle" parent="." instance=ExtResource("5_272bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0933293, -0.067472, -0.642673)
-thing = ExtResource("6_7mycd")
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("8_w48qg")
 
-[node name="obsticle2" parent="." instance=ExtResource("5_272bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0970935, -0.0668175, -0.329145)
-thing = ExtResource("6_7mycd")
-
-[node name="obsticle3" parent="." instance=ExtResource("5_272bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0933293, -0.067472, 0.0135138)
-thing = ExtResource("7_272bh")
-
-[node name="obsticle4" parent="." instance=ExtResource("5_272bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.347702, -0.067472, -0.642673)
-thing = ExtResource("7_272bh")
-
-[node name="obsticle5" parent="." instance=ExtResource("5_272bh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.972406, -0.067472, -0.642673)
-
-[node name="entity" parent="." instance=ExtResource("9_kek77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8604532, 0.0530233, 0.0365643)
-thing = ExtResource("10_4c57u")
-
-[node name="entity2" parent="." instance=ExtResource("9_kek77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1789432, 0.0530233, 0.7411267)
-thing = ExtResource("11_efxa6")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/TextureRect"]
+libraries = {
+&"": SubResource("AnimationLibrary_2cqfq")
+}
 
 [node name="day_night_timer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 75.0
 autostart = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.07017427, 0.99753475, 0, -0.99753475, 0.07017427, 0, 1.6861157, 0)
 light_energy = 0.2
 
-[node name="GridMap" parent="." instance=ExtResource("13_ycdy4")]
-
 [node name="making_veiw" parent="." instance=ExtResource("14_w48qg")]
+
+[node name="Node3D" parent="." instance=ExtResource("15_vivmo")]
+
+[node name="ObstacleGrid" type="GridMap" parent="."]
+cell_size = Vector3(0.125, 1, 0.125)
+cell_center_y = false
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("18_obstacle")
+
+[node name="ObstacleGroundCollision" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObstacleGroundCollision"]
+shape = SubResource("BoxShape3D_obstacle_ground")
+
+[node name="entity" parent="." instance=ExtResource("14_vivmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9265349, 0, 0)
+thing = ExtResource("15_2cqfq")
+
+[node name="Node3D2" parent="." instance=ExtResource("17_yaehf")]
+
+[node name="map_make_progress" parent="." instance=ExtResource("19_progress")]
 
 [connection signal="timeout" from="day_night_timer" to="." method="_on_day_night_timer_timeout"]

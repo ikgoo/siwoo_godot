@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="obsticle" load_steps=6 format=3 uid="uid://c5fredjmniwtb"]
+[gd_resource type="Resource" script_class="obsticle" load_steps=8 format=3 uid="uid://c5fredjmniwtb"]
 
 [ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_45mhx"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_c4evb"]
 [ext_resource type="Texture2D" uid="uid://n4alvneysro" path="res://KakaoTalk_20250830_150432691 (1).png" id="1_q3emi"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_o76fj"]
 [ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="3_pvcw0"]
 [ext_resource type="Resource" uid="uid://bw2b215udyey7" path="res://item/tems/wood.tres" id="4_c4evb"]
 
@@ -19,6 +21,7 @@ img = ExtResource("1_q3emi")
 sulmung = "소(small)나무 엌ㅋㅋㅋㅋ"
 moving = true
 type = 1
+suitable_tool = 2
 times_mine = 3
 things = Array[ExtResource("3_pvcw0")]([SubResource("Resource_o76fj")])
 offset = 15.88

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="resipi" load_steps=6 format=3 uid="uid://prjma2ggvgq2"]
+
+[ext_resource type="Script" uid="uid://cgc3l2gtyqulk" path="res://resipi/resipi_resource.gd" id="1_6csp5"]
+[ext_resource type="Resource" uid="uid://vyrmkale4rn6" path="res://obsticle/obsticles/craft.tres" id="1_b0egh"]
+[ext_resource type="Script" uid="uid://jjj57xxmamn6" path="res://resipi/resipi.gd" id="2_ln6r2"]
+[ext_resource type="Resource" uid="uid://bw2b215udyey7" path="res://item/tems/wood.tres" id="3_if1k2"]
+
+[sub_resource type="Resource" id="Resource_xmbb6"]
+script = ExtResource("1_6csp5")
+r_item = ExtResource("3_if1k2")
+count = 3
+metadata/_custom_type_script = "uid://cgc3l2gtyqulk"
+
+[resource]
+script = ExtResource("2_ln6r2")
+item_need = Array[ExtResource("1_6csp5")]([SubResource("Resource_xmbb6")])
+type = 3
+end_obsticle = ExtResource("1_b0egh")
+metadata/_custom_type_script = "uid://jjj57xxmamn6"

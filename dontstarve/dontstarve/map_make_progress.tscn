@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://dibbajkjbe33k"]
+
+[ext_resource type="Script" uid="uid://cdjm8fpp7qsl4" path="res://map_make_progress.gd" id="1_progress"]
+
+[node name="map_make_progress" type="CanvasLayer"]
+script = ExtResource("1_progress")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "맵 생성 중..."
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2

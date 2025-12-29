@@ -1,13 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://f73ynbaimcwh"]
+[gd_scene load_steps=6 format=3 uid="uid://f73ynbaimcwh"]
 
 [ext_resource type="Script" uid="uid://cvog20tddbehw" path="res://obsticle.gd" id="1_8hjg8"]
-[ext_resource type="Texture2D" uid="uid://cey2si7e5y02u" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Free_Chicken_House.png" id="3_owy4p"]
+[ext_resource type="Texture2D" uid="uid://n4alvneysro" path="res://KakaoTalk_20250830_150432691 (1).png" id="2_c3ehu"]
+[ext_resource type="Script" uid="uid://cu3bcfeda77kc" path="res://sprite_3d.gd" id="3_c3ehu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c3ehu"]
+size = Vector3(0.22, 0.4, 0.01)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8hjg8"]
-size = Vector3(0.1, 0.1, 0.1)
+size = Vector3(0.1, 1.1799316, 0.1)
 
 [node name="obsticle" type="StaticBody3D"]
-collision_layer = 4
+collision_layer = 4096
+input_ray_pickable = false
 script = ExtResource("1_8hjg8")
 drop_range_min = 0.05
 drop_range_max = 0.1
@@ -15,23 +20,25 @@ arc_height_min = 0.05
 arc_height_max = 0.1
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-offset = Vector2(0, 18)
 billboard = 1
 texture_filter = 0
-texture = ExtResource("3_owy4p")
+texture = ExtResource("2_c3ehu")
+script = ExtResource("3_c3ehu")
+
+[node name="Area3D" type="Area3D" parent="Sprite3D"]
+collision_layer = 8192
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sprite3D/Area3D"]
+shape = SubResource("BoxShape3D_c3ehu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0417057, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
 shape = SubResource("BoxShape3D_8hjg8")
 
-[node name="Area3D" type="Area3D" parent="."]
-collision_layer = 4
-collision_mask = 129
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0417057, 0)
-shape = SubResource("BoxShape3D_8hjg8")
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

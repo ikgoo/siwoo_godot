@@ -1,9 +1,175 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxkaqpvqk7nde"]
+[gd_scene load_steps=11 format=3 uid="uid://bxkaqpvqk7nde"]
 
 [ext_resource type="Script" uid="uid://dftqqx57far2d" path="res://inventory.gd" id="1_psafj"]
 [ext_resource type="Texture2D" uid="uid://yc01hobseef2" path="res://inventroy.png" id="2_5tt2m"]
 [ext_resource type="PackedScene" uid="uid://vqiqk47n5dvv" path="res://item_slot.tscn" id="4_dw5ng"]
 [ext_resource type="Texture2D" uid="uid://m5cxewhij6kt" path="res://tem_e.png" id="4_mrqgh"]
+[ext_resource type="Texture2D" uid="uid://bdfr6ywn466ik" path="res://resorce/mine/moon.png" id="5_dw5ng"]
+[ext_resource type="Texture2D" uid="uid://d0otrede2kx4g" path="res://resorce/mine/sun.png" id="6_sun"]
+
+[sub_resource type="Animation" id="Animation_change_moon"]
+resource_name = "change_moon"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sun:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("moon:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sun:scale")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(15, 15), Vector2(1e-05, 15)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("moon:scale")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 15), Vector2(15, 15)]
+}
+
+[sub_resource type="Animation" id="Animation_change_sun"]
+resource_name = "change_sun"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sun:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("moon:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("moon:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(15, 15), Vector2(1e-05, 15)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sun:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 15), Vector2(15, 15)]
+}
+
+[sub_resource type="Animation" id="Animation_0xmy5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sun:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(15, 15)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("moon:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 15)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("moon:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sun:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_celestial"]
+_data = {
+&"RESET": SubResource("Animation_0xmy5"),
+&"change_moon": SubResource("Animation_change_moon"),
+&"change_sun": SubResource("Animation_change_sun")
+}
 
 [node name="inventory" type="Control"]
 layout_mode = 3
@@ -326,7 +492,7 @@ offset_bottom = 75.0
 mouse_filter = 0
 text = "stamina:"
 
-[node name="fun" type="Label" parent="."]
+[node name="sleep" type="Label" parent="."]
 layout_mode = 0
 offset_left = 1439.0
 offset_top = 143.0
@@ -343,6 +509,26 @@ offset_right = 1733.0
 offset_bottom = 195.0
 mouse_filter = 0
 text = "hunger"
+
+[node name="moon" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(1194.0001, 106.000015)
+scale = Vector2(1e-05, 15)
+texture = ExtResource("5_dw5ng")
+hframes = 2
+vframes = 3
+
+[node name="sun" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(1194.0001, 106.000015)
+scale = Vector2(15, 15)
+texture = ExtResource("6_sun")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_celestial")
+}
 
 [connection signal="mouse_entered" from="TextureRect2" to="." method="_on_texture_rect_2_mouse_entered"]
 [connection signal="mouse_exited" from="TextureRect2" to="." method="_on_texture_rect_2_mouse_exited"]

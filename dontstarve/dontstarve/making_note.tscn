@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://di76m0xa8r77h"]
+[gd_scene load_steps=5 format=3 uid="uid://di76m0xa8r77h"]
 
 [ext_resource type="Script" uid="uid://cv3ipx4oc2dqf" path="res://making_note.gd" id="1_6hsci"]
 [ext_resource type="Texture2D" uid="uid://cey2si7e5y02u" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Free_Chicken_House.png" id="2_kbpcb"]
@@ -6,6 +6,10 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kbpcb"]
 height = 0.38867188
 radius = 0.39648438
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wkv80"]
+height = 0.50878906
+radius = 0.106933594
 
 [node name="making_note" type="Node3D"]
 script = ExtResource("1_6hsci")
@@ -19,9 +23,18 @@ texture = ExtResource("2_kbpcb")
 [node name="Sprite3D2" type="Sprite3D" parent="."]
 
 [node name="Area3D" type="Area3D" parent="."]
+collision_layer = 256
+collision_mask = 128
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("CylinderShape3D_kbpcb")
 
+[node name="is_setable_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="is_setable_area"]
+shape = SubResource("CylinderShape3D_wkv80")
+
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="area_entered" from="is_setable_area" to="." method="_on_is_setable_area_area_entered"]
+[connection signal="area_exited" from="is_setable_area" to="." method="_on_is_setable_area_area_exited"]

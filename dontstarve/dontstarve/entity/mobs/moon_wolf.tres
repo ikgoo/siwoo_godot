@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="moon_creature" load_steps=6 format=3 uid="uid://ci7klvb2lvxf1"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_kb7j7"]
+[ext_resource type="Script" uid="uid://d56yloi6h5pl" path="res://entity/types/moon_creature.gd" id="1_moon"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_texture"]
+[ext_resource type="Resource" uid="uid://biof5yd3us4w3" path="res://item/tems/meat.tres" id="2_xqlr2"]
+
+[sub_resource type="Resource" id="Resource_uytnc"]
+script = ExtResource("1_kb7j7")
+get_item = ExtResource("2_xqlr2")
+min_count = 1
+max_count = 5
+metadata/_custom_type_script = "uid://bge84na8j2llk"
+
+[resource]
+script = ExtResource("1_moon")
+damage = 20
+att_cool = 1.0
+aggro_range = 15.0
+chase_speed_multiplier = 1.0
+description = "호날두의 코너킥을 막(지못한)존재이다"
+hp = 50
+speed = 0.5
+scale = Vector3i(1, 1, 1)
+recog = 12
+dead_tem = Array[ExtResource("1_kb7j7")]([SubResource("Resource_uytnc")])
+img = ExtResource("2_texture")
+img_xy = Vector2i(8, 3)
+moon_phase_spawn = 5
+moon_phase_power_boost = 1.5
+

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="enemy" load_steps=4 format=3 uid="uid://b1eorhrrubfup"]
+
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="1_ds541"]
+[ext_resource type="Script" uid="uid://xvukyqd1tf52" path="res://entity/types/enemy.gd" id="1_fe4k7"]
+[ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="2_ds541"]
+
+[resource]
+script = ExtResource("1_fe4k7")
+damage = 5
+description = "THE Z"
+hp = 20
+speed = 4
+scale = Vector3i(1, 1, 1)
+recog = 5
+img = ExtResource("2_ds541")
+img_xy = Vector2i(8, 3)

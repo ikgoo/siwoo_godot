@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://yfcyhfiq7x0p"
-path="res://.godot/imported/one_slot.png-6cb5ad16a29e7c2bf99b08012777e255.ctex"
+path.s3tc="res://.godot/imported/one_slot.png-6cb5ad16a29e7c2bf99b08012777e255.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://one_slot.png"
-dest_files=["res://.godot/imported/one_slot.png-6cb5ad16a29e7c2bf99b08012777e255.ctex"]
+dest_files=["res://.godot/imported/one_slot.png-6cb5ad16a29e7c2bf99b08012777e255.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +38,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="resipi" load_steps=4 format=3 uid="uid://3j6jpyyedn6d"]
+
+[ext_resource type="Script" uid="uid://cgc3l2gtyqulk" path="res://resipi/resipi_resource.gd" id="1_m1o11"]
+[ext_resource type="Resource" uid="uid://bttc5udsim1sb" path="res://item/tems/apple.tres" id="1_ygfh5"]
+[ext_resource type="Script" uid="uid://jjj57xxmamn6" path="res://resipi/resipi.gd" id="2_ygfh5"]
+
+[resource]
+script = ExtResource("2_ygfh5")
+end_tem = ExtResource("1_ygfh5")
+type = 1
+where = 1
+required_tier = 1
+metadata/_custom_type_script = "uid://jjj57xxmamn6"

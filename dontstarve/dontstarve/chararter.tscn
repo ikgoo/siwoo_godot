@@ -1,10 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://bpauduny6qd1p"]
+[gd_scene load_steps=20 format=3 uid="uid://bpauduny6qd1p"]
 
 [ext_resource type="Script" uid="uid://7m7bqt151ank" path="res://character_body_3d.gd" id="1_8fjtj"]
 [ext_resource type="Texture2D" uid="uid://dgvx7gccdlp41" path="res://resorce/charater/idle.png" id="2_6anvk"]
 [ext_resource type="Resource" uid="uid://c5hkwie5a2jqj" path="res://charater_job/jobs/wusingsi.tres" id="2_am4v7"]
 [ext_resource type="Texture2D" uid="uid://c61kf606wwdur" path="res://resorce/charater/walk.png" id="3_am4v7"]
-[ext_resource type="Texture2D" uid="uid://d0p8qrskwx0et" path="res://resorce/item/BlueCrystalMoving1.png" id="4_6anvk"]
+[ext_resource type="Texture2D" uid="uid://buxsd805bolmu" path="res://resorce/charater/hurt.png" id="5_7vw10"]
 
 [sub_resource type="Animation" id="Animation_s0cwe"]
 length = 0.001
@@ -68,6 +68,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("idle:texture")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_6anvk")]
+}
 
 [sub_resource type="Animation" id="Animation_am4v7"]
 resource_name = "attack"
@@ -98,6 +110,35 @@ tracks/1/keys = {
 "args": [],
 "method": &"_on_attack_timer_timeout"
 }]
+}
+
+[sub_resource type="Animation" id="Animation_y57qd"]
+resource_name = "got_attack"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("idle:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("5_7vw10"), ExtResource("2_6anvk")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("idle:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15, 0.25, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 0]
 }
 
 [sub_resource type="Animation" id="Animation_v8q3x"]
@@ -505,6 +546,7 @@ tracks/4/keys = {
 _data = {
 &"RESET": SubResource("Animation_s0cwe"),
 &"attack": SubResource("Animation_am4v7"),
+&"got_attack": SubResource("Animation_y57qd"),
 &"idle_down": SubResource("Animation_v8q3x"),
 &"idle_l_r": SubResource("Animation_668ty"),
 &"idle_up": SubResource("Animation_c0vmx"),
@@ -518,15 +560,26 @@ height = 0.214844
 radius = 0.7519531
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8fjtj"]
-size = Vector3(0.122802734, 0.3557129, 0.1328125)
+size = Vector3(0.14160156, 0.356, 0.15917969)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6anvk"]
-radius = 0.129363
+radius = 0.13494842
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7vw10"]
+radius = 0.08286647
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
-collision_mask = 4
+transform = Transform3D(0.9999994, 0.0008872825, -0.000552046, -0.000887018, 0.9999995, 0.0004848945, 0.0005524709, -0.00048441032, 0.99999976, 0, 0, 0)
+top_level = true
+collision_mask = 4096
+collision_priority = 5.0
 input_ray_pickable = false
 script = ExtResource("1_8fjtj")
+sleep_regen_per_sec = 0.28
+sleep_blur_samples = 5
+sleep_blur_radius_max = 100.0
+sleep_vignette_strength_max = 2.0
+sleep_vignette_size = 1.0
 jobs = ExtResource("2_am4v7")
 
 [node name="run" type="Sprite3D" parent="."]
@@ -556,7 +609,7 @@ vframes = 3
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110313, 0)
-collision_mask = 44
+collision_mask = 4136
 input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
@@ -568,23 +621,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0422303, 0)
 shape = SubResource("BoxShape3D_8fjtj")
 
 [node name="hand" type="Sprite3D" parent="."]
+region_rect = Rect2(3540, 7320, 360, 360)
 
 [node name="hand_node" type="Node3D" parent="."]
 
 [node name="hand_sprite" type="Sprite3D" parent="hand_node"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.066677, 0.0454013, 0.0281537)
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.066677, 0.0454013, 0.0281537)
 flip_h = true
 billboard = 1
+double_sided = false
 texture_filter = 0
-texture = ExtResource("4_6anvk")
+region_rect = Rect2(3540, 7320, 360, 360)
 
 [node name="space_area" type="Area3D" parent="."]
 collision_layer = 128
-collision_mask = 36
+collision_mask = 4392
 input_ray_pickable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="space_area"]
 shape = SubResource("SphereShape3D_6anvk")
+
+[node name="body_area" type="Area3D" parent="."]
+collision_layer = 512
+collision_mask = 32
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="body_area"]
+shape = SubResource("SphereShape3D_7vw10")
 
 [node name="breaking_timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -602,9 +665,17 @@ outline_modulate = Color(1, 1, 1, 1)
 font_size = 20
 outline_size = 2
 
+[node name="cantmove" type="Timer" parent="."]
+wait_time = 0.4
+
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="area_exited" from="Area3D" to="." method="_on_area_3d_area_exited"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="area_entered" from="space_area" to="." method="_on_space_area_area_entered"]
 [connection signal="area_exited" from="space_area" to="." method="_on_space_area_area_exited"]
+[connection signal="body_entered" from="space_area" to="." method="_on_space_area_body_entered"]
+[connection signal="body_exited" from="space_area" to="." method="_on_space_area_body_exited"]
 [connection signal="timeout" from="breaking_timer" to="." method="_on_breaking_timer_timeout"]
 [connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="cantmove" to="." method="_on_timer_timeout"]

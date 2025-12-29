@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="Item" load_steps=8 format=3 uid="uid://ck4sbk0ody4cl"]
+
+[ext_resource type="Texture2D" uid="uid://c70p334r4wl36" path="res://resorce/plants/crops/potato.png" id="1_22b0u"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_vtn0g"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="3_qoowu"]
+[ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="4_lcr8s"]
+[ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="5_6kf28"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6408d"]
+atlas = ExtResource("1_22b0u")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="Resource" id="Resource_tlp6g"]
+script = ExtResource("4_lcr8s")
+metadata/_custom_type_script = "uid://cf5n230tj81oq"
+
+[resource]
+script = ExtResource("1_vtn0g")
+name = "맛있는 감자"
+img = SubResource("AtlasTexture_6408d")
+eatable = true
+is_setable = true
+set_obsticle = SubResource("Resource_tlp6g")

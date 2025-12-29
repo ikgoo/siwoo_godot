@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="obsticle" load_steps=4 format=3 uid="uid://c566lk3yy6cbi"]
+[gd_resource type="Resource" script_class="obsticle" load_steps=6 format=3 uid="uid://c566lk3yy6cbi"]
 
 [ext_resource type="Script" uid="uid://cf5n230tj81oq" path="res://obsticle/obsticle.gd" id="1_3jcbd"]
 [ext_resource type="Texture2D" uid="uid://cey2si7e5y02u" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Free_Chicken_House.png" id="1_nk3ib"]
+[ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_nknxi"]
+[ext_resource type="Script" uid="uid://1kvar2s1bsex" path="res://obsticle/ob_growth_stage.gd" id="2_3wqdp"]
 [ext_resource type="Script" uid="uid://bge84na8j2llk" path="res://obsticle/obsticle_get.gd" id="2_nk3ib"]
 
 [resource]
@@ -12,4 +14,6 @@ sulmung = "lpg!"
 moving = true
 times_mine = 6
 offset = 18.0
+grid_width = 9
+grid_height = 4
 metadata/_custom_type_script = "uid://cf5n230tj81oq"

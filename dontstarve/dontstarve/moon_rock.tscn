@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://lvdsh8inhi60"]
+
+[ext_resource type="Script" uid="uid://cg6gco2cpj614" path="res://moon_rock.gd" id="1_x8y0b"]
+[ext_resource type="Texture2D" uid="uid://denasyf1ks31s" path="res://resorce/mine/moon_rock.png" id="2_x8y0b"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_x8y0b")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.705, 0)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_x8y0b")

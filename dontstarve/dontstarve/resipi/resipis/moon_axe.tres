@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="resipi" load_steps=6 format=3 uid="uid://bphqcgs7lqrth"]
+
+[ext_resource type="Script" uid="uid://cgc3l2gtyqulk" path="res://resipi/resipi_resource.gd" id="1_slpkk"]
+[ext_resource type="Resource" uid="uid://dcl2fomcqpqpt" path="res://item/tems/moon_axe.tres" id="1_y5gl7"]
+[ext_resource type="Script" uid="uid://jjj57xxmamn6" path="res://resipi/resipi.gd" id="2_m0u4b"]
+[ext_resource type="Resource" uid="uid://c7ptfbjudajmw" path="res://item/tems/moonstone.tres" id="3_nr72i"]
+
+[sub_resource type="Resource" id="Resource_tp32x"]
+script = ExtResource("1_slpkk")
+r_item = ExtResource("3_nr72i")
+count = 2
+metadata/_custom_type_script = "uid://cgc3l2gtyqulk"
+
+[resource]
+script = ExtResource("2_m0u4b")
+item_need = Array[ExtResource("1_slpkk")]([SubResource("Resource_tp32x")])
+end_tem = ExtResource("1_y5gl7")
+metadata/_custom_type_script = "uid://jjj57xxmamn6"

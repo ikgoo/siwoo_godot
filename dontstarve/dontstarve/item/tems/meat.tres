@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://biof5yd3us4w3"]
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://biof5yd3us4w3"]
 
 [ext_resource type="Script" uid="uid://cih1jufpcvkes" path="res://item/item.gd" id="1_bbxwe"]
-[ext_resource type="Texture2D" uid="uid://c3e5wbl3nsmmv" path="res://Sprout Lands - Sprites - Basic pack/Sprout Lands - Sprites - Basic pack/Objects/Egg_item.png" id="1_wffya"]
+[ext_resource type="Texture2D" uid="uid://r7g8hqrly3sj" path="res://resorce/IconSet.png" id="1_wffya"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wgu8t"]
+atlas = ExtResource("1_wffya")
+region = Rect2(0, 960, 32, 32)
 
 [resource]
 script = ExtResource("1_bbxwe")
 name = "meat"
-img = ExtResource("1_wffya")
+img = SubResource("AtlasTexture_wgu8t")
 eatable = true
 count = 1
 max_count = 5
