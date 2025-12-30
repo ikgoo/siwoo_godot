@@ -79,5 +79,3 @@ static func create(parent: Node, pos: Vector2, txt: String, color: Color = Color
 	tween.finished.connect(floating_text.queue_free)
 	
 	return floating_text
-
-

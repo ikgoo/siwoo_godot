@@ -26,6 +26,10 @@ var mining_particles : CPUParticles2D  # 채굴 중 지속 파티클
 # 마우스 클릭 추적
 var mouse_just_clicked : bool = false
 
+# 채굴 키 입력 추적 (이전 프레임 상태)
+var was_mining_key1_pressed : bool = false
+var was_mining_key2_pressed : bool = false
+
 # 대기시간 시스템 (사용 안 함)
 var is_cooldown : bool = false  # 대기시간 중인지 여부
 var cooldown_time : float = 0.0  # 대기시간 (초) - 0으로 설정하여 비활성화
@@ -86,8 +90,20 @@ func _physics_process(delta):
 	
 	# 캐릭터가 영역 안에 있을 때
 	if is_character_inside and not is_cooldown:
-		# F키 또는 마우스 클릭으로 채굴 진행
-		if Input.is_action_just_pressed("f") or mouse_just_clicked:
+		# 설정된 채굴 키 입력 감지 (키를 누르는 순간만)
+		var is_mining_key1_pressed = Input.is_key_pressed(Globals.mining_key1)
+		var is_mining_key2_pressed = Input.is_key_pressed(Globals.mining_key2)
+		
+		# 키를 방금 눌렀는지 확인 (이전 프레임에는 안 눌렸고 현재 프레임에 눌림)
+		var mining_key1_just_pressed = is_mining_key1_pressed and not was_mining_key1_pressed
+		var mining_key2_just_pressed = is_mining_key2_pressed and not was_mining_key2_pressed
+		
+		# 이전 프레임 상태 업데이트
+		was_mining_key1_pressed = is_mining_key1_pressed
+		was_mining_key2_pressed = is_mining_key2_pressed
+		
+		# 채굴 키 또는 마우스 클릭으로 채굴 진행
+		if mining_key1_just_pressed or mining_key2_just_pressed or mouse_just_clicked:
 			# 채굴 진행 (클릭 한 번당 증가량)
 			# 기본 1.0에 시간 배율(money_times)을 곱함
 			var progress_per_click = 1.0 * (Globals.money_times / 100.0)

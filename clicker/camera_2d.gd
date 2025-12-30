@@ -3,7 +3,7 @@ extends Camera2D
 @onready var character = $"../character"
 
 # 카메라가 플레이어를 따라가는 속도 (0~1 사이, 클수록 빠름)
-var follow_speed : float = 0.1
+var follow_speed : float = 0.2
 
 
 

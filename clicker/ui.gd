@@ -2,6 +2,11 @@ extends Control
 
 @onready var label = $money
 @onready var upgrade_thing = $upgrade_thing
+@onready var setting_button = $SettingButton
+@onready var setting_panel = $SettingPanel
+@onready var key1_input = $SettingPanel/VBoxContainer/Key1Container/Key1Input
+@onready var key2_input = $SettingPanel/VBoxContainer/Key2Container/Key2Input
+@onready var close_button = $SettingPanel/VBoxContainer/CloseButton
 
 # 돈 표시용 변수 (애니메이션을 위해)
 var displayed_money : float = 0.0
@@ -24,6 +29,11 @@ var fever_label : Label
 
 # 액션바 표시
 var action_bar_label : Label
+
+# 채굴 키 설정
+var mining_key1 : int = KEY_F
+var mining_key2 : int = KEY_J
+var waiting_for_key : LineEdit = null  # 키 입력 대기 중인 입력 필드
 
 func _ready():
 	# Globals의 Signal 구독
@@ -86,6 +96,18 @@ func _ready():
 	
 	# 초기 수입 계산
 	last_money = Globals.money
+	
+	# 설정 버튼 연결
+	setting_button.pressed.connect(_on_setting_button_pressed)
+	close_button.pressed.connect(_on_close_button_pressed)
+	
+	# 키 입력 필드 클릭 시 키 대기 모드
+	key1_input.gui_input.connect(_on_key1_input_gui_input)
+	key2_input.gui_input.connect(_on_key2_input_gui_input)
+	
+	# Globals에 채굴 키 저장
+	Globals.mining_key1 = mining_key1
+	Globals.mining_key2 = mining_key2
 
 func _process(delta):
 	# 부드러운 돈 증가 애니메이션 (Tween 없이 수동으로)
@@ -186,3 +208,42 @@ func _on_action_text_changed(text: String, should_show: bool):
 		# 페이드 아웃
 		var tween = create_tween()
 		tween.tween_property(action_bar_label, "modulate:a", 0.0, 0.2)
+
+# 설정 버튼 클릭
+func _on_setting_button_pressed():
+	setting_panel.visible = true
+
+# 닫기 버튼 클릭
+func _on_close_button_pressed():
+	setting_panel.visible = false
+	waiting_for_key = null
+
+# 키1 입력 필드 클릭
+func _on_key1_input_gui_input(event: InputEvent):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		waiting_for_key = key1_input
+		key1_input.text = "키를 누르세요..."
+
+# 키2 입력 필드 클릭
+func _on_key2_input_gui_input(event: InputEvent):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		waiting_for_key = key2_input
+		key2_input.text = "키를 누르세요..."
+
+# 키 입력 감지
+func _input(event: InputEvent):
+	if waiting_for_key and event is InputEventKey and event.pressed:
+		var key_name = OS.get_keycode_string(event.keycode)
+		
+		# 입력 필드에 따라 키 저장
+		if waiting_for_key == key1_input:
+			mining_key1 = event.keycode
+			key1_input.text = key_name
+			Globals.mining_key1 = mining_key1
+		elif waiting_for_key == key2_input:
+			mining_key2 = event.keycode
+			key2_input.text = key_name
+			Globals.mining_key2 = mining_key2
+		
+		waiting_for_key = null
+		get_viewport().set_input_as_handled()

@@ -1,7 +1,15 @@
 extends CharacterBody2D
 
 const SPEED = 100.0
-const JUMP_VELOCITY = -400.0
+const RUN_SPEED = 200.0  # 달리기 속도
+
+const JUMP_VELOCITY = -400.0  # 최대 점프 높이
+const MIN_JUMP_VELOCITY = -200.0  # 최소 점프 높이 (빠르게 뗄 때)
+
+# 가속도 설정
+@export var acceleration: float = 800.0  # 가속도 (픽셀/초²)
+@export var friction: float = 600.0  # 마찰력/감속도 (픽셀/초²)
+@export var air_acceleration: float = 400.0  # 공중 가속도 (픽셀/초²) - 낮을수록 미끄러짐
 
 # 플랫폼 레이어 마스크
 const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
@@ -15,6 +23,13 @@ const PLATFORM_OUT_DURATION: float = 0.4  # 0.4초
 
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
+
+# 점프 관련 변수
+var is_jumping: bool = false
+var jump_hold_time: float = 0.0
+
+# 공중 이동 속도 (점프 전 속도 저장)
+var air_speed: float = 0.0
 
 # 캐릭터 상태 enum
 enum State {
@@ -78,10 +93,18 @@ func _physics_process(delta):
 	# 중력 적용 - 바닥에 있지 않으면 계속 떨어짐
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
+	
 	# Space 키로 점프 - 바닥에 있을 때만 가능
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		is_jumping = true
+		velocity.y = JUMP_VELOCITY  # 최대 점프 속도로 시작
+	
+	# Space 키를 떼면 상승 중일 때 속도 감소 (마리오 스타일)
+	if is_jumping and Input.is_action_just_released("ui_accept"):
+		# 위로 올라가는 중이면 속도를 최소 점프 속도로 제한
+		if velocity.y < MIN_JUMP_VELOCITY:
+			velocity.y = MIN_JUMP_VELOCITY
+		is_jumping = false
 
 	# A/D 키로 좌우 이동
 	var direction = 0
@@ -90,16 +113,40 @@ func _physics_process(delta):
 	elif Input.is_key_pressed(KEY_A):
 		direction = -1  # 왼쪽
 	
-	# 이동 방향에 따라 속도 설정
-	if direction != 0:
-		velocity.x = direction * SPEED
-		# 스프라이트 방향 전환
-		if sprite:
-			sprite.flip_h = (direction < 0)
-		facing_direction = direction
+	# 바닥에 있을 때와 공중에 있을 때 다르게 처리
+	if is_on_floor():
+		# 바닥에 있을 때: 정상적인 가속/감속 처리
+		var is_running = Input.is_key_pressed(KEY_SHIFT)
+		var target_speed = RUN_SPEED if is_running else SPEED
+		
+		if direction != 0:
+			# 목표 속도로 가속
+			var target_velocity = direction * target_speed
+			velocity.x = move_toward(velocity.x, target_velocity, acceleration * delta)
+			
+			# 스프라이트 방향 전환
+			if sprite:
+				sprite.flip_h = (direction < 0)
+			facing_direction = direction
+		else:
+			# 키를 누르지 않으면 마찰력으로 감속
+			velocity.x = move_toward(velocity.x, 0, friction * delta)
+		
+		# 현재 속도를 공중 속도로 저장 (점프 전 속도)
+		air_speed = abs(velocity.x)
 	else:
-		# 키를 누르지 않으면 서서히 감속
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		# 공중에 있을 때: 점프 전 속도를 목표로 공중 가속도 적용
+		if direction != 0:
+			# 목표 속도 (점프 전 속도)
+			var target_velocity = direction * air_speed
+			# 공중 가속도를 적용하여 부드럽게 목표 속도로 이동
+			velocity.x = move_toward(velocity.x, target_velocity, air_acceleration * delta)
+			
+			# 스프라이트 방향 전환
+			if sprite:
+				sprite.flip_h = (direction < 0)
+			facing_direction = direction
+		# 공중에서는 키를 떼도 속도 유지 (감속 없음)
 
 	# 착지 감지 (이전 프레임에 공중이었고 현재 바닥에 있으면)
 	var was_in_air = velocity.y > 0

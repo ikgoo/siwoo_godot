@@ -1,10 +1,23 @@
 extends Node2D
 
 @onready var inside_cave = $inside_cave
+@onready var inside_cave2 = $inside_cave2
+@onready var inside_cave3 = $inside_cave3
+@onready var inside_cave4 = $inside_cave4
 @onready var maps = $maps  # maps TileMap 참조
 @onready var platform = $platform  # platform TileMap 참조
+@onready var background = $background  # background TileMap 참조
 # 캐릭터 참조 (부모 노드를 통해 접근)
 var character: CharacterBody2D
+
+# 모든 inside_cave TileMap들
+var cave_tilemaps: Array[TileMap] = []
+
+# === 폭포 애니메이션 관련 변수 ===
+var waterfall_tiles: Array[Dictionary] = []
+@export var waterfall_speed: float = 0.8  # 초당 프레임 변경 속도
+var waterfall_time: float = 0.0
+const WATERFALL_LAYER: int = 0
 
 # 플랫폼 레이어 인덱스 (platform TileMap의 layer_0)
 const PLATFORM_LAYER_INDEX = 0
@@ -15,17 +28,17 @@ const PLATFORM_COLLISION_LAYER = 4
 # 반투명 타일들을 저장하는 별도 레이어 (1번 레이어 사용)
 var transparent_layer_index: int = 1  # inside_cave의 두 번째 레이어 사용
 
-# 현재 반투명하게 처리된 타일들의 좌표
-var current_transparent_tiles: Array[Vector2i] = []
+# 현재 반투명하게 처리된 타일들의 좌표 (각 TileMap별로 저장)
+var current_transparent_tiles: Dictionary = {}  # TileMap -> Array[Vector2i]
 
-# 캐릭터가 이전 프레임에 타일 위에 있었는지 여부
-var was_character_on_tile: bool = false
+# 캐릭터가 이전 프레임에 타일 위에 있었는지 여부 (각 TileMap별로 저장)
+var was_character_on_tile: Dictionary = {}  # TileMap -> bool
 
 # 반투명 정도 (0.0 = 완전 투명, 1.0 = 완전 불투명)
 var transparency_alpha: float = 0.5
 
-# 타일 정보를 저장하기 위한 Dictionary (복원용)
-var tile_info_cache: Dictionary = {}  # Vector2i -> {source_id, atlas_coords, alternative_tile}
+# 타일 정보를 저장하기 위한 Dictionary (복원용, 각 TileMap별로 저장)
+var tile_info_cache: Dictionary = {}  # TileMap -> {Vector2i -> {source_id, atlas_coords, alternative_tile}}
 
 func _ready():
 	# 부모 노드(main)에서 캐릭터 찾기
@@ -33,46 +46,74 @@ func _ready():
 	if parent:
 		character = parent.get_node_or_null("character")
 	
-	# inside_cave에 두 번째 레이어가 없으면 생성
-	if inside_cave.get_layers_count() <= transparent_layer_index:
-		inside_cave.add_layer(transparent_layer_index)
+	# 모든 inside_cave TileMap들을 배열에 추가
+	if inside_cave:
+		cave_tilemaps.append(inside_cave)
+	if inside_cave2:
+		cave_tilemaps.append(inside_cave2)
+	if inside_cave3:
+		cave_tilemaps.append(inside_cave3)
+	if inside_cave4:
+		cave_tilemaps.append(inside_cave4)
 	
-	# 두 번째 레이어를 반투명하게 설정
-	inside_cave.set_layer_modulate(transparent_layer_index, Color(1.0, 1.0, 1.0, transparency_alpha))
+	# 각 TileMap 초기화
+	for cave in cave_tilemaps:
+		# 두 번째 레이어가 없으면 생성
+		if cave.get_layers_count() <= transparent_layer_index:
+			cave.add_layer(transparent_layer_index)
+		
+		# 두 번째 레이어를 반투명하게 설정
+		cave.set_layer_modulate(transparent_layer_index, Color(1.0, 1.0, 1.0, transparency_alpha))
+		
+		# 초기화
+		current_transparent_tiles[cave] = []
+		was_character_on_tile[cave] = false
+		tile_info_cache[cave] = {}
 	
 	# 플랫폼 타일들의 Physics Layer 설정 확인
 	check_platform_tiles_physics_layers()
+	
+	# 폭포 타일 찾기
+	find_waterfall_tiles()
 
 func _process(_delta):
-	if not inside_cave or not character:
+	if not character:
 		return
 	
-	# 캐릭터의 현재 타일 좌표 계산 (전역 좌표를 로컬 좌표로 변환 후 타일 좌표로 변환)
-	var character_local_pos = inside_cave.to_local(character.global_position)
-	var character_tile_pos = inside_cave.local_to_map(character_local_pos)
+	# 각 TileMap에 대해 처리
+	for cave in cave_tilemaps:
+		if not cave:
+			continue
+		
+		# 캐릭터의 현재 타일 좌표 계산 (전역 좌표를 로컬 좌표로 변환 후 타일 좌표로 변환)
+		var character_local_pos = cave.to_local(character.global_position)
+		var character_tile_pos = cave.local_to_map(character_local_pos)
+		
+		# 원본 레이어와 반투명 레이어 모두 확인
+		var source_id_original = cave.get_cell_source_id(0, character_tile_pos)
+		var source_id_transparent = cave.get_cell_source_id(transparent_layer_index, character_tile_pos)
+		var is_character_on_tile = (source_id_original != -1 or source_id_transparent != -1)
+		
+		# 상태가 변경되었을 때만 실행
+		if is_character_on_tile and not was_character_on_tile[cave]:
+			# 캐릭터가 타일에 처음 들어옴 - 연결된 모든 타일 찾기
+			# 반투명 레이어에 있는 타일이라도 원본 레이어 기준으로 확인
+			if source_id_original != -1:
+				find_and_make_transparent(cave, character_tile_pos)
+		elif not is_character_on_tile and was_character_on_tile[cave]:
+			# 캐릭터가 타일에서 나감 - 한 번만 복원
+			clear_transparent_tiles(cave)
+		
+		# 상태 업데이트
+		was_character_on_tile[cave] = is_character_on_tile
 	
-	# 원본 레이어와 반투명 레이어 모두 확인
-	var source_id_original = inside_cave.get_cell_source_id(0, character_tile_pos)
-	var source_id_transparent = inside_cave.get_cell_source_id(transparent_layer_index, character_tile_pos)
-	var is_character_on_tile = (source_id_original != -1 or source_id_transparent != -1)
-	
-	# 상태가 변경되었을 때만 실행
-	if is_character_on_tile and not was_character_on_tile:
-		# 캐릭터가 타일에 처음 들어옴 - 연결된 모든 타일 찾기
-		# 반투명 레이어에 있는 타일이라도 원본 레이어 기준으로 확인
-		if source_id_original != -1:
-			find_and_make_transparent(character_tile_pos)
-	elif not is_character_on_tile and was_character_on_tile:
-		# 캐릭터가 타일에서 나감 - 한 번만 복원
-		clear_transparent_tiles()
-	
-	# 상태 업데이트
-	was_character_on_tile = is_character_on_tile
+	# 폭포 애니메이션
+	animate_waterfall(_delta)
 
 # 연결된 모든 타일을 찾아서 반투명하게 만드는 함수 (Flood Fill 방식)
-func find_and_make_transparent(start_tile_pos: Vector2i):
+func find_and_make_transparent(cave: TileMap, start_tile_pos: Vector2i):
 	# 먼저 이전 타일들을 복원
-	restore_transparent_tiles()
+	restore_transparent_tiles(cave)
 	
 	# 연결된 모든 타일을 찾기 (BFS - Breadth First Search)
 	var visited: Dictionary = {}  # 이미 확인한 타일들
@@ -102,7 +143,7 @@ func find_and_make_transparent(start_tile_pos: Vector2i):
 		var current_pos = queue.pop_front()
 		
 		# 현재 타일이 원본 레이어에 존재하는지 확인
-		var source_id = inside_cave.get_cell_source_id(0, current_pos)
+		var source_id = cave.get_cell_source_id(0, current_pos)
 		if source_id == -1:
 			continue  # 타일이 없으면 스킵
 		
@@ -119,7 +160,7 @@ func find_and_make_transparent(start_tile_pos: Vector2i):
 			visited[next_pos] = true
 			
 			# 인접한 타일이 원본 레이어에 존재하는지 확인
-			var next_source_id = inside_cave.get_cell_source_id(0, next_pos)
+			var next_source_id = cave.get_cell_source_id(0, next_pos)
 			if next_source_id != -1:
 				# 큐에 추가
 				queue.append(next_pos)
@@ -129,12 +170,12 @@ func find_and_make_transparent(start_tile_pos: Vector2i):
 	var tiles_data: Array = []
 	for tile_pos in tiles_to_process:
 		# 타일 정보 가져오기
-		var source_id = inside_cave.get_cell_source_id(0, tile_pos)
-		var atlas_coords = inside_cave.get_cell_atlas_coords(0, tile_pos)
-		var alternative_tile = inside_cave.get_cell_alternative_tile(0, tile_pos)
+		var source_id = cave.get_cell_source_id(0, tile_pos)
+		var atlas_coords = cave.get_cell_atlas_coords(0, tile_pos)
+		var alternative_tile = cave.get_cell_alternative_tile(0, tile_pos)
 		
 		# 타일 정보 캐시에 저장 (복원용)
-		tile_info_cache[tile_pos] = {
+		tile_info_cache[cave][tile_pos] = {
 			"source_id": source_id,
 			"atlas_coords": atlas_coords,
 			"alternative_tile": alternative_tile
@@ -151,33 +192,33 @@ func find_and_make_transparent(start_tile_pos: Vector2i):
 	for tile_data in tiles_data:
 		var tile_pos = tile_data["pos"]
 		# 반투명 레이어에 타일 추가
-		inside_cave.set_cell(transparent_layer_index, tile_pos, tile_data["source_id"], tile_data["atlas_coords"], tile_data["alternative_tile"])
-		current_transparent_tiles.append(tile_pos)
+		cave.set_cell(transparent_layer_index, tile_pos, tile_data["source_id"], tile_data["atlas_coords"], tile_data["alternative_tile"])
+		current_transparent_tiles[cave].append(tile_pos)
 	
 	# 모든 타일을 반투명 레이어에 추가한 후, 원본 레이어에서 제거
 	for tile_data in tiles_data:
 		var tile_pos = tile_data["pos"]
 		# 원본 레이어에서 타일 제거
-		inside_cave.set_cell(0, tile_pos, -1)
+		cave.set_cell(0, tile_pos, -1)
 
 # 반투명 타일들을 모두 원본 레이어로 복원하는 함수
-func restore_transparent_tiles():
-	for tile_pos in current_transparent_tiles:
+func restore_transparent_tiles(cave: TileMap):
+	for tile_pos in current_transparent_tiles[cave]:
 		# 캐시에서 타일 정보 가져오기
-		if tile_pos in tile_info_cache:
-			var tile_info = tile_info_cache[tile_pos]
+		if tile_pos in tile_info_cache[cave]:
+			var tile_info = tile_info_cache[cave][tile_pos]
 			# 원본 레이어에 복원
-			inside_cave.set_cell(0, tile_pos, tile_info["source_id"], tile_info["atlas_coords"], tile_info["alternative_tile"])
+			cave.set_cell(0, tile_pos, tile_info["source_id"], tile_info["atlas_coords"], tile_info["alternative_tile"])
 		
 		# 반투명 레이어에서 제거
-		inside_cave.set_cell(transparent_layer_index, tile_pos, -1)
+		cave.set_cell(transparent_layer_index, tile_pos, -1)
 	
-	current_transparent_tiles.clear()
-	tile_info_cache.clear()
+	current_transparent_tiles[cave].clear()
+	tile_info_cache[cave].clear()
 
 # 반투명 타일들을 모두 제거하는 함수 (원본 레이어는 유지)
-func clear_transparent_tiles():
-	restore_transparent_tiles()
+func clear_transparent_tiles(cave: TileMap):
+	restore_transparent_tiles(cave)
 
 # 플랫폼 타일들의 Physics Layer 설정 확인 함수
 func check_platform_tiles_physics_layers():
@@ -234,3 +275,115 @@ func check_platform_tiles_physics_layers():
 				if not has_physics_1:
 					print("  ⚠️ 경고: 이 타일은 Physics Layer 1을 사용하지 않습니다! Physics Layer 1을 활성화해야 합니다.")
 					print("  💡 팁: TileSet에서 이 타일을 선택하고 Physics Layer 1에 collision polygon을 추가하세요.")
+
+# === 폭포 애니메이션 함수들 ===
+
+func find_waterfall_tiles():
+	if not background or not background.tile_set:
+		print("background TileMap을 찾을 수 없습니다!")
+		return
+	
+	var tile_set = background.tile_set
+	var waterfall_source_id: int = -1
+	var waterfall_atlas_source: TileSetAtlasSource = null
+	
+	# TileSet에서 폭포 텍스처를 사용하는 소스 찾기
+	for source_id in tile_set.get_source_count():
+		var source = tile_set.get_source(source_id)
+		if source is TileSetAtlasSource:
+			var atlas_source = source as TileSetAtlasSource
+			if atlas_source.texture and "warterfall" in atlas_source.texture.resource_path:
+				waterfall_source_id = source_id
+				waterfall_atlas_source = atlas_source
+				print("✅ 폭포 텍스처 발견! Source ID: ", source_id)
+				break
+	
+	if waterfall_source_id == -1 or not waterfall_atlas_source:
+		print("❌ 폭포 텍스처를 찾을 수 없습니다!")
+		return
+	
+	# 사용 가능한 atlas 좌표들을 x별로 그룹화 (각 x 좌표별로 사용 가능한 y 좌표들)
+	var available_coords_by_x: Dictionary = {}  # x -> Array[y]
+	
+	# TileSetAtlasSource에서 모든 타일 좌표 가져오기
+	var atlas_grid_size = waterfall_atlas_source.get_atlas_grid_size()
+	for x in range(-10, atlas_grid_size.x + 10):  # 음수 좌표도 확인
+		for y in range(atlas_grid_size.y):
+			var coords = Vector2i(x, y)
+			if waterfall_atlas_source.has_tile(coords):
+				if not x in available_coords_by_x:
+					available_coords_by_x[x] = []
+				available_coords_by_x[x].append(y)
+	
+	# 각 x 좌표별로 y 좌표 정렬 및 순서 조정
+	for x in available_coords_by_x.keys():
+		var y_coords = available_coords_by_x[x]
+		y_coords.sort()
+		
+		# 올바른 흐름 순서로 재배치: 1→2→3 순서가 되도록
+		# 현재 [0, 1, 2]를 [0, 2, 1]로 변경 (1→3→2 패턴을 1→2→3으로 수정)
+		if y_coords.size() == 3:
+			available_coords_by_x[x] = [y_coords[0], y_coords[2], y_coords[1]]
+	
+	print("📋 사용 가능한 폭포 타일 좌표 (x별): ", available_coords_by_x)
+	print("📊 각 x 좌표별 y 패턴:")
+	for x in available_coords_by_x.keys():
+		print("  x=", x, " → y 좌표들: ", available_coords_by_x[x])
+	
+	# background에서 폭포 타일을 사용하는 셀 찾기
+	var used_cells = background.get_used_cells(WATERFALL_LAYER)
+	for cell_pos in used_cells:
+		var source_id = background.get_cell_source_id(WATERFALL_LAYER, cell_pos)
+		
+		if source_id == waterfall_source_id:
+			var atlas_coords = background.get_cell_atlas_coords(WATERFALL_LAYER, cell_pos)
+			var alternative_tile = background.get_cell_alternative_tile(WATERFALL_LAYER, cell_pos)
+			
+			# 현재 타일의 x 좌표에서 사용 가능한 y 좌표들 가져오기
+			var x = atlas_coords.x
+			if x in available_coords_by_x:
+				var available_y_coords = available_coords_by_x[x]
+				
+				waterfall_tiles.append({
+					"cell_pos": cell_pos,
+					"source_id": source_id,
+					"atlas_x": x,  # x 좌표는 고정
+					"available_y": available_y_coords,  # 순환할 y 좌표들
+					"alternative": alternative_tile
+				})
+	
+	print("💧 폭포 타일 개수: ", waterfall_tiles.size())
+
+func animate_waterfall(delta: float):
+	if waterfall_tiles.is_empty():
+		return
+	
+	waterfall_time += delta * waterfall_speed
+	
+	# 각 폭포 타일 업데이트
+	for i in range(waterfall_tiles.size()):
+		var tile_info = waterfall_tiles[i]
+		var cell_pos = tile_info["cell_pos"]
+		var available_y = tile_info["available_y"]
+		
+		if available_y.is_empty():
+			continue
+		
+		# 맵의 y 위치에 따라 오프셋 적용 (위에서 아래로 흐르는 효과)
+		var y_offset = cell_pos.y % available_y.size()
+		
+		# 현재 프레임 계산 (정순으로 계산)
+		var frame_index = int(waterfall_time * 3.0 + y_offset) % available_y.size()
+		
+		# 사용 가능한 y 좌표 중에서 선택 (x는 고정)
+		var new_y = available_y[frame_index]
+		var new_atlas = Vector2i(tile_info["atlas_x"], new_y)
+		
+		# 타일 업데이트
+		background.set_cell(
+			WATERFALL_LAYER,
+			cell_pos,
+			tile_info["source_id"],
+			new_atlas,
+			tile_info["alternative"]
+		)

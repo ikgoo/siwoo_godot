@@ -13,19 +13,42 @@ var current_level: int = 0
 
 # 현재 업그레이드 단계의 비용 가져오기
 func get_current_cost() -> int:
-	if current_level < Globals.upgrade_steps.size():
-		return Globals.upgrade_steps[current_level].x
-	else:
-		# 마지막 단계를 넘어가면 마지막 단계 비용 사용
-		return Globals.upgrade_steps[-1].x
+	match type:
+		upgrade.money_time:  # 곡괭이 속도 (pv)
+			if current_level < Globals.pickaxe_speed_costs.size():
+				return Globals.pickaxe_speed_costs[current_level]
+			else:
+				return -1  # MAX
+		upgrade.money_up:  # 다이아몬드 획득량 (dv)
+			if current_level < Globals.diamond_value_upgrades.size():
+				return Globals.diamond_value_upgrades[current_level].x
+			else:
+				return -1  # MAX
+		upgrade.money_per_second:  # 초당 다이아몬드 (da)
+			if current_level < Globals.diamond_per_second_upgrades.size():
+				return Globals.diamond_per_second_upgrades[current_level].x
+			else:
+				return -1  # MAX
+		_:
+			return 0
 
-# 현재 업그레이드 단계의 증가량 가져오기
+# 현재 업그레이드 단계의 증가량 가져오기 (표시용)
 func get_current_increment() -> int:
-	if current_level < Globals.upgrade_steps.size():
-		return Globals.upgrade_steps[current_level].y
-	else:
-		# 마지막 단계를 넘어가면 마지막 단계 증가량 사용
-		return Globals.upgrade_steps[-1].y
+	match type:
+		upgrade.money_time:  # 곡괭이 속도는 레벨당 +10
+			return 10
+		upgrade.money_up:  # 다이아몬드 획득량
+			if current_level < Globals.diamond_value_upgrades.size():
+				return Globals.diamond_value_upgrades[current_level].y
+			else:
+				return 800  # MAX
+		upgrade.money_per_second:  # 초당 다이아몬드
+			if current_level < Globals.diamond_per_second_upgrades.size():
+				return Globals.diamond_per_second_upgrades[current_level].y
+			else:
+				return 25  # MAX
+		_:
+			return 0
 
 # Area2D 노드 참조
 @onready var area_2d = $Area2D2
@@ -77,25 +100,42 @@ func _ready():
 
 # 업그레이드 정보 텍스트 생성
 func get_upgrade_info_text() -> String:
-	# 마지막 단계를 넘어갔으면 MAX 표시
-	if current_level >= Globals.upgrade_steps.size():
+	var cost = get_current_cost()
+	
+	# MAX 레벨 체크
+	var is_max = false
+	match type:
+		upgrade.money_time:  # 곡괭이 속도
+			is_max = (current_level >= Globals.pickaxe_speed_costs.size())
+		upgrade.money_up:  # 다이아몬드 획득량
+			is_max = (current_level >= Globals.diamond_value_upgrades.size())
+		upgrade.money_per_second:  # 초당 다이아몬드
+			is_max = (current_level >= Globals.diamond_per_second_upgrades.size())
+	
+	if is_max or cost == -1:
 		return "MAX"
 	
-	var cost = get_current_cost()
-	var increment = get_current_increment()
 	var type_name = ""
+	var effect_text = ""
 	
 	match type:
 		upgrade.money_up:
-			type_name = "돈 증가량"
+			type_name = "다이아몬드 획득량"
+			var new_value = Globals.diamond_value_upgrades[current_level].y
+			effect_text = "획득량: %d" % new_value
 		upgrade.money_time:
-			type_name = "시간 배수"
+			type_name = "곡괭이 속도"
+			var new_speed = 100.0 + ((current_level + 1) * 10.0)
+			effect_text = "속도: %.0f" % new_speed
 		upgrade.money_randomize:
 			type_name = "랜덤"
+			effect_text = "미구현"
 		upgrade.money_per_second:
-			type_name = "초당 돈 증가"
+			type_name = "초당 다이아몬드"
+			var new_value = Globals.diamond_per_second_upgrades[current_level].y
+			effect_text = "추가량: +%d/초" % new_value
 	
-	return "가격: %d원\n효과: %s +%d" % [cost, type_name, increment]
+	return "가격: %d원\n효과: %s\n%s" % [cost, type_name, effect_text]
 
 # 업그레이드 처리
 func _process(_delta):
@@ -106,7 +146,11 @@ func _process(_delta):
 	if is_character_inside and Input.is_action_just_pressed("f"):
 		# 현재 단계의 비용 가져오기
 		var cost = get_current_cost()
-		var increment = get_current_increment()
+		
+		# MAX 레벨 체크
+		if cost == -1:
+			print("이미 최대 레벨입니다!")
+			return
 		
 		# 돈이 충분한지 확인
 		if Globals.money >= cost:
@@ -120,24 +164,23 @@ func _process(_delta):
 			# 타입에 따라 업그레이드 적용
 			match type:
 				upgrade.money_up:
-					# 돈 증가량 증가 (현재 단계의 증가량만큼)
-					Globals.money_up += increment
-					print("업그레이드 완료! money_up: ", Globals.money_up, " (증가량: +", increment, ")")
+					# 다이아몬드 획득량 레벨 증가
+					Globals.diamond_value_level += 1
+					Globals.update_diamond_value()
+					print("업그레이드 완료! 다이아몬드 획득량 Lv ", Globals.diamond_value_level, " (획득량: ", Globals.money_up, ")")
 				upgrade.money_time:
-					# 돈 획득 시간 배수 증가 (현재 단계의 증가량만큼)
-					Globals.money_times += increment
-					print("업그레이드 완료! money_times: ", Globals.money_times, " (증가량: +", increment, ")")
+					# 곡괭이 속도 레벨 증가
+					Globals.pickaxe_speed_level += 1
+					Globals.update_pickaxe_speed()
+					print("업그레이드 완료! 곡괭이 속도 Lv ", Globals.pickaxe_speed_level, " (속도: ", Globals.money_times, ")")
 				upgrade.money_randomize:
 					# 미구현
 					print("money_randomize 업그레이드는 아직 구현되지 않았습니다.")
 				upgrade.money_per_second:
-					# 초당 돈 증가 업그레이드 (최대 25까지)
-					if Globals.money_per_second_upgrade < 25:
-						Globals.money_per_second_upgrade += increment
-						# 최대값 제한
-						if Globals.money_per_second_upgrade > 25:
-							Globals.money_per_second_upgrade = 25
-						print("업그레이드 완료! money_per_second_upgrade: ", Globals.money_per_second_upgrade, " (증가량: +", increment, ")")
+					# 초당 다이아몬드 레벨 증가
+					Globals.diamond_per_second_level += 1
+					Globals.update_diamond_per_second()
+					print("업그레이드 완료! 초당 다이아몬드 Lv ", Globals.diamond_per_second_level, " (추가량: +", Globals.money_per_second_upgrade, "/초)")
 			
 			# 업그레이드 단계 증가
 			current_level += 1
@@ -151,8 +194,18 @@ func _process(_delta):
 
 # 구매 가능 여부에 따른 시각 효과
 func update_visual_feedback():
+	# MAX 레벨 체크
+	var is_max = false
+	match type:
+		upgrade.money_time:
+			is_max = (current_level >= Globals.pickaxe_speed_costs.size())
+		upgrade.money_up:
+			is_max = (current_level >= Globals.diamond_value_upgrades.size())
+		upgrade.money_per_second:
+			is_max = (current_level >= Globals.diamond_per_second_upgrades.size())
+	
 	# 마지막 단계면 파티클 끄기
-	if current_level >= Globals.upgrade_steps.size():
+	if is_max:
 		glow_particles.visible = false
 		if sprite:
 			sprite.modulate = Color(0.5, 0.5, 0.5)  # 회색 (MAX)
