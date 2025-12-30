@@ -9,7 +9,6 @@
 [node name="character" type="CharacterBody2D"]
 collision_mask = 5
 script = ExtResource("1_glpr6")
-air_acceleration = 200.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vu45j")

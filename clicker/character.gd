@@ -15,7 +15,7 @@ const MIN_JUMP_VELOCITY = -200.0  # 최소 점프 높이 (빠르게 뗄 때)
 const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
 const NORMAL_COLLISION_LAYER = 1    # 일반 타일 collision layer
 const ALL_COLLISION_LAYERS = 5      # 일반 타일 + 플랫폼
-
+ 
 # S 키를 눌렀을 때 플랫폼 통과 상태 (0.4초 동안)
 var platform_out: bool = false
 var platform_out_timer: float = 0.0
