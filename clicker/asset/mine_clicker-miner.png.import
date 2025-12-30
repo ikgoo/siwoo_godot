@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db22u3uj8sakx"
-path="res://.godot/imported/KakaoTalk_20521.png-8513d142ccd4f74e1d437647a7b9f704.ctex"
+uid="uid://bxfhq6d7bfqpi"
+path="res://.godot/imported/mine_clicker-miner.png-d389077c8952c43aec4b59a915f367b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://KakaoTalk_20521.png"
-dest_files=["res://.godot/imported/KakaoTalk_20521.png-8513d142ccd4f74e1d437647a7b9f704.ctex"]
+source_file="res://asset/mine_clicker-miner.png"
+dest_files=["res://.godot/imported/mine_clicker-miner.png-d389077c8952c43aec4b59a915f367b5.ctex"]
 
 [params]
 
@@ -37,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
