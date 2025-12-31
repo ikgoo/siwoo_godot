@@ -25,3 +25,11 @@ z_index = 1
 color = Color(1, 0.64705884, 0.59607846, 0.7607843)
 energy = 2.0
 texture = ExtResource("3_wa5vi")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="pickaxe" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_pjt0s")
+region_enabled = true
+region_rect = Rect2(64, 32, 32, 32)

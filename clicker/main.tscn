@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=13 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://3iugdn0ykg5d" path="res://teleport.tscn" id="10_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c53admvams62x" path="res://torch.tscn" id="11_efxa6"]
+[ext_resource type="Texture2D" uid="uid://cq12tom2y7tip" path="res://CONCEPT/asset/mine_clicker32-torch_side_sheet.png" id="12_dg77c"]
 
 [node name="main" type="Node2D"]
 
@@ -19,6 +20,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="character" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(74, 108)
+acceleration = 1000.0
 
 [node name="rock" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(19, 198)
@@ -98,13 +100,22 @@ action_text = "집가기"
 position = Vector2(-248, 1)
 
 [node name="torch2" parent="torchs" instance=ExtResource("11_efxa6")]
-position = Vector2(-152, 104)
-torch_type = 1
+position = Vector2(-146, 108)
+texture = ExtResource("12_dg77c")
 
 [node name="torch3" parent="torchs" instance=ExtResource("11_efxa6")]
+position = Vector2(168, 193)
 
 [node name="torch4" parent="torchs" instance=ExtResource("11_efxa6")]
+position = Vector2(456, 72)
 
 [node name="torch5" parent="torchs" instance=ExtResource("11_efxa6")]
+position = Vector2(856, -152)
 
 [node name="torch6" parent="torchs" instance=ExtResource("11_efxa6")]
+position = Vector2(382, -133)
+texture = ExtResource("12_dg77c")
+
+[node name="torch7" parent="torchs" instance=ExtResource("11_efxa6")]
+position = Vector2(689, 144)
+flip_h = true

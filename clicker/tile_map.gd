@@ -7,6 +7,7 @@ extends Node2D
 @onready var maps = $maps  # maps TileMap 참조
 @onready var platform = $platform  # platform TileMap 참조
 @onready var background = $background  # background TileMap 참조
+@onready var cave_always = $cave_always  # 동굴 밖에서만 보이는 타일맵
 # 캐릭터 참조 (부모 노드를 통해 접근)
 var character: CharacterBody2D
 
@@ -16,6 +17,7 @@ var cave_tilemaps: Array[TileMap] = []
 # === 폭포 애니메이션 관련 변수 ===
 var waterfall_tiles: Array[Dictionary] = []
 @export var waterfall_speed: float = 0.8  # 초당 프레임 변경 속도
+@export var waterfall_animation_enabled: bool = false  # 애니메이션 활성화 여부
 var waterfall_time: float = 0.0
 const WATERFALL_LAYER: int = 0
 
@@ -35,10 +37,13 @@ var current_transparent_tiles: Dictionary = {}  # TileMap -> Array[Vector2i]
 var was_character_on_tile: Dictionary = {}  # TileMap -> bool
 
 # 반투명 정도 (0.0 = 완전 투명, 1.0 = 완전 불투명)
-var transparency_alpha: float = 0.5
+var transparency_alpha: float = 0.5  # 반투명
 
 # 타일 정보를 저장하기 위한 Dictionary (복원용, 각 TileMap별로 저장)
 var tile_info_cache: Dictionary = {}  # TileMap -> {Vector2i -> {source_id, atlas_coords, alternative_tile}}
+
+# cave_always 타일맵 표시 여부 (동굴 안에 있는지 추적)
+var is_in_any_cave: bool = false
 
 func _ready():
 	# 부모 노드(main)에서 캐릭터 찾기
@@ -80,6 +85,9 @@ func _process(_delta):
 	if not character:
 		return
 	
+	# 캐릭터가 동굴 안에 있는지 확인
+	var currently_in_cave = false
+	
 	# 각 TileMap에 대해 처리
 	for cave in cave_tilemaps:
 		if not cave:
@@ -94,10 +102,13 @@ func _process(_delta):
 		var source_id_transparent = cave.get_cell_source_id(transparent_layer_index, character_tile_pos)
 		var is_character_on_tile = (source_id_original != -1 or source_id_transparent != -1)
 		
+		# 동굴 안에 있는지 체크
+		if is_character_on_tile:
+			currently_in_cave = true
+		
 		# 상태가 변경되었을 때만 실행
 		if is_character_on_tile and not was_character_on_tile[cave]:
 			# 캐릭터가 타일에 처음 들어옴 - 연결된 모든 타일 찾기
-			# 반투명 레이어에 있는 타일이라도 원본 레이어 기준으로 확인
 			if source_id_original != -1:
 				find_and_make_transparent(cave, character_tile_pos)
 		elif not is_character_on_tile and was_character_on_tile[cave]:
@@ -106,6 +117,9 @@ func _process(_delta):
 		
 		# 상태 업데이트
 		was_character_on_tile[cave] = is_character_on_tile
+	
+	# cave_always 타일맵 표시/숨김 처리
+	update_cave_always_visibility(currently_in_cave)
 	
 	# 폭포 애니메이션
 	animate_waterfall(_delta)
@@ -355,10 +369,18 @@ func find_waterfall_tiles():
 	print("💧 폭포 타일 개수: ", waterfall_tiles.size())
 
 func animate_waterfall(delta: float):
-	if waterfall_tiles.is_empty():
+	if waterfall_tiles.is_empty() or not waterfall_animation_enabled:
 		return
 	
 	waterfall_time += delta * waterfall_speed
+	
+	# 각 x 좌표별로 가장 아래에 있는 타일의 y 위치 찾기
+	var bottom_tiles_by_x: Dictionary = {}  # x -> max_y
+	for tile_info in waterfall_tiles:
+		var cell_pos = tile_info["cell_pos"]
+		var x = cell_pos.x
+		if not x in bottom_tiles_by_x or cell_pos.y > bottom_tiles_by_x[x]:
+			bottom_tiles_by_x[x] = cell_pos.y
 	
 	# 각 폭포 타일 업데이트
 	for i in range(waterfall_tiles.size()):
@@ -369,14 +391,23 @@ func animate_waterfall(delta: float):
 		if available_y.is_empty():
 			continue
 		
-		# 맵의 y 위치에 따라 오프셋 적용 (위에서 아래로 흐르는 효과)
-		var y_offset = cell_pos.y % available_y.size()
+		var new_y: int
 		
-		# 현재 프레임 계산 (정순으로 계산)
-		var frame_index = int(waterfall_time * 3.0 + y_offset) % available_y.size()
+		# 각 x 좌표에서 가장 아래에 있는 타일인지 확인
+		var is_bottom_tile = (cell_pos.x in bottom_tiles_by_x and cell_pos.y == bottom_tiles_by_x[cell_pos.x])
+		# 끝부분 바로 위 타일인지 확인
+		var is_second_bottom_tile = (cell_pos.x in bottom_tiles_by_x and cell_pos.y == bottom_tiles_by_x[cell_pos.x] - 1)
 		
-		# 사용 가능한 y 좌표 중에서 선택 (x는 고정)
-		var new_y = available_y[frame_index]
+		if is_bottom_tile:
+			# 끝부분(맨 아래) 타일은 3번 프레임으로 고정 (available_y의 마지막 인덱스)
+			new_y = available_y[available_y.size() - 1] if available_y.size() > 0 else available_y[0]
+		elif is_second_bottom_tile and available_y.size() >= 2:
+			# 끝부분 바로 위 타일은 2번 프레임으로 고정 (available_y의 두 번째 인덱스)
+			new_y = available_y[1]
+		else:
+			# 나머지 타일들은 1번 프레임만 사용 (애니메이션 없음)
+			new_y = available_y[0]
+		
 		var new_atlas = Vector2i(tile_info["atlas_x"], new_y)
 		
 		# 타일 업데이트
@@ -387,3 +418,21 @@ func animate_waterfall(delta: float):
 			new_atlas,
 			tile_info["alternative"]
 		)
+
+# cave_always 타일맵의 표시/숨김 처리
+func update_cave_always_visibility(currently_in_cave: bool):
+	if not cave_always:
+		return
+	
+	# 상태가 변경되었을 때만 처리
+	if currently_in_cave != is_in_any_cave:
+		is_in_any_cave = currently_in_cave
+		
+		if is_in_any_cave:
+			# 동굴 안에 들어감 - cave_always 숨기기
+			cave_always.visible = false
+			print("🚪 동굴 진입: cave_always 타일맵 숨김")
+		else:
+			# 동굴 밖으로 나감 - cave_always 보이기
+			cave_always.visible = true
+			print("🌞 동굴 탈출: cave_always 타일맵 표시")

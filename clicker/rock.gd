@@ -28,12 +28,12 @@ var last_hit_time : float = 0.0  # 마지막으로 F키를 누른 시간
 var complete_particles : CPUParticles2D
 var mining_particles : CPUParticles2D  # 채굴 중 지속 파티클
 
-# 마우스 클릭 추적
-var mouse_just_clicked : bool = false
+# 마우스 클릭 추적 (사용 안 함 - 차징 시스템 사용)
+# var mouse_just_clicked : bool = false
 
-# 채굴 키 입력 추적 (이전 프레임 상태)
-var was_mining_key1_pressed : bool = false
-var was_mining_key2_pressed : bool = false
+# 채굴 키 입력 추적 (사용 안 함 - character.gd에서 처리)
+# var was_mining_key1_pressed : bool = false
+# var was_mining_key2_pressed : bool = false
 
 # 대기시간 시스템 (사용 안 함)
 var is_cooldown : bool = false  # 대기시간 중인지 여부
@@ -41,6 +41,9 @@ var cooldown_time : float = 0.0  # 대기시간 (초) - 0으로 설정하여 비
 var cooldown_timer : float = 0.0  # 현재 대기시간 타이머
 
 func _ready():
+	# rocks 그룹에 추가 (캐릭터가 찾을 수 있도록)
+	add_to_group("rocks")
+	
 	# 완료 파티클 생성 (채굴 완료 시)
 	complete_particles = CPUParticles2D.new()
 	complete_particles.emitting = false
@@ -77,12 +80,16 @@ func _ready():
 	# 스프라이트 원래 위치 저장
 	if sprite:
 		original_position = sprite.position
+	
+	# 프로그레스바 숨김 (차징 시스템 사용)
+	if progress_bar:
+		progress_bar.visible = false
 
-func _input(event):
-	# 캐릭터가 영역 안에 있고 마우스 왼쪽 버튼 클릭 시
-	if is_character_inside and event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			mouse_just_clicked = true
+# 마우스 클릭 처리는 이제 사용 안 함 (차징 시스템 사용)
+# func _input(event):
+# 	if is_character_inside and event is InputEventMouseButton:
+# 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+# 			mouse_just_clicked = true
 
 func _physics_process(delta):
 	# 대기시간 처리
@@ -104,50 +111,8 @@ func _physics_process(delta):
 			if time_since_last_mining >= CAMERA_UNLOCK_TIME:
 				unlock_camera()
 	
-	# 캐릭터가 영역 안에 있을 때
-	if is_character_inside and not is_cooldown:
-		# 설정된 채굴 키 입력 감지 (키를 누르는 순간만)
-		var is_mining_key1_pressed = Input.is_key_pressed(Globals.mining_key1)
-		var is_mining_key2_pressed = Input.is_key_pressed(Globals.mining_key2)
-		
-		# 키를 방금 눌렀는지 확인 (이전 프레임에는 안 눌렸고 현재 프레임에 눌림)
-		var mining_key1_just_pressed = is_mining_key1_pressed and not was_mining_key1_pressed
-		var mining_key2_just_pressed = is_mining_key2_pressed and not was_mining_key2_pressed
-		
-		# 이전 프레임 상태 업데이트
-		was_mining_key1_pressed = is_mining_key1_pressed
-		was_mining_key2_pressed = is_mining_key2_pressed
-		
-		# 채굴 키 또는 마우스 클릭으로 채굴 진행
-		if mining_key1_just_pressed or mining_key2_just_pressed or mouse_just_clicked:
-			# 채굴 진행 (클릭 한 번당 증가량)
-			# 기본 1.0에 시간 배율(money_times)을 곱함
-			var progress_per_click = 1.0 * (Globals.money_times / 100.0)
-			now_time += progress_per_click
-			
-			# 마지막 클릭 시간 갱신
-			last_hit_time = Time.get_ticks_msec() / 1000.0
-			
-			# 타이머 정지 (5초 대기 후 감소)
-			go_down = false
-			timer.stop()
-			
-			# 채굴 파티클 발생 (짧게)
-			spawn_hit_particles(3)
-			
-			# 카메라 고정 (처음 채굴 시작 시)
-			if not is_camera_locked:
-				lock_camera()
-			
-			# 채굴 타이머 리셋
-			time_since_last_mining = 0.0
-			
-			# 채굴 완료 체크
-			if now_time >= max_time:
-				complete_mining()
-			
-			# 마우스 클릭 플래그 리셋
-			mouse_just_clicked = false
+	# 키 입력 처리는 이제 character.gd에서 처리
+	# (차징 시스템 사용)
 	
 	# 5초 경과 후 게이지 감소 시작
 	if now_time > 0 and not is_cooldown:
@@ -180,8 +145,38 @@ func _physics_process(delta):
 	# 바위 흔들림 효과 업데이트 (비활성화)
 	# update_shake_effect(delta)
 
+# 첫 번째 클릭 시 카메라를 고정합니다 (차징 시작).
+func lock_camera_on_first_hit():
+	# 카메라 고정 (처음 클릭 시)
+	if not is_camera_locked:
+		lock_camera()
+	
+	# 채굴 타이머 리셋
+	time_since_last_mining = 0.0
+
+# 카메라가 이 돌에 고정되어 있는지 반환합니다.
+func is_camera_locked_to_this() -> bool:
+	return is_camera_locked
+
+# 플레이어로부터 채굴 신호를 받습니다 (차징 시스템).
+func mine_from_player():
+	# 캐릭터가 영역 안에 있고 채굴 가능한 상태인지 확인
+	if not is_character_inside or is_cooldown:
+		return
+	
+	# 채굴 파티클 발생
+	spawn_hit_particles(5)
+	
+	# 채굴 타이머 리셋
+	time_since_last_mining = 0.0
+	
+	# 즉시 채굴 완료
+	complete_mining()
+
 # 채굴 완료 함수
 func complete_mining():
+	# 곡괭이 애니메이션은 character.gd에서 이미 실행됨
+	
 	# 피버 배율 적용
 	var money_gained = int(Globals.money_up * Globals.fever_multiplier)
 	Globals.money += money_gained
