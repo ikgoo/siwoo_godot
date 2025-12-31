@@ -6,6 +6,11 @@ extends Node2D
 # 캐릭터가 영역 안에 있는지 추적하는 변수
 var is_character_inside : bool = false
 
+# 카메라 고정 관련 변수
+var is_camera_locked : bool = false  # 카메라가 이 돌에 고정되었는지
+var time_since_last_mining : float = 0.0  # 마지막 채굴 후 경과 시간
+const CAMERA_UNLOCK_TIME : float = 5.0  # 5초 후 카메라 고정 해제
+
 # 바위 흔들림 효과
 var shake_amount : float = 0.0
 var original_position : Vector2 = Vector2.ZERO
@@ -88,6 +93,17 @@ func _physics_process(delta):
 			cooldown_timer = 0.0
 			print("바위 채굴 가능!")
 	
+	# 카메라 고정 해제 체크 (5초 동안 채굴하지 않거나 영역을 벗어나면)
+	if is_camera_locked:
+		if not is_character_inside:
+			# 영역을 벗어나면 즉시 카메라 고정 해제
+			unlock_camera()
+		else:
+			# 영역 안에 있지만 채굴하지 않으면 타이머 증가
+			time_since_last_mining += delta
+			if time_since_last_mining >= CAMERA_UNLOCK_TIME:
+				unlock_camera()
+	
 	# 캐릭터가 영역 안에 있을 때
 	if is_character_inside and not is_cooldown:
 		# 설정된 채굴 키 입력 감지 (키를 누르는 순간만)
@@ -118,6 +134,13 @@ func _physics_process(delta):
 			
 			# 채굴 파티클 발생 (짧게)
 			spawn_hit_particles(3)
+			
+			# 카메라 고정 (처음 채굴 시작 시)
+			if not is_camera_locked:
+				lock_camera()
+			
+			# 채굴 타이머 리셋
+			time_since_last_mining = 0.0
 			
 			# 채굴 완료 체크
 			if now_time >= max_time:
@@ -154,8 +177,8 @@ func _physics_process(delta):
 	# 프로그레스바 색상 변경 (진행도에 따라)
 	update_progress_color()
 	
-	# 바위 흔들림 효과 업데이트
-	update_shake_effect(delta)
+	# 바위 흔들림 효과 업데이트 (비활성화)
+	# update_shake_effect(delta)
 
 # 채굴 완료 함수
 func complete_mining():
@@ -263,10 +286,36 @@ func _on_area_2d_body_shape_exited(_body_rid, body, _body_shape_index, _local_sh
 	if body is CharacterBody2D:
 		is_character_inside = false
 		print("캐릭터가 바위 영역에서 나갔습니다!")
+		
+		# 영역을 벗어나면 카메라 고정 해제
+		if is_camera_locked:
+			unlock_camera()
 
 
 func _on_timer_timeout():
 	go_down = true
+
+# 카메라를 이 돌 위치에 고정
+func lock_camera():
+	is_camera_locked = true
+	time_since_last_mining = 0.0
+	
+	# 카메라에 신호 전송
+	var camera = get_tree().get_first_node_in_group("camera")
+	if camera and camera.has_method("lock_to_target"):
+		camera.lock_to_target(global_position)
+		print("카메라가 돌에 고정되었습니다!")
+
+# 카메라 고정 해제
+func unlock_camera():
+	is_camera_locked = false
+	time_since_last_mining = 0.0
+	
+	# 카메라에 신호 전송
+	var camera = get_tree().get_first_node_in_group("camera")
+	if camera and camera.has_method("unlock_from_target"):
+		camera.unlock_from_target()
+		print("카메라 고정이 해제되었습니다!")
 
 # 바위 흔들림 효과
 func update_shake_effect(delta):

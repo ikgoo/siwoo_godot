@@ -1,16 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://c53admvams62x"]
+[gd_scene load_steps=3 format=3 uid="uid://c53admvams62x"]
 
 [ext_resource type="Texture2D" uid="uid://be1yjuhby1iwb" path="res://CONCEPT/asset/512x512 textures (23).png" id="1_pa17o"]
-[ext_resource type="Script" uid="uid://ma8m46sn1sxd" path="res://torch.gd" id="2_torch"]
-[ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_w3qnr"]
+[ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="2_w3qnr"]
 
-[node name="torch" type="Node2D"]
-script = ExtResource("2_torch")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D"]
 texture = ExtResource("2_w3qnr")
 region_enabled = true
-region_rect = Rect2(64, 32, 32, 32)
+region_rect = Rect2(32, 0, 32, 32)
 
 [node name="Light2D" type="PointLight2D" parent="."]
 z_index = 1

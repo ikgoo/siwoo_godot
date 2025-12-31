@@ -15,7 +15,7 @@ func _ready():
 	vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	
 	# 폰트 크기
-	add_theme_font_size_override("font_size", 24)
+	add_theme_font_size_override("font_size", 16)
 	
 	# 텍스트 외곽선 (가독성)
 	add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
@@ -57,7 +57,7 @@ static func create(parent: Node, pos: Vector2, txt: String, color: Color = Color
 	floating_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	
 	# 폰트 설정
-	floating_text.add_theme_font_size_override("font_size", 24)
+	floating_text.add_theme_font_size_override("font_size", 16)
 	floating_text.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
 	floating_text.add_theme_constant_override("outline_size", 2)
 	
