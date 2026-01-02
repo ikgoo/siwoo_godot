@@ -5,6 +5,13 @@ extends Node2D
 
 # 캐릭터가 영역 안에 있는지 추적하는 변수
 var is_character_inside : bool = false
+@onready var normal_sound = $normal_sound
+@onready var good_sound = $good_sound
+
+# 오디오 풀링 시스템
+var normal_sound_pool: Array[AudioStreamPlayer] = []
+var good_sound_pool: Array[AudioStreamPlayer] = []
+const AUDIO_POOL_SIZE: int = 5  # 풀 크기
 
 # 카메라 고정 관련 변수
 var is_camera_locked : bool = false  # 카메라가 이 돌에 고정되었는지
@@ -14,6 +21,7 @@ const CAMERA_UNLOCK_TIME : float = 5.0  # 5초 후 카메라 고정 해제
 # 바위 흔들림 효과
 var shake_amount : float = 0.0
 var original_position : Vector2 = Vector2.ZERO
+const GALMURI_9 = preload("uid://dqloen3424vrx")
 
 # 채굴 시스템 변수
 var go_down = false
@@ -24,9 +32,8 @@ var mining_speed : float = 1.0  # F키 한 번당 채굴 진행도 (기본값)
 var decay_delay : float = 5.0  # 게이지 감소 대기 시간 (5초)
 var last_hit_time : float = 0.0  # 마지막으로 F키를 누른 시간
 
-# 파티클 시스템
-var complete_particles : CPUParticles2D
-var mining_particles : CPUParticles2D  # 채굴 중 지속 파티클
+# 파티클 시스템 (스프라이트 기반)
+var dust_texture : Texture2D  # 먼지 스프라이트 텍스처
 
 # 마우스 클릭 추적 (사용 안 함 - 차징 시스템 사용)
 # var mouse_just_clicked : bool = false
@@ -44,37 +51,8 @@ func _ready():
 	# rocks 그룹에 추가 (캐릭터가 찾을 수 있도록)
 	add_to_group("rocks")
 	
-	# 완료 파티클 생성 (채굴 완료 시)
-	complete_particles = CPUParticles2D.new()
-	complete_particles.emitting = false
-	complete_particles.one_shot = true
-	complete_particles.amount = 15
-	complete_particles.lifetime = 0.8
-	complete_particles.explosiveness = 1.0
-	complete_particles.direction = Vector2(0, -1)
-	complete_particles.spread = 180
-	complete_particles.initial_velocity_min = 80
-	complete_particles.initial_velocity_max = 150
-	complete_particles.gravity = Vector2(0, 150)
-	complete_particles.scale_amount_min = 3
-	complete_particles.scale_amount_max = 6
-	complete_particles.color = Color(1, 0.9, 0.3)  # 금색 (보상)
-	add_child(complete_particles)
-	
-	# 채굴 중 파티클 생성 (지속적으로 발생)
-	mining_particles = CPUParticles2D.new()
-	mining_particles.emitting = false
-	mining_particles.amount = 8
-	mining_particles.lifetime = 0.5
-	mining_particles.direction = Vector2(0, -1)
-	mining_particles.spread = 45
-	mining_particles.initial_velocity_min = 30
-	mining_particles.initial_velocity_max = 60
-	mining_particles.gravity = Vector2(0, 100)
-	mining_particles.scale_amount_min = 1.5
-	mining_particles.scale_amount_max = 3
-	mining_particles.color = Color(0.6, 0.4, 0.2, 0.8)  # 갈색 돌 파편
-	add_child(mining_particles)
+	# 먼지 스프라이트 텍스처 로드
+	dust_texture = load("res://CONCEPT/asset/mine_clicker32-dust.png")
 	
 	
 	# 스프라이트 원래 위치 저장
@@ -84,6 +62,9 @@ func _ready():
 	# 프로그레스바 숨김 (차징 시스템 사용)
 	if progress_bar:
 		progress_bar.visible = false
+	
+	# 오디오 풀 초기화
+	_init_audio_pool()
 
 # 마우스 클릭 처리는 이제 사용 안 함 (차징 시스템 사용)
 # func _input(event):
@@ -164,9 +145,6 @@ func mine_from_player():
 	if not is_character_inside or is_cooldown:
 		return
 	
-	# 채굴 파티클 발생
-	spawn_hit_particles(5)
-	
 	# 채굴 타이머 리셋
 	time_since_last_mining = 0.0
 	
@@ -179,34 +157,39 @@ func complete_mining():
 	
 	# 피버 배율 적용
 	var money_gained = int(Globals.money_up * Globals.fever_multiplier)
+	
+	# 10% 확률로 2배 보너스
+	var is_critical = randf() < 0.1
+	if is_critical:
+		money_gained *= 2
+	
 	Globals.money += money_gained
 	
 	# 초당 돈 증가 적용 (업그레이드 수치만큼 초당 수입에 추가)
 	if Globals.money_per_second_upgrade > 0:
 		Globals.money_per_second += Globals.money_per_second_upgrade
-		print("💎 초당 수입 증가! +", Globals.money_per_second_upgrade, "원/초 (현재 총 ", Globals.money_per_second, "원/초)")
+		print("💎 초당 수입 증가! +💎", Globals.money_per_second_upgrade, "/초 (현재 총 💎", Globals.money_per_second, "/초)")
 	
 	# 피버 중이면 특별 메시지
-	if Globals.is_fever_active:
-		print("🔥 피버 채굴! +", money_gained, "원 (", Globals.fever_multiplier, "배), 현재 돈: ", Globals.money)
+	if is_critical:
+		print("💥 크리티컬! +💎", money_gained, " (2배), 현재 돈: 💎", Globals.money)
+	elif Globals.is_fever_active:
+		print("🔥 피버 채굴! +💎", money_gained, " (", Globals.fever_multiplier, "배), 현재 돈: 💎", Globals.money)
 	else:
-		print("돈 획득! +", money_gained, "원, 현재 돈: ", Globals.money)
+		print("💎 획득! +💎", money_gained, ", 현재 돈: 💎", Globals.money)
 	
 	now_time = 0
 	
 	# 대기시간 없음 (즉시 다시 채굴 가능)
 	
-	# 완료 파티클 발생 (피버 중이면 색상 변경)
-	if Globals.is_fever_active:
-		complete_particles.color = Color(1.0, 0.3, 0.1)  # 빨강-주황 (피버)
+	# 먼지 스프라이트 파티클 발생
+	spawn_dust_particles(8)
+	
+	# 떠오르는 텍스트 생성 (크리티컬이면 특별 표시)
+	if is_critical:
+		spawn_floating_text_critical("+💎" + str(money_gained) + "!")
 	else:
-		complete_particles.color = Color(1.0, 0.9, 0.3)  # 금색 (일반)
-	
-	# 파티클이 이미 발생 중이면 재시작
-	complete_particles.restart()
-	
-	# 떠오르는 텍스트 생성
-	spawn_floating_text("+" + str(money_gained) + "원")
+		spawn_floating_text("+💎" + str(money_gained))
 
 # 프로그레스바 색상 업데이트 (초록 → 노랑 → 빨강) + 애니메이션
 func update_progress_color():
@@ -239,35 +222,133 @@ func update_progress_color():
 		progress_bar.modulate = Color(1.0 * brightness, 0.3, 0.3)
 
 
-func spawn_hit_particles(amount: int):
-	var particles = CPUParticles2D.new()
-	particles.emitting = false
-	particles.one_shot = true
-	particles.amount = amount
-	particles.lifetime = 0.5
-	particles.explosiveness = 0.8
-	particles.direction = Vector2(0, -1)
-	particles.spread = 45
-	particles.initial_velocity_min = 50
-	particles.initial_velocity_max = 100
-	particles.gravity = Vector2(0, 200)
-	particles.scale_amount_min = 2
-	particles.scale_amount_max = 4
-	particles.color = Color(0.6, 0.4, 0.2)  # 갈색 (돌 파편)
-	add_child(particles)
-	particles.emitting = true
+# 먼지 스프라이트 파티클 생성 (위로 올라갔다 중력에 의해 떨어짐)
+func spawn_dust_particles(amount: int):
+	for i in range(amount):
+		var dust_sprite = Sprite2D.new()
+		
+		# 처음에는 왼쪽 이미지 (큰 먼지)로 시작
+		var atlas_tex = AtlasTexture.new()
+		atlas_tex.atlas = dust_texture
+		atlas_tex.region = Rect2(0, 0, 16, 16)  # 왼쪽 이미지
+		dust_sprite.texture = atlas_tex
+		
+		# 크기 설정 (0.4 ~ 0.7 배율) - 살짝 줄임
+		var scale_val = randf_range(0.4, 0.7)
+		dust_sprite.scale = Vector2(scale_val, scale_val)
+		
+		# 픽셀 아트 필터 설정
+		dust_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		
+		add_child(dust_sprite)
+		
+		# 물리 시뮬레이션으로 중력 효과 구현
+		_animate_dust_with_gravity(dust_sprite, atlas_tex)
+
+# 중력 효과가 있는 먼지 파티클 애니메이션
+func _animate_dust_with_gravity(dust_sprite: Sprite2D, atlas_tex: AtlasTexture):
+	# 초기 속도 (위쪽으로 튀어오름)
+	var angle = randf_range(-150, -30) * PI / 180.0  # 위쪽 방향
+	var speed = randf_range(30, 60)
+	var velocity = Vector2(cos(angle), sin(angle)) * speed
 	
-	# 파티클이 끝나면 자동 삭제
-	await get_tree().create_timer(particles.lifetime).timeout
-	particles.queue_free()
+	# 중력 값
+	var gravity = 120.0
+	
+	# 총 수명
+	var lifetime = randf_range(0.5, 0.8)
+	var elapsed = 0.0
+	
+	# 회전 속도
+	var rotation_speed = randf_range(-4.0, 4.0)
+	
+	# 스프라이트 전환 여부 (한 번만 전환)
+	var switched_sprite = false
+	
+	# 스프라이트 전환 시점 (30% ~ 50% 사이 랜덤)
+	var switch_progress = randf_range(0.3, 0.5)
+	
+	# 매 프레임 업데이트
+	while elapsed < lifetime and is_instance_valid(dust_sprite):
+		var delta = get_process_delta_time()
+		elapsed += delta
+		
+		# 중력 적용 (속도의 y값 증가)
+		velocity.y += gravity * delta
+		
+		# 위치 업데이트
+		dust_sprite.position += velocity * delta
+		
+		# 회전
+		dust_sprite.rotation += rotation_speed * delta
+		
+		# 진행도 계산
+		var progress = elapsed / lifetime
+		
+		# 랜덤 시점에서 오른쪽 이미지(작은 먼지)로 전환
+		if not switched_sprite and progress > switch_progress:
+			atlas_tex.region = Rect2(16, 0, 16, 16)  # 오른쪽 이미지로 변경
+			switched_sprite = true
+		
+		# 페이드아웃 (후반부에만)
+		if progress > 0.5:
+			dust_sprite.modulate.a = 1.0 - (progress - 0.5) * 2.0
+		
+		await get_tree().process_frame
+	
+	# 삭제
+	if is_instance_valid(dust_sprite):
+		dust_sprite.queue_free()
+
+# 오디오 풀 초기화
+func _init_audio_pool():
+	# normal_sound 풀 생성
+	if normal_sound and normal_sound.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = normal_sound.stream
+			player.volume_db = normal_sound.volume_db
+			player.bus = normal_sound.bus
+			add_child(player)
+			normal_sound_pool.append(player)
+	
+	# good_sound 풀 생성
+	if good_sound and good_sound.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = good_sound.stream
+			player.volume_db = good_sound.volume_db
+			player.bus = good_sound.bus
+			add_child(player)
+			good_sound_pool.append(player)
+
+# 풀에서 사용 가능한 플레이어 찾아서 재생
+func _play_from_pool(pool: Array[AudioStreamPlayer]):
+	for player in pool:
+		if not player.playing:
+			player.play()
+			return
+	# 모든 플레이어가 사용 중이면 첫 번째 플레이어 재시작
+	if pool.size() > 0:
+		pool[0].play()
 
 # 떠오르는 텍스트 생성
 func spawn_floating_text(text: String):
+	_play_from_pool(normal_sound_pool)
 	# floating_text.gd의 정적 함수 사용
 	var floating_text_script = load("res://floating_text.gd")
 	if floating_text_script:
 		# 금색으로 표시
 		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.9, 0.3))
+
+# 크리티컬 떠오르는 텍스트 생성 (2배 보너스)
+func spawn_floating_text_critical(text: String):
+	_play_from_pool(good_sound_pool)
+	var floating_text_script = load("res://floating_text.gd")
+	if floating_text_script:
+		# 핑크-보라색으로 표시
+		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.3, 0.8))
+
 
 func _on_area_2d_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_index):
 	# 들어온 body가 CharacterBody2D 타입인지 확인

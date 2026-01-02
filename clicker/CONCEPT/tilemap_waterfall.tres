@@ -1,0 +1,65 @@
+[gd_resource type="TileSet" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" uid="uid://b0u08qtqpnl2l" path="res://CONCEPT/asset/mine_clicker32-warterfall.png" id="1_water"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_water"]
+texture = ExtResource("1_water")
+texture_region_size = Vector2i(32, 32)
+
+# (0,0) 타일 - 위쪽(0,0)과 아래쪽(0,3) 사이 애니메이션
+0:0/animation_frames = 2
+0:0/animation_speed = 4.0
+0:0/0 = 0
+0:0/1 = 0
+
+# (1,0) 타일
+1:0/animation_frames = 2
+1:0/animation_speed = 4.0
+1:0/0 = 0
+1:0/1 = 0
+
+# (2,0) 타일
+2:0/animation_frames = 2
+2:0/animation_speed = 4.0
+2:0/0 = 0
+2:0/1 = 0
+
+# (0,1) 타일
+0:1/animation_frames = 2
+0:1/animation_speed = 4.0
+0:1/0 = 0
+0:1/1 = 0
+
+# (1,1) 타일
+1:1/animation_frames = 2
+1:1/animation_speed = 4.0
+1:1/0 = 0
+1:1/1 = 0
+
+# (2,1) 타일
+2:1/animation_frames = 2
+2:1/animation_speed = 4.0
+2:1/0 = 0
+2:1/1 = 0
+
+# (0,2) 타일
+0:2/animation_frames = 2
+0:2/animation_speed = 4.0
+0:2/0 = 0
+0:2/1 = 0
+
+# (1,2) 타일
+1:2/animation_frames = 2
+1:2/animation_speed = 4.0
+1:2/0 = 0
+1:2/1 = 0
+
+# (2,2) 타일
+2:2/animation_frames = 2
+2:2/animation_speed = 4.0
+2:2/0 = 0
+2:2/1 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_water")

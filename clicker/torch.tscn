@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://c53admvams62x"]
+[gd_scene load_steps=4 format=3 uid="uid://c53admvams62x"]
 
 [ext_resource type="Texture2D" uid="uid://be1yjuhby1iwb" path="res://CONCEPT/asset/512x512 textures (23).png" id="1_pa17o"]
 [ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="2_w3qnr"]
+[ext_resource type="Script" path="res://torch.gd" id="3_torch"]
 
 [node name="Sprite2D" type="Sprite2D"]
+script = ExtResource("3_torch")
 texture = ExtResource("2_w3qnr")
 region_enabled = true
 region_rect = Rect2(32, 0, 32, 32)
@@ -11,5 +13,6 @@ region_rect = Rect2(32, 0, 32, 32)
 [node name="Light2D" type="PointLight2D" parent="."]
 z_index = 1
 color = Color(1, 0.64705884, 0.59607846, 0.7607843)
-energy = 2.0
+energy = 1.5
 texture = ExtResource("1_pa17o")
+texture_scale = 0.8

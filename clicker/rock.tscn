@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx6dabxk66sp0"]
+[gd_scene load_steps=6 format=3 uid="uid://cx6dabxk66sp0"]
 
 [ext_resource type="Script" uid="uid://d2vajgosquble" path="res://rock.gd" id="1_o0qsl"]
 [ext_resource type="Texture2D" uid="uid://db22u3uj8sakx" path="res://KakaoTalk_20521.png" id="2_68h2w"]
+[ext_resource type="AudioStream" uid="uid://dqa64f30c8oao" path="res://orb.mp3" id="3_46y1q"]
+[ext_resource type="AudioStream" uid="uid://s40vacvqwnpx" path="res://Minecraft_Level_Up_Sound_Effect-645180.mp3" id="4_o54ku"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4wt3"]
 radius = 52.009613
@@ -11,6 +13,7 @@ script = ExtResource("1_o0qsl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_68h2w")
 region_enabled = true
 region_rect = Rect2(224, 0, 32, 32)
@@ -31,6 +34,13 @@ show_percentage = false
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="normal_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_46y1q")
+
+[node name="good_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_o54ku")
+pitch_scale = 2.0
 
 [connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
 [connection signal="body_shape_exited" from="Area2D" to="." method="_on_area_2d_body_shape_exited"]

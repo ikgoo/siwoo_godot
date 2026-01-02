@@ -1,13 +1,14 @@
 extends Node2D
 
 # 알바 스텟 (export로 설정)
-@export var price: int = 100  # 구매 가격
-@export var money_amount: int = 1  # 초당 돈 증가량
+@export var price: int = 2000  # 구매 가격
+@export var money_amount: int = 50  # 초당 돈 증가량 (기본)
 
-# 강화 시스템
-var upgrade_level: int = 0  # 현재 강화 레벨
-var base_money_amount: int = 1  # 기본 수입량
-var upgrade_cost_multiplier: float = 2.0  # 강화 비용 배율
+# 강화 시스템 (export로 설정 가능)
+@export var upgrade_costs: Array[int] = [2000, 3000, 4000]  # 각 레벨별 강화 비용
+@export var upgrade_incomes: Array[int] = [120, 200, 350]  # 각 레벨별 강화 후 수입
+
+var upgrade_level: int = 0  # 현재 강화 레벨 (0 = 기본, 1~3 = 강화)
 
 # Area2D 노드 참조
 @onready var area_2d = $Area2D if has_node("Area2D") else null
@@ -25,12 +26,9 @@ var ui_node: Control = null
 var glow_particles: CPUParticles2D
 
 func _ready():
-	# 기본 수입량 저장
-	base_money_amount = money_amount
-	
 	# 초당 돈 증가량에 알바 수입 추가
 	Globals.money_per_second += money_amount
-	print("알바 고용 완료! 초당 수입 +", money_amount, "원, 현재 초당 수입: ", Globals.money_per_second, "원/초")
+	print("알바 고용 완료! 초당 수입 +💎", money_amount, ", 현재 초당 수입: 💎", Globals.money_per_second, "/초")
 	
 	# Area2D 시그널 연결
 	if area_2d:
@@ -74,57 +72,79 @@ func _process(_delta):
 
 # 현재 강화 비용 계산
 func get_upgrade_cost() -> int:
-	return int(price * pow(upgrade_cost_multiplier, upgrade_level))
+	if upgrade_level < upgrade_costs.size():
+		return upgrade_costs[upgrade_level]
+	return -1  # MAX 레벨
 
 # 강화 후 수입량 계산
 func get_upgraded_income() -> int:
-	return base_money_amount * (upgrade_level + 2)  # 레벨 0: 2배, 레벨 1: 3배, ...
+	if upgrade_level < upgrade_incomes.size():
+		return upgrade_incomes[upgrade_level]
+	return money_amount  # MAX 레벨이면 현재 수입 유지
+
+# MAX 레벨 체크
+func is_max_level() -> bool:
+	return upgrade_level >= upgrade_costs.size()
 
 # 알바 정보 텍스트 생성
 func get_alba_info_text() -> String:
+	# MAX 레벨 체크
+	if is_max_level():
+		return "알바 (MAX)\n현재 수입: 💎%d/초\n더 이상 강화 불가" % money_amount
+	
 	var cost = get_upgrade_cost()
 	var current_income = money_amount
 	var next_income = get_upgraded_income()
 	var income_increase = next_income - current_income
 	
-	return "알바 강화 (Lv.%d)\n가격: %d원\n현재 수입: %d원/초\n강화 후: %d원/초 (+%d)" % [upgrade_level, cost, current_income, next_income, income_increase]
+	return "알바 강화 (Lv.%d)\n가격: 💎%d\n현재 수입: 💎%d/초\n강화 후: 💎%d/초 (+%d)" % [upgrade_level, cost, current_income, next_income, income_increase]
 
 # 알바 강화
 func upgrade_alba():
+	# MAX 레벨 체크
+	if is_max_level():
+		print("이미 MAX 레벨입니다!")
+		return
+	
 	var cost = get_upgrade_cost()
 	
 	# 돈이 충분한지 확인
 	if Globals.money >= cost:
 		# 돈 차감
 		Globals.money -= cost
-		print("알바 강화 비용 차감: ", cost, "원, 남은 돈: ", Globals.money)
+		print("알바 강화 💎 차감: ", cost, ", 남은 돈: 💎", Globals.money)
 		
 		# 이전 수입량 제거
 		Globals.money_per_second -= money_amount
 		
+		# 새로운 수입량 적용 (강화 전에 계산)
+		money_amount = get_upgraded_income()
+		
 		# 강화 레벨 증가
 		upgrade_level += 1
-		
-		# 새로운 수입량 계산
-		money_amount = get_upgraded_income()
 		
 		# 새로운 수입량 추가
 		Globals.money_per_second += money_amount
 		
-		print("알바 강화 완료! Lv.", upgrade_level, ", 초당 수입: ", money_amount, "원/초")
+		print("알바 강화 완료! Lv.", upgrade_level, ", 초당 수입: 💎", money_amount, "/초")
 		
 		# 강화 효과 (반짝임)
 		spawn_upgrade_effect()
 		
-		# UI 업데이트
-		if ui_node and ui_node.has_node("upgrade_thing"):
-			var upgrade_label = ui_node.get_node("upgrade_thing")
-			upgrade_label.text = get_alba_info_text()
+		# 액션 텍스트 업데이트
+		Globals.show_action_text(get_alba_info_text())
 	else:
-		print("돈이 부족합니다! 필요: ", cost, "원, 보유: ", Globals.money, "원")
+		print("💎 부족! 필요: 💎", cost, ", 보유: 💎", Globals.money)
 
 # 구매 가능 여부에 따른 시각 효과
 func update_visual_feedback():
+	# MAX 레벨이면 파티클 끄기
+	if is_max_level():
+		glow_particles.visible = false
+		if sprite:
+			sprite.modulate = Color(0.6, 0.6, 0.6)  # 회색 (MAX)
+		return
+	
 	var cost = get_upgrade_cost()
 	var can_afford = Globals.money >= cost
 	
@@ -180,10 +200,8 @@ func _on_area_2d_body_entered(body):
 		is_character_inside = true
 		print("플레이어가 알바 영역에 들어왔습니다!")
 		
-		# UI에 알바 정보 표시
-		if ui_node and ui_node.has_node("upgrade_thing"):
-			var upgrade_label = ui_node.get_node("upgrade_thing")
-			upgrade_label.text = get_alba_info_text()
+		# 액션 텍스트로 알바 정보 표시
+		Globals.show_action_text(get_alba_info_text())
 
 # 플레이어가 영역에서 나갔을 때
 func _on_area_2d_body_exited(body):
@@ -191,7 +209,5 @@ func _on_area_2d_body_exited(body):
 		is_character_inside = false
 		print("플레이어가 알바 영역에서 나갔습니다!")
 		
-		# UI 알바 정보 초기화
-		if ui_node and ui_node.has_node("upgrade_thing"):
-			var upgrade_label = ui_node.get_node("upgrade_thing")
-			upgrade_label.text = ""
+		# 액션 텍스트 숨김
+		Globals.hide_action_text()

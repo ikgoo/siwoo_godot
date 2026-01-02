@@ -3,6 +3,9 @@ extends Label
 ## 떠오르는 텍스트 스크립트
 ## 돈 획득, 데미지 등을 표시하는 용도
 
+# 폰트 로드
+const GALMURI_9_FONT = preload("res://Galmuri9.ttf")
+
 # 떠오르는 속도 및 거리
 @export var float_distance: float = 80.0
 @export var float_duration: float = 1.2
@@ -14,7 +17,8 @@ func _ready():
 	horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	
-	# 폰트 크기
+	# 폰트 설정
+	add_theme_font_override("font", GALMURI_9_FONT)
 	add_theme_font_size_override("font_size", 16)
 	
 	# 텍스트 외곽선 (가독성)
@@ -55,26 +59,22 @@ static func create(parent: Node, pos: Vector2, txt: String, color: Color = Color
 	floating_text.z_index = 1000
 	floating_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	floating_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	
-	# 폰트 설정
-	floating_text.add_theme_font_size_override("font_size", 16)
-	floating_text.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
-	floating_text.add_theme_constant_override("outline_size", 2)
+	floating_text.label_settings = LabelSettings.new()
+	const GALMURI_9 = preload("res://Galmuri9.ttf")
+	floating_text.label_settings.font = GALMURI_9
+	floating_text.label_settings.font_size = 10
+	# 아웃라인 설정 (LabelSettings에서 직접 설정)
+	floating_text.label_settings.outline_size = 2
+	floating_text.label_settings.outline_color = Color(0.566, 0.56, 0.0, 1.0)
 	
 	parent.add_child(floating_text)
 	
-	# 애니메이션
+	# 애니메이션 (일자로 올라감)
 	var tween = parent.create_tween()
 	tween.set_parallel(true)
-	var end_pos = pos + Vector2(0, -80)
+	var end_pos = pos + Vector2(0, -50)
 	tween.tween_property(floating_text, "position", end_pos, 1.2).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(floating_text, "modulate:a", 0.0, 0.6).set_delay(0.6)
-	
-	# 좌우 흔들림
-	var wobble = parent.create_tween()
-	wobble.tween_property(floating_text, "position:x", pos.x + 10, 0.3).set_ease(Tween.EASE_IN_OUT)
-	wobble.tween_property(floating_text, "position:x", pos.x - 10, 0.3).set_ease(Tween.EASE_IN_OUT)
-	wobble.tween_property(floating_text, "position:x", end_pos.x, 0.3).set_ease(Tween.EASE_IN_OUT)
 	
 	tween.finished.connect(floating_text.queue_free)
 	
