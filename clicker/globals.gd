@@ -34,7 +34,7 @@ var diamond_per_second_level : int = 0
 # 자동 채굴 속도 레벨 (as Lv) - 0부터 시작, 최대 10
 var auto_mining_speed_level : int = 0
 # 채굴 키 개수 레벨 (mk Lv) - 0부터 시작, 최대 4
-var mining_key_count_level : int = 0
+var mining_key_count_level : int = 4
 
 # 실제 게임 값들 (레벨에 따라 계산됨)
 var money_up : int = 1  # 채굴 시 획득하는 다이아몬드 (dv 레벨에 따라 결정)
@@ -54,7 +54,7 @@ var is_fever_active : bool = false  # 피버 활성화 여부
 # 경제 시스템
 # ========================================
 # 플레이어가 보유한 돈 (전역 변수)
-var _money : int = 1000
+var _money : int = 1000000000
 var money : int:
 	get:
 		return _money

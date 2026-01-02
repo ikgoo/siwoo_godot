@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Texture2D" uid="uid://b0u08qtqpnl2l" path="res://CONCEPT/asset/mine_clicker32-warterfall.png" id="1_waterfall"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame1"]
+atlas = ExtResource("1_waterfall")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_frame2"]
+atlas = ExtResource("1_waterfall")
+region = Rect2(0, 96, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_water"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frame1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_frame2")
+}],
+"loop": true,
+"name": &"waterfall",
+"speed": 4.0
+}]
+
+[node name="Waterfall" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_water")
+animation = &"waterfall"
+autoplay = "waterfall"
+
