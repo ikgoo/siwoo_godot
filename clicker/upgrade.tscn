@@ -1,16 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqo2mn0ydxbqg"]
+[gd_scene load_steps=6 format=3 uid="uid://cqo2mn0ydxbqg"]
 
 [ext_resource type="Script" uid="uid://wccy2d63t5qm" path="res://upgrade.gd" id="1_w52ek"]
+[ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_hgitt"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="3_hj5gr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w52ek"]
 radius = 60.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_50jy6"]
+font = ExtResource("3_hj5gr")
+font_size = 10
 
 [node name="upgrade" type="Node2D"]
 script = ExtResource("1_w52ek")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_hgitt")
+region_enabled = true
+region_rect = Rect2(32, 32, 32, 32)
 
 [node name="Area2D2" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 shape = SubResource("CircleShape2D_w52ek")
+
+[node name="saying" type="Label" parent="."]
+offset_left = 5.0
+offset_top = -35.0
+offset_right = 45.0
+offset_bottom = -12.0
+label_settings = SubResource("LabelSettings_50jy6")

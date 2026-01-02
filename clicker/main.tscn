@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=12 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://dhl6moavywset" path="res://wall.tscn" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
-[ext_resource type="PackedScene" uid="uid://3iugdn0ykg5d" path="res://teleport.tscn" id="10_4c57u"]
 [ext_resource type="PackedScene" uid="uid://c53admvams62x" path="res://torch.tscn" id="11_efxa6"]
 [ext_resource type="Texture2D" uid="uid://cq12tom2y7tip" path="res://CONCEPT/asset/mine_clicker32-torch_side_sheet.png" id="12_dg77c"]
 
@@ -30,25 +29,34 @@ zoom = Vector2(2, 2)
 script = ExtResource("4_1bvp3")
 
 [node name="upgrade" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(-88, 190)
-
-[node name="upgrade2" parent="." instance=ExtResource("5_lquwl")]
-position = Vector2(-231, 69)
-type = 1
+position = Vector2(-104, 190)
 
 [node name="upgrade3" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(-282, 69)
 type = 2
 
+[node name="upgrade2" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(-218, 69)
+type = 1
+
 [node name="upgrade4" parent="." instance=ExtResource("5_lquwl")]
 position = Vector2(-233, 168)
 type = 3
+
+[node name="upgrade5" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(255, 32)
+type = 4
+
+[node name="upgrade6" parent="." instance=ExtResource("5_lquwl")]
+position = Vector2(143, 192)
+type = 5
 
 [node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(277, 196)
 
 [node name="alba_buy2" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(318, 112)
+alba_scene_path = "res://alba2.tscn"
 
 [node name="alba_buy3" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(-266, -24)
@@ -85,37 +93,36 @@ metadata/_edit_lock_ = true
 position = Vector2(477, -172)
 teleport_position = Vector2(87, 190)
 
-[node name="teleport" parent="." instance=ExtResource("10_4c57u")]
-position = Vector2(304, 13)
-teleport_destination = Vector2(2263, 3094)
-action_text = "채굴소 가기"
-
-[node name="teleport2" parent="." instance=ExtResource("10_4c57u")]
-position = Vector2(136, 187)
-action_text = "집가기"
-
 [node name="torchs" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="torch" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(-248, 1)
+metadata/_edit_lock_ = true
 
 [node name="torch2" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(-146, 108)
 texture = ExtResource("12_dg77c")
+metadata/_edit_lock_ = true
 
 [node name="torch3" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(168, 193)
+metadata/_edit_lock_ = true
 
 [node name="torch4" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(456, 72)
+metadata/_edit_lock_ = true
 
 [node name="torch5" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(856, -152)
+metadata/_edit_lock_ = true
 
 [node name="torch6" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(382, -133)
 texture = ExtResource("12_dg77c")
+metadata/_edit_lock_ = true
 
 [node name="torch7" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(689, 144)
 flip_h = true
+metadata/_edit_lock_ = true

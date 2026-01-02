@@ -1,9 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://bojiqqd4sya5p"]
+[gd_scene load_steps=8 format=3 uid="uid://bojiqqd4sya5p"]
 
 [ext_resource type="Script" uid="uid://dg12enq825mkq" path="res://ui.gd" id="1_fyqef"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_m6e0p"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m6e0p"]
+font = ExtResource("2_m6e0p")
 font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_27fn8"]
+font = ExtResource("2_m6e0p")
+
+[sub_resource type="LabelSettings" id="LabelSettings_nltto"]
+font = ExtResource("2_m6e0p")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ibotj"]
+font = ExtResource("2_m6e0p")
+
+[sub_resource type="LabelSettings" id="LabelSettings_n5ude"]
+font = ExtResource("2_m6e0p")
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -32,6 +46,7 @@ offset_left = 556.0
 offset_top = 502.0
 offset_right = 709.0
 offset_bottom = 589.0
+label_settings = SubResource("LabelSettings_27fn8")
 
 [node name="SettingButton" type="Button" parent="."]
 layout_mode = 0
@@ -39,7 +54,8 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 120.0
 offset_bottom = 60.0
-text = "⚙️ 설정"
+theme_override_fonts/font = ExtResource("2_m6e0p")
+text = "설정"
 
 [node name="SettingPanel" type="Panel" parent="."]
 visible = false
@@ -65,8 +81,10 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Title" type="Label" parent="SettingPanel/VBoxContainer"]
+texture_filter = 1
 layout_mode = 2
-text = "⚙️ 채굴 키 설정"
+text = "채굴 키 설정"
+label_settings = SubResource("LabelSettings_nltto")
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="SettingPanel/VBoxContainer"]
@@ -76,13 +94,16 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" type="Label" parent="SettingPanel/VBoxContainer/Key1Container"]
+texture_filter = 1
 layout_mode = 2
-text = "채굴 키 1:"
 size_flags_horizontal = 3
+text = "채굴 키 1:"
+label_settings = SubResource("LabelSettings_ibotj")
 
 [node name="Key1Input" type="LineEdit" parent="SettingPanel/VBoxContainer/Key1Container"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_m6e0p")
 text = "F"
 max_length = 1
 editable = false
@@ -91,13 +112,16 @@ editable = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="SettingPanel/VBoxContainer/Key2Container"]
+texture_filter = 1
 layout_mode = 2
-text = "채굴 키 2:"
 size_flags_horizontal = 3
+text = "채굴 키 2:"
+label_settings = SubResource("LabelSettings_n5ude")
 
 [node name="Key2Input" type="LineEdit" parent="SettingPanel/VBoxContainer/Key2Container"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_m6e0p")
 text = "J"
 max_length = 1
 editable = false
@@ -106,5 +130,7 @@ editable = false
 layout_mode = 2
 
 [node name="CloseButton" type="Button" parent="SettingPanel/VBoxContainer"]
+texture_filter = 1
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_m6e0p")
 text = "닫기"

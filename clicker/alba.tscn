@@ -9,6 +9,10 @@ radius = 58.30952
 
 [node name="alba" type="Node2D"]
 script = ExtResource("1_58bj0")
+price = 2000
+money_amount = 50
+upgrade_costs = Array[int]([2000, 3000, 4000])
+upgrade_incomes = Array[int]([120, 200, 350])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

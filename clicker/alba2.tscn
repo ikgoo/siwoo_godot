@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7alba2scene1"]
+
+[ext_resource type="Script" uid="uid://dl7qfer6q5lfk" path="res://alba.gd" id="1_58bj0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2a7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58bj0"]
+radius = 58.30952
+
+[node name="alba2" type="Node2D"]
+script = ExtResource("1_58bj0")
+price = 4000
+money_amount = 400
+upgrade_costs = Array[int]([5000, 6000])
+upgrade_incomes = Array[int]([600, 800])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_vd2a7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Area2D2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+shape = SubResource("CircleShape2D_58bj0")
+
+[connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
+[connection signal="area_exited" from="Area2D2" to="." method="_on_area_2d_2_area_exited"]
+

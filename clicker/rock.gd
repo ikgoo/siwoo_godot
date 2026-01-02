@@ -5,6 +5,13 @@ extends Node2D
 
 # 캐릭터가 영역 안에 있는지 추적하는 변수
 var is_character_inside : bool = false
+@onready var normal_sound = $normal_sound
+@onready var good_sound = $good_sound
+
+# 오디오 풀링 시스템
+var normal_sound_pool: Array[AudioStreamPlayer] = []
+var good_sound_pool: Array[AudioStreamPlayer] = []
+const AUDIO_POOL_SIZE: int = 5  # 풀 크기
 
 # 카메라 고정 관련 변수
 var is_camera_locked : bool = false  # 카메라가 이 돌에 고정되었는지
@@ -14,6 +21,7 @@ const CAMERA_UNLOCK_TIME : float = 5.0  # 5초 후 카메라 고정 해제
 # 바위 흔들림 효과
 var shake_amount : float = 0.0
 var original_position : Vector2 = Vector2.ZERO
+const GALMURI_9 = preload("uid://dqloen3424vrx")
 
 # 채굴 시스템 변수
 var go_down = false
@@ -84,6 +92,9 @@ func _ready():
 	# 프로그레스바 숨김 (차징 시스템 사용)
 	if progress_bar:
 		progress_bar.visible = false
+	
+	# 오디오 풀 초기화
+	_init_audio_pool()
 
 # 마우스 클릭 처리는 이제 사용 안 함 (차징 시스템 사용)
 # func _input(event):
@@ -179,25 +190,35 @@ func complete_mining():
 	
 	# 피버 배율 적용
 	var money_gained = int(Globals.money_up * Globals.fever_multiplier)
+	
+	# 10% 확률로 2배 보너스
+	var is_critical = randf() < 0.1
+	if is_critical:
+		money_gained *= 2
+	
 	Globals.money += money_gained
 	
 	# 초당 돈 증가 적용 (업그레이드 수치만큼 초당 수입에 추가)
 	if Globals.money_per_second_upgrade > 0:
 		Globals.money_per_second += Globals.money_per_second_upgrade
-		print("💎 초당 수입 증가! +", Globals.money_per_second_upgrade, "원/초 (현재 총 ", Globals.money_per_second, "원/초)")
+		print("💎 초당 수입 증가! +💎", Globals.money_per_second_upgrade, "/초 (현재 총 💎", Globals.money_per_second, "/초)")
 	
 	# 피버 중이면 특별 메시지
-	if Globals.is_fever_active:
-		print("🔥 피버 채굴! +", money_gained, "원 (", Globals.fever_multiplier, "배), 현재 돈: ", Globals.money)
+	if is_critical:
+		print("💥 크리티컬! +💎", money_gained, " (2배), 현재 돈: 💎", Globals.money)
+	elif Globals.is_fever_active:
+		print("🔥 피버 채굴! +💎", money_gained, " (", Globals.fever_multiplier, "배), 현재 돈: 💎", Globals.money)
 	else:
-		print("돈 획득! +", money_gained, "원, 현재 돈: ", Globals.money)
+		print("💎 획득! +💎", money_gained, ", 현재 돈: 💎", Globals.money)
 	
 	now_time = 0
 	
 	# 대기시간 없음 (즉시 다시 채굴 가능)
 	
-	# 완료 파티클 발생 (피버 중이면 색상 변경)
-	if Globals.is_fever_active:
+	# 완료 파티클 발생 (크리티컬/피버 중이면 색상 변경)
+	if is_critical:
+		complete_particles.color = Color(1.0, 0.2, 0.8)  # 핑크-보라 (크리티컬)
+	elif Globals.is_fever_active:
 		complete_particles.color = Color(1.0, 0.3, 0.1)  # 빨강-주황 (피버)
 	else:
 		complete_particles.color = Color(1.0, 0.9, 0.3)  # 금색 (일반)
@@ -205,8 +226,11 @@ func complete_mining():
 	# 파티클이 이미 발생 중이면 재시작
 	complete_particles.restart()
 	
-	# 떠오르는 텍스트 생성
-	spawn_floating_text("+" + str(money_gained) + "원")
+	# 떠오르는 텍스트 생성 (크리티컬이면 특별 표시)
+	if is_critical:
+		spawn_floating_text_critical("+💎" + str(money_gained) + "!")
+	else:
+		spawn_floating_text("+💎" + str(money_gained))
 
 # 프로그레스바 색상 업데이트 (초록 → 노랑 → 빨강) + 애니메이션
 func update_progress_color():
@@ -261,13 +285,55 @@ func spawn_hit_particles(amount: int):
 	await get_tree().create_timer(particles.lifetime).timeout
 	particles.queue_free()
 
+# 오디오 풀 초기화
+func _init_audio_pool():
+	# normal_sound 풀 생성
+	if normal_sound and normal_sound.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = normal_sound.stream
+			player.volume_db = normal_sound.volume_db
+			player.bus = normal_sound.bus
+			add_child(player)
+			normal_sound_pool.append(player)
+	
+	# good_sound 풀 생성
+	if good_sound and good_sound.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = good_sound.stream
+			player.volume_db = good_sound.volume_db
+			player.bus = good_sound.bus
+			add_child(player)
+			good_sound_pool.append(player)
+
+# 풀에서 사용 가능한 플레이어 찾아서 재생
+func _play_from_pool(pool: Array[AudioStreamPlayer]):
+	for player in pool:
+		if not player.playing:
+			player.play()
+			return
+	# 모든 플레이어가 사용 중이면 첫 번째 플레이어 재시작
+	if pool.size() > 0:
+		pool[0].play()
+
 # 떠오르는 텍스트 생성
 func spawn_floating_text(text: String):
+	_play_from_pool(normal_sound_pool)
 	# floating_text.gd의 정적 함수 사용
 	var floating_text_script = load("res://floating_text.gd")
 	if floating_text_script:
 		# 금색으로 표시
 		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.9, 0.3))
+
+# 크리티컬 떠오르는 텍스트 생성 (2배 보너스)
+func spawn_floating_text_critical(text: String):
+	_play_from_pool(good_sound_pool)
+	var floating_text_script = load("res://floating_text.gd")
+	if floating_text_script:
+		# 핑크-보라색으로 표시
+		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.3, 0.8))
+
 
 func _on_area_2d_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_index):
 	# 들어온 body가 CharacterBody2D 타입인지 확인

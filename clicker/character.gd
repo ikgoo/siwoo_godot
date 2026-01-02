@@ -24,9 +24,11 @@ const PLATFORM_OUT_DURATION: float = 0.4  # 0.4초
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
 
-# 채굴 키 입력 추적 (이전 프레임 상태)
-var was_mining_key1_pressed: bool = false
-var was_mining_key2_pressed: bool = false
+# 채굴 키 입력 추적 (이전 프레임 상태) - 최대 6개 키 지원
+var was_mining_keys_pressed: Array[bool] = [false, false, false, false, false, false]
+
+# 자동 채굴 (키 꾹 누르기) 타이머 - 각 키별로 따로 (최대 6개)
+var auto_mining_timers: Array[float] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # 점프 관련 변수
 var is_jumping: bool = false
@@ -89,6 +91,13 @@ var current_stamina: float = 100.0
 var stamina_regen_rate: float = 10.0  # 초당 회복량
 var is_tired: bool = false
 
+# 부채꼴 빛 (손전등 효과)
+var flashlight: PointLight2D = null
+@export var flashlight_enabled: bool = true
+@export var flashlight_color: Color = Color(1.0, 0.95, 0.8, 0.6)  # 따뜻한 노란빛
+@export var flashlight_energy: float = 0.8
+@export var flashlight_scale: float = 1.5
+
 func _ready():
 	# player 그룹에 추가 (rock.gd에서 찾을 수 있도록)
 	add_to_group("player")
@@ -104,8 +113,14 @@ func _ready():
 	
 	# 차징 게이지 생성
 	create_charge_bar()
+	
+	# 부채꼴 빛 생성
+	if flashlight_enabled:
+		create_flashlight()
 
 func _process(delta):
+	# 부채꼴 빛 방향 업데이트
+	update_flashlight_direction()
 	# 카메라가 돌에 고정되어 있으면 계속 돌 쪽을 바라봄
 	update_facing_direction_to_rock()
 	
@@ -124,24 +139,35 @@ func _physics_process(delta):
 	
 	# 채굴 키 입력 처리 (돌 근처에 있을 때만)
 	if current_nearby_rock:
-		var is_mining_key1_pressed = Input.is_key_pressed(Globals.mining_key1)
-		var is_mining_key2_pressed = Input.is_key_pressed(Globals.mining_key2)
-		
-		# 키를 방금 눌렀는지 확인
-		var mining_key1_just_pressed = is_mining_key1_pressed and not was_mining_key1_pressed
-		var mining_key2_just_pressed = is_mining_key2_pressed and not was_mining_key2_pressed
-		
-		# 이전 프레임 상태 업데이트
-		was_mining_key1_pressed = is_mining_key1_pressed
-		was_mining_key2_pressed = is_mining_key2_pressed
-		
-		# 채굴 키를 누르면 차징
-		if mining_key1_just_pressed or mining_key2_just_pressed:
-			add_charge()
+		# 현재 사용 가능한 키 개수만큼 순회
+		for i in range(Globals.mining_key_count):
+			var key = Globals.all_mining_keys[i]
+			var is_key_pressed = Input.is_key_pressed(key)
+			
+			# 키를 방금 눌렀는지 확인
+			var key_just_pressed = is_key_pressed and not was_mining_keys_pressed[i]
+			
+			# 이전 프레임 상태 업데이트
+			was_mining_keys_pressed[i] = is_key_pressed
+			
+			# 키를 처음 누르면 즉시 채굴 + 타이머 리셋
+			if key_just_pressed:
+				add_charge()
+				auto_mining_timers[i] = 0.0
+			
+			# 키를 꾹 누르고 있으면 자동 채굴
+			if is_key_pressed:
+				auto_mining_timers[i] += delta
+				if auto_mining_timers[i] >= Globals.auto_mining_interval:
+					auto_mining_timers[i] = 0.0
+					add_charge()
+			else:
+				auto_mining_timers[i] = 0.0
 	else:
-		# 돌 근처가 아니면 키 상태 초기화
-		was_mining_key1_pressed = false
-		was_mining_key2_pressed = false
+		# 돌 근처가 아니면 키 상태 및 타이머 초기화
+		for i in range(6):
+			was_mining_keys_pressed[i] = false
+			auto_mining_timers[i] = 0.0
 	
 	# S 키 입력 확인
 	var is_s_key_pressed = Input.is_key_pressed(KEY_S)
@@ -439,7 +465,9 @@ func add_charge():
 		if current_nearby_rock.has_method("lock_camera_on_first_hit"):
 			current_nearby_rock.lock_camera_on_first_hit()
 	
-	charge_amount += charge_per_hit
+	# 필요 클릭 수에 따라 차지량 계산 (1/필요클릭수)
+	var dynamic_charge_per_hit = 1.0 / float(Globals.mining_clicks_required)
+	charge_amount += dynamic_charge_per_hit
 	last_charge_time = Time.get_ticks_msec() / 1000.0
 	
 	if charge_amount >= 1.0:
@@ -520,3 +548,86 @@ func update_facing_direction_to_rock():
 				# 차징 중이면 곡괭이 자세도 업데이트
 				if is_charging and not is_pickaxe_animating:
 					update_charge_pickaxe_pose()
+
+# === 부채꼴 빛 (손전등) 함수들 ===
+
+# 부채꼴 모양의 빛 텍스처를 코드로 생성합니다 (부드러운 경계).
+func create_cone_texture(size: int, angle_degrees: float) -> ImageTexture:
+	var image = Image.create(size, size, false, Image.FORMAT_RGBA8)
+	var center = Vector2(size / 2.0, size / 2.0)
+	var half_angle = deg_to_rad(angle_degrees / 2.0)
+	# 경계 부드럽게 하기 위한 페더링 범위 (라디안)
+	var feather_angle = deg_to_rad(15.0)
+	
+	for x in range(size):
+		for y in range(size):
+			var pos = Vector2(x, y)
+			var dir = pos - center
+			var distance = dir.length()
+			var max_distance = size / 2.0
+			
+			# 거리에 따른 감쇠 (부드러운 페이드아웃)
+			var distance_factor = 1.0 - pow(distance / max_distance, 1.5)
+			if distance_factor < 0:
+				distance_factor = 0
+			
+			# 각도 계산 (오른쪽 방향이 0도)
+			var angle = atan2(dir.y, dir.x)
+			var abs_angle = abs(angle)
+			
+			# 각도에 따른 감쇠 (부드러운 경계)
+			var angle_factor = 1.0
+			if abs_angle > half_angle:
+				# 경계 바깥 - 페더링 적용
+				var over_angle = abs_angle - half_angle
+				if over_angle < feather_angle:
+					angle_factor = 1.0 - (over_angle / feather_angle)
+				else:
+					angle_factor = 0.0
+			else:
+				# 경계 안쪽 - 가장자리로 갈수록 약간 어두워짐
+				angle_factor = 1.0 - (abs_angle / half_angle) * 0.3
+			
+			var alpha = distance_factor * angle_factor
+			image.set_pixel(x, y, Color(1, 1, 1, alpha))
+	
+	return ImageTexture.create_from_image(image)
+
+# 빛 각도 애니메이션용 변수
+var flashlight_angle_offset: float = 0.0
+var flashlight_angle_time: float = 0.0
+
+# 부채꼴 빛을 생성합니다.
+func create_flashlight():
+	flashlight = PointLight2D.new()
+	flashlight.color = flashlight_color
+	flashlight.energy = flashlight_energy
+	flashlight.texture_scale = flashlight_scale
+	flashlight.blend_mode = Light2D.BLEND_MODE_ADD
+	
+	# 부채꼴 텍스처 생성 (크기 128, 각도 115도 - 중간값)
+	flashlight.texture = create_cone_texture(128, 115)
+	
+	# 플레이어 위치에서 시작
+	flashlight.position = Vector2.ZERO
+	flashlight.z_index = -1
+	
+	add_child(flashlight)
+	update_flashlight_direction()
+
+# 부채꼴 빛의 방향을 캐릭터가 바라보는 방향으로 업데이트합니다.
+func update_flashlight_direction():
+	if not flashlight:
+		return
+	
+	# 각도 부드럽게 흔들림 (110~120도 사이)
+	flashlight_angle_time += get_process_delta_time() * 2.0
+	flashlight_angle_offset = sin(flashlight_angle_time) * 0.03  # 스케일로 약간의 변화
+	flashlight.texture_scale = flashlight_scale + flashlight_angle_offset
+	
+	if facing_direction == 1:
+		# 오른쪽을 바라볼 때
+		flashlight.rotation_degrees = 0
+	else:
+		# 왼쪽을 바라볼 때
+		flashlight.rotation_degrees = 180
