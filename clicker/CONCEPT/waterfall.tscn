@@ -29,3 +29,4 @@ sprite_frames = SubResource("SpriteFrames_water")
 animation = &"waterfall"
 autoplay = "waterfall"
 
+
