@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://ddocumwv3cjdd"]
+[gd_scene load_steps=9 format=4 uid="uid://ddocumwv3cjdd"]
 
 [ext_resource type="TileSet" uid="uid://bc4jub32w6yl5" path="res://CONCEPT/tilemap_dirt.tres" id="2_3mish"]
 [ext_resource type="Texture2D" uid="uid://c424uysaanjcj" path="res://CONCEPT/asset/mine_clicker32-warterfall.png" id="2_bsyy1"]
 [ext_resource type="Texture2D" uid="uid://dn5vn06xvj73a" path="res://CONCEPT/asset/mine_clicker32-door.png" id="3_r662r"]
 [ext_resource type="Texture2D" uid="uid://cq12tom2y7tip" path="res://CONCEPT/asset/mine_clicker32-torch_side_sheet.png" id="4_3mish"]
 [ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="5_i8h3n"]
+[ext_resource type="Texture2D" uid="uid://bi1wlgreouwk8" path="res://CONCEPT/asset/mine_clicker-miner-SHEET.png" id="6_i8h3n"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r662r"]
 texture = ExtResource("2_bsyy1")
@@ -208,3 +209,9 @@ region_rect = Rect2(0, 0, 32, 32)
 [node name="MineClicker32TorchSheet" type="Sprite2D" parent="."]
 position = Vector2(254, 402)
 texture = ExtResource("5_i8h3n")
+
+[node name="MineClickerMinerSheet" type="Sprite2D" parent="."]
+position = Vector2(931, 559)
+texture = ExtResource("6_i8h3n")
+hframes = 6
+vframes = 3
