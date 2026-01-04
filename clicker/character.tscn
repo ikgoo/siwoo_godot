@@ -1,9 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://bn4r5emxrhk8f"]
+[gd_scene load_steps=8 format=3 uid="uid://bn4r5emxrhk8f"]
 
 [ext_resource type="Script" uid="uid://bfg36ey1oaaxi" path="res://character.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_pjt0s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vu45j"]
+
+[sub_resource type="Animation" id="Animation_pjt0s"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_wa5vi"]
+resource_name = "walk"
+
+[sub_resource type="Animation" id="Animation_wfnr8"]
+resource_name = "jump"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_px5sl"]
+_data = {
+&"idle": SubResource("Animation_pjt0s"),
+&"jump": SubResource("Animation_wfnr8"),
+&"walk": SubResource("Animation_wa5vi")
+}
 
 [node name="character" type="CharacterBody2D"]
 collision_mask = 5
@@ -20,6 +36,9 @@ region_enabled = true
 region_rect = Rect2(32, 32, 32, 32)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_px5sl")
+}
 
 [node name="pickaxe" type="Sprite2D" parent="."]
 scale = Vector2(0.6, 0.6)
