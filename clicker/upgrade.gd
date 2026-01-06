@@ -274,6 +274,7 @@ func _process(delta):
 					# 다이아몬드 획득량 레벨 증가
 					Globals.diamond_value_level += 1
 					Globals.update_diamond_value()
+					Globals.update_tier("diamond_value_upgrade")
 					print("업그레이드 완료! 다이아몬드 획득량 Lv ", Globals.diamond_value_level, " (획득량: ", Globals.money_up, ")")
 				upgrade.money_time:
 					# 곡괭이 속도 레벨 증가

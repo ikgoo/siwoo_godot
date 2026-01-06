@@ -25,6 +25,14 @@ func _ready():
 	connect_button_signals(start_button)
 	connect_button_signals(setting_button)
 	connect_button_signals(exit_button)
+	
+	# 버튼 클릭 동작 연결
+	if start_button:
+		start_button.pressed.connect(on_start_pressed)
+	if setting_button:
+		setting_button.pressed.connect(on_setting_pressed)
+	if exit_button:
+		exit_button.pressed.connect(on_exit_pressed)
 
 ## 버튼의 원래 위치와 크기 저장
 func save_button_original_data(button: Button):
@@ -96,3 +104,13 @@ func on_button_unhover(button: Button):
 	
 	# Tween 참조 저장
 	button.set_meta("hover_tween", tween)
+
+func on_start_pressed():
+	get_tree().change_scene_to_file("res://main.tscn")
+
+func on_setting_pressed():
+	# TODO: 설정 화면이 추가되면 여기서 씬 전환 또는 팝업을 띄웁니다.
+	pass
+
+func on_exit_pressed():
+	get_tree().quit()

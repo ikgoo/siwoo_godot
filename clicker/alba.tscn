@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ydeq2huss6rh"]
+[gd_scene load_steps=5 format=3 uid="uid://ydeq2huss6rh"]
 
 [ext_resource type="Script" uid="uid://dl7qfer6q5lfk" path="res://alba.gd" id="1_58bj0"]
+[ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_vd2a7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2a7"]
 
@@ -9,12 +10,12 @@ radius = 58.30952
 
 [node name="alba" type="Node2D"]
 script = ExtResource("1_58bj0")
-price = 2000
-money_amount = 50
-upgrade_costs = Array[int]([2000, 3000, 4000])
-upgrade_incomes = Array[int]([120, 200, 350])
+alba_texture = ExtResource("2_vd2a7")
+pet_scale = Vector2(0.1, 0.1)
+pet_offset = Vector2(20, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.01, 0.01)
 
 [node name="Area2D" type="Area2D" parent="."]
 

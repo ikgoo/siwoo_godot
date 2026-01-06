@@ -3,6 +3,22 @@ extends Node2D
 # 알바 스텟 (export로 설정)
 @export var price: int = 2000  # 구매 가격
 @export var money_amount: int = 50  # 초당 돈 증가량 (기본)
+# 에디터에서 지정할 커스텀 이미지
+@export var alba_texture: Texture2D
+# 펫/스프라이트 크기 배율
+@export var pet_scale: Vector2 = Vector2(1.0, 1.0)
+# 펫 전체 크기 스케일 (단일 값)
+@export var pet_scale_factor: float = 1.0
+# 펫 텍스처 (없으면 알바 스프라이트 재사용)
+@export var pet_texture: Texture2D
+
+# 펫 노드 참조
+var pet_sprite: Sprite2D = null
+# 알바 인스턴스 순번 (1,2,3...)에 따라 펫 오프셋을 곱해 배치
+var alba_order: int = 1
+# 펫 추적 설정
+@export var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치
+@export var pet_follow_speed: float = 5.0  # 따라오는 속도 (높을수록 빠름)
 
 # 강화 시스템 (export로 설정 가능)
 @export var upgrade_costs: Array[int] = [2000, 3000, 4000]  # 각 레벨별 강화 비용
@@ -22,13 +38,28 @@ var ui_node: Control = null
 # 시각 효과용 스프라이트
 @onready var sprite: Sprite2D = $Sprite2D if has_node("Sprite2D") else null
 
+
 # 구매 가능 표시용 파티클
 var glow_particles: CPUParticles2D
 
 func _ready():
+	# 알바 그룹에 추가하고 순번 계산
+	add_to_group("alba")
+	alba_order = get_tree().get_nodes_in_group("alba").size()
+	
 	# 초당 돈 증가량에 알바 수입 추가
 	Globals.money_per_second += money_amount
 	print("알바 고용 완료! 초당 수입 +💎", money_amount, ", 현재 초당 수입: 💎", Globals.money_per_second, "/초")
+	
+	# 스프라이트 텍스처 교체
+	if sprite and alba_texture:
+		sprite.texture = alba_texture
+	# 스프라이트 크기 적용
+	if sprite:
+		sprite.scale = _get_pet_scale()
+	
+	# 펫 스프라이트 생성 (캐릭터 뒤를 따르게)
+	create_pet_sprite()
 	
 	# Area2D 시그널 연결
 	if area_2d:
@@ -63,6 +94,9 @@ func _ready():
 	Globals.money_changed.connect(_on_money_changed)
 
 func _process(_delta):
+	# 펫 추적 업데이트
+	update_pet_follow(_delta)
+	
 	# 구매 가능 여부에 따라 시각 효과 업데이트
 	update_visual_feedback()
 	
@@ -211,3 +245,53 @@ func _on_area_2d_body_exited(body):
 		
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
+
+# === 펫 관련 로직 ===
+
+func create_pet_sprite():
+	if pet_sprite:
+		return
+	if not Globals.player:
+		# 플레이어가 아직 없으면 다음 프레임에 다시 시도
+		call_deferred("create_pet_sprite")
+		return
+	pet_sprite = Sprite2D.new()
+	# 텍스처 우선순위: pet_texture > alba_texture > sprite.texture
+	if pet_texture:
+		pet_sprite.texture = pet_texture
+	elif alba_texture:
+		pet_sprite.texture = alba_texture
+	elif sprite:
+		pet_sprite.texture = sprite.texture
+	pet_sprite.z_index = Globals.player.z_index - 1
+	add_child(pet_sprite)
+	pet_sprite.scale = _get_pet_scale()
+	# 시작 위치를 플레이어 뒤쪽으로 배치
+	pet_sprite.global_position = Globals.player.global_position + get_facing_offset()
+
+func update_pet_follow(delta: float):
+	if not pet_sprite or not Globals.player:
+		return
+	var target_pos = Globals.player.global_position + get_facing_offset()
+	var t = clamp(pet_follow_speed * delta, 0.0, 1.0)
+	pet_sprite.global_position = pet_sprite.global_position.lerp(target_pos, t)
+	
+	# 캐릭터가 좌우를 바라보는 속성이 있으면 펫도 반전
+	if "facing_direction" in Globals.player:
+		pet_sprite.flip_h = Globals.player.facing_direction < 0
+
+# 캐릭터 바라보는 방향에 따라 펫 오프셋을 좌우로 전환한다.
+func get_facing_offset() -> Vector2:
+	var dir = 1
+	if "facing_direction" in Globals.player:
+		dir = Globals.player.facing_direction
+	var dist = abs(pet_offset.x) * max(1, alba_order)
+	return Vector2(-dir * dist, pet_offset.y)
+
+# 스케일을 최소값으로 보정하여 너무 작아지는 것을 방지
+func _get_pet_scale() -> Vector2:
+	var s = pet_scale * pet_scale_factor
+	var min_scale = 0.05
+	s.x = max(min_scale, abs(s.x))
+	s.y = max(min_scale, abs(s.y))
+	return s

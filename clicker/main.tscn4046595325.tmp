@@ -53,15 +53,13 @@ type = 5
 
 [node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(277, 196)
-alba_scene_path = null
 
 [node name="alba_buy2" parent="." instance=ExtResource("6_7mycd")]
 position = Vector2(318, 112)
 alba_scene_path = "res://alba2.tscn"
 
 [node name="alba_buy3" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(-266, 8)
-alba_scene_path = null
+position = Vector2(-266, -24)
 
 [node name="walls" type="Node2D" parent="."]
 

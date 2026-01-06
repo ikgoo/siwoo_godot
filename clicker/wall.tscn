@@ -1,24 +1,182 @@
-[gd_scene load_steps=4 format=3 uid="uid://dhl6moavywset"]
+[gd_scene load_steps=14 format=3 uid="uid://dhl6moavywset"]
 
 [ext_resource type="Script" uid="uid://h4ci8egl1b01" path="res://wall.gd" id="1_xxgf6"]
 [ext_resource type="Texture2D" uid="uid://dn5vn06xvj73a" path="res://CONCEPT/asset/mine_clicker32-door.png" id="2_y4f30"]
+[ext_resource type="Texture2D" uid="uid://bab60kqfuokxw" path="res://CONCEPT/asset/mine_door_upside.png" id="3_iuee5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y4f30"]
+size = Vector2(32, 64)
+
+[sub_resource type="Animation" id="Animation_xduj2"]
+resource_name = "open"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door_down:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 64), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(32, 128), Vector2(32, 64)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 32), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bbgl8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("door_down:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 64)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(32, 64)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 32)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dy4dl"]
+_data = {
+&"RESET": SubResource("Animation_bbgl8"),
+&"open": SubResource("Animation_xduj2")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0m056"]
+atlas = ExtResource("3_iuee5")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ip0a1"]
+atlas = ExtResource("3_iuee5")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w36hb"]
+atlas = ExtResource("3_iuee5")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2xgo"]
+atlas = ExtResource("3_iuee5")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vbm8d"]
+atlas = ExtResource("3_iuee5")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ierck"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0m056")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ip0a1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w36hb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2xgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vbm8d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="wall" type="StaticBody2D"]
 script = ExtResource("1_xxgf6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_y4f30")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="door_down" type="Sprite2D" parent="."]
 texture_filter = 1
+position = Vector2(0, 64)
 texture = ExtResource("2_y4f30")
 region_enabled = true
 region_rect = Rect2(0, 64, 32, 64)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 1
-texture = ExtResource("2_y4f30")
-region_enabled = true
-region_rect = Rect2(0, 0, 32, 64)
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_dy4dl")
+}
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ierck")

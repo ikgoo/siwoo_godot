@@ -2,12 +2,19 @@ extends Node2D
 
 # 알바 씬 경로
 @export var alba_scene_path : String = "res://alba.tscn"
+# 펫 추적 설정 (알바 구매 시 캐릭터 뒤를 따라다님)
+@export var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치
+@export var pet_follow_speed: float = 5.0  # 따라오는 속도 (높을수록 빠름)
+@export var pet_texture: Texture2D  # 알바 펫 스킨 (없으면 알바 스프라이트 사용)
+@export var pet_scale: Vector2 = Vector2(1.0, 1.0)  # 펫 크기 배율
 # Area2D 노드 참조
 @onready var area_2d = $Area2D
 # 알바 씬을 로드한 PackedScene
 var alba_scene : PackedScene
 # 이미 구매했는지 여부
 var is_purchased : bool = false
+# 생성된 펫 스프라이트
+var pet_sprite: Sprite2D = null
 
 # 시각 효과
 @onready var sprite: Sprite2D = $Sprite2D if has_node("Sprite2D") else null
@@ -32,6 +39,7 @@ func _process(_delta):
 		# 플레이어가 영역 안에 있고 F키를 누르면 구매
 		if is_character_inside and Input.is_action_just_pressed("f"):
 			purchase_alba()
+
 
 # 구매 가능 여부 시각 표시
 func update_visual_feedback():

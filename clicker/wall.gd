@@ -3,8 +3,8 @@ extends StaticBody2D
 @export var require_tier : int  # 오타 수정: requier → require
 # CollisionShape2D 노드 참조
 @onready var collision_shape = $CollisionShape2D
-# Sprite2D 노드 참조
-@onready var sprite = $Sprite2D
+# 애니메이션 플레이어 참조
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 # 벽이 열렸는지 여부
 var is_opened : bool = false
 
@@ -26,7 +26,6 @@ func _on_tier_up(_new_tier: int):
 func _on_money_changed(_new_amount: int, _delta: int):
 	check_tier()
 
-# 티어를 체크하여 벽을 열거나 닫음
 func check_tier():
 	# 이미 열린 벽은 다시 체크하지 않음
 	if is_opened:
@@ -38,22 +37,23 @@ func check_tier():
 	if Globals.max_tier >= require_tier:
 		open_wall()
 
-# 벽을 여는 함수
 func open_wall():
 	is_opened = true
-	
-	# 페이드 아웃 효과
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(self, "modulate:a", 0.0, 0.5)
-	tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.5)
-	
-	# 애니메이션 끝나면 완전히 숨기기
-	tween.finished.connect(func():
-		visible = false
-		# 충돌 비활성화
-		if collision_shape:
-			collision_shape.disabled = true
-	)
-	
+	if animation_player:
+		animation_player.play("open")
+	# 문을 중심으로 카메라를 잠시 고정
+	await focus_camera_on_wall()
 	print("벽 열림! 티어 ", require_tier, " 필요, 현재 최대 티어: ", Globals.max_tier)
+
+func focus_camera_on_wall(duration: float = 1.5):
+	var cameras = get_tree().get_nodes_in_group("camera")
+	if cameras.is_empty():
+		return
+	var cam = cameras[0]
+	if not cam:
+		return
+	if cam.has_method("lock_to_target"):
+		cam.lock_to_target(global_position)
+		await get_tree().create_timer(duration).timeout
+		if cam.has_method("unlock_from_target"):
+			cam.unlock_from_target()

@@ -51,8 +51,13 @@ var current_state: State = State.IDLE
 # 캐릭터가 바라보는 방향 (1: 오른쪽, -1: 왼쪽)
 var facing_direction: int = 1
 # 스프라이트 노드 참조 (애니메이션용)
-@onready var sprite: Sprite2D = $Sprite2D if has_node("Sprite2D") else null
+@onready var sprite: AnimatedSprite2D = $sprite if has_node("sprite") else null
 @onready var pickaxe: Sprite2D = $pickaxe if has_node("pickaxe") else null
+# 애니메이션 플레이어 노드
+@onready var animation_player: AnimationPlayer = $AnimationPlayer if has_node("AnimationPlayer") else null
+
+# 현재 재생 중인 애니메이션
+var current_animation: String = ""
 
 # 곡괭이 애니메이션 관련 (원호 궤적)
 @export var pickaxe_arc_radius: float = 20.0  # 원호 반지름
@@ -117,6 +122,9 @@ func _ready():
 	# 부채꼴 빛 생성
 	if flashlight_enabled:
 		create_flashlight()
+	
+	# 기본 대기 애니메이션 재생
+	play_animation("idle")
 
 func _process(delta):
 	# 부채꼴 빛 방향 업데이트
@@ -136,6 +144,9 @@ func _process(delta):
 func _physics_process(delta):
 	# 돌 근처 확인
 	check_nearby_rocks()
+	
+	# 이전 프레임에서 바닥에 있었는지 기록
+	var was_on_floor = is_on_floor()
 	
 	# 채굴 키 입력 처리 (돌 근처에 있을 때만)
 	if current_nearby_rock:
@@ -267,11 +278,13 @@ func _physics_process(delta):
 					update_pickaxe_position()
 		# 공중에서는 키를 떼도 속도 유지 (감속 없음)
 
-	# 착지 감지 (이전 프레임에 공중이었고 현재 바닥에 있으면)
-	var was_in_air = velocity.y > 0
 	move_and_slide()
 	
-	if was_in_air and is_on_floor():
+	# 애니메이션 및 상태 갱신
+	update_state_and_animation(was_on_floor)
+	
+	# 착지 감지 (이전 프레임에 공중이었고 현재 바닥에 있으면)
+	if (not was_on_floor) and is_on_floor():
 		spawn_landing_particles()
 
 # 착지 파티클 생성
@@ -297,6 +310,58 @@ func spawn_landing_particles():
 	# 파티클이 끝나면 자동 삭제
 	await get_tree().create_timer(particles.lifetime).timeout
 	particles.queue_free()
+
+# === 애니메이션 상태 관리 ===
+
+# 애니메이션을 중복 재생 없이 실행합니다.
+func play_animation(anim_name: String):
+	if not animation_player:
+		return
+	if current_animation == anim_name:
+		return
+	current_animation = anim_name
+	animation_player.play(anim_name)
+
+# 상태를 변경하고 대응하는 애니메이션을 재생합니다.
+func set_state(new_state: State):
+	if current_state == new_state:
+		return
+	current_state = new_state
+	match new_state:
+		State.IDLE:
+			play_animation("idle")
+		State.WALKING:
+			play_animation("walk")
+		State.JUMPING, State.FALLING:
+			play_animation("jump")
+		State.MINING:
+			play_animation("idle")
+
+# 이동/점프 상황에 따라 애니메이션을 갱신합니다.
+func update_state_and_animation(was_on_floor_before: bool):
+	var on_floor_now = is_on_floor()
+	
+	# 점프 착지 애니메이션이 재생 중이면 완료까지 유지
+	if animation_player and animation_player.current_animation == "jump_end" and animation_player.is_playing() and on_floor_now:
+		return
+	
+	# 막 착지했을 때는 landing 전용 애니메이션 우선
+	if (not was_on_floor_before) and on_floor_now:
+		current_state = State.IDLE
+		play_animation("jump_end")
+		return
+	
+	var is_moving = abs(velocity.x) > 5.0
+	if on_floor_now:
+		if is_moving:
+			set_state(State.WALKING)
+		else:
+			set_state(State.IDLE)
+	else:
+		if velocity.y < 0:
+			set_state(State.JUMPING)
+		else:
+			set_state(State.FALLING)
 
 # === 곡괭이 애니메이션 함수들 ===
 

@@ -14,9 +14,9 @@ func _ready():
 	update_diamond_per_second()
 	update_mining_key_count()
 	# 초기 티어 계산
-	update_tier()
+	update_tier("init")
 	max_tier = current_tier
-	print("Globals 초기화: money=", money, ", current_tier=", current_tier, ", max_tier=", max_tier)
+	print("Globals 초기화: money=", money, ", current_tier=", current_tier, ", max_tier=", max_tier, ", diamond_value_level=", diamond_value_level)
 	print("  곡괭이 속도 레벨: ", pickaxe_speed_level, " (필요 클릭: ", mining_clicks_required, "회)")
 	print("  다이아 획득량 레벨: ", diamond_value_level, " (획득량: ", money_up, ")")
 	print("  초당 다이아 레벨: ", diamond_per_second_level, " (추가량: ", money_per_second_upgrade, ")")
@@ -54,7 +54,7 @@ var is_fever_active : bool = false  # 피버 활성화 여부
 # 경제 시스템
 # ========================================
 # 플레이어가 보유한 돈 (전역 변수)
-var _money : int = 1000000000
+var _money : int = 1000000
 var money : int:
 	get:
 		return _money
@@ -66,17 +66,8 @@ var money : int:
 		# Signal 발생 - UI 업데이트용
 		money_changed.emit(_money, delta_money)
 		
-		# 티어 계산 (초반 느림 → 후반 빌드업)
-		var old_max_tier = max_tier
-		update_tier()
-		
-		# 최대 티어 업데이트 (한번 올라가면 내려가지 않음) - Signal 발생 전에 먼저!
-		if current_tier > max_tier:
-			max_tier = current_tier
-			print("✨ 최대 티어 갱신! ", old_max_tier, " → ", max_tier)
-			# 최대 티어가 갱신될 때만 Signal 발생
-			print("🎉 티어 상승! ", old_max_tier, " → ", max_tier, " (돈: ", _money, ")")
-			tier_up.emit(max_tier)
+		# 티어 계산 (이제 돈이 아닌 다이아 획득량 강화 레벨 기반)
+		update_tier("money_change")
 
 # ========================================
 # 티어 시스템 (빌드업 느낌)
@@ -86,27 +77,40 @@ var current_tier : int = 0
 # 최대 달성 티어 (한번 올라가면 내려가지 않음)
 var max_tier : int = 0
 
-# 티어별 필요 금액 (초반은 빠르게, 후반은 느리게)
-var tier_thresholds: Array[int] = [
-	0,      # 티어 0
-	100,    # 티어 1
-	200,    # 티어 2 (300 → 200으로 낮춤)
-	400,    # 티어 3 (700 → 400으로 낮춤)
-	800,    # 티어 4 (1500 → 800으로 낮춤)
-	1600,   # 티어 5 (3000 → 1600으로 낮춤)
-	3200,   # 티어 6 (6000 → 3200으로 낮춤)
-	6400,   # 티어 7 (12000 → 6400으로 낮춤)
-	12800,  # 티어 8 (24000 → 12800으로 낮춤)
-	25600   # 티어 9 (48000 → 25600으로 낮춤)
+# 다이아몬드 획득량 강화 레벨 기반 티어 요구치 (인덱스 = 티어)
+# 요청: 티어1=레벨3, 티어2=레벨4, 티어3=레벨7, 티어4=레벨10
+var tier_level_thresholds: Array[int] = [
+	0,  # 티어 0
+	3,  # 티어 1
+	4,  # 티어 2
+	7,  # 티어 3
+	10, # 티어 4
+	12, # 티어 5
+	14, # 티어 6
+	16, # 티어 7
+	18, # 티어 8
+	20  # 티어 9
 ]
 
-# 현재 돈으로 티어 계산
-func update_tier():
-	for i in range(tier_thresholds.size() - 1, -1, -1):
-		if _money >= tier_thresholds[i]:
-			current_tier = i
-			return
-	current_tier = 0
+# 다이아 획득량 강화 레벨로 티어를 계산하고 필요 시 Signal을 발생
+func update_tier(reason: String = ""):
+	var new_tier = 0
+	for i in range(tier_level_thresholds.size() - 1, -1, -1):
+		if diamond_value_level >= tier_level_thresholds[i]:
+			new_tier = i
+			break
+	
+	var old_tier = current_tier
+	var old_max_tier = max_tier
+	current_tier = new_tier
+	
+	# 최대 티어 갱신 시에만 Signal
+	if current_tier > max_tier:
+		max_tier = current_tier
+		print("✨ 최대 티어 갱신! ", old_max_tier, " → ", max_tier, " (획득량 레벨: ", diamond_value_level, ", reason: ", reason, ")")
+		tier_up.emit(max_tier)
+	elif reason != "" and old_tier != current_tier:
+		print("티어 변경: ", old_tier, " → ", current_tier, " (획득량 레벨: ", diamond_value_level, ", reason: ", reason, ")")
 
 # ========================================
 # 업그레이드 시스템 (마인크래프트 타이쿤 맵과 동일)
