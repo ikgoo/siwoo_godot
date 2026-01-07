@@ -1,49 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1mwwyp3u0j5f"]
+[gd_scene load_steps=3 format=3 uid="uid://b1mwwyp3u0j5f"]
 
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="1_ll2xe"]
 [ext_resource type="Script" uid="uid://dhsedusvogrjl" path="res://lobby.gd" id="1_lobby"]
-[ext_resource type="Texture2D" uid="uid://bajokqr1qh3s0" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_start1.png" id="3_2wvic"]
-[ext_resource type="Texture2D" uid="uid://qgnayfuscjj1" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_setting1.png" id="4_1gg6n"]
-[ext_resource type="Texture2D" uid="uid://btr3bd1jhf0bv" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_exit1.png" id="5_x4164"]
 
 [node name="lobby" type="Node2D"]
-scale = Vector2(4, 4)
 script = ExtResource("1_lobby")
 
 [node name="start" type="Button" parent="."]
-offset_left = 18.75
-offset_top = 62.0
-offset_right = 77.75
-offset_bottom = 88.0
-focus_mode = 0
+offset_left = 35.0
+offset_top = 305.0
+offset_right = 174.0
+offset_bottom = 352.0
 theme_override_fonts/font = ExtResource("1_ll2xe")
 theme_override_font_sizes/font_size = 32
+focus_mode = 0
 shortcut_feedback = false
-icon = ExtResource("3_2wvic")
+text = "시작하기"
 flat = true
 
 [node name="setting" type="Button" parent="."]
-offset_left = 41.75
-offset_top = 81.0
-offset_right = 77.75
-offset_bottom = 106.0
-focus_mode = 0
+offset_left = 37.0
+offset_top = 370.0
+offset_right = 176.0
+offset_bottom = 417.0
 theme_override_fonts/font = ExtResource("1_ll2xe")
 theme_override_font_sizes/font_size = 32
+focus_mode = 0
 shortcut_feedback = false
-icon = ExtResource("4_1gg6n")
+text = "설정
+"
 flat = true
 
 [node name="exit" type="Button" parent="."]
-offset_left = 29.75
-offset_top = 99.0
-offset_right = 77.75
-offset_bottom = 123.0
-focus_mode = 0
+offset_left = 38.0
+offset_top = 435.0
+offset_right = 177.0
+offset_bottom = 482.0
 theme_override_fonts/font = ExtResource("1_ll2xe")
 theme_override_font_sizes/font_size = 32
+focus_mode = 0
 shortcut_feedback = false
-icon = ExtResource("5_x4164")
+text = "나가기"
 flat = true
 
 [node name="game_title" type="Sprite2D" parent="."]
