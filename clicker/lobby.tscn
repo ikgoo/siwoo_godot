@@ -1,47 +1,133 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1mwwyp3u0j5f"]
+[gd_scene load_steps=16 format=3 uid="uid://b1mwwyp3u0j5f"]
 
-[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="1_ll2xe"]
 [ext_resource type="Script" uid="uid://dhsedusvogrjl" path="res://lobby.gd" id="1_lobby"]
+[ext_resource type="Texture2D" uid="uid://ct64mwv5osw62" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_start1.png" id="2_g30ku"]
+[ext_resource type="Texture2D" uid="uid://byi030cxhp7oc" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_start3.png" id="3_up7ya"]
+[ext_resource type="Texture2D" uid="uid://dwsw4eo6dwcbk" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_start2.png" id="4_mcopp"]
+[ext_resource type="Texture2D" uid="uid://b8n802ev5ofr6" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_setting1.png" id="5_nu6hm"]
+[ext_resource type="Texture2D" uid="uid://7utxgtt3pi6x" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_setting3.png" id="6_7pn7i"]
+[ext_resource type="Texture2D" uid="uid://d042vgqjpt085" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_setting2.png" id="7_7b1xw"]
+[ext_resource type="Texture2D" uid="uid://61ewr2lltpi8" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_exit1.png" id="8_wjc17"]
+[ext_resource type="Texture2D" uid="uid://cepxwnbc8468u" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_exit3.png" id="9_hx1n1"]
+[ext_resource type="Texture2D" uid="uid://xboeich82360" path="res://CONCEPT/asset/lobby/minc_clicker-lobby_button_exit2.png" id="10_selw0"]
+
+[sub_resource type="Animation" id="Animation_g30ku"]
+resource_name = "open"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_up7ya"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mcopp"]
+resource_name = "close"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"go"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mcopp"]
+_data = {
+&"RESET": SubResource("Animation_up7ya"),
+&"close": SubResource("Animation_mcopp"),
+&"open": SubResource("Animation_g30ku")
+}
+
+[sub_resource type="BoxMesh" id="BoxMesh_nu6hm"]
 
 [node name="lobby" type="Node2D"]
 script = ExtResource("1_lobby")
 
-[node name="start" type="Button" parent="."]
-offset_left = 35.0
-offset_top = 305.0
-offset_right = 174.0
-offset_bottom = 352.0
-theme_override_fonts/font = ExtResource("1_ll2xe")
-theme_override_font_sizes/font_size = 32
-focus_mode = 0
-shortcut_feedback = false
-text = "시작하기"
-flat = true
-
-[node name="setting" type="Button" parent="."]
-offset_left = 37.0
-offset_top = 370.0
-offset_right = 176.0
-offset_bottom = 417.0
-theme_override_fonts/font = ExtResource("1_ll2xe")
-theme_override_font_sizes/font_size = 32
-focus_mode = 0
-shortcut_feedback = false
-text = "설정
-"
-flat = true
-
-[node name="exit" type="Button" parent="."]
-offset_left = 38.0
-offset_top = 435.0
-offset_right = 177.0
-offset_bottom = 482.0
-theme_override_fonts/font = ExtResource("1_ll2xe")
-theme_override_font_sizes/font_size = 32
-focus_mode = 0
-shortcut_feedback = false
-text = "나가기"
-flat = true
-
 [node name="game_title" type="Sprite2D" parent="."]
 position = Vector2(624, 152)
+
+[node name="start" type="TextureButton" parent="."]
+offset_left = 32.0
+offset_top = 248.0
+offset_right = 83.0
+offset_bottom = 266.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("2_g30ku")
+texture_pressed = ExtResource("3_up7ya")
+texture_hover = ExtResource("4_mcopp")
+
+[node name="setting" type="TextureButton" parent="."]
+offset_left = 32.0
+offset_top = 352.0
+offset_right = 60.0
+offset_bottom = 369.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("5_nu6hm")
+texture_pressed = ExtResource("6_7pn7i")
+texture_hover = ExtResource("7_7b1xw")
+
+[node name="exit" type="TextureButton" parent="."]
+offset_left = 32.0
+offset_top = 456.0
+offset_right = 72.0
+offset_bottom = 496.0
+scale = Vector2(4, 4)
+texture_normal = ExtResource("8_wjc17")
+texture_pressed = ExtResource("9_hx1n1")
+texture_hover = ExtResource("10_selw0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mcopp")
+}
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+self_modulate = Color(0, 0, 0, 0)
+position = Vector2(640, 360)
+scale = Vector2(1280, 720.00006)
+mesh = SubResource("BoxMesh_nu6hm")
+
+[connection signal="button_up" from="start" to="." method="_on_start_button_up"]
+[connection signal="button_up" from="setting" to="." method="_on_setting_button_up"]
+[connection signal="button_up" from="exit" to="." method="_on_exit_button_up"]

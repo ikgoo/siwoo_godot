@@ -7,6 +7,16 @@ extends Node2D
 @export var pet_follow_speed: float = 5.0  # 따라오는 속도 (높을수록 빠름)
 @export var pet_texture: Texture2D  # 알바 펫 스킨 (없으면 알바 스프라이트 사용)
 @export var pet_scale: Vector2 = Vector2(1.0, 1.0)  # 펫 크기 배율
+# 알바 프리셋 선택 (가격/수입 테이블 설정용)
+@export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
+
+# 커스텀 프리셋 값 (alba_preset = custom 일 때 사용)
+@export_group("Custom Preset (preset=custom)")
+@export var custom_price: int = 2000
+@export var custom_money_amount: int = 50
+@export var custom_upgrade_costs: Array[int] = [2000, 3000, 4000]
+@export var custom_upgrade_incomes: Array[int] = [120, 200, 350]
+@export_group("")
 # Area2D 노드 참조
 @onready var area_2d = $Area2D
 # 알바 씬을 로드한 PackedScene
@@ -79,7 +89,8 @@ func purchase_alba():
 		Globals.money -= price
 		print("💎 차감: ", price, ", 남은 돈: 💎", Globals.money)
 		
-		# 현재 위치에 알바 배치
+		# 프리셋 적용 후 알바 배치
+		apply_preset_to_alba(alba_instance)
 		alba_instance.global_position = global_position
 		# 부모 노드(보통 main 씬)에 추가
 		get_tree().current_scene.add_child(alba_instance)
@@ -142,3 +153,25 @@ func _on_area_2d_body_exited(body):
 		is_character_inside = false
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
+
+# === 프리셋 적용 ===
+func apply_preset_to_alba(alba_instance: Node):
+	# alba 스크립트에 alba_preset이 있으면 custom으로 맞춰 놓고 값을 직접 세팅
+	if "alba_preset" in alba_instance:
+		alba_instance.alba_preset = "custom"
+	match alba_preset:
+		"alba1":
+			alba_instance.price = 2000
+			alba_instance.money_amount = 50
+			alba_instance.upgrade_costs = [2000, 3000, 4000]
+			alba_instance.upgrade_incomes = [120, 200, 350]
+		"alba2":
+			alba_instance.price = 4000
+			alba_instance.money_amount = 400
+			alba_instance.upgrade_costs = [5000, 6000]
+			alba_instance.upgrade_incomes = [600, 800]
+		_:
+			alba_instance.price = custom_price
+			alba_instance.money_amount = custom_money_amount
+			alba_instance.upgrade_costs = custom_upgrade_costs
+			alba_instance.upgrade_incomes = custom_upgrade_incomes

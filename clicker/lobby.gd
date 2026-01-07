@@ -1,116 +1,21 @@
 extends Node2D
+@onready var start = $start
 
-## 로비 씬 스크립트
-## 버튼 호버 효과를 관리합니다
+const MINC_CLICKER_LOBBY_BUTTON_START_3 = preload("uid://byi030cxhp7oc")
 
-# 버튼 참조
-@onready var start_button = $start
-@onready var setting_button = $setting
-@onready var exit_button = $exit
+@onready var animation_player = $AnimationPlayer
 
-# 각 버튼의 원래 위치와 크기 저장
-var button_original_data: Dictionary = {}
+func _on_start_button_up():
+	animation_player.play("close")
+	start.texture_normal = MINC_CLICKER_LOBBY_BUTTON_START_3
+	start.texture_hover = MINC_CLICKER_LOBBY_BUTTON_START_3
 
-# 호버 효과 설정
-@export var hover_offset_x: float = 20.0  # 호버 시 x좌표 이동 거리 (오른쪽으로)
-@export var animation_duration: float = 0.2  # 애니메이션 지속 시간
-
-func _ready():
-	# 모든 버튼의 원래 데이터 저장
-	save_button_original_data(start_button)
-	save_button_original_data(setting_button)
-	save_button_original_data(exit_button)
-	
-	# 각 버튼에 시그널 연결
-	connect_button_signals(start_button)
-	connect_button_signals(setting_button)
-	connect_button_signals(exit_button)
-	
-	# 버튼 클릭 동작 연결
-	if start_button:
-		start_button.pressed.connect(on_start_pressed)
-	if setting_button:
-		setting_button.pressed.connect(on_setting_pressed)
-	if exit_button:
-		exit_button.pressed.connect(on_exit_pressed)
-
-## 버튼의 원래 위치와 크기 저장
-func save_button_original_data(button: Button):
-	if button:
-		# Control 노드는 offset_left, offset_top 사용
-		button_original_data[button] = {
-			"offset_left": button.offset_left,
-			"offset_top": button.offset_top,
-			"z_index": button.z_index
-		}
-
-## 버튼 시그널 연결
-func connect_button_signals(button: Button):
-	if button:
-		button.mouse_entered.connect(func(): on_button_hover(button))
-		button.mouse_exited.connect(func(): on_button_unhover(button))
-
-## 마우스가 버튼에 올라갔을 때
-func on_button_hover(button: Button):
-	if not button or not button_original_data.has(button):
-		return
-	
-	var original = button_original_data[button]
-	
-	# 기존 Tween 정리
-	if button.has_meta("hover_tween"):
-		var old_tween = button.get_meta("hover_tween")
-		if old_tween:
-			old_tween.kill()
-	
-	# 새로운 Tween 생성
-	var tween = create_tween()
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_CUBIC)
-	
-	# x좌표 이동 (오른쪽으로)
-	var new_offset_left = original.offset_left + hover_offset_x
-	tween.tween_property(button, "offset_left", new_offset_left, animation_duration)
-	
-	# z_index 증가 (앞으로 나오는 효과)
-	button.z_index = original.z_index + 1
-	
-	# Tween 참조 저장
-	button.set_meta("hover_tween", tween)
-
-## 마우스가 버튼에서 벗어났을 때
-func on_button_unhover(button: Button):
-	if not button or not button_original_data.has(button):
-		return
-	
-	var original = button_original_data[button]
-	
-	# 기존 Tween 정리
-	if button.has_meta("hover_tween"):
-		var old_tween = button.get_meta("hover_tween")
-		if old_tween:
-			old_tween.kill()
-	
-	# 새로운 Tween 생성
-	var tween = create_tween()
-	tween.set_ease(Tween.EASE_OUT)
-	tween.set_trans(Tween.TRANS_CUBIC)
-	
-	# x좌표 원래대로
-	tween.tween_property(button, "offset_left", original.offset_left, animation_duration)
-	
-	# z_index 원래대로
-	button.z_index = original.z_index
-	
-	# Tween 참조 저장
-	button.set_meta("hover_tween", tween)
-
-func on_start_pressed():
-	get_tree().change_scene_to_file("res://main.tscn")
-
-func on_setting_pressed():
-	# TODO: 설정 화면이 추가되면 여기서 씬 전환 또는 팝업을 띄웁니다.
+func _on_setting_button_up():
 	pass
 
-func on_exit_pressed():
+
+func _on_exit_button_up():
 	get_tree().quit()
+
+func go():
+	get_tree().change_scene_to_file("res://main.tscn")

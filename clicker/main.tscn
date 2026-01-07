@@ -51,18 +51,6 @@ type = 4
 position = Vector2(143, 192)
 type = 5
 
-[node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(277, 196)
-alba_scene_path = null
-
-[node name="alba_buy2" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(318, 112)
-alba_scene_path = "res://alba2.tscn"
-
-[node name="alba_buy3" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(-266, 8)
-alba_scene_path = null
-
 [node name="walls" type="Node2D" parent="."]
 
 [node name="wall" parent="walls" instance=ExtResource("7_272bh")]
@@ -131,3 +119,12 @@ metadata/_edit_lock_ = true
 position = Vector2(689, 144)
 flip_h = true
 metadata/_edit_lock_ = true
+
+[node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
+position = Vector2(279, 186)
+
+[node name="alba_buy2" parent="." instance=ExtResource("6_7mycd")]
+position = Vector2(311, 95)
+
+[node name="alba_buy3" parent="." instance=ExtResource("6_7mycd")]
+position = Vector2(-284, -8)

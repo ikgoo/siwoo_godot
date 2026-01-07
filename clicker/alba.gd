@@ -3,8 +3,13 @@ extends Node2D
 # 알바 스텟 (export로 설정)
 @export var price: int = 2000  # 구매 가격
 @export var money_amount: int = 50  # 초당 돈 증가량 (기본)
-# 에디터에서 지정할 커스텀 이미지
-@export var alba_texture: Texture2D
+# 프리셋 선택 (alba1/alba2 값을 한 씬에서 설정)
+@export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
+# 에디터에서 선택할 알바 스킨
+@export var alba_texture: Texture2D  # custom 스킨
+@export var alba1_texture: Texture2D
+@export var alba2_texture: Texture2D
+@export_enum("alba1", "alba2", "custom") var alba_variant: String = "custom"
 # 펫/스프라이트 크기 배율
 @export var pet_scale: Vector2 = Vector2(1.0, 1.0)
 # 펫 전체 크기 스케일 (단일 값)
@@ -43,6 +48,9 @@ var ui_node: Control = null
 var glow_particles: CPUParticles2D
 
 func _ready():
+	# 프리셋 적용 (alba1/alba2 값을 이 스크립트에서 바로 설정)
+	apply_alba_preset()
+	
 	# 알바 그룹에 추가하고 순번 계산
 	add_to_group("alba")
 	alba_order = get_tree().get_nodes_in_group("alba").size()
@@ -52,8 +60,10 @@ func _ready():
 	print("알바 고용 완료! 초당 수입 +💎", money_amount, ", 현재 초당 수입: 💎", Globals.money_per_second, "/초")
 	
 	# 스프라이트 텍스처 교체
-	if sprite and alba_texture:
-		sprite.texture = alba_texture
+	if sprite:
+		var base_tex = _get_alba_texture()
+		if base_tex:
+			sprite.texture = base_tex
 	# 스프라이트 크기 적용
 	if sprite:
 		sprite.scale = _get_pet_scale()
@@ -256,12 +266,13 @@ func create_pet_sprite():
 		call_deferred("create_pet_sprite")
 		return
 	pet_sprite = Sprite2D.new()
-	# 텍스처 우선순위: pet_texture > alba_texture > sprite.texture
+	# 텍스처 우선순위: pet_texture > alba_variant 스킨 > sprite.texture
 	if pet_texture:
 		pet_sprite.texture = pet_texture
-	elif alba_texture:
-		pet_sprite.texture = alba_texture
-	elif sprite:
+	else:
+		var base_tex = _get_alba_texture()
+		if base_tex:
+			pet_sprite.texture = base_tex
 		pet_sprite.texture = sprite.texture
 	pet_sprite.z_index = Globals.player.z_index - 1
 	add_child(pet_sprite)
@@ -295,3 +306,30 @@ func _get_pet_scale() -> Vector2:
 	s.x = max(min_scale, abs(s.x))
 	s.y = max(min_scale, abs(s.y))
 	return s
+
+# alba1/alba2 프리셋 값을 적용한다.
+func apply_alba_preset():
+	match alba_preset:
+		"alba1":
+			price = 2000
+			money_amount = 50
+			upgrade_costs = [2000, 3000, 4000]
+			upgrade_incomes = [120, 200, 350]
+		"alba2":
+			price = 4000
+			money_amount = 400
+			upgrade_costs = [5000, 6000]
+			upgrade_incomes = [600, 800]
+		_:
+			# custom은 에디터 값 그대로 사용
+			pass
+
+# 알바 스킨 선택
+func _get_alba_texture() -> Texture2D:
+	match alba_variant:
+		"alba1":
+			return alba1_texture if alba1_texture else alba_texture
+		"alba2":
+			return alba2_texture if alba2_texture else alba_texture
+		_:
+			return alba_texture
