@@ -79,4 +79,3 @@ func _on_area_2d_body_exited(body):
 		
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
-

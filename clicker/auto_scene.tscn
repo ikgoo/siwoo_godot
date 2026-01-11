@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3iup24b62ol2"]
+[gd_scene load_steps=4 format=3 uid="uid://d3iup24b62ol2"]
 
 [ext_resource type="Script" uid="uid://cpdo3u3cff3ub" path="res://auto_scene.gd" id="1_auto_scene"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
+[ext_resource type="PackedScene" uid="uid://rw744pqh5eta" path="res://shop_menu.tscn" id="3_8jip5"]
 
 [node name="AutoScene" type="Control"]
 layout_mode = 3
@@ -12,14 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_auto_scene")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.15, 0.15, 0.2, 1)
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(1.05, 1.05)
 
 [node name="CenterContainer" type="VBoxContainer" parent="."]
 texture_filter = 1
@@ -29,9 +25,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -386.0
-offset_top = -209.0
-offset_bottom = 4.0
+offset_left = -388.0
+offset_top = -52.0
+offset_right = -61.0
+offset_bottom = 134.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
@@ -41,7 +38,7 @@ theme_override_constants/separation = 30
 texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 50
 text = "Auto Scene"
 horizontal_alignment = 1
 
@@ -49,24 +46,31 @@ horizontal_alignment = 1
 texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 50
 text = "🪙 0"
-horizontal_alignment = 1
-
-[node name="Description" type="Label" parent="CenterContainer"]
-texture_filter = 1
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
-text = "여기서 Auto Money를 관리할 수 있습니다"
 horizontal_alignment = 1
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 50.0
-offset_top = 50.0
-offset_right = 282.0
-offset_bottom = 110.0
+offset_left = 117.0
+offset_top = 235.0
+offset_right = 397.0
+offset_bottom = 295.0
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 40
 text = "돌아가기 (ESC)"
+
+[node name="shop_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 816.0
+offset_top = 217.0
+offset_right = 968.0
+offset_bottom = 294.0
+theme_override_font_sizes/font_size = 50
+text = "상점"
+
+[node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
+visible = false
+layout_mode = 1
+
+[connection signal="button_down" from="shop_button" to="." method="_on_shop_button_button_down"]
