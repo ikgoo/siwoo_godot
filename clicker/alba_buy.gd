@@ -175,3 +175,7 @@ func apply_preset_to_alba(alba_instance: Node):
 			alba_instance.money_amount = custom_money_amount
 			alba_instance.upgrade_costs = custom_upgrade_costs
 			alba_instance.upgrade_incomes = custom_upgrade_incomes
+	
+	# 펫 텍스처는 상점에서 전달한다.
+	if "pet_texture" in alba_instance:
+		alba_instance.pet_texture = pet_texture

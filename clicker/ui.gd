@@ -12,6 +12,10 @@ const GALMURI_9 = preload("res://Galmuri9.ttf")
 @onready var close_button = $SettingPanel/VBoxContainer/CloseButton
 @onready var vbox_container = $SettingPanel/VBoxContainer
 
+# ESC 메뉴 (씬 파일에서 로드)
+var esc_menu: Panel = null
+const ESC_MENU_SCENE = preload("res://esc_menu.tscn")
+
 # 동적으로 생성된 키 입력 필드들
 var key_inputs: Array[LineEdit] = []
 var key_containers: Array[HBoxContainer] = []
@@ -143,6 +147,9 @@ func _ready():
 	
 	# 추가 키 입력 UI 생성
 	update_key_settings_ui()
+	
+	# ESC 메뉴 씬 로드
+	load_esc_menu()
 
 func _process(delta):
 	# 키 개수가 변경되었으면 UI 업데이트
@@ -287,6 +294,16 @@ const BLOCKED_KEYS: Array[int] = [
 
 # 키 입력 감지
 func _input(event: InputEvent):
+	# ESC 키로 메뉴 토글
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		if esc_menu and esc_menu.visible:
+			esc_menu.close_menu()
+		else:
+			if esc_menu:
+				esc_menu.open_menu()
+		get_viewport().set_input_as_handled()
+		return
+	
 	if waiting_for_key and event is InputEventKey and event.pressed:
 		var keycode = event.keycode
 		
@@ -373,3 +390,12 @@ func format_playtime(seconds: float) -> String:
 	var minutes = (total_seconds % 3600) / 60
 	var secs = total_seconds % 60
 	return "%02d:%02d:%02d" % [hours, minutes, secs]
+
+# ========================================
+# ESC 메뉴 시스템
+# ========================================
+
+# ESC 메뉴 씬 로드
+func load_esc_menu():
+	esc_menu = ESC_MENU_SCENE.instantiate()
+	add_child(esc_menu)

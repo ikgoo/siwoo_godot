@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu1tafa850nj7"]
+
+[ext_resource type="Script" path="res://ending.gd" id="1_v0ype"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exchange"]
+size = Vector2(100, 100)
+
+[node name="ending" type="Node2D"]
+script = ExtResource("1_v0ype")
+diamond_cost = 1000
+auto_money_reward = 100
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_exchange")

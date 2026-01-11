@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cciuktwcjunn7"]
+[gd_scene load_steps=5 format=3 uid="uid://cciuktwcjunn7"]
 
 [ext_resource type="Script" uid="uid://dh2alqa4b2u2t" path="res://alba_buy.gd" id="1_eqvli"]
+[ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_ue127"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ue127"]
 
@@ -9,6 +10,7 @@ radius = 70.256676
 
 [node name="alba_buy" type="Node2D"]
 script = ExtResource("1_eqvli")
+pet_texture = ExtResource("2_ue127")
 pet_scale = Vector2(0.001, 0.001)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

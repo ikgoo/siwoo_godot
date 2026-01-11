@@ -1,0 +1,17 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>clicker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- CONCEPT 폴더와 중복 애드온 폴더 제외 -->
+    <Compile Remove="CONCEPT\**" />
+    <Compile Remove="Godot-GlobalInput-Addon-2\**" />
+    <!-- Examples 폴더도 제외 (예제 파일) -->
+    <Compile Remove="addons\global_input\examples\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpHook" Version="5.3.7" />
+  </ItemGroup>
+</Project>

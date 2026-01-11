@@ -33,8 +33,8 @@ var diamond_value_level : int = 0
 var diamond_per_second_level : int = 0
 # 자동 채굴 속도 레벨 (as Lv) - 0부터 시작, 최대 10
 var auto_mining_speed_level : int = 0
-# 채굴 키 개수 레벨 (mk Lv) - 0부터 시작, 최대 4
-var mining_key_count_level : int = 4
+# 채굴 키 개수 레벨 (mk Lv) - 0부터 시작, 최대 2 (최대 4키)
+var mining_key_count_level : int = 0
 
 # 실제 게임 값들 (레벨에 따라 계산됨)
 var money_up : int = 1  # 채굴 시 획득하는 다이아몬드 (dv 레벨에 따라 결정)
@@ -68,6 +68,9 @@ var money : int:
 		
 		# 티어 계산 (이제 돈이 아닌 다이아 획득량 강화 레벨 기반)
 		update_tier("money_change")
+
+# auto_scene에서 사용할 새로운 돈 시스템
+var auto_money : int = 0
 
 # ========================================
 # 티어 시스템 (빌드업 느낌)
@@ -174,13 +177,12 @@ var auto_mining_speed_upgrades: Array[Vector2] = [
 	Vector2(100000, 0.08) # Lv 10 (MAX): 0.08초
 ]
 
-# 채굴 키 개수 강화 (mk Lv) - 4레벨
-# [가격, 총 키 개수] 형식 - 기본 2개에서 최대 6개까지
+# 채굴 키 개수 강화 (mk Lv) - 2레벨
+# [가격, 총 키 개수] 형식 - 기본 2개에서 최대 4개까지
+# 총 비용: 3,240 (기존 5,400 대비 약 40% 감소)
 var mining_key_count_upgrades: Array[Vector2i] = [
-	Vector2i(400, 3),      # Lv 1: 2개 → 3개 (D 추가)
-	Vector2i(5000, 4),     # Lv 2: 3개 → 4개 (K 추가)
-	Vector2i(40000, 5),    # Lv 3: 4개 → 5개 (S 추가)
-	Vector2i(200000, 6),   # Lv 4 (MAX): 5개 → 6개 (L 추가)
+	Vector2i(240, 3),      # Lv 1: 2개 → 3개 (D 추가)
+	Vector2i(3000, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
 ]
 
 # 레벨에 따른 실제 값 계산 함수들
@@ -231,7 +233,7 @@ func update_mining_key_count():
 	elif mining_key_count_level <= mining_key_count_upgrades.size():
 		mining_key_count = mining_key_count_upgrades[mining_key_count_level - 1].y
 	else:
-		mining_key_count = 6  # MAX (F, J, D, K, S, L)
+		mining_key_count = 4  # MAX (F, J, D, K)
 
 # ========================================
 # 참조

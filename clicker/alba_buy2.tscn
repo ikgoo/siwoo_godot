@@ -32,3 +32,12 @@ shape = SubResource("CircleShape2D_eqvli")
 [connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
 [connection signal="area_exited" from="Area2D2" to="." method="_on_area_2d_2_area_exited"]
 
+
+
+
+
+
+
+
+
+

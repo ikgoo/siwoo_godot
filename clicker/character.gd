@@ -16,10 +16,10 @@ const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
 const NORMAL_COLLISION_LAYER = 1    # 일반 타일 collision layer
 const ALL_COLLISION_LAYERS = 5      # 일반 타일 + 플랫폼
  
-# S 키를 눌렀을 때 플랫폼 통과 상태 (0.4초 동안)
+# S 키를 눌렀을 때 플랫폼 통과 상태 (0.2초 동안)
 var platform_out: bool = false
 var platform_out_timer: float = 0.0
-const PLATFORM_OUT_DURATION: float = 0.4  # 0.4초
+const PLATFORM_OUT_DURATION: float = 0.2  # 0.2초
 
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
@@ -126,6 +126,12 @@ func _ready():
 	# 기본 대기 애니메이션 재생
 	play_animation("idle")
 
+func _input(event: InputEvent):
+	# 아무 키나 누르면 돈 1씩 증가
+	if event is InputEventKey and event.pressed and not event.echo:
+		Globals.money += 1
+		print("키 입력! 돈 +1 (현재: 💎", Globals.money, ")")
+
 func _process(delta):
 	# 부채꼴 빛 방향 업데이트
 	update_flashlight_direction()
@@ -187,10 +193,6 @@ func _physics_process(delta):
 	# S 키를 처음 눌렀을 때 platform_out 활성화
 	if Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed:
 		platform_out = true
-		platform_out_timer = PLATFORM_OUT_DURATION
-	
-	# S 키를 계속 누르고 있으면 타이머 갱신
-	if is_s_key_pressed and platform_out:
 		platform_out_timer = PLATFORM_OUT_DURATION
 	
 	# 이전 프레임의 S 키 상태 저장

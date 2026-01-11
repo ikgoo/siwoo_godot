@@ -1,0 +1,19 @@
+<Project Sdk="Godot.NET.Sdk/4.3.0">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>clicker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpHook" Version="7.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- CONCEPT 폴더와 중복 애드온 폴더 제외 -->
+    <Compile Remove="CONCEPT\**" />
+    <Compile Remove="Godot-GlobalInput-Addon-2\**" />
+    <!-- Examples 폴더도 제외 (예제 파일) -->
+    <Compile Remove="addons\global_input\examples\**" />
+  </ItemGroup>
+</Project>

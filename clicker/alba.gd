@@ -5,25 +5,35 @@ extends Node2D
 @export var money_amount: int = 50  # 초당 돈 증가량 (기본)
 # 프리셋 선택 (alba1/alba2 값을 한 씬에서 설정)
 @export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
-# 에디터에서 선택할 알바 스킨
+# 에디터에서 선택할 알바 스킨 (단일 텍스처만 사용)
 @export var alba_texture: Texture2D  # custom 스킨
-@export var alba1_texture: Texture2D
-@export var alba2_texture: Texture2D
 @export_enum("alba1", "alba2", "custom") var alba_variant: String = "custom"
 # 펫/스프라이트 크기 배율
 @export var pet_scale: Vector2 = Vector2(1.0, 1.0)
 # 펫 전체 크기 스케일 (단일 값)
 @export var pet_scale_factor: float = 1.0
-# 펫 텍스처 (없으면 알바 스프라이트 재사용)
-@export var pet_texture: Texture2D
+var pet_texture: Texture2D = null  # 상점(alba_buy)에서 전달받을 펫 텍스처
 
 # 펫 노드 참조
 var pet_sprite: Sprite2D = null
 # 알바 인스턴스 순번 (1,2,3...)에 따라 펫 오프셋을 곱해 배치
 var alba_order: int = 1
-# 펫 추적 설정
+# === 펫 추적 설정 (스티어링 방식) ===
 @export var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치
-@export var pet_follow_speed: float = 5.0  # 따라오는 속도 (높을수록 빠름)
+@export var max_speed: float = 180.0  # 최대 속도 (빠르게!)
+@export var steering_force: float = 6.0  # 조향력 (민첩도)
+@export var arrive_radius: float = 60.0  # 감속 시작 거리
+@export var stop_radius: float = 15.0  # 정지 거리
+@export var bob_amplitude: float = 6.0  # 둥둥 효과 크기
+@export var bob_frequency: float = 2.5  # 둥둥 효과 속도
+@export var flip_speed: float = 8.0  # 방향 전환 속도
+
+# === 펫 내부 변수 ===
+var time_elapsed: float = 0.0  # 둥둥 효과용 시간
+var pet_velocity: Vector2 = Vector2.ZERO  # 펫의 현재 속도
+var current_visual_scale_x: float = 1.0  # 좌우 반전용 스케일
+var _last_facing_direction: int = 1  # 이전 바라보는 방향
+var _pet_current_facing: int = 1  # 펫이 현재 사용 중인 방향
 
 # 강화 시스템 (export로 설정 가능)
 @export var upgrade_costs: Array[int] = [2000, 3000, 4000]  # 각 레벨별 강화 비용
@@ -265,15 +275,23 @@ func create_pet_sprite():
 		# 플레이어가 아직 없으면 다음 프레임에 다시 시도
 		call_deferred("create_pet_sprite")
 		return
+	
+	# 펫 초기 방향 설정 (플레이어 방향과 동일)
+	if "facing_direction" in Globals.player:
+		_pet_current_facing = Globals.player.facing_direction
+		_last_facing_direction = Globals.player.facing_direction
+		current_visual_scale_x = float(_pet_current_facing)
+	
 	pet_sprite = Sprite2D.new()
-	# 텍스처 우선순위: pet_texture > alba_variant 스킨 > sprite.texture
+	# 텍스처 우선순위: 상점 전달 텍스처 > alba_variant 스킨 > 현재 스프라이트 텍스처
 	if pet_texture:
 		pet_sprite.texture = pet_texture
 	else:
 		var base_tex = _get_alba_texture()
 		if base_tex:
 			pet_sprite.texture = base_tex
-		pet_sprite.texture = sprite.texture
+		elif sprite and sprite.texture:
+			pet_sprite.texture = sprite.texture
 	pet_sprite.z_index = Globals.player.z_index - 1
 	add_child(pet_sprite)
 	pet_sprite.scale = _get_pet_scale()
@@ -283,19 +301,65 @@ func create_pet_sprite():
 func update_pet_follow(delta: float):
 	if not pet_sprite or not Globals.player:
 		return
-	var target_pos = Globals.player.global_position + get_facing_offset()
-	var t = clamp(pet_follow_speed * delta, 0.0, 1.0)
-	pet_sprite.global_position = pet_sprite.global_position.lerp(target_pos, t)
 	
-	# 캐릭터가 좌우를 바라보는 속성이 있으면 펫도 반전
+	time_elapsed += delta
+	
+	# 1. 둥둥 효과 (Y축 오프셋) 계산 - 각 펫마다 다른 위상
+	var bob_offset = sin(time_elapsed * bob_frequency + alba_order * 0.8) * bob_amplitude
+	
+	# 2. 타겟 위치 계산 (순번별 오프셋 + 둥둥 효과 적용)
+	var base_offset = get_facing_offset_for_direction(_pet_current_facing)
+	var target = Globals.player.global_position + base_offset + Vector2(0, bob_offset)
+	var distance = pet_sprite.global_position.distance_to(target)
+	
+	# 3. 스티어링 기반 이동
+	var desired_velocity = Vector2.ZERO
+	
+	if distance > stop_radius:
+		var direction = pet_sprite.global_position.direction_to(target)
+		var speed_factor = clamp(distance / arrive_radius, 0.0, 1.0)
+		desired_velocity = direction * max_speed * speed_factor
+	
+	var steering = (desired_velocity - pet_velocity) * steering_force * delta
+	pet_velocity += steering
+	
+	# 실제 위치 업데이트
+	pet_sprite.global_position += pet_velocity * delta
+	
+	# 4. 방향 전환 (기존 로직 유지)
+	var player_dir = 1
 	if "facing_direction" in Globals.player:
-		pet_sprite.flip_h = Globals.player.facing_direction < 0
+		player_dir = Globals.player.facing_direction
+	
+	update_pet_facing(player_dir, delta)
+
+# 펫 방향 전환 처리
+func update_pet_facing(player_dir: int, delta: float):
+	# 플레이어 방향이 바뀌었는지 감지
+	if player_dir != _last_facing_direction:
+		_last_facing_direction = player_dir
+		_pet_current_facing = player_dir
+	
+	# 즉시 방향 전환 (접히는 효과 없이)
+	var target_scale_x = 1.0 if pet_velocity.x >= 0 else -1.0
+	
+	# 움직임이 있을 때만 방향 전환
+	if abs(pet_velocity.x) > 5.0:
+		current_visual_scale_x = target_scale_x  # 즉시 반전
+	
+	var base_scale = _get_pet_scale()
+	pet_sprite.scale = Vector2(base_scale.x * current_visual_scale_x, base_scale.y)
 
 # 캐릭터 바라보는 방향에 따라 펫 오프셋을 좌우로 전환한다.
 func get_facing_offset() -> Vector2:
 	var dir = 1
 	if "facing_direction" in Globals.player:
 		dir = Globals.player.facing_direction
+	var dist = abs(pet_offset.x) * max(1, alba_order)
+	return Vector2(-dir * dist, pet_offset.y)
+
+# 지정한 방향에 따라 펫 오프셋을 계산한다.
+func get_facing_offset_for_direction(dir: int) -> Vector2:
 	var dist = abs(pet_offset.x) * max(1, alba_order)
 	return Vector2(-dir * dist, pet_offset.y)
 
@@ -326,10 +390,4 @@ func apply_alba_preset():
 
 # 알바 스킨 선택
 func _get_alba_texture() -> Texture2D:
-	match alba_variant:
-		"alba1":
-			return alba1_texture if alba1_texture else alba_texture
-		"alba2":
-			return alba2_texture if alba2_texture else alba_texture
-		_:
-			return alba_texture
+	return alba_texture

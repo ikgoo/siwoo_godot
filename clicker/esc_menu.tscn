@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://nrglp1govqsa"]
+
+[ext_resource type="Script" path="res://esc_menu.gd" id="1_esc_menu"]
+[ext_resource type="FontFile" uid="uid://di7bxrvpqdj7w" path="res://Galmuri9.ttf" id="2_font"]
+
+[node name="esc_menu" type="Panel"]
+offset_left = 440.0
+offset_top = 225.0
+offset_right = 840.0
+offset_bottom = 525.0
+script = ExtResource("1_esc_menu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 350.0
+offset_bottom = 250.0
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "메뉴"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "계속하기"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "나가기"

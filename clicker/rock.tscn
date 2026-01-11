@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cx6dabxk66sp0"]
 
 [ext_resource type="Script" uid="uid://d2vajgosquble" path="res://rock.gd" id="1_o0qsl"]
-[ext_resource type="Texture2D" uid="uid://db22u3uj8sakx" path="res://KakaoTalk_20521.png" id="2_68h2w"]
+[ext_resource type="Texture2D" uid="uid://d6ptpkex8ug5" path="res://CONCEPT/asset/mine_clicker32-mine_tile.png" id="2_46y1q"]
 [ext_resource type="AudioStream" uid="uid://dqa64f30c8oao" path="res://orb.mp3" id="3_46y1q"]
 [ext_resource type="AudioStream" uid="uid://s40vacvqwnpx" path="res://Minecraft_Level_Up_Sound_Effect-645180.mp3" id="4_o54ku"]
 
@@ -14,9 +14,9 @@ script = ExtResource("1_o0qsl")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_68h2w")
+texture = ExtResource("2_46y1q")
 region_enabled = true
-region_rect = Rect2(224, 0, 32, 32)
+region_rect = Rect2(96, 0, 32, 32)
 
 [node name="Area2D" type="Area2D" parent="."]
 

@@ -1,5 +1,5 @@
 extends Node2D
-
+@export var flip : bool
 enum upgrade {
 	money_up,
 	money_time,
@@ -126,7 +126,7 @@ func get_current_increment() -> int:
 			if current_level < Globals.mining_key_count_upgrades.size():
 				return Globals.mining_key_count_upgrades[current_level].y
 			else:
-				return 6  # MAX
+				return 4  # MAX
 		_:
 			return 0
 
@@ -142,10 +142,12 @@ var ui_node: Control = null
 # 시각 효과용 스프라이트 (있다면)
 @onready var sprite: Sprite2D = $Sprite2D if has_node("Sprite2D") else null
 
-# 구매 가능 여부 표시용 파티클
-var glow_particles: CPUParticles2D
+# 구매 가능 여부 표시용 파티클 (GPU)
+@onready var glow_particles: GPUParticles2D = $GlowParticles
 
 func _ready():
+	if flip:
+		sprite.flip_h = true
 	# Area2D의 body_shape_entered/exited 시그널 연결
 	if area_2d:
 		area_2d.body_shape_entered.connect(_on_area_2d_body_shape_entered)
@@ -157,23 +159,6 @@ func _ready():
 		var canvas_layer = parent.get_node_or_null("CanvasLayer")
 		if canvas_layer:
 			ui_node = canvas_layer.get_node_or_null("UI")
-	
-	# 구매 가능 표시 파티클 생성
-	glow_particles = CPUParticles2D.new()
-	glow_particles.emitting = true
-	glow_particles.amount = 20
-	glow_particles.lifetime = 1.5
-	glow_particles.explosiveness = 0.0
-	glow_particles.direction = Vector2(0, -1)
-	glow_particles.spread = 180
-	glow_particles.initial_velocity_min = 10
-	glow_particles.initial_velocity_max = 20
-	glow_particles.gravity = Vector2(0, -20)
-	glow_particles.scale_amount_min = 2
-	glow_particles.scale_amount_max = 4
-	glow_particles.color = Color(0.3, 1.0, 0.3, 0.6)  # 초록색 (구매 가능)
-	glow_particles.visible = false
-	add_child(glow_particles)
 	
 	# Globals Signal 구독
 	Globals.money_changed.connect(_on_money_changed)
@@ -329,6 +314,7 @@ func update_visual_feedback():
 	# 마지막 단계면 파티클 끄기
 	if is_max:
 		glow_particles.visible = false
+		glow_particles.emitting = false
 		if sprite:
 			sprite.modulate = Color(0.5, 0.5, 0.5)  # 회색 (MAX)
 		return
@@ -336,17 +322,19 @@ func update_visual_feedback():
 	var cost = get_current_cost()
 	var can_afford = Globals.money >= cost
 	
-	# 구매 가능하면 초록색 파티클, 불가능하면 빨간색
+	# 구매 가능하면 초록색 파티클 표시, 불가능하면 파티클 숨김
 	if can_afford:
-		glow_particles.color = Color(0.3, 1.0, 0.3, 0.6)  # 초록색
+		glow_particles.modulate = Color(0.3, 1.0, 0.3, 1.0)  # 초록색
 		glow_particles.visible = true
+		glow_particles.emitting = true
 		if sprite:
 			sprite.modulate = Color(1.2, 1.2, 1.2)  # 밝게
 	else:
-		glow_particles.color = Color(1.0, 0.3, 0.3, 0.4)  # 빨간색
-		glow_particles.visible = is_character_inside  # 플레이어가 가까이 있을 때만
+		glow_particles.visible = false
+		glow_particles.emitting = false
 		if sprite:
 			sprite.modulate = Color(0.8, 0.8, 0.8)  # 어둡게
+
 
 # 타입별 자동 대사 출력
 func spawn_idle_monologue():
