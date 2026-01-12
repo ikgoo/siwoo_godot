@@ -59,7 +59,7 @@ var is_fever_active : bool = false  # 피버 활성화 여부
 # 경제 시스템
 # ========================================
 # 플레이어가 보유한 돈 (전역 변수)
-var _money : int = 1000000
+var _money : int = 10000000000000
 var money : int:
 	get:
 		return _money

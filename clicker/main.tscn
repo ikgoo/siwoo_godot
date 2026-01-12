@@ -26,6 +26,7 @@ acceleration = 1000.0
 position = Vector2(19, 198)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 88)
 zoom = Vector2(2, 2)
 script = ExtResource("4_1bvp3")
 

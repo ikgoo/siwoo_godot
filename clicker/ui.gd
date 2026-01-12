@@ -5,6 +5,7 @@ const GALMURI_9 = preload("res://Galmuri9.ttf")
 
 @onready var label = $money
 @onready var upgrade_thing = $upgrade_thing
+@onready var action_bar_label = $upgrade_thing
 @onready var setting_button = $SettingButton
 @onready var setting_panel = $SettingPanel
 @onready var key1_input = $SettingPanel/VBoxContainer/Key1Container/Key1Input
@@ -39,9 +40,6 @@ var passive_income_timer : float = 0.0  # 초당 수입 적용 타이머
 # 피버 모드 표시
 var fever_label : Label
 
-# 액션바 표시
-var action_bar_label : Label
-
 # 플레이 시간 표시
 var playtime_label : Label
 var playtime_seconds : float = 0.0  # 플레이 시간 (초)
@@ -52,6 +50,13 @@ var waiting_for_key_index : int = -1  # 어떤 키 인덱스를 변경 중인지
 var last_key_count : int = 2  # 이전에 표시된 키 개수 (업데이트 감지용)
 
 func _ready():
+	# UI 그룹에 추가 (wall.gd에서 숨기기/보이기 위해)
+	add_to_group("ui")
+	
+	# 부모 CanvasLayer도 ui 그룹에 추가
+	if get_parent():
+		get_parent().add_to_group("ui")
+	
 	# Globals의 Signal 구독
 	Globals.money_changed.connect(_on_money_changed)
 	Globals.tier_up.connect(_on_tier_up)
@@ -104,16 +109,8 @@ func _ready():
 	fever_label.z_index = 1000
 	add_child(fever_label)
 	
-	# 액션바 레이블 (화면 하단 중앙)
-	action_bar_label = Label.new()
-	action_bar_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	action_bar_label.position = Vector2(get_viewport_rect().size.x / 2 - 150, get_viewport_rect().size.y - 100)
-	action_bar_label.size = Vector2(300, 40)
-	action_bar_label.add_theme_font_override("font", GALMURI_9)
-	action_bar_label.add_theme_font_size_override("font_size", 24)
+	# 액션바는 tscn의 upgrade_thing 사용 (이미 @onready로 참조됨)
 	action_bar_label.modulate = Color(1, 1, 1, 0)  # 투명하게 시작
-	action_bar_label.z_index = 1000
-	add_child(action_bar_label)
 	
 	# 플레이 시간 레이블 (오른쪽 상단)
 	playtime_label = Label.new()
