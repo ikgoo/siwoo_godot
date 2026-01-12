@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SkinItem" load_steps=3 format=3 uid="uid://b4kcg3r53oish"]
+
+[ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_1enjd"]
+[ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_flgne"]
+
+[resource]
+script = ExtResource("1_1enjd")
+texture = ExtResource("2_flgne")
+metadata/_custom_type_script = "uid://dmhpjy8ra7v44"

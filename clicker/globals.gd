@@ -6,6 +6,7 @@ extends Node
 signal money_changed(new_amount: int, delta: int)  # 돈이 변경될 때 (새 금액, 변화량)
 signal tier_up(new_tier: int)  # 티어가 올라갈 때
 signal action_text_changed(text: String, visible: bool)  # 액션 텍스트 변경 시그널
+signal skin_changed(skin_id: String)  # 스킨이 변경될 때
 
 func _ready():
 	# 초기 값 계산
@@ -16,11 +17,15 @@ func _ready():
 	# 초기 티어 계산
 	update_tier("init")
 	max_tier = current_tier
+	# 스킨 시스템 초기화
+	_initialize_skins()
+	_load_skin_data()
 	print("Globals 초기화: money=", money, ", current_tier=", current_tier, ", max_tier=", max_tier, ", diamond_value_level=", diamond_value_level)
 	print("  곡괭이 속도 레벨: ", pickaxe_speed_level, " (필요 클릭: ", mining_clicks_required, "회)")
 	print("  다이아 획득량 레벨: ", diamond_value_level, " (획득량: ", money_up, ")")
 	print("  초당 다이아 레벨: ", diamond_per_second_level, " (추가량: ", money_per_second_upgrade, ")")
 	print("  채굴 키 개수 레벨: ", mining_key_count_level, " (키 개수: ", mining_key_count, "개)")
+	print("  스킨 시스템: owned=", owned_skins.size(), ", current=", current_skin)
 
 # ========================================
 # 게임 밸런스 변수
@@ -71,6 +76,13 @@ var money : int:
 
 # auto_scene에서 사용할 새로운 돈 시스템
 var auto_money : int = 0
+
+# ========================================
+# 스킨 상점 시스템
+# ========================================
+var owned_skins: Array[String] = ["default"]  # 구매한 스킨 ID 목록
+var current_skin: String = "default"  # 현재 적용중인 스킨
+var available_skins: Dictionary = {}  # 구매 가능한 스킨 데이터 (id -> SkinItem)
 
 # ========================================
 # 티어 시스템 (빌드업 느낌)
@@ -260,3 +272,175 @@ func show_action_text(text: String):
 # 액션 텍스트 숨김
 func hide_action_text():
 	action_text_changed.emit("", false)
+
+# ========================================
+# 스킨 상점 관리 함수
+# ========================================
+
+## /** 기본 스킨 데이터를 초기화한다
+##  * @returns void
+##  */
+func _initialize_skins() -> void:
+	var default_skin = SkinItem.new(
+		"default",
+		"기본",
+		0,
+		"기본 투명 배경",
+		Color(0, 0, 0, 0),
+		null,
+		false,
+		{}
+	)
+	available_skins["default"] = default_skin
+	
+	var ocean_skin = SkinItem.new(
+		"ocean",
+		"바다",
+		100,
+		"시원한 파란색 그라데이션",
+		Color(0.1, 0.3, 0.6, 1.0),
+		null,
+		false,
+		{}
+	)
+	available_skins["ocean"] = ocean_skin
+	
+	var sunset_skin = SkinItem.new(
+		"sunset",
+		"석양",
+		500,
+		"따뜻한 주황/분홍 그라데이션",
+		Color(0.9, 0.4, 0.3, 1.0),
+		null,
+		true,
+		{
+			"amount": 30,
+			"lifetime": 4.0,
+			"gravity": 50.0,
+			"velocity_min": 10.0,
+			"velocity_max": 30.0,
+			"scale_min": 0.3,
+			"scale_max": 1.0
+		}
+	)
+	available_skins["sunset"] = sunset_skin
+	
+	var forest_skin = SkinItem.new(
+		"forest",
+		"숲",
+		300,
+		"자연의 초록빛",
+		Color(0.2, 0.5, 0.3, 1.0),
+		null,
+		false,
+		{}
+	)
+	available_skins["forest"] = forest_skin
+	
+	var galaxy_skin = SkinItem.new(
+		"galaxy",
+		"은하수",
+		1000,
+		"신비로운 우주 파티클",
+		Color(0.1, 0.1, 0.3, 1.0),
+		null,
+		true,
+		{
+			"amount": 50,
+			"lifetime": 5.0,
+			"gravity": 20.0,
+			"velocity_min": 5.0,
+			"velocity_max": 20.0,
+			"scale_min": 0.2,
+			"scale_max": 0.8
+		}
+	)
+	available_skins["galaxy"] = galaxy_skin
+
+## /** 스킨을 구매한다
+##  * @param skin_id String 구매할 스킨 ID
+##  * @returns bool 구매 성공 여부
+##  */
+func buy_skin(skin_id: String) -> bool:
+	if not available_skins.has(skin_id):
+		print("존재하지 않는 스킨: ", skin_id)
+		return false
+	
+	if is_skin_owned(skin_id):
+		print("이미 소유한 스킨: ", skin_id)
+		return false
+	
+	var skin: SkinItem = available_skins[skin_id]
+	if auto_money < skin.price:
+		print("돈이 부족합니다: ", auto_money, " < ", skin.price)
+		return false
+	
+	auto_money -= skin.price
+	owned_skins.append(skin_id)
+	_save_skin_data()
+	print("스킨 구매 성공: ", skin_id, " (남은 돈: ", auto_money, ")")
+	return true
+
+## /** 스킨을 적용한다
+##  * @param skin_id String 적용할 스킨 ID
+##  * @returns bool 적용 성공 여부
+##  */
+func apply_skin(skin_id: String) -> bool:
+	if not available_skins.has(skin_id):
+		print("존재하지 않는 스킨: ", skin_id)
+		return false
+	
+	if not is_skin_owned(skin_id):
+		print("소유하지 않은 스킨: ", skin_id)
+		return false
+	
+	current_skin = skin_id
+	_save_skin_data()
+	skin_changed.emit(skin_id)
+	print("스킨 적용: ", skin_id)
+	return true
+
+## /** 스킨을 소유하고 있는지 확인한다
+##  * @param skin_id String 확인할 스킨 ID
+##  * @returns bool 소유 여부
+##  */
+func is_skin_owned(skin_id: String) -> bool:
+	return owned_skins.has(skin_id)
+
+## /** 현재 스킨을 가져온다
+##  * @returns SkinItem 현재 적용중인 스킨
+##  */
+func get_current_skin() -> SkinItem:
+	if available_skins.has(current_skin):
+		return available_skins[current_skin]
+	return available_skins["default"]
+
+## /** 스킨 데이터를 저장한다
+##  * @returns void
+##  */
+func _save_skin_data() -> void:
+	var config = ConfigFile.new()
+	config.set_value("skins", "owned_skins", ",".join(owned_skins))
+	config.set_value("skins", "current_skin", current_skin)
+	var err = config.save("user://skins.cfg")
+	if err != OK:
+		print("스킨 데이터 저장 실패: ", err)
+	else:
+		print("스킨 데이터 저장 완료")
+
+## /** 스킨 데이터를 로드한다
+##  * @returns void
+##  */
+func _load_skin_data() -> void:
+	var config = ConfigFile.new()
+	var err = config.load("user://skins.cfg")
+	if err != OK:
+		print("스킨 데이터 로드 실패 (처음 실행): ", err)
+		return
+	
+	var owned_str = config.get_value("skins", "owned_skins", "default")
+	if owned_str != "":
+		owned_skins = Array(owned_str.split(",", false))
+	
+	current_skin = config.get_value("skins", "current_skin", "default")
+	print("스킨 데이터 로드 완료: owned=", owned_skins, ", current=", current_skin)

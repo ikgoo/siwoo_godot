@@ -1,21 +1,165 @@
-[gd_scene format=3 uid="uid://rw744pqh5eta"]
+[gd_scene load_steps=3 format=3 uid="uid://rw744pqh5eta"]
+
+[ext_resource type="Script" uid="uid://bgc4hdomck2pp" path="res://shop_menu.gd" id="1_shop_menu"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
 
 [node name="shop_menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -992.0
+offset_bottom = -299.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_shop_menu")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 576.0
-offset_right = -438.0
-offset_bottom = -339.0
+offset_left = -177.0
+offset_top = -429.0
+offset_right = 177.0
+offset_bottom = 446.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.15, 0.15, 0.2, 1)
+color = Color(0.15, 0.15, 0.2, 0.3)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = -410.0
+offset_right = 100.0
+offset_bottom = -370.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+text = "스킨 상점"
+horizontal_alignment = 1
+
+[node name="MoneyLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = -365.0
+offset_right = 100.0
+offset_bottom = -335.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "보유: 🪙 0"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -190.0
+offset_right = 130.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkinListContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -431.0
+offset_right = 60.0
+offset_bottom = -391.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "닫기"
+
+[node name="SkinItemTemplate" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(240, 100)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 500.0
+offset_right = 260.0
+offset_bottom = 600.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkinItemTemplate"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="NameLabel" type="Label" parent="SkinItemTemplate/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "스킨 이름"
+
+[node name="DescriptionLabel" type="Label" parent="SkinItemTemplate/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "스킨 설명"
+
+[node name="ColorPreview" type="ColorRect" parent="SkinItemTemplate/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 0, 0, 1)
+
+[node name="ButtonContainer" type="HBoxContainer" parent="SkinItemTemplate/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PriceLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "🪙 0"
+
+[node name="Spacer" type="Control" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BuyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "구매"
+
+[node name="ApplyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+visible = false
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "적용"
+
+[node name="AppliedLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "✓ 적용됨"
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]
