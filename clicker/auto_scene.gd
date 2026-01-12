@@ -14,6 +14,7 @@ const CLEAR_MODE_NEVER := 1
 @onready var back_button: Button = $BackButton
 @onready var title_label: Label = $CenterContainer/Title
 @onready var description_label: Label = $CenterContainer/Description
+@onready var shop_menu = $shop_menu
 
 # 돈 표시용 애니메이션 변수
 var displayed_auto_money: float = 0.0
@@ -21,6 +22,7 @@ var target_auto_money: int = 0
 
 # 원래 viewport/창 상태 저장
 var original_viewport_size: Vector2i
+var original_window_size: Vector2i
 var original_window_mode: Window.Mode
 var original_window_position: Vector2i
 var original_always_on_top: bool
@@ -40,12 +42,16 @@ func _ready():
 	# 원래 viewport 크기, 창 모드, 위치, always on top 상태 저장
 	viewport_rid = get_viewport().get_viewport_rid()
 	original_viewport_size = get_viewport().size
+	original_window_size = get_window().size
 	original_window_mode = get_window().mode
 	original_window_position = get_window().position
 	original_always_on_top = get_window().always_on_top
 	original_borderless = get_window().borderless
 	original_unresizable = get_window().unresizable
 	original_clear_color = RenderingServer.get_default_clear_color()
+	
+	# 스킨 시그널 연결
+	Globals.skin_changed.connect(_on_skin_changed)
 	print("원래 viewport 크기: ", original_viewport_size)
 	print("원래 창 모드: ", original_window_mode)
 	print("원래 창 위치: ", original_window_position)
@@ -64,12 +70,30 @@ func _ready():
 	get_viewport().transparent_bg = true
 	RenderingServer.set_default_clear_color(Color(0, 0, 0, 0))
 	
-	# 창 크기는 300x200으로 작게, Viewport는 원래 크기 유지 (UI가 작아지지 않게)
-	var target_window_size: Vector2i = Vector2i(300, 200)
-	get_window().size = target_window_size
+	# 창 크기는 원래 비율 유지하면서 300에 가깝게 (정수 비율로 정확히)
+	# 원래 viewport의 최대공약수 계산
+	var gcd_val = _gcd(original_viewport_size.x, original_viewport_size.y)
+	var base_ratio_x = original_viewport_size.x / gcd_val
+	var base_ratio_y = original_viewport_size.y / gcd_val
+	
+	# 300에 가장 가까운 배수 찾기
+	var scale_factor = roundi(300.0 / float(base_ratio_x))
+	if scale_factor < 1:
+		scale_factor = 1
+	
+	var target_window_size: Vector2i = Vector2i(base_ratio_x * scale_factor, base_ratio_y * scale_factor)
+	print("원래 viewport: ", original_viewport_size)
+	print("기본 비율: ", base_ratio_x, ":", base_ratio_y)
+	print("스케일: ", scale_factor)
+	print("목표 창 크기: ", target_window_size)
+	
 	# Viewport는 원래 크기 유지
 	get_viewport().size = original_viewport_size
 	size = original_viewport_size  # 루트 Control도 원래 크기 유지
+	
+	# 창 크기를 마지막에 설정 (viewport 설정 후)
+	get_window().size = target_window_size
+	print("창 크기 설정 후: ", get_window().size)
 	
 	# 창을 화면 중앙으로 이동
 	var screen_size = DisplayServer.screen_get_size()
@@ -83,8 +107,12 @@ func _ready():
 	
 	# 버튼 시그널 연결
 	back_button.pressed.connect(_on_back_button_pressed)
-	$CenterContainer.gui_input.connect(_on_center_gui_input)
-	
+	# CenterContainer의 마우스 필터 설정 (드래그 가능하게)
+	$CenterContainer.mouse_filter = Control.MOUSE_FILTER_STOP
+	# 자식 Label들이 마우스를 가로채지 않도록 설정
+	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	auto_money_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	# 레이블 색상 설정
 	title_label.modulate = Color(0.8, 1.0, 1.0)
 	auto_money_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
@@ -94,6 +122,9 @@ func _ready():
 	displayed_auto_money = Globals.auto_money
 	target_auto_money = Globals.auto_money
 	update_auto_money_display()
+	
+	# 현재 스킨 적용
+	_apply_current_skin()
 
 
 @warning_ignore("unused_parameter")
@@ -120,8 +151,9 @@ func _on_back_button_pressed():
 	# 창 모드를 원래대로 복원
 	get_window().mode = original_window_mode
 	
-	# Viewport 크기를 원래대로 복원 (창 크기는 건드리지 않음)
+	# Viewport와 창 크기를 원래대로 복원
 	get_viewport().size = original_viewport_size
+	get_window().size = original_window_size
 	
 	# 창 위치 복원 (창 모드였다면)
 	if original_window_mode == Window.MODE_WINDOWED:
@@ -134,8 +166,8 @@ func _on_back_button_pressed():
 	
 	print("창 모드, viewport 크기, 위치, always on top 복원 완료")
 	
-	# 메인 씬으로 돌아가기
-	get_tree().change_scene_to_file("res://world.tscn")
+	# 로비로 돌아가기
+	get_tree().change_scene_to_file("res://lobby.tscn")
 
 
 # 키보드 입력 처리
@@ -143,14 +175,14 @@ func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed and not event.echo:
 		# ESC 키는 돌아가기
 		if event.keycode == KEY_ESCAPE:
+			# 씬 전환 전에 입력 처리 완료 표시
+			if get_viewport():
+				get_viewport().set_input_as_handled()
 			_on_back_button_pressed()
-			get_viewport().set_input_as_handled()
 		else:
 			# 다른 키는 auto_money 증가
 			Globals.auto_money += 1
 			print("키 입력! Auto Money +1 (현재: 🪙", Globals.auto_money, ")")
-
-func _on_center_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			is_dragging = true
@@ -165,6 +197,39 @@ func _on_center_gui_input(event: InputEvent) -> void:
 		var mouse_pos: Vector2 = DisplayServer.mouse_get_position()
 		get_window().position = Vector2i(mouse_pos) - drag_offset_from_origin
 
-
+## /** shop_button을 누르면 shop_menu를 토글한다
+##  * @returns void
+##  */
 func _on_shop_button_button_down():
-	pass # Replace with function body.
+	if shop_menu:
+		shop_menu.visible = !shop_menu.visible
+		print("shop_menu visible: ", shop_menu.visible)
+
+## /** 현재 스킨을 적용한다
+##  * @returns void
+##  */
+func _apply_current_skin() -> void:
+	var skin: SkinItem = Globals.get_current_skin()
+	if skin:
+		skin.apply_to_scene(self)
+		print("스킨 적용 완료: ", Globals.current_skin)
+
+## /** 스킨 변경 시그널 핸들러
+##  * @param skin_id String 변경된 스킨 ID
+##  * @returns void
+##  */
+func _on_skin_changed(skin_id: String) -> void:
+	print("스킨 변경 감지: ", skin_id)
+	_apply_current_skin()
+
+## /** 최대공약수 계산 (유클리드 호제법)
+##  * @param a int 첫 번째 수
+##  * @param b int 두 번째 수
+##  * @returns int 최대공약수
+##  */
+func _gcd(a: int, b: int) -> int:
+	while b != 0:
+		var temp = b
+		b = a % b
+		a = temp
+	return a

@@ -11,11 +11,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_auto_scene")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-anchor_mode = 0
-zoom = Vector2(1.05, 1.05)
 
 [node name="CenterContainer" type="VBoxContainer" parent="."]
 texture_filter = 1
@@ -26,12 +23,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -388.0
-offset_top = -52.0
+offset_top = 20.0
 offset_right = -61.0
-offset_bottom = 134.5
+offset_bottom = 206.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
+mouse_filter = 0
 theme_override_constants/separation = 30
 
 [node name="Title" type="Label" parent="CenterContainer"]
@@ -53,24 +51,27 @@ horizontal_alignment = 1
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 117.0
-offset_top = 235.0
+offset_top = 299.0
 offset_right = 397.0
-offset_bottom = 295.0
+offset_bottom = 359.0
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
 text = "돌아가기 (ESC)"
 
 [node name="shop_button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 816.0
-offset_top = 217.0
-offset_right = 968.0
-offset_bottom = 294.0
+offset_left = 800.0
+offset_top = 289.0
+offset_right = 952.0
+offset_bottom = 366.0
 theme_override_font_sizes/font_size = 50
 text = "상점"
 
 [node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
-visible = false
 layout_mode = 1
+offset_left = 981.0
+offset_top = 151.0
+offset_right = -52.0
+offset_bottom = -145.0
 
 [connection signal="button_down" from="shop_button" to="." method="_on_shop_button_button_down"]
