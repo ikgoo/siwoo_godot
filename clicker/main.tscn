@@ -95,11 +95,12 @@ metadata/_edit_lock_ = true
 
 [node name="torch" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(-248, 1)
+region_rect = Rect2(16, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch2" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(-146, 108)
-texture = ExtResource("12_dg77c")
+region_rect = Rect2(48, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch3" parent="torchs" instance=ExtResource("11_efxa6")]
