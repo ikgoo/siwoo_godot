@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://uu4s5fgq7laa" path="res://CONCEPT/asset/lobby/upgrade_particle.png" id="4_50jy6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w52ek"]
-radius = 60.0
+radius = 27.018513
 
 [sub_resource type="LabelSettings" id="LabelSettings_50jy6"]
 font = ExtResource("3_hj5gr")

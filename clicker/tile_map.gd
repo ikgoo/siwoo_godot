@@ -1,13 +1,31 @@
 extends Node2D
 
-@onready var inside_cave = $inside_cave
-@onready var inside_cave2 = $inside_cave2
-@onready var inside_cave3 = $inside_cave3
-@onready var inside_cave4 = $inside_cave4
-@onready var maps = $maps  # maps TileMap 참조
-@onready var platform = $platform  # platform TileMap 참조
-@onready var background = $background  # background TileMap 참조
-@onready var cave_always = $cave_always  # 동굴 밖에서만 보이는 타일맵
+## === 맵 활성화 설정 (Inspector에서 체크박스로 제어) ===
+@export_group("Map Enable/Disable")
+
+@export var map_1_enabled: bool = true:
+	set(value):
+		map_1_enabled = value
+		if is_node_ready():
+			_apply_map_state($map_1, value)
+
+@export var map_2_enabled: bool = true:
+	set(value):
+		map_2_enabled = value
+		if is_node_ready():
+			_apply_map_state($map_2, value)
+
+@onready var map_1 = $map_1
+@onready var map_2 = $map_2
+
+@onready var inside_cave = $map_1/inside_cave
+@onready var inside_cave2 = $map_1/inside_cave2
+@onready var inside_cave3 = $map_1/inside_cave3
+@onready var inside_cave4 = $map_1/inside_cave4
+@onready var maps = $map_1/maps  # maps TileMap 참조
+@onready var platform = $map_1/platform  # platform TileMap 참조
+@onready var background = $map_1/background  # background TileMap 참조
+@onready var cave_always = $map_1/cave_always  # 동굴 밖에서만 보이는 타일맵
 # 캐릭터 참조 (부모 노드를 통해 접근)
 var character: CharacterBody2D
 
@@ -80,6 +98,9 @@ func _ready():
 	
 	# 폭포 타일 찾기
 	find_waterfall_tiles()
+	
+	# 맵 활성화 상태 적용
+	_apply_all_maps()
 
 func _process(_delta):
 	if not character:
@@ -436,3 +457,28 @@ func update_cave_always_visibility(currently_in_cave: bool):
 			# 동굴 밖으로 나감 - cave_always 보이기
 			cave_always.visible = true
 			print("🌞 동굴 탈출: cave_always 타일맵 표시")
+
+# === 맵 전체 켜기/끄기 ===
+
+## 특정 맵(Node2D)의 상태를 적용합니다
+## @param map_node: 대상 Node2D (map_1 또는 map_2)
+## @param enabled: 활성화 여부
+func _apply_map_state(map_node: Node2D, enabled: bool):
+	if not map_node:
+		return
+	
+	map_node.visible = enabled
+	map_node.process_mode = Node.PROCESS_MODE_INHERIT if enabled else Node.PROCESS_MODE_DISABLED
+	
+	# TileMap의 collision을 끄려면 y_sort나 z_index 아래로 이동시키는 대신
+	# 각 TileMap의 레이어별로 collision을 제어
+	for child in map_node.get_children():
+		if child is TileMap:
+			# TileMap의 모든 레이어 순회
+			for layer_idx in range(child.get_layers_count()):
+				child.set_layer_enabled(layer_idx, enabled)
+
+## 모든 맵의 상태를 적용합니다
+func _apply_all_maps():
+	_apply_map_state($map_1, map_1_enabled)
+	_apply_map_state($map_2, map_2_enabled)

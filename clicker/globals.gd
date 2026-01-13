@@ -14,6 +14,7 @@ func _ready():
 	update_diamond_value()
 	update_diamond_per_second()
 	update_mining_key_count()
+	update_money_randomize()
 	# 초기 티어 계산
 	update_tier("init")
 	max_tier = current_tier
@@ -25,7 +26,8 @@ func _ready():
 	print("  다이아 획득량 레벨: ", diamond_value_level, " (획득량: ", money_up, ")")
 	print("  초당 다이아 레벨: ", diamond_per_second_level, " (추가량: ", money_per_second_upgrade, ")")
 	print("  채굴 키 개수 레벨: ", mining_key_count_level, " (키 개수: ", mining_key_count, "개)")
-	print("  스킨 시스템: owned=", owned_skins.size(), ", current=", current_skin)
+	print("  돈 랜덤 레벨: ", money_randomize_level, " (x2: ", int(x2_chance * 100), "%, x3: ", int(x3_chance * 100), "%)")
+	print("  스킨 시스템: owned=", owned_skins.size(), ", sprite1=", current_sprite1_skin, ", sprite2=", current_sprite2_skin)
 
 # ========================================
 # 게임 밸런스 변수
@@ -40,6 +42,8 @@ var diamond_per_second_level : int = 0
 var auto_mining_speed_level : int = 0
 # 채굴 키 개수 레벨 (mk Lv) - 0부터 시작, 최대 2 (최대 4키)
 var mining_key_count_level : int = 0
+# 돈 랜덤 레벨 (mr Lv) - 0부터 시작, 최대 5
+var money_randomize_level : int = 0
 
 # 실제 게임 값들 (레벨에 따라 계산됨)
 var money_up : int = 1  # 채굴 시 획득하는 다이아몬드 (dv 레벨에 따라 결정)
@@ -48,6 +52,8 @@ var money_per_second : int = 0  # 초당 자동으로 증가하는 돈 (알바 +
 var money_per_second_upgrade : int = 0  # 업그레이드로 얻은 초당 돈 증가량 (da 레벨에 따라 결정)
 var auto_mining_interval : float = 0.5  # 자동 채굴 간격 (초) - 레벨에 따라 감소
 var mining_key_count : int = 2  # 채굴 키 개수 (기본 2개: F, J)
+var x2_chance : float = 0.10  # x2배 확률 (기본 10%)
+var x3_chance : float = 0.01  # x3배 확률 (기본 1%)
 
 # ========================================
 # 피버 시스템
@@ -80,8 +86,9 @@ var auto_money : int = 0
 # ========================================
 # 스킨 상점 시스템
 # ========================================
-var owned_skins: Array[String] = ["default"]  # 구매한 스킨 ID 목록
-var current_skin: String = "default"  # 현재 적용중인 스킨
+var owned_skins: Array[String] = ["default_sprite1", "default_sprite2"]  # 구매한 스킨 ID 목록
+var current_sprite1_skin: String = "default_sprite1"  # Sprite2D에 적용중인 스킨
+var current_sprite2_skin: String = "default_sprite2"  # Sprite2D2에 적용중인 스킨
 var available_skins: Dictionary = {}  # 구매 가능한 스킨 데이터 (id -> SkinItem)
 
 # ========================================
@@ -197,6 +204,17 @@ var mining_key_count_upgrades: Array[Vector2i] = [
 	Vector2i(3000, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
 ]
 
+# 돈 랜덤 강화 (mr Lv) - 5레벨
+# [가격, x2확률(%), x3확률(%)] 형식 - 채굴 시 x2배, x3배 확률
+# 기본값: x2 10%, x3 1%
+var money_randomize_upgrades: Array[Vector3i] = [
+	Vector3i(200, 15, 2),      # Lv 1: x2 15%, x3 2%
+	Vector3i(600, 20, 4),      # Lv 2: x2 20%, x3 4%
+	Vector3i(5000, 30, 8),     # Lv 3: x2 30%, x3 8%
+	Vector3i(20000, 40, 12),   # Lv 4: x2 40%, x3 12%
+	Vector3i(100000, 50, 20),  # Lv 5 (MAX): x2 50%, x3 20%
+]
+
 # 레벨에 따른 실제 값 계산 함수들
 func update_pickaxe_speed():
 	# 곡괭이 속도는 레벨에 따라 필요 클릭 수 감소 (기본 5회)
@@ -247,6 +265,20 @@ func update_mining_key_count():
 	else:
 		mining_key_count = 4  # MAX (F, J, D, K)
 
+func update_money_randomize():
+	# 돈 랜덤 확률 계산 (레벨에 따라 증가)
+	if money_randomize_level == 0:
+		x2_chance = 0.10  # 기본값 10%
+		x3_chance = 0.01  # 기본값 1%
+	elif money_randomize_level <= money_randomize_upgrades.size():
+		# 레벨에 해당하는 확률 사용 (레벨 1 = 인덱스 0)
+		x2_chance = money_randomize_upgrades[money_randomize_level - 1].y / 100.0
+		x3_chance = money_randomize_upgrades[money_randomize_level - 1].z / 100.0
+	else:
+		# MAX 레벨 = 50%, 20%
+		x2_chance = 0.50
+		x3_chance = 0.20
+
 # ========================================
 # 참조
 # ========================================
@@ -281,81 +313,64 @@ func hide_action_text():
 ##  * @returns void
 ##  */
 func _initialize_skins() -> void:
-	var default_skin = SkinItem.new(
-		"default",
-		"기본",
-		0,
-		"기본 투명 배경",
-		Color(0, 0, 0, 0),
-		null,
-		false,
-		{}
-	)
-	available_skins["default"] = default_skin
+	# 기본 Sprite1 스킨 (텍스처 변경 없음)
+	var default_sprite1 = SkinItem.new()
+	default_sprite1.id = "default_sprite1"
+	default_sprite1.name = "기본 캐릭터"
+	default_sprite1.price = 0
+	default_sprite1.description = "기본 캐릭터 스킨"
+	default_sprite1.target_sprite = 1  # Sprite2D
+	available_skins["default_sprite1"] = default_sprite1
 	
-	var ocean_skin = SkinItem.new(
-		"ocean",
-		"바다",
-		100,
-		"시원한 파란색 그라데이션",
-		Color(0.1, 0.3, 0.6, 1.0),
-		null,
-		false,
-		{}
-	)
-	available_skins["ocean"] = ocean_skin
+	# 기본 Sprite2 스킨 (텍스처 변경 없음)
+	var default_sprite2 = SkinItem.new()
+	default_sprite2.id = "default_sprite2"
+	default_sprite2.name = "기본 도구"
+	default_sprite2.price = 0
+	default_sprite2.description = "기본 도구 스킨"
+	default_sprite2.target_sprite = 2  # Sprite2D2
+	available_skins["default_sprite2"] = default_sprite2
 	
-	var sunset_skin = SkinItem.new(
-		"sunset",
-		"석양",
-		500,
-		"따뜻한 주황/분홍 그라데이션",
-		Color(0.9, 0.4, 0.3, 1.0),
-		null,
-		true,
-		{
-			"amount": 30,
-			"lifetime": 4.0,
-			"gravity": 50.0,
-			"velocity_min": 10.0,
-			"velocity_max": 30.0,
-			"scale_min": 0.3,
-			"scale_max": 1.0
-		}
-	)
-	available_skins["sunset"] = sunset_skin
+	# bongo_cat_skins 폴더에서 모든 .tres 파일 로드
+	_load_skins_from_folder("res://bongo_cat_skins/")
+
+## /** 폴더에서 스킨 리소스 파일들을 로드한다
+##  * @param folder_path String 스킨 폴더 경로
+##  * @returns void
+##  */
+func _load_skins_from_folder(folder_path: String) -> void:
+	var dir = DirAccess.open(folder_path)
+	if dir == null:
+		print("스킨 폴더를 열 수 없음: ", folder_path)
+		return
 	
-	var forest_skin = SkinItem.new(
-		"forest",
-		"숲",
-		300,
-		"자연의 초록빛",
-		Color(0.2, 0.5, 0.3, 1.0),
-		null,
-		false,
-		{}
-	)
-	available_skins["forest"] = forest_skin
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
 	
-	var galaxy_skin = SkinItem.new(
-		"galaxy",
-		"은하수",
-		1000,
-		"신비로운 우주 파티클",
-		Color(0.1, 0.1, 0.3, 1.0),
-		null,
-		true,
-		{
-			"amount": 50,
-			"lifetime": 5.0,
-			"gravity": 20.0,
-			"velocity_min": 5.0,
-			"velocity_max": 20.0,
-			"scale_min": 0.2,
-			"scale_max": 0.8
-		}
-	)
-	available_skins["galaxy"] = galaxy_skin
+	while file_name != "":
+		# .tres 파일만 처리
+		if not dir.current_is_dir() and file_name.ends_with(".tres"):
+			var full_path = folder_path + file_name
+			var skin_resource = load(full_path)
+			
+			if skin_resource is SkinItem:
+				# 스킨 ID가 비어있으면 파일명을 ID로 사용
+				if skin_resource.id == "":
+					skin_resource.id = file_name.get_basename()
+				
+				# 이름이 비어있으면 ID를 이름으로 사용
+				if skin_resource.name == "":
+					skin_resource.name = skin_resource.id
+				
+				available_skins[skin_resource.id] = skin_resource
+				print("스킨 로드 완료: ", skin_resource.id, " (", full_path, ")")
+			else:
+				print("스킨 로드 실패 (SkinItem 아님): ", full_path)
+		
+		file_name = dir.get_next()
+	
+	dir.list_dir_end()
+	print("스킨 로드 완료: 총 ", available_skins.size(), "개")
 
 ## /** 스킨을 구매한다
 ##  * @param skin_id String 구매할 스킨 ID
@@ -394,10 +409,17 @@ func apply_skin(skin_id: String) -> bool:
 		print("소유하지 않은 스킨: ", skin_id)
 		return false
 	
-	current_skin = skin_id
+	var skin: SkinItem = available_skins[skin_id]
+	# 스킨 타입에 따라 적용
+	if skin.target_sprite == 1:
+		current_sprite1_skin = skin_id
+		print("Sprite1 스킨 적용: ", skin_id)
+	else:
+		current_sprite2_skin = skin_id
+		print("Sprite2 스킨 적용: ", skin_id)
+	
 	_save_skin_data()
 	skin_changed.emit(skin_id)
-	print("스킨 적용: ", skin_id)
 	return true
 
 ## /** 스킨을 소유하고 있는지 확인한다
@@ -407,13 +429,21 @@ func apply_skin(skin_id: String) -> bool:
 func is_skin_owned(skin_id: String) -> bool:
 	return owned_skins.has(skin_id)
 
-## /** 현재 스킨을 가져온다
-##  * @returns SkinItem 현재 적용중인 스킨
+## /** 현재 Sprite1 스킨을 가져온다
+##  * @returns SkinItem 현재 적용중인 Sprite1 스킨
 ##  */
-func get_current_skin() -> SkinItem:
-	if available_skins.has(current_skin):
-		return available_skins[current_skin]
-	return available_skins["default"]
+func get_current_sprite1_skin() -> SkinItem:
+	if available_skins.has(current_sprite1_skin):
+		return available_skins[current_sprite1_skin]
+	return available_skins["default_sprite1"]
+
+## /** 현재 Sprite2 스킨을 가져온다
+##  * @returns SkinItem 현재 적용중인 Sprite2 스킨
+##  */
+func get_current_sprite2_skin() -> SkinItem:
+	if available_skins.has(current_sprite2_skin):
+		return available_skins[current_sprite2_skin]
+	return available_skins["default_sprite2"]
 
 ## /** 스킨 데이터를 저장한다
 ##  * @returns void
@@ -421,7 +451,8 @@ func get_current_skin() -> SkinItem:
 func _save_skin_data() -> void:
 	var config = ConfigFile.new()
 	config.set_value("skins", "owned_skins", ",".join(owned_skins))
-	config.set_value("skins", "current_skin", current_skin)
+	config.set_value("skins", "current_sprite1_skin", current_sprite1_skin)
+	config.set_value("skins", "current_sprite2_skin", current_sprite2_skin)
 	var err = config.save("user://skins.cfg")
 	if err != OK:
 		print("스킨 데이터 저장 실패: ", err)
@@ -438,9 +469,11 @@ func _load_skin_data() -> void:
 		print("스킨 데이터 로드 실패 (처음 실행): ", err)
 		return
 	
-	var owned_str = config.get_value("skins", "owned_skins", "default")
+	var owned_str = config.get_value("skins", "owned_skins", "default_sprite1,default_sprite2")
 	if owned_str != "":
-		owned_skins = Array(owned_str.split(",", false))
+		# Array[String] 타입에 맞게 assign() 사용
+		owned_skins.assign(owned_str.split(",", false))
 	
-	current_skin = config.get_value("skins", "current_skin", "default")
-	print("스킨 데이터 로드 완료: owned=", owned_skins, ", current=", current_skin)
+	current_sprite1_skin = config.get_value("skins", "current_sprite1_skin", "default_sprite1")
+	current_sprite2_skin = config.get_value("skins", "current_sprite2_skin", "default_sprite2")
+	print("스킨 데이터 로드 완료: owned=", owned_skins, ", sprite1=", current_sprite1_skin, ", sprite2=", current_sprite2_skin)

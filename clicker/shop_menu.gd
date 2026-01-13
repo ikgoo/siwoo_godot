@@ -1,10 +1,10 @@
 extends Control
 
 ## /** 스킨 상점 UI 관리
-##  * 스킨 목록 표시, 구매, 적용 기능 제공
+##  * 스킨 목록 표시, 구매, 적용, 인벤토리 기능 제공
 ##  */
 
-# 노드 참조
+# 상점 노드 참조
 @onready var background: ColorRect = $Background
 @onready var title: Label = $Title
 @onready var money_label: Label = $MoneyLabel
@@ -12,10 +12,22 @@ extends Control
 @onready var skin_list_container: VBoxContainer = $ScrollContainer/SkinListContainer
 @onready var close_button: Button = $CloseButton
 @onready var skin_item_template: PanelContainer = $SkinItemTemplate
+@onready var inventory_button: Button = $InventoryButton
+
+# 인벤토리 노드 참조
+@onready var inventory_panel: Panel = $InventoryPanel
+@onready var sprite1_grid: GridContainer = $InventoryPanel/VBoxContainer/Sprite1Grid
+@onready var sprite2_grid: GridContainer = $InventoryPanel/VBoxContainer/Sprite2Grid
+
+# 인벤토리 아이템 크기
+const INVENTORY_ITEM_SIZE = 40
 
 func _ready():
 	# 템플릿은 숨김 상태 유지 (이미 tscn에서 visible=false)
-	skin_item_template.visible = false
+	if skin_item_template:
+		skin_item_template.visible = false
+	if inventory_panel:
+		inventory_panel.visible = false
 	
 	# 스킨 목록 업데이트
 	_update_skin_list()
@@ -59,7 +71,7 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 	var vbox: VBoxContainer = panel.get_node("VBoxContainer")
 	var name_label: Label = vbox.get_node("NameLabel")
 	var desc_label: Label = vbox.get_node("DescriptionLabel")
-	var color_preview: ColorRect = vbox.get_node("ColorPreview")
+	var texture_preview: TextureRect = vbox.get_node("TexturePreview")
 	var button_container: HBoxContainer = vbox.get_node("ButtonContainer")
 	var price_container: Control = button_container.get_node("PriceContainer")
 	var price_label: Label = price_container.get_node("PriceLabel")
@@ -69,28 +81,29 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 	
 	# 데이터 바인딩
 	name_label.text = skin.name
-	desc_label.text = skin.description
-	color_preview.color = skin.bg_color
+	# 스킨 타입 표시 (Sprite1 = 캐릭터, Sprite2 = 도구)
+	var type_str = "[캐릭터] " if skin.target_sprite == 1 else "[도구] "
+	desc_label.text = type_str + skin.description
+	# 텍스처 미리보기 설정
+	if skin.texture:
+		texture_preview.texture = skin.texture
 	
 	# 가격 표시
 	price_label.text = "🪙 " + str(skin.price) if skin.price > 0 else "무료"
 	
+	# 상점에서는 구매만 가능 (적용은 인벤토리에서)
 	# 소유 여부에 따라 버튼 표시
 	if Globals.is_skin_owned(skin.id):
-		buy_button.visible = false
-		
-		if Globals.current_skin == skin.id:
-			# 적용됨 표시
-			apply_button.visible = false
-			applied_label.visible = true
-		else:
-			# 적용 버튼 표시
-			apply_button.visible = true
-			applied_label.visible = false
-			apply_button.pressed.connect(_on_apply_skin.bind(skin.id))
+		# 이미 소유한 스킨 - 구매 불가 표시
+		buy_button.visible = true
+		buy_button.disabled = true
+		buy_button.text = "보유중"
+		apply_button.visible = false
+		applied_label.visible = false
 	else:
 		# 구매 버튼 표시
 		buy_button.visible = true
+		buy_button.text = "구매"
 		apply_button.visible = false
 		applied_label.visible = false
 		buy_button.disabled = Globals.auto_money < skin.price
@@ -125,3 +138,163 @@ func _on_apply_skin(skin_id: String) -> void:
 ##  */
 func _on_close_button_pressed() -> void:
 	visible = false
+
+## /** 인벤토리 버튼 핸들러 - 상점 숨기고 인벤토리 표시
+##  * @returns void
+##  */
+func _on_inventory_button_pressed() -> void:
+	_show_inventory()
+
+## /** 인벤토리 뒤로가기 버튼 핸들러 - 인벤토리 숨기고 상점 표시
+##  * @returns void
+##  */
+func _on_inventory_back_pressed() -> void:
+	_show_shop()
+
+## /** 상점 UI를 표시한다
+##  * @returns void
+##  */
+func _show_shop() -> void:
+	# 상점 UI 표시
+	if background:
+		background.visible = true
+	if title:
+		title.visible = true
+	if money_label:
+		money_label.visible = true
+	if scroll_container:
+		scroll_container.visible = true
+	if close_button:
+		close_button.visible = true
+	if inventory_button:
+		inventory_button.visible = true
+	
+	# 인벤토리 숨김
+	if inventory_panel:
+		inventory_panel.visible = false
+	
+	# 상점 목록 업데이트
+	_update_skin_list()
+
+## /** 인벤토리 UI를 표시한다
+##  * @returns void
+##  */
+func _show_inventory() -> void:
+	print("인벤토리 표시 시도...")
+	print("inventory_panel 존재: ", inventory_panel != null)
+	
+	# 상점 UI 숨김
+	if background:
+		background.visible = false
+	if title:
+		title.visible = false
+	if money_label:
+		money_label.visible = false
+	if scroll_container:
+		scroll_container.visible = false
+	if close_button:
+		close_button.visible = false
+	if inventory_button:
+		inventory_button.visible = false
+	
+	# 인벤토리 표시
+	if inventory_panel:
+		inventory_panel.visible = true
+		_update_inventory()
+		print("인벤토리 표시 완료!")
+	else:
+		print("⚠️ inventory_panel이 없습니다! Godot 에디터에서 씬을 다시 로드하세요.")
+
+## /** 인벤토리를 업데이트한다
+##  * @returns void
+##  */
+func _update_inventory() -> void:
+	if not sprite1_grid or not sprite2_grid:
+		return
+	
+	# 기존 아이템 제거
+	for child in sprite1_grid.get_children():
+		child.queue_free()
+	for child in sprite2_grid.get_children():
+		child.queue_free()
+	
+	# 소유한 스킨들을 타입별로 분류하여 표시
+	for skin_id in Globals.owned_skins:
+		if not Globals.available_skins.has(skin_id):
+			continue
+		
+		var skin: SkinItem = Globals.available_skins[skin_id]
+		var item = _create_inventory_item(skin)
+		
+		if skin.target_sprite == 1:
+			sprite1_grid.add_child(item)
+		else:
+			sprite2_grid.add_child(item)
+
+## /** 인벤토리 아이템 UI를 생성한다
+##  * @param skin SkinItem 스킨 데이터
+##  * @returns Control 생성된 인벤토리 아이템
+##  */
+func _create_inventory_item(skin: SkinItem) -> Control:
+	# 버튼으로 감싸서 클릭 가능하게
+	var button = Button.new()
+	button.custom_minimum_size = Vector2(INVENTORY_ITEM_SIZE, INVENTORY_ITEM_SIZE)
+	button.tooltip_text = skin.name
+	
+	# 현재 적용된 스킨인지 확인
+	var is_current = false
+	if skin.target_sprite == 1:
+		is_current = (Globals.current_sprite1_skin == skin.id)
+	else:
+		is_current = (Globals.current_sprite2_skin == skin.id)
+	
+	# 스타일 설정
+	var style = StyleBoxFlat.new()
+	if is_current:
+		# 적용된 스킨은 노란색 테두리
+		style.bg_color = Color(0.3, 0.3, 0.35, 1.0)
+		style.border_color = Color(1.0, 0.8, 0.2, 1.0)
+		style.border_width_left = 3
+		style.border_width_top = 3
+		style.border_width_right = 3
+		style.border_width_bottom = 3
+	else:
+		style.bg_color = Color(0.2, 0.2, 0.25, 1.0)
+	style.corner_radius_top_left = 4
+	style.corner_radius_top_right = 4
+	style.corner_radius_bottom_left = 4
+	style.corner_radius_bottom_right = 4
+	button.add_theme_stylebox_override("normal", style)
+	button.add_theme_stylebox_override("hover", style)
+	button.add_theme_stylebox_override("pressed", style)
+	
+	# 텍스처 이미지 추가
+	if skin.texture:
+		var tex_rect = TextureRect.new()
+		tex_rect.texture = skin.texture
+		tex_rect.custom_minimum_size = Vector2(INVENTORY_ITEM_SIZE - 8, INVENTORY_ITEM_SIZE - 8)
+		tex_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tex_rect.anchors_preset = Control.PRESET_CENTER
+		tex_rect.position = Vector2(4, 4)
+		tex_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		button.add_child(tex_rect)
+	else:
+		# 텍스처가 없으면 기본 아이콘 표시
+		button.text = "기본"
+		button.add_theme_font_size_override("font_size", 10)
+	
+	# 클릭 시 스킨 적용
+	button.pressed.connect(_on_inventory_item_clicked.bind(skin.id))
+	
+	return button
+
+## /** 인벤토리 아이템 클릭 핸들러
+##  * @param skin_id String 클릭한 스킨 ID
+##  * @returns void
+##  */
+func _on_inventory_item_clicked(skin_id: String) -> void:
+	if Globals.apply_skin(skin_id):
+		_update_inventory()
+		_update_skin_list()
+		print("인벤토리에서 스킨 적용: ", skin_id)

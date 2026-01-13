@@ -37,6 +37,19 @@ func _ready():
 		print("⚠️ 나가기 버튼을 찾을 수 없음!")
 
 
+## ESC 키 입력 처리 - 메뉴 토글
+func _input(event: InputEvent):
+	# ESC 키가 눌렸을 때
+	if event.is_action_pressed("ui_cancel"):
+		# 메뉴가 열려있으면 닫기, 닫혀있으면 열기
+		if visible:
+			close_menu()
+		else:
+			open_menu()
+		# 다른 노드로 입력 전파 방지
+		get_viewport().set_input_as_handled()
+
+
 # 메뉴 열기
 func open_menu():
 	visible = true

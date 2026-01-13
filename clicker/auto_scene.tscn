@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3iup24b62ol2"]
+[gd_scene load_steps=6 format=3 uid="uid://d3iup24b62ol2"]
 
 [ext_resource type="Script" uid="uid://cpdo3u3cff3ub" path="res://auto_scene.gd" id="1_auto_scene"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
 [ext_resource type="PackedScene" uid="uid://rw744pqh5eta" path="res://shop_menu.tscn" id="3_8jip5"]
+[ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="6_g53jw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5364r"]
+atlas = ExtResource("6_g53jw")
+region = Rect2(0, 16, 160, 48)
 
 [node name="AutoScene" type="Control"]
 layout_mode = 3
@@ -14,6 +19,53 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_auto_scene")
 
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 422.0
+offset_top = 627.0
+offset_right = 698.0
+offset_bottom = 672.0
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_5364r")
+region_rect = Rect2(0, 0, 160, 48)
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 643.0
+offset_right = 613.0
+offset_bottom = 703.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "돌아가기"
+
+[node name="shop_button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 776.0
+offset_top = 636.0
+offset_right = 928.0
+offset_bottom = 713.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 50
+text = "상점"
+
+[node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
+layout_mode = 1
+offset_left = 492.0
+offset_top = 52.0
+offset_right = 798.0
+offset_bottom = -220.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(593, 571)
+scale = Vector2(3, 3)
+region_rect = Rect2(32, 0, 32, 32)
+
 [node name="CenterContainer" type="VBoxContainer" parent="."]
 texture_filter = 1
 layout_mode = 1
@@ -22,56 +74,27 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -388.0
-offset_top = 20.0
-offset_right = -61.0
-offset_bottom = 206.5
+offset_left = -124.0
+offset_top = 284.0
+offset_right = 203.0
+offset_bottom = 470.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(2, 2)
 mouse_filter = 0
 theme_override_constants/separation = 30
-
-[node name="Title" type="Label" parent="CenterContainer"]
-texture_filter = 1
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 50
-text = "Auto Scene"
-horizontal_alignment = 1
 
 [node name="AutoMoneyLabel" type="Label" parent="CenterContainer"]
 texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 50
-text = "🪙 0"
+text = " 0"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 117.0
-offset_top = 299.0
-offset_right = 397.0
-offset_bottom = 359.0
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 40
-text = "돌아가기 (ESC)"
-
-[node name="shop_button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 800.0
-offset_top = 289.0
-offset_right = 952.0
-offset_bottom = 366.0
-theme_override_font_sizes/font_size = 50
-text = "상점"
-
-[node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
-layout_mode = 1
-offset_left = 981.0
-offset_top = 151.0
-offset_right = -52.0
-offset_bottom = -145.0
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(712, 544)
+scale = Vector2(5, 5)
+flip_h = true
+region_rect = Rect2(39, 32, 18, 32)
 
 [connection signal="button_down" from="shop_button" to="." method="_on_shop_button_button_down"]

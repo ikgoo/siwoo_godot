@@ -158,9 +158,15 @@ func complete_mining():
 	# 피버 배율 적용
 	var money_gained = int(Globals.money_up * Globals.fever_multiplier)
 	
-	# 10% 확률로 2배 보너스
-	var is_critical = randf() < 0.1
-	if is_critical:
+	# x3, x2 확률 체크 (Globals에서 관리)
+	# x3 먼저 체크 (더 희귀함)
+	var random_roll = randf()
+	var is_x3 = random_roll < Globals.x3_chance
+	var is_x2 = not is_x3 and random_roll < (Globals.x3_chance + Globals.x2_chance)
+	
+	if is_x3:
+		money_gained *= 3
+	elif is_x2:
 		money_gained *= 2
 	
 	Globals.money += money_gained
@@ -170,9 +176,11 @@ func complete_mining():
 		Globals.money_per_second += Globals.money_per_second_upgrade
 		print("💎 초당 수입 증가! +💎", Globals.money_per_second_upgrade, "/초 (현재 총 💎", Globals.money_per_second, "/초)")
 	
-	# 피버 중이면 특별 메시지
-	if is_critical:
-		print("💥 크리티컬! +💎", money_gained, " (2배), 현재 돈: 💎", Globals.money)
+	# 획득 메시지 출력
+	if is_x3:
+		print("🌟 잭팟! +💎", money_gained, " (x3), 현재 돈: 💎", Globals.money)
+	elif is_x2:
+		print("💥 크리티컬! +💎", money_gained, " (x2), 현재 돈: 💎", Globals.money)
 	elif Globals.is_fever_active:
 		print("🔥 피버 채굴! +💎", money_gained, " (", Globals.fever_multiplier, "배), 현재 돈: 💎", Globals.money)
 	else:
@@ -185,8 +193,10 @@ func complete_mining():
 	# 먼지 스프라이트 파티클 발생
 	spawn_dust_particles(8)
 	
-	# 떠오르는 텍스트 생성 (크리티컬이면 특별 표시)
-	if is_critical:
+	# 떠오르는 텍스트 생성 (x3이면 특별, x2이면 크리티컬)
+	if is_x3:
+		spawn_floating_text_jackpot("+💎" + str(money_gained) + "!!")
+	elif is_x2:
 		spawn_floating_text_critical("+💎" + str(money_gained) + "!")
 	else:
 		spawn_floating_text("+💎" + str(money_gained))
@@ -341,13 +351,21 @@ func spawn_floating_text(text: String):
 		# 금색으로 표시
 		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.9, 0.3))
 
-# 크리티컬 떠오르는 텍스트 생성 (2배 보너스)
+# 크리티컬 떠오르는 텍스트 생성 (x2 보너스)
 func spawn_floating_text_critical(text: String):
 	_play_from_pool(good_sound_pool)
 	var floating_text_script = load("res://floating_text.gd")
 	if floating_text_script:
 		# 핑크-보라색으로 표시
 		floating_text_script.create(self, Vector2(0, -20), text, Color(1.0, 0.3, 0.8))
+
+# 잭팟 떠오르는 텍스트 생성 (x3 보너스)
+func spawn_floating_text_jackpot(text: String):
+	_play_from_pool(good_sound_pool)
+	var floating_text_script = load("res://floating_text.gd")
+	if floating_text_script:
+		# 파란색으로 표시 (잭팟!)
+		floating_text_script.create(self, Vector2(0, -20), text, Color(0.3, 0.6, 1.0))
 
 
 func _on_area_2d_body_shape_entered(_body_rid, body, _body_shape_index, _local_shape_index):

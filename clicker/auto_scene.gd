@@ -70,51 +70,34 @@ func _ready():
 	get_viewport().transparent_bg = true
 	RenderingServer.set_default_clear_color(Color(0, 0, 0, 0))
 	
-	# 창 크기는 원래 비율 유지하면서 300에 가깝게 (정수 비율로 정확히)
-	# 원래 viewport의 최대공약수 계산
-	var gcd_val = _gcd(original_viewport_size.x, original_viewport_size.y)
-	var base_ratio_x = original_viewport_size.x / gcd_val
-	var base_ratio_y = original_viewport_size.y / gcd_val
+	# project.godot 기본 viewport 크기 사용 (F6 실행과 동일하게)
+	var default_viewport = Vector2i(1280, 720)
+	get_viewport().size = default_viewport
+	size = default_viewport  # 루트 Control도 같은 크기로 설정
 	
-	# 300에 가장 가까운 배수 찾기
-	var scale_factor = roundi(300.0 / float(base_ratio_x))
-	if scale_factor < 1:
-		scale_factor = 1
-	
-	var target_window_size: Vector2i = Vector2i(base_ratio_x * scale_factor, base_ratio_y * scale_factor)
-	print("원래 viewport: ", original_viewport_size)
-	print("기본 비율: ", base_ratio_x, ":", base_ratio_y)
-	print("스케일: ", scale_factor)
-	print("목표 창 크기: ", target_window_size)
-	
-	# Viewport는 원래 크기 유지
-	get_viewport().size = original_viewport_size
-	size = original_viewport_size  # 루트 Control도 원래 크기 유지
-	
-	# 창 크기를 마지막에 설정 (viewport 설정 후)
-	get_window().size = target_window_size
-	print("창 크기 설정 후: ", get_window().size)
+	# 창 크기를 viewport의 0.4배의 가장 가까운 자연수로 설정
+	var final_window_size = Vector2i(
+		roundi(default_viewport.x * 0.4),
+		roundi(default_viewport.y * 0.4)
+	)
+	get_window().size = final_window_size
+	print("창 크기 설정 후: ", final_window_size)
 	
 	# 창을 화면 중앙으로 이동
 	var screen_size = DisplayServer.screen_get_size()
-	var window_size = target_window_size
 	get_window().position = Vector2i(
-		(screen_size.x - window_size.x) / 2,
-		(screen_size.y - window_size.y) / 2
+		(screen_size.x - final_window_size.x) / 2,
+		(screen_size.y - final_window_size.y) / 2
 	)
 	
-	print("Auto Scene viewport 크기: 1280x640 (창 모드, 중앙 정렬)")
+	print("Auto Scene - Viewport: ", default_viewport, ", 창: ", final_window_size)
 	
 	# 버튼 시그널 연결
 	back_button.pressed.connect(_on_back_button_pressed)
 	# CenterContainer의 마우스 필터 설정 (드래그 가능하게)
 	$CenterContainer.mouse_filter = Control.MOUSE_FILTER_STOP
-	# 자식 Label들이 마우스를 가로채지 않도록 설정
-	title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	auto_money_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	# 레이블 색상 설정
-	title_label.modulate = Color(0.8, 1.0, 1.0)
 	auto_money_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
 
 	
@@ -140,7 +123,7 @@ func _process(_delta):
 # Auto Money 표시 업데이트
 func update_auto_money_display():
 	if auto_money_label:
-		auto_money_label.text = "🪙 " + str(int(displayed_auto_money))
+		auto_money_label.text = str(int(displayed_auto_money))
 
 
 # 돌아가기 버튼 클릭
@@ -205,21 +188,27 @@ func _on_shop_button_button_down():
 		shop_menu.visible = !shop_menu.visible
 		print("shop_menu visible: ", shop_menu.visible)
 
-## /** 현재 스킨을 적용한다
+## /** 현재 스킨을 적용한다 (Sprite1, Sprite2 각각)
 ##  * @returns void
 ##  */
 func _apply_current_skin() -> void:
-	var skin: SkinItem = Globals.get_current_skin()
-	if skin:
-		skin.apply_to_scene(self)
-		print("스킨 적용 완료: ", Globals.current_skin)
+	# Sprite1 스킨 적용
+	var skin1: SkinItem = Globals.get_current_sprite1_skin()
+	if skin1:
+		skin1.apply_to_scene(self)
+	
+	# Sprite2 스킨 적용
+	var skin2: SkinItem = Globals.get_current_sprite2_skin()
+	if skin2:
+		skin2.apply_to_scene(self)
+	
+	print("스킨 적용 완료 - Sprite1: ", Globals.current_sprite1_skin, ", Sprite2: ", Globals.current_sprite2_skin)
 
 ## /** 스킨 변경 시그널 핸들러
 ##  * @param skin_id String 변경된 스킨 ID
 ##  * @returns void
 ##  */
-func _on_skin_changed(skin_id: String) -> void:
-	print("스킨 변경 감지: ", skin_id)
+func _on_skin_changed(_skin_id: String) -> void:
 	_apply_current_skin()
 
 ## /** 최대공약수 계산 (유클리드 호제법)

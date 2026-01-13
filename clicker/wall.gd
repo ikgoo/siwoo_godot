@@ -64,7 +64,7 @@ func open_wall():
 	await focus_camera_on_wall()
 	
 	# 진동 효과 시작
-	vibration(3.0)
+	vibration(0.5)
 	await get_tree().create_timer(0.8).timeout  # 0.8초간 진동
 	vib_end()
 	

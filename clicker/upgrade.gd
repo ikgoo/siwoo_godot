@@ -66,6 +66,13 @@ var idle_monologues_mining_key_count: Array[String] = [
 	"양손을 다 써야지",
 ]
 
+var idle_monologues_money_randomize: Array[String] = [
+	"운이 좋으면 더 많이",
+	"잭팟이 터지려나",
+	"대박이 나올 것 같아",
+	"오늘은 뭔가 느낌이 좋아",
+]
+
 # 자동 대사 타이머
 var idle_monologue_timer: float = randf_range(0.0, 8.0)  # 랜덤 시작으로 동시 출력 방지
 var idle_monologue_interval: float = 8.0  # 8초마다 체크
@@ -99,6 +106,11 @@ func get_current_cost() -> int:
 				return Globals.mining_key_count_upgrades[current_level].x
 			else:
 				return -1  # MAX
+		upgrade.money_randomize:  # 돈 랜덤 (mr)
+			if current_level < Globals.money_randomize_upgrades.size():
+				return Globals.money_randomize_upgrades[current_level].x
+			else:
+				return -1  # MAX
 		_:
 			return 0
 
@@ -127,6 +139,8 @@ func get_current_increment() -> int:
 				return Globals.mining_key_count_upgrades[current_level].y
 			else:
 				return 4  # MAX
+		upgrade.money_randomize:  # 돈 랜덤
+			return 0  # 확률은 별도 처리
 		_:
 			return 0
 
@@ -180,6 +194,8 @@ func get_upgrade_info_text() -> String:
 			is_max = (current_level >= Globals.auto_mining_speed_upgrades.size())
 		upgrade.mining_key_count:  # 채굴 키 개수
 			is_max = (current_level >= Globals.mining_key_count_upgrades.size())
+		upgrade.money_randomize:  # 돈 랜덤
+			is_max = (current_level >= Globals.money_randomize_upgrades.size())
 	
 	if is_max or cost == -1:
 		return "MAX"
@@ -197,8 +213,10 @@ func get_upgrade_info_text() -> String:
 			var new_clicks = Globals.pickaxe_speed_upgrades[current_level].y
 			effect_text = "필요 클릭: %d회" % new_clicks
 		upgrade.money_randomize:
-			type_name = "랜덤"
-			effect_text = "미구현"
+			type_name = "돈 랜덤 확률"
+			var new_x2 = Globals.money_randomize_upgrades[current_level].y
+			var new_x3 = Globals.money_randomize_upgrades[current_level].z
+			effect_text = "x2: %d%%, x3: %d%%" % [new_x2, new_x3]
 		upgrade.money_per_second:
 			type_name = "초당 다이아몬드"
 			var new_value = Globals.diamond_per_second_upgrades[current_level].y
@@ -267,8 +285,10 @@ func _process(delta):
 					Globals.update_pickaxe_speed()
 					print("업그레이드 완료! 곡괭이 속도 Lv ", Globals.pickaxe_speed_level, " (필요 클릭: ", Globals.mining_clicks_required, "회)")
 				upgrade.money_randomize:
-					# 미구현
-					print("money_randomize 업그레이드는 아직 구현되지 않았습니다.")
+					# 돈 랜덤 레벨 증가
+					Globals.money_randomize_level += 1
+					Globals.update_money_randomize()
+					print("업그레이드 완료! 돈 랜덤 Lv ", Globals.money_randomize_level, " (x2: ", int(Globals.x2_chance * 100), "%, x3: ", int(Globals.x3_chance * 100), "%)")
 				upgrade.money_per_second:
 					# 초당 다이아몬드 레벨 증가
 					Globals.diamond_per_second_level += 1
@@ -310,6 +330,8 @@ func update_visual_feedback():
 			is_max = (current_level >= Globals.auto_mining_speed_upgrades.size())
 		upgrade.mining_key_count:
 			is_max = (current_level >= Globals.mining_key_count_upgrades.size())
+		upgrade.money_randomize:
+			is_max = (current_level >= Globals.money_randomize_upgrades.size())
 	
 	# 마지막 단계면 파티클 끄기
 	if is_max:
@@ -351,6 +373,8 @@ func spawn_idle_monologue():
 			monologue_list = idle_monologues_auto_mining_speed
 		upgrade.mining_key_count:
 			monologue_list = idle_monologues_mining_key_count
+		upgrade.money_randomize:
+			monologue_list = idle_monologues_money_randomize
 		_:
 			return
 	

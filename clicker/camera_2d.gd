@@ -14,6 +14,11 @@ var default_zoom : Vector2 = Vector2(2, 2)  # 기본 줌 레벨
 var target_zoom : Vector2 = Vector2(2, 2)  # 목표 줌 레벨
 var zoom_speed : float = 2.0  # 줌 변경 속도
 
+# y 제한 관련 확대 변수
+var y_limit : float = 88.0  # 카메라 y 제한선
+var max_zoom_distance : float = 100.0  # 이 거리만큼 내려가면 최대 확대
+var max_extra_zoom : float = 0.8  # 최대 추가 확대량 (기본줌 + 이 값)
+
 
 
 func _ready():
@@ -38,9 +43,8 @@ func _process(delta):
 		# 일반 모드: 캐릭터를 따라가기
 		global_position = global_position.lerp(character.global_position, follow_speed)
 	
-	# y좌표 88.0 이하로 제한 (더 아래로 못 내려가게)
-	if global_position.y > 88.0:
-		global_position.y = 88.0
+	# 캐릭터가 y_limit 아래에 있으면 거리에 비례해서 확대
+	_update_zoom_by_y_distance()
 	
 	# 줌 부드럽게 변경
 	zoom = zoom.lerp(target_zoom, zoom_speed * delta)
@@ -69,6 +73,31 @@ func wait_until_arrived(threshold: float = 5.0, max_wait_time: float = 5.0):
 	while not is_near_target(threshold) and elapsed_time < max_wait_time:
 		await get_tree().process_frame
 		elapsed_time += get_process_delta_time()
+
+# === y 거리에 따른 자동 줌 ===
+
+## 캐릭터가 y_limit 아래에 있을 때 거리에 비례해서 확대
+func _update_zoom_by_y_distance():
+	if not character or is_locked:
+		return
+	
+	var char_y = character.global_position.y
+	
+	if char_y > y_limit:
+		# y_limit 아래로 내려간 거리 계산
+		var distance_below = char_y - y_limit
+		
+		# 거리 비율 계산 (0.0 ~ 1.0 사이로 클램프)
+		var zoom_ratio = clamp(distance_below / max_zoom_distance, 0.0, 1.0)
+		
+		# 추가 확대량 계산 (거리에 비례)
+		var extra_zoom = max_extra_zoom * zoom_ratio
+		
+		# 목표 줌 설정 (기본 줌 + 추가 확대)
+		target_zoom = default_zoom + Vector2(extra_zoom, extra_zoom)
+	else:
+		# y_limit 위에 있으면 기본 줌으로 복귀
+		target_zoom = default_zoom
 
 # === 줌 제어 함수들 ===
 

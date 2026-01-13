@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://d2vajgosquble" path="res://rock.gd" id="1_o0qsl"]
 [ext_resource type="Texture2D" uid="uid://d6ptpkex8ug5" path="res://CONCEPT/asset/mine_clicker32-mine_tile.png" id="2_46y1q"]
-[ext_resource type="AudioStream" uid="uid://dqa64f30c8oao" path="res://orb.mp3" id="3_46y1q"]
-[ext_resource type="AudioStream" uid="uid://s40vacvqwnpx" path="res://Minecraft_Level_Up_Sound_Effect-645180.mp3" id="4_o54ku"]
+[ext_resource type="AudioStream" uid="uid://dqa64f30c8oao" path="res://normal_rock.mp3" id="3_46y1q"]
+[ext_resource type="AudioStream" uid="uid://s40vacvqwnpx" path="res://x2_sound.mp3" id="4_o54ku"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4wt3"]
 radius = 52.009613
