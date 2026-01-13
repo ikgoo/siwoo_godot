@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=12 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://c53admvams62x" path="res://torch.tscn" id="11_efxa6"]
-[ext_resource type="Texture2D" uid="uid://cq12tom2y7tip" path="res://CONCEPT/asset/mine_clicker32-torch_side_sheet.png" id="12_dg77c"]
 [ext_resource type="PackedScene" uid="uid://cu1tafa850nj7" path="res://ending.tscn" id="12_ycdy4"]
 
 [node name="main" type="Node2D"]
@@ -105,24 +104,28 @@ metadata/_edit_lock_ = true
 
 [node name="torch3" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(168, 193)
+region_rect = Rect2(16, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch4" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(456, 72)
+region_rect = Rect2(48, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch5" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(856, -152)
+region_rect = Rect2(16, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch6" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(382, -133)
-texture = ExtResource("12_dg77c")
+region_rect = Rect2(48, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="torch7" parent="torchs" instance=ExtResource("11_efxa6")]
 position = Vector2(689, 144)
 flip_h = true
+region_rect = Rect2(16, 0, 16, 32)
 metadata/_edit_lock_ = true
 
 [node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
