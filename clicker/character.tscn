@@ -302,8 +302,8 @@ libraries = {
 autoplay = "idle"
 
 [node name="pickaxe" type="Sprite2D" parent="."]
-position = Vector2(13.000001, -3)
-rotation = 0.7400196
+position = Vector2(14, -6)
+rotation = 0.5235988
 texture = ExtResource("2_wa5vi")
 region_rect = Rect2(0, 0, 16, 16)
 

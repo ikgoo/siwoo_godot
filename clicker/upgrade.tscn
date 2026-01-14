@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://cqo2mn0ydxbqg"]
 
 [ext_resource type="Script" uid="uid://wccy2d63t5qm" path="res://upgrade.gd" id="1_w52ek"]
-[ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_hgitt"]
+[ext_resource type="Texture2D" uid="uid://c8oqu7fuonnyq" path="res://CONCEPT/asset/mine_clicker32-BLACK_SMITH.png" id="2_50jy6"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="3_hj5gr"]
 [ext_resource type="Texture2D" uid="uid://uu4s5fgq7laa" path="res://CONCEPT/asset/lobby/upgrade_particle.png" id="4_50jy6"]
 
@@ -31,9 +31,9 @@ scale_curve = SubResource("CurveTexture_moly5")
 script = ExtResource("1_w52ek")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_hgitt")
-region_enabled = true
-region_rect = Rect2(32, 32, 32, 32)
+position = Vector2(1, -6)
+texture = ExtResource("2_50jy6")
+region_rect = Rect2(0, 8, 48, 40)
 
 [node name="Area2D2" type="Area2D" parent="."]
 
