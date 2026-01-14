@@ -27,6 +27,7 @@ window/size/viewport_height=720
 window/size/transparent=true
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
+window/vsync/vsync_mode=0
 
 [dotnet]
 

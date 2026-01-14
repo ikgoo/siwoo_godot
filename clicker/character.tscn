@@ -1,7 +1,7 @@
 [gd_scene load_steps=34 format=3 uid="uid://bn4r5emxrhk8f"]
 
 [ext_resource type="Script" uid="uid://bfg36ey1oaaxi" path="res://character.gd" id="1_glpr6"]
-[ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_pjt0s"]
+[ext_resource type="Texture2D" uid="uid://ct8mkyvu4ei8l" path="res://CONCEPT/asset/mine_clicker-pickaxe.png" id="2_wa5vi"]
 [ext_resource type="Texture2D" uid="uid://bi1wlgreouwk8" path="res://CONCEPT/asset/mine_clicker-miner-SHEET.png" id="3_wa5vi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vu45j"]
@@ -94,6 +94,22 @@ tracks/0/keys = {
 "values": [6, 7, 8, 9, 10, 11]
 }
 
+[sub_resource type="Animation" id="Animation_wdpcj"]
+resource_name = "sit"
+step = 0.083333336
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.083333336),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [18, 19]
+}
+
 [sub_resource type="Animation" id="Animation_wa5vi"]
 resource_name = "walk"
 length = 0.7500125
@@ -110,22 +126,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [6, 7, 8, 9, 10, 11]
-}
-
-[sub_resource type="Animation" id="Animation_wdpcj"]
-resource_name = "sit"
-step = 0.083333336
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.083333336),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [18, 19]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_px5sl"]
@@ -303,14 +303,13 @@ autoplay = "idle"
 
 [node name="pickaxe" type="Sprite2D" parent="."]
 position = Vector2(13.000001, -3)
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_pjt0s")
-region_enabled = true
-region_rect = Rect2(64, 32, 32, 32)
+rotation = 0.7400196
+texture = ExtResource("2_wa5vi")
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 visible = false
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, 0)
+position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_hvi53")
