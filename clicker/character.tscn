@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bn4r5emxrhk8f"]
+[gd_scene load_steps=34 format=3 uid="uid://bn4r5emxrhk8f"]
 
 [ext_resource type="Script" uid="uid://bfg36ey1oaaxi" path="res://character.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_pjt0s"]
@@ -112,6 +112,22 @@ tracks/0/keys = {
 "values": [6, 7, 8, 9, 10, 11]
 }
 
+[sub_resource type="Animation" id="Animation_wdpcj"]
+resource_name = "sit"
+step = 0.083333336
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.083333336),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [18, 19]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_px5sl"]
 _data = {
 &"RESET": SubResource("Animation_0qfo5"),
@@ -119,6 +135,7 @@ _data = {
 &"jump": SubResource("Animation_wfnr8"),
 &"jump_end": SubResource("Animation_px5sl"),
 &"run": SubResource("Animation_yxww1"),
+&"sit": SubResource("Animation_wdpcj"),
 &"walk": SubResource("Animation_wa5vi")
 }
 
@@ -194,6 +211,14 @@ region = Rect2(256, 128, 64, 64)
 atlas = ExtResource("3_wa5vi")
 region = Rect2(320, 128, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hvi53"]
+atlas = ExtResource("3_wa5vi")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rr203"]
+atlas = ExtResource("3_wa5vi")
+region = Rect2(64, 192, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_hvi53"]
 animations = [{
 "frames": [{
@@ -250,6 +275,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1r1pa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hvi53")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rr203")
 }],
 "loop": true,
 "name": &"default",
