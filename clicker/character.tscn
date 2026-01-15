@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bn4r5emxrhk8f"]
+[gd_scene load_steps=35 format=3 uid="uid://bn4r5emxrhk8f"]
 
 [ext_resource type="Script" uid="uid://bfg36ey1oaaxi" path="res://character.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://ct8mkyvu4ei8l" path="res://CONCEPT/asset/mine_clicker-pickaxe.png" id="2_wa5vi"]

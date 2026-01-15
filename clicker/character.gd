@@ -46,8 +46,17 @@ enum State {
 	MINING     # 채굴 중
 }
 
+# 플랫폼 모드 enum
+enum PlatformMode {
+	NONE,      # 일반 모드
+	PLACE,     # 플랫폼 설치 모드
+	REMOVE     # 플랫폼 제거 모드
+}
+
 # 현재 상태
 var current_state: State = State.IDLE
+# 현재 플랫폼 모드
+var platform_mode: PlatformMode = PlatformMode.NONE
 # 캐릭터가 바라보는 방향 (1: 오른쪽, -1: 왼쪽)
 var facing_direction: int = 1
 # 스프라이트 노드 참조 (애니메이션용)
@@ -108,6 +117,22 @@ var _tile_highlight: Sprite2D = null
 # 하이라이트 색상 (반투명)
 @export var highlight_color: Color = Color(1.0, 1.0, 0.3, 0.5)  # 노란색 반투명
 
+# === 플랫폼 설치/제거 시스템 ===
+# platform TileMap 참조
+var platform_tilemap: TileMap = null
+# maps TileMap 참조 (충돌 검사용)
+var maps_tilemap: TileMap = null
+# 플랫폼 타일 ID
+# platform TileMap은 TileSet_platform을 사용
+# TileSet_platform의 sources/0 = TileSetAtlasSource_35kre (KakaoTalk_20521.png)
+# Atlas Coords: x=6, y=0 (사용자가 지정한 위치)
+const PLATFORM_TILE_SOURCE_ID = 0
+const PLATFORM_TILE_COORDS = Vector2i(6, 0)
+# 모드별 하이라이트 색상
+var platform_place_color: Color = Color(0.3, 1.0, 0.3, 0.5)  # 초록색
+var platform_remove_color: Color = Color(1.0, 0.3, 0.3, 0.5)  # 빨간색
+var mining_highlight_color: Color = Color(1.0, 1.0, 0.3, 0.5)  # 노란색
+
 # 스태미나 시스템
 var max_stamina: float = 100.0
 var current_stamina: float = 100.0
@@ -144,6 +169,9 @@ func _ready():
 	# breakable_tile TileMap 찾기 (타일 파괴 시스템)
 	find_breakable_tilemap()
 	
+	# platform과 maps TileMap 찾기 (플랫폼 설치/제거 시스템)
+	find_platform_tilemaps()
+	
 	# 기본 대기 애니메이션 재생
 	play_animation("idle")
 
@@ -152,6 +180,30 @@ func _input(event: InputEvent):
 	if event is InputEventKey and event.pressed and not event.echo:
 		Globals.money += 1
 		print("키 입력! 돈 +1 (현재: 💎", Globals.money, ")")
+	
+	# 플랫폼 모드 전환 (2번 키: 설치 모드, 3번 키: 제거 모드)
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_2:
+			# 설치 모드 토글
+			if platform_mode == PlatformMode.PLACE:
+				platform_mode = PlatformMode.NONE
+				print("🔧 플랫폼 설치 모드 해제")
+			else:
+				platform_mode = PlatformMode.PLACE
+				print("🔧 플랫폼 설치 모드 활성화")
+		
+		elif event.keycode == KEY_3:
+			# 제거 모드 토글
+			if platform_mode == PlatformMode.REMOVE:
+				platform_mode = PlatformMode.NONE
+				print("🔧 플랫폼 제거 모드 해제")
+			else:
+				platform_mode = PlatformMode.REMOVE
+				print("🔧 플랫폼 제거 모드 활성화")
+		
+		# B키로 플랫폼 설치/제거
+		elif event.keycode == KEY_B:
+			handle_platform_action()
 	
 
 func _process(delta):
@@ -796,6 +848,48 @@ func _find_all_breakable_tiles(node: Node, result: Array):
 	for child in node.get_children():
 		_find_all_breakable_tiles(child, result)
 
+## platform과 maps TileMap을 씬에서 찾습니다.
+## breakable_tilemap과 같은 맵(map_1 또는 map_2)의 것을 찾습니다.
+func find_platform_tilemaps():
+	print("🔍 platform과 maps TileMap 검색 시작...")
+	
+	# breakable_tilemap이 없으면 찾을 수 없음
+	if not breakable_tilemap or not is_instance_valid(breakable_tilemap):
+		print("⚠️ breakable_tilemap이 없어서 platform을 찾을 수 없습니다.")
+		return
+	
+	# breakable_tilemap의 부모가 어느 맵인지 확인 (map_1 또는 map_2)
+	var current_map = breakable_tilemap.get_parent()
+	if not current_map:
+		print("⚠️ breakable_tilemap의 부모를 찾을 수 없습니다.")
+		return
+	
+	print("  - 현재 사용 중인 맵: ", current_map.name)
+	
+	# 같은 맵에서 platform과 maps 찾기
+	var pt = current_map.get_node_or_null("platform")
+	if pt and pt is TileMap:
+		platform_tilemap = pt
+		print("  - ", current_map.name, "/platform 발견!")
+	
+	var mt = current_map.get_node_or_null("maps")
+	if mt and mt is TileMap:
+		maps_tilemap = mt
+		print("  - ", current_map.name, "/maps 발견!")
+	
+	if platform_tilemap:
+		print("✅ platform TileMap 발견! 경로: ", platform_tilemap.get_path())
+		# 플랫폼을 보이게 설정
+		platform_tilemap.visible = true
+		print("   플랫폼 표시 활성화!")
+	else:
+		print("⚠️ ", current_map.name, "에 platform TileMap이 없습니다.")
+	
+	if maps_tilemap:
+		print("✅ maps TileMap 발견! 경로: ", maps_tilemap.get_path())
+	else:
+		print("⚠️ ", current_map.name, "에 maps TileMap이 없습니다.")
+
 ## 타일 하이라이트 Sprite2D를 생성합니다.
 func create_tile_highlight():
 	# 타일 크기 가져오기 (TileSet에서)
@@ -824,6 +918,12 @@ func create_tile_highlight():
 
 ## 타겟 타일을 업데이트합니다 (캐릭터→마우스 방향 raycast).
 func update_tile_targeting():
+	# 플랫폼 모드일 때는 다른 타겟팅 로직 사용
+	if platform_mode != PlatformMode.NONE:
+		update_platform_targeting()
+		return
+	
+	# 일반 채굴 모드
 	if not breakable_tilemap or not is_instance_valid(breakable_tilemap):
 		_current_target_tile = null
 		can_mine_tile = false
@@ -942,6 +1042,10 @@ func update_highlight_visibility():
 	if not _tile_highlight:
 		return
 	
+	# 플랫폼 모드일 때는 update_platform_targeting에서 처리
+	if platform_mode != PlatformMode.NONE:
+		return
+	
 	# 타겟 타일이 있고, 실제로 타일이 존재할 때만 하이라이트
 	if _current_target_tile != null and breakable_tilemap:
 		# 타일이 실제로 존재하는지 확인
@@ -952,6 +1056,7 @@ func update_highlight_visibility():
 			
 			# Sprite2D는 중심이 원점이므로 그대로 설정
 			_tile_highlight.global_position = tile_world_pos
+			_tile_highlight.modulate = mining_highlight_color  # 채굴 모드 색상
 			_tile_highlight.visible = true
 			
 			# 디버그: 하이라이트 위치 출력 (1초에 한 번)
@@ -963,6 +1068,114 @@ func update_highlight_visibility():
 	
 	# 타겟이 없거나 타일이 없으면 하이라이트 비활성화
 	_tile_highlight.visible = false
+
+## 플랫폼 모드에서 타겟 타일을 업데이트합니다.
+func update_platform_targeting():
+	if not _tile_highlight or not platform_tilemap or not is_instance_valid(platform_tilemap):
+		_current_target_tile = null
+		can_mine_tile = false
+		if _tile_highlight:
+			_tile_highlight.visible = false
+		return
+	
+	# 마우스 위치를 월드 좌표로 변환
+	var mouse_pos = get_global_mouse_position()
+	
+	# 캐릭터와 마우스 사이의 거리 확인 (Area2D 범위 내에 있어야 함)
+	var distance = global_position.distance_to(mouse_pos)
+	if distance > mining_range:
+		_current_target_tile = null
+		can_mine_tile = false
+		_tile_highlight.visible = false
+		return
+	
+	# 마우스 위치의 타일 좌표 계산
+	var local_pos = platform_tilemap.to_local(mouse_pos)
+	var tile_pos = platform_tilemap.local_to_map(local_pos)
+	
+	# 설치 모드: breakable_tile, maps, platform 모두 비어있어야 함
+	if platform_mode == PlatformMode.PLACE:
+		var is_empty = true
+		
+		# breakable_tile 체크
+		if breakable_tilemap and is_instance_valid(breakable_tilemap):
+			var breakable_id = breakable_tilemap.get_cell_source_id(0, tile_pos)
+			if breakable_id != -1:
+				is_empty = false
+		
+		# maps 체크
+		if maps_tilemap and is_instance_valid(maps_tilemap):
+			var maps_id = maps_tilemap.get_cell_source_id(0, tile_pos)
+			if maps_id != -1:
+				is_empty = false
+		
+		# platform 체크
+		var platform_id = platform_tilemap.get_cell_source_id(0, tile_pos)
+		if platform_id != -1:
+			is_empty = false
+		
+		# 빈 타일이면 하이라이트 표시
+		if is_empty:
+			var tile_world_pos = platform_tilemap.to_global(platform_tilemap.map_to_local(tile_pos))
+			_current_target_tile = {
+				"tile_pos": tile_pos,
+				"world_pos": tile_world_pos,
+				"distance": distance
+			}
+			can_mine_tile = true
+			_tile_highlight.global_position = tile_world_pos
+			_tile_highlight.modulate = platform_place_color
+			_tile_highlight.visible = true
+		else:
+			_current_target_tile = null
+			can_mine_tile = false
+			_tile_highlight.visible = false
+	
+	# 제거 모드: platform 타일이 있어야 함
+	elif platform_mode == PlatformMode.REMOVE:
+		var platform_id = platform_tilemap.get_cell_source_id(0, tile_pos)
+		
+		# 플랫폼이 있으면 하이라이트 표시
+		if platform_id != -1:
+			var tile_world_pos = platform_tilemap.to_global(platform_tilemap.map_to_local(tile_pos))
+			_current_target_tile = {
+				"tile_pos": tile_pos,
+				"world_pos": tile_world_pos,
+				"distance": distance
+			}
+			can_mine_tile = true
+			_tile_highlight.global_position = tile_world_pos
+			_tile_highlight.modulate = platform_remove_color
+			_tile_highlight.visible = true
+		else:
+			_current_target_tile = null
+			can_mine_tile = false
+			_tile_highlight.visible = false
+
+## 플랫폼 설치/제거를 처리합니다 (B키).
+func handle_platform_action():
+	if not platform_tilemap or not is_instance_valid(platform_tilemap):
+		print("⚠️ platform TileMap이 없습니다.")
+		return
+	
+	if _current_target_tile == null:
+		print("⚠️ 타겟 타일이 없습니다.")
+		return
+	
+	var tile_pos = _current_target_tile.tile_pos
+	
+	# 설치 모드
+	if platform_mode == PlatformMode.PLACE:
+		platform_tilemap.set_cell(0, tile_pos, PLATFORM_TILE_SOURCE_ID, PLATFORM_TILE_COORDS)
+		print("✅ 플랫폼 설치: ", tile_pos)
+	
+	# 제거 모드
+	elif platform_mode == PlatformMode.REMOVE:
+		platform_tilemap.erase_cell(0, tile_pos)
+		print("✅ 플랫폼 제거: ", tile_pos)
+	
+	# 타겟팅 즉시 업데이트 (설치/제거 후 상태 반영)
+	update_platform_targeting()
 
 ## 현재 타겟 타일을 파괴합니다.
 func mine_targeted_tile():
