@@ -1,12 +1,12 @@
-[gd_scene load_steps=12 format=4 uid="uid://ddocumwv3cjdd"]
+[gd_scene load_steps=21 format=4 uid="uid://ddocumwv3cjdd"]
 
 [ext_resource type="Texture2D" uid="uid://bfv6sp8gu6ax4" path="res://CONCEPT/asset/mine_clicker32-background.png" id="1_olnm2"]
 [ext_resource type="TileSet" uid="uid://bc4jub32w6yl5" path="res://CONCEPT/tilemap_dirt.tres" id="2_3mish"]
 [ext_resource type="Texture2D" uid="uid://c424uysaanjcj" path="res://CONCEPT/asset/mine_clicker32-warterfall.png" id="2_bsyy1"]
 [ext_resource type="Texture2D" uid="uid://dn5vn06xvj73a" path="res://CONCEPT/asset/mine_clicker32-door.png" id="3_r662r"]
-[ext_resource type="Texture2D" uid="uid://cq12tom2y7tip" path="res://CONCEPT/asset/mine_clicker32-torch_side_sheet.png" id="4_3mish"]
 [ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="5_i8h3n"]
 [ext_resource type="Texture2D" uid="uid://bi1wlgreouwk8" path="res://CONCEPT/asset/mine_clicker-miner-SHEET.png" id="6_i8h3n"]
+[ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="7_olnm2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v7ehw"]
 texture = ExtResource("1_olnm2")
@@ -177,6 +177,75 @@ terrain_set_0/terrain_1/name = "Terrain 1"
 terrain_set_0/terrain_1/color = Color(1, 1, 1, 1)
 sources/1 = SubResource("TileSetAtlasSource_r662r")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7ehw"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_segga"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p77g4"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6db2q"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvooh"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(0, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r3ffe"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(16, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msf75"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(32, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyh2m"]
+atlas = ExtResource("7_olnm2")
+region = Rect2(48, 32, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rnap6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v7ehw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_segga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p77g4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6db2q")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvooh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r3ffe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msf75")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vyh2m")
+}],
+"loop": true,
+"name": &"side",
+"speed": 8.0
+}]
+
 [node name="Concept" type="Node2D"]
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="."]
@@ -211,7 +280,7 @@ region_rect = Rect2(0, 0, 32, 64)
 
 [node name="MineClicker32TorchSideSheet" type="Sprite2D" parent="."]
 position = Vector2(303, 465)
-texture = ExtResource("4_3mish")
+texture = ExtResource("5_i8h3n")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
 
@@ -220,7 +289,21 @@ position = Vector2(254, 402)
 texture = ExtResource("5_i8h3n")
 
 [node name="MineClickerMinerSheet" type="Sprite2D" parent="."]
-position = Vector2(931, 559)
+position = Vector2(937, 549)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("6_i8h3n")
 hframes = 6
-vframes = 3
+vframes = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(986, 528)
+sprite_frames = SubResource("SpriteFrames_rnap6")
+animation = &"side"
+frame_progress = 0.5081215
+flip_h = true
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(883, 522)
+sprite_frames = SubResource("SpriteFrames_rnap6")
+frame_progress = 0.57907647
+flip_h = true
