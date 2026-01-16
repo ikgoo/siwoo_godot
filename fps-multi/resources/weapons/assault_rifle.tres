@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/weapon_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+weapon_name = "돌격소총"
+weapon_type = 0
+damage = 30.0
+headshot_multiplier = 2.0
+magazine_size = 30
+reserve_ammo = 120
+infinite_ammo = false
+fire_rate = 0.1
+fire_mode = 0
+burst_count = 3
+burst_delay = 0.05
+base_spread = 0.5
+aim_spread = 0.1
+moving_spread_multiplier = 2.0
+jumping_spread_multiplier = 3.0
+recoil_amount = 0.3
+recoil_recovery = 5.0
+reload_time = 2.0
+pellets_per_shot = 1
+pellet_spread = 5.0
+attack_range = 2.0
+attack_speed = 0.5
+use_muzzle_flash = true
+use_shell_eject = true
+

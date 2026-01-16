@@ -28,6 +28,7 @@ gravity = Vector3(0, -50, 0)
 scale_curve = SubResource("CurveTexture_moly5")
 
 [node name="upgrade" type="Node2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_w52ek")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

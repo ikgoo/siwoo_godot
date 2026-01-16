@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqw8xnw7yx3q3"]
+
+[ext_resource type="PackedScene" uid="uid://cxkj8vb7qw2hl" path="res://scenes/weapons/weapon_base.tscn" id="1"]
+[ext_resource type="Resource" path="res://resources/weapons/awp.tres" id="2"]
+
+[node name="AWP" instance=ExtResource("1")]
+weapon_data = ExtResource("2")
+

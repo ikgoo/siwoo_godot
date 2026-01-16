@@ -9,6 +9,7 @@
 radius = 52.009613
 
 [node name="rock" type="Node2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_o0qsl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://tracer123"]
+
+[ext_resource type="Script" path="res://scripts/weapons/bullet_tracer.gd" id="1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tracer"]
+size = Vector3(0.01, 0.01, 1.0)
+
+[sub_resource type="StandardMaterial3D" id="Material_tracer"]
+transparency = 1
+albedo_color = Color(1, 0.9, 0.5, 1)
+emission_enabled = true
+emission = Color(1, 0.9, 0.5, 1)
+emission_energy_multiplier = 2.0
+
+[node name="BulletTracer" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_tracer")
+surface_material_override/0 = SubResource("Material_tracer")
+script = ExtResource("1")
+

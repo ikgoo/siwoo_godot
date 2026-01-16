@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjf8xnw7yx3qm"]
+
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/player/camera_controller.gd" id="2_camera"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon_manager.gd" id="3_weapon_manager"]
+[ext_resource type="Script" path="res://scripts/network/player_sync.gd" id="4_player_sync"]
+[ext_resource type="Script" path="res://scripts/player/multiplayer_sync.gd" id="5_mp_sync"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_temp"]
+radius = 0.4
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+visible = false
+mesh = SubResource("CapsuleMesh_temp")
+
+[node name="PlayerNameTag" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+script = ExtResource("2_camera")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+fov = 90.0
+
+[node name="WeaponManager" type="Node3D" parent="CameraController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.5)
+script = ExtResource("3_weapon_manager")
+
+[node name="PlayerSync" type="Node" parent="."]
+script = ExtResource("4_player_sync")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="PlayerSync"]
+script = ExtResource("5_mp_sync")
+

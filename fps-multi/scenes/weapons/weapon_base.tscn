@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxkj8vb7qw2hl"]
+
+[ext_resource type="Script" path="res://scripts/weapons/weapon_base.gd" id="1_weapon"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_weapon"]
+size = Vector3(0.1, 0.1, 0.4)
+
+[node name="WeaponBase" type="Node3D"]
+script = ExtResource("1_weapon")
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, -0.3)
+mesh = SubResource("BoxMesh_weapon")
+
+[node name="MuzzlePoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, -0.5)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -100)
+collision_mask = 2
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, -0.5)
+emitting = false
+amount = 8
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
+
+[node name="ShellEject" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.1, -0.2)
+emitting = false
+amount = 1
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-0.5, -0.5, -0.5, 1, 1, 1)
+

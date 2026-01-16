@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SkinItem" load_steps=4 format=3 uid="uid://cull37fw7shqw"]
+
+[ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_kxy2p"]
+[ext_resource type="Texture2D" uid="uid://c8oqu7fuonnyq" path="res://CONCEPT/asset/mine_clicker32-BLACK_SMITH.png" id="2_xl5ug"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ii7yl"]
+atlas = ExtResource("2_xl5ug")
+region = Rect2(6, 14, 40, 34)
+
+[resource]
+script = ExtResource("1_kxy2p")
+texture = SubResource("AtlasTexture_ii7yl")
+flip_h = true
+id = "anvil"
+name = "모루 "
+price = 20
+description = "깡"
+metadata/_custom_type_script = "uid://dmhpjy8ra7v44"
