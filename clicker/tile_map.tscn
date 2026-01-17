@@ -1770,6 +1770,7 @@ texture_region_size = Vector2i(32, 32)
 5:0/0 = 0
 6:0/0 = 0
 6:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, -8.284401, -16, -8.284401)
+6:0/0/physics_layer_1/polygon_0/one_way = true
 7:0/0 = 0
 8:0/0 = 0
 9:0/0 = 0
@@ -2875,6 +2876,11 @@ layer_1/name = "platform"
 position = Vector2(180, 268)
 flip = true
 
+[node name="upgrade2" parent="map_2/upgrades" instance=ExtResource("8_2cfip")]
+position = Vector2(-316, 888)
+flip = true
+type = 3
+
 [node name="rock" parent="map_2/upgrades" instance=ExtResource("9_sqirv")]
 position = Vector2(-8, 280)
 
@@ -2883,6 +2889,10 @@ metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" parent="map_2/torchs" instance=ExtResource("10_c81vo")]
 position = Vector2(-80, 40)
+torch_type = 2
+
+[node name="AnimatedSprite2D4" parent="map_2/torchs" instance=ExtResource("10_c81vo")]
+position = Vector2(-316, 772)
 torch_type = 2
 
 [node name="AnimatedSprite2D2" parent="map_2/torchs" instance=ExtResource("10_c81vo")]

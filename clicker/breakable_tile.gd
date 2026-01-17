@@ -24,6 +24,12 @@ var build_target_tile: Vector2i = Vector2i(-9999, -9999)  # 설치할 타일 좌
 var build_highlight_sprite: Sprite2D = null  # 설치 하이라이트 스프라이트 (초록색)
 var platform_tilemap: TileMap = null  # platform 타일맵 참조
 
+# 횃불 설치
+var torch_scene: PackedScene = null  # 횃불 씬
+var is_torch_mode: bool = false  # 횃불 설치 모드
+var torch_highlight_sprite: Sprite2D = null  # 횃불 하이라이트 스프라이트 (주황색)
+var installed_torches: Dictionary = {}  # 설치된 횃불 {Vector2i: torch_instance}
+
 const MINING_LAYER: int = 0  # 채굴 가능한 레이어 인덱스
 const TILE_SIZE: int = 32  # 타일 크기 (픽셀)
 
@@ -38,9 +44,13 @@ func _ready():
 	# 하이라이트 스프라이트 생성
 	create_highlight_sprite()
 	create_build_highlight_sprite()
+	create_torch_highlight_sprite()
 	
 	# platform 타일맵 찾기
 	find_platform_tilemap()
+	
+	# 횃불 씬 로드
+	torch_scene = preload("res://torch.tscn")
 	
 	print("💎 [", name, "] breakable_tile 초기화 완료!")
 	print("  - 경로: ", get_path())
@@ -138,27 +148,53 @@ func _process(_delta):
 		if build_highlight_sprite:
 			build_highlight_sprite.visible = false
 		build_target_tile = Vector2i(-9999, -9999)
+	
+	# 횃불 모드일 때 하이라이트
+	if is_torch_mode:
+		update_torch_mode_highlight()
+	else:
+		if torch_highlight_sprite:
+			torch_highlight_sprite.visible = false
 
 func _input(event):
 	# 2번 키로 설치 모드 토글
 	if event is InputEventKey:
 		if event.keycode == KEY_2 and event.pressed and not event.echo:
 			is_build_mode = not is_build_mode
+			is_torch_mode = false  # 횃불 모드 해제
 			if is_build_mode:
-				print("🔧 [", name, "] 설치 모드 활성화!")
-				# 채굴 하이라이트 숨기기
+				print("🔧 [", name, "] 플랫폼 설치 모드 활성화!")
 				if highlight_sprite:
 					highlight_sprite.visible = false
+				if torch_highlight_sprite:
+					torch_highlight_sprite.visible = false
 			else:
 				print("⛏️ [", name, "] 채굴 모드로 복귀!")
-				# 설치 하이라이트 숨기기
 				if build_highlight_sprite:
 					build_highlight_sprite.visible = false
+		
+		# 3번 키로 횃불 설치 모드 토글
+		if event.keycode == KEY_3 and event.pressed and not event.echo:
+			is_torch_mode = not is_torch_mode
+			is_build_mode = false  # 플랫폼 모드 해제
+			if is_torch_mode:
+				print("🔥 [", name, "] 횃불 설치 모드 활성화!")
+				if highlight_sprite:
+					highlight_sprite.visible = false
+				if build_highlight_sprite:
+					build_highlight_sprite.visible = false
+			else:
+				print("⛏️ [", name, "] 채굴 모드로 복귀!")
+				if torch_highlight_sprite:
+					torch_highlight_sprite.visible = false
 		
 		# B키로 플랫폼 설치 (설치 모드일 때만)
 		if event.keycode == KEY_B and event.pressed and not event.echo:
 			if is_build_mode and build_target_tile != Vector2i(-9999, -9999):
 				place_platform_tile(build_target_tile)
+			# 횃불 모드일 때 횃불 설치
+			elif is_torch_mode and build_target_tile != Vector2i(-9999, -9999):
+				place_torch(build_target_tile)
 	
 	# 좌클릭 눌림/뗌 감지 (설치 모드가 아닐 때만)
 	if event is InputEventMouseButton:
@@ -351,6 +387,9 @@ func mine_tile(tile_pos: Vector2i):
 	# terrain_id를 -1로 설정하면 해당 좌표의 타일이 제거되고 주변 타일들이 자동으로 업데이트됨
 	set_cells_terrain_connect(MINING_LAYER, [tile_pos], 0, -1)
 	
+	# 인접한 횃불들 업데이트 (벽이 사라지면 STAND로 변경)
+	update_adjacent_torches(tile_pos)
+	
 	# 보상 지급 (Rock과 동일한 시스템)
 	var money_gained = int(Globals.money_up * Globals.fever_multiplier)
 	
@@ -513,3 +552,206 @@ func is_near_rock() -> bool:
 		if rock and character.global_position.distance_to(rock.global_position) < 50:
 			return true
 	return false
+
+## 횃불 하이라이트 스프라이트 생성 (주황색)
+func create_torch_highlight_sprite():
+	torch_highlight_sprite = Sprite2D.new()
+	
+	# 하이라이트 텍스처 생성 (주황색 반투명 사각형)
+	var highlight_image = Image.create(TILE_SIZE, TILE_SIZE, false, Image.FORMAT_RGBA8)
+	
+	# 테두리만 그리기 (2픽셀 두께)
+	for x in range(TILE_SIZE):
+		for y in range(TILE_SIZE):
+			if x < 2 or x >= TILE_SIZE - 2 or y < 2 or y >= TILE_SIZE - 2:
+				highlight_image.set_pixel(x, y, Color(1.0, 0.6, 0.0, 0.8))  # 주황색
+			else:
+				highlight_image.set_pixel(x, y, Color(1.0, 0.6, 0.0, 0.3))  # 반투명 주황색
+	
+	var highlight_texture = ImageTexture.create_from_image(highlight_image)
+	torch_highlight_sprite.texture = highlight_texture
+	torch_highlight_sprite.visible = false
+	torch_highlight_sprite.z_index = 10
+	
+	add_child(torch_highlight_sprite)
+	print("🔥 [", name, "] 횃불 하이라이트 스프라이트 생성 완료!")
+
+## 횃불 모드 하이라이트 업데이트
+func update_torch_mode_highlight():
+	if not character or not torch_highlight_sprite:
+		return
+	
+	# 마우스 위치를 타일 좌표로 변환
+	var mouse_global_pos = get_global_mouse_position()
+	var mouse_local_pos = to_local(mouse_global_pos)
+	var mouse_tile_pos = local_to_map(mouse_local_pos)
+	
+	# 캐릭터와의 거리 확인
+	var tile_world_pos = to_global(map_to_local(mouse_tile_pos))
+	var distance = character.global_position.distance_to(tile_world_pos)
+	
+	if distance > mining_radius:
+		torch_highlight_sprite.visible = false
+		build_target_tile = Vector2i(-9999, -9999)
+		return
+	
+	# 해당 위치가 빈 공간인지 확인
+	var breakable_exists = get_cell_source_id(MINING_LAYER, mouse_tile_pos) != -1
+	var platform_exists = false
+	if platform_tilemap:
+		platform_exists = platform_tilemap.get_cell_source_id(0, mouse_tile_pos) != -1
+	
+	if breakable_exists or platform_exists:
+		torch_highlight_sprite.visible = false
+		build_target_tile = Vector2i(-9999, -9999)
+		return
+	
+	# 빈 공간이면 주황색 하이라이트 표시
+	build_target_tile = mouse_tile_pos
+	torch_highlight_sprite.global_position = tile_world_pos
+	torch_highlight_sprite.visible = true
+
+## 횃불 설치
+func place_torch(tile_pos: Vector2i):
+	if not torch_scene:
+		print("❌ [", name, "] 횃불 씬이 없습니다!")
+		return
+	
+	# 이미 횃불이 있는지 확인
+	if installed_torches.has(tile_pos):
+		print("❌ [", name, "] 해당 위치에 이미 횃불이 있습니다!")
+		return
+	
+	# 이미 타일이 있는지 확인
+	var breakable_exists = get_cell_source_id(MINING_LAYER, tile_pos) != -1
+	var platform_exists = false
+	if platform_tilemap:
+		platform_exists = platform_tilemap.get_cell_source_id(0, tile_pos) != -1
+	
+	if breakable_exists or platform_exists:
+		print("❌ [", name, "] 해당 위치에 이미 타일이 있습니다!")
+		return
+	
+	# 양옆 타일 확인 (배경이 아닌 breakable_tile만)
+	var left_tile_exists = get_cell_source_id(MINING_LAYER, tile_pos + Vector2i(-1, 0)) != -1
+	var right_tile_exists = get_cell_source_id(MINING_LAYER, tile_pos + Vector2i(1, 0)) != -1
+	
+	# 횃불 인스턴스 생성
+	var torch_instance = torch_scene.instantiate()
+	
+	# 타일 위치를 월드 좌표로 변환
+	var world_pos = to_global(map_to_local(tile_pos))
+	
+	# 횃불 타입 결정
+	if left_tile_exists:
+		# 왼쪽에 타일이 있으면 → WALL_REVERSE (flip_h로 왼쪽을 바라봄)
+		torch_instance.torch_type = torch_instance.TorchType.WALL_REVERSE
+		print("🔥 [", name, "] 횃불 설치 (WALL_REVERSE - 왼쪽 벽)")
+	elif right_tile_exists:
+		# 오른쪽에 타일이 있으면 → WALL
+		torch_instance.torch_type = torch_instance.TorchType.WALL
+		print("🔥 [", name, "] 횃불 설치 (WALL - 오른쪽 벽)")
+	else:
+		# 양옆에 타일이 없으면 → STAND
+		torch_instance.torch_type = torch_instance.TorchType.STAND
+		print("🔥 [", name, "] 횃불 설치 (STAND - 서있는 횃불)")
+	
+	# 부모 map 노드 (map_1 또는 map_2) 아래의 torch 노드에 추가
+	var parent_map = get_parent()  # map_1 또는 map_2
+	var torch_container = parent_map.get_node_or_null("torch")
+	
+	if not torch_container:
+		# torch 노드가 없으면 생성
+		torch_container = Node2D.new()
+		torch_container.name = "torch"
+		parent_map.add_child(torch_container)
+		print("  - torch 컨테이너 생성: ", torch_container.get_path())
+	
+	# 먼저 자식으로 추가한 후에 global_position 설정!
+	torch_container.add_child(torch_instance)
+	torch_instance.global_position = world_pos
+	print("  - 부모: ", torch_container.get_path())
+	
+	# 설치된 횃불 Dictionary에 저장
+	installed_torches[tile_pos] = torch_instance
+	
+	print("  - 좌표: ", tile_pos)
+	print("  - 월드 위치: ", world_pos)
+	
+	# 설치 파티클 효과 (주황색)
+	spawn_torch_particles(tile_pos)
+
+## 인접한 횃불들의 타입 업데이트 (벽이 사라지면 STAND로 변경)
+func update_adjacent_torches(removed_tile_pos: Vector2i):
+	# 제거된 타일의 양옆에 횃불이 있는지 확인
+	var adjacent_positions = [
+		removed_tile_pos + Vector2i(-1, 0),  # 왼쪽
+		removed_tile_pos + Vector2i(1, 0)    # 오른쪽
+	]
+	
+	for torch_pos in adjacent_positions:
+		if installed_torches.has(torch_pos):
+			var torch_instance = installed_torches[torch_pos]
+			if not is_instance_valid(torch_instance):
+				installed_torches.erase(torch_pos)
+				continue
+			
+			# 횃불 주변의 벽 상태 다시 확인
+			var left_tile_exists = get_cell_source_id(MINING_LAYER, torch_pos + Vector2i(-1, 0)) != -1
+			var right_tile_exists = get_cell_source_id(MINING_LAYER, torch_pos + Vector2i(1, 0)) != -1
+			
+			# 새로운 타입 결정
+			var new_type
+			if left_tile_exists:
+				new_type = torch_instance.TorchType.WALL_REVERSE
+			elif right_tile_exists:
+				new_type = torch_instance.TorchType.WALL
+			else:
+				new_type = torch_instance.TorchType.STAND
+			
+			# 타입이 변경되었으면 업데이트
+			if torch_instance.torch_type != new_type:
+				var old_type_name = ["WALL", "WALL_REVERSE", "STAND"][torch_instance.torch_type]
+				var new_type_name = ["WALL", "WALL_REVERSE", "STAND"][new_type]
+				
+				torch_instance.torch_type = new_type
+				
+				# 애니메이션 변경
+				if torch_instance.animation_player:
+					match new_type:
+						torch_instance.TorchType.WALL:
+							torch_instance.animation_player.play("wall_fire")
+						torch_instance.TorchType.WALL_REVERSE:
+							torch_instance.animation_player.play("reverse_wall_fire")
+						torch_instance.TorchType.STAND:
+							torch_instance.animation_player.play("stand_fire")
+				
+				print("🔥 [", name, "] 횃불 타입 변경: ", old_type_name, " → ", new_type_name)
+				print("  - 위치: ", torch_pos)
+
+## 횃불 설치 파티클 생성 (주황색)
+func spawn_torch_particles(tile_pos: Vector2i):
+	var world_pos = to_global(map_to_local(tile_pos))
+	
+	var particles = CPUParticles2D.new()
+	particles.emitting = false
+	particles.one_shot = true
+	particles.amount = 10
+	particles.lifetime = 0.5
+	particles.explosiveness = 0.9
+	particles.direction = Vector2(0, -1)
+	particles.spread = 180
+	particles.initial_velocity_min = 30
+	particles.initial_velocity_max = 60
+	particles.gravity = Vector2(0, 80)
+	particles.scale_amount_min = 2
+	particles.scale_amount_max = 4
+	particles.color = Color(1.0, 0.6, 0.2, 0.9)  # 주황색
+	particles.global_position = world_pos
+	
+	get_tree().root.add_child(particles)
+	particles.emitting = true
+	
+	await get_tree().create_timer(particles.lifetime).timeout
+	if is_instance_valid(particles):
+		particles.queue_free()

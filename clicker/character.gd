@@ -16,10 +16,10 @@ const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
 const NORMAL_COLLISION_LAYER = 1    # 일반 타일 collision layer
 const ALL_COLLISION_LAYERS = 5      # 일반 타일 + 플랫폼
  
-# S 키를 눌렀을 때 플랫폼 통과 상태 (0.2초 동안)
+# S 키를 눌렀을 때 플랫폼 통과 상태 (y 위치 기반)
 var platform_out: bool = false
-var platform_out_timer: float = 0.0
-const PLATFORM_OUT_DURATION: float = 0.2  # 0.2초
+var platform_out_y: float = 0.0  # S키 눌렀을 때의 y 위치
+const PLATFORM_DROP_DISTANCE: float = 20.0  # 이 거리만큼 내려가면 다시 충돌 활성화
 
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
@@ -203,27 +203,12 @@ func _physics_process(delta):
 	var is_s_key_pressed = Input.is_key_pressed(KEY_S)
 	var is_s_key_just_pressed = is_s_key_pressed and not was_s_key_pressed
 	
-	# S 키를 처음 눌렀을 때 platform_out 활성화
-	if Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed:
-		platform_out = true
-		platform_out_timer = PLATFORM_OUT_DURATION
+	# S 키를 처음 눌렀을 때 y를 1 증가 (one-way collision이 자동으로 통과 처리)
+	if (Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed) and is_on_floor():
+		global_position.y += 1
 	
 	# 이전 프레임의 S 키 상태 저장
 	was_s_key_pressed = is_s_key_pressed
-	
-	# platform_out 타이머 감소
-	if platform_out:
-		platform_out_timer -= delta
-		if platform_out_timer <= 0.0:
-			platform_out = false
-	
-	# collision_mask 설정
-	# 1. velocity.y < 0 (위로 올라갈 때) 플랫폼 통과
-	# 2. platform_out == true (S 키로 1초간) 플랫폼 통과
-	if velocity.y < 0 or platform_out:
-		collision_mask = NORMAL_COLLISION_LAYER  # 플랫폼 레이어 무시
-	else:
-		collision_mask = ALL_COLLISION_LAYERS  # 모든 레이어 충돌
 	
 	# 중력 적용 - 바닥에 있지 않으면 계속 떨어짐
 	if not is_on_floor():
@@ -773,3 +758,50 @@ func check_nearby_tiles():
 		print("❌ [character] Area2D 안에 채굴 가능한 타일 없음")
 	
 	return
+
+## 캐릭터 발이 플랫폼 타일 안에 있는지 확인합니다.
+## 발이 플랫폼 상단보다 아래에 있으면 true (플랫폼 무시해야 함)
+func is_inside_any_platform() -> bool:
+	# platform 타일맵 찾기
+	var tile_map_node = get_tree().root.get_node_or_null("main/TileMap")
+	if not tile_map_node:
+		return false
+	
+	var platform_tilemaps: Array[TileMap] = []
+	var platform1 = tile_map_node.get_node_or_null("map_1/platform")
+	var platform2 = tile_map_node.get_node_or_null("map_2/platform")
+	
+	if platform1 and platform1 is TileMap:
+		platform_tilemaps.append(platform1)
+	if platform2 and platform2 is TileMap:
+		platform_tilemaps.append(platform2)
+	
+	if platform_tilemaps.is_empty():
+		return false
+	
+	# 캐릭터 발 위치
+	var feet_y = global_position.y
+	
+	for platform_tilemap in platform_tilemaps:
+		if not platform_tilemap.visible:
+			continue
+		
+		# 캐릭터 위치의 타일 확인
+		var local_pos = platform_tilemap.to_local(global_position)
+		var tile_pos = platform_tilemap.local_to_map(local_pos)
+		
+		# 현재 위치와 바로 위 타일 확인
+		for y_offset in range(-1, 1):
+			var check_tile_pos = tile_pos + Vector2i(0, y_offset)
+			var source_id = platform_tilemap.get_cell_source_id(0, check_tile_pos)
+			
+			if source_id != -1:
+				# 플랫폼 타일의 상단 y 좌표
+				var tile_center = platform_tilemap.to_global(platform_tilemap.map_to_local(check_tile_pos))
+				var tile_top_y = tile_center.y - 8  # 타일 상단 (16픽셀 타일 기준)
+				
+				# 발이 플랫폼 상단보다 아래에 있으면 → 플랫폼 안에 있음
+				if feet_y > tile_top_y + 2:  # 2픽셀 여유
+					return true
+	
+	return false

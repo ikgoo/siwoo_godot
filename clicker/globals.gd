@@ -47,7 +47,7 @@ var money_randomize_level : int = 0
 
 # 실제 게임 값들 (레벨에 따라 계산됨)
 var money_up : int = 1  # 채굴 시 획득하는 다이아몬드 (dv 레벨에 따라 결정)
-var mining_clicks_required : int = 5  # 채굴에 필요한 클릭 수 (pv 레벨에 따라 감소)
+var mining_clicks_required : int = 1  # 채굴에 필요한 클릭 수 (pv 레벨에 따라 감소) - 테스트용으로 1로 설정
 var money_per_second : int = 0  # 초당 자동으로 증가하는 돈 (알바 + 광물 채굴로 누적)
 var money_per_second_upgrade : int = 0  # 업그레이드로 얻은 초당 돈 증가량 (da 레벨에 따라 결정)
 var auto_mining_interval : float = 0.5  # 자동 채굴 간격 (초) - 레벨에 따라 감소

@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="SkinItem" load_steps=2 format=3 uid="uid://b4kcg3r53oish"]
-
-[ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_1enjd"]
-
-[resource]
-script = ExtResource("1_1enjd")
-metadata/_custom_type_script = "uid://dmhpjy8ra7v44"
