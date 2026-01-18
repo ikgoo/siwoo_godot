@@ -15,11 +15,6 @@ var base_scale: float = 0.8
 var max_scale: float = 1.0
 
 func _ready():
-	# 빛이 겹쳐도 너무 밝아지지 않도록 energy 낮추기
-	if light:
-		light.blend_mode = Light2D.BLEND_MODE_ADD  # ADD 모드 유지
-		light.energy = 0.6  # 기존 1.5에서 낮춤 (겹쳐도 적당한 밝기)
-	
 	# 횃불 타입에 따라 애니메이션 재생
 	if animation_player:
 		match torch_type:

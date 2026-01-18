@@ -18,6 +18,7 @@ extends Node2D
 @onready var map_1 = $map_1
 @onready var map_2 = $map_2
 
+# === map_1 노드 참조 ===
 @onready var inside_cave = $map_1/inside_cave
 @onready var inside_cave2 = $map_1/inside_cave2
 @onready var inside_cave3 = $map_1/inside_cave3
@@ -26,6 +27,9 @@ extends Node2D
 @onready var platform = $map_1/platform  # platform TileMap 참조
 @onready var background = $map_1/background  # background TileMap 참조
 @onready var cave_always = $map_1/cave_always  # 동굴 밖에서만 보이는 타일맵
+
+# === map_2 노드 참조 ===
+@onready var map_2_inside_cave = $map_2/inside_cave
 # 캐릭터 참조 (부모 노드를 통해 접근)
 var character: CharacterBody2D
 
@@ -70,6 +74,7 @@ func _ready():
 		character = parent.get_node_or_null("character")
 	
 	# 모든 inside_cave TileMap들을 배열에 추가
+	# map_1의 inside_cave들
 	if inside_cave:
 		cave_tilemaps.append(inside_cave)
 	if inside_cave2:
@@ -78,6 +83,9 @@ func _ready():
 		cave_tilemaps.append(inside_cave3)
 	if inside_cave4:
 		cave_tilemaps.append(inside_cave4)
+	# map_2의 inside_cave들
+	if map_2_inside_cave:
+		cave_tilemaps.append(map_2_inside_cave)
 	
 	# 각 TileMap 초기화
 	for cave in cave_tilemaps:
