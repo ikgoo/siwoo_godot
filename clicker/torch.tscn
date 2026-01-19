@@ -1,9 +1,9 @@
 [gd_scene load_steps=19 format=3 uid="uid://c53admvams62x"]
 
 [ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="1_kx7w4"]
-[ext_resource type="Texture2D" uid="uid://be1yjuhby1iwb" path="res://CONCEPT/asset/512x512 textures (23).png" id="1_pa17o"]
 [ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="2_w3qnr"]
 [ext_resource type="Script" uid="uid://ma8m46sn1sxd" path="res://torch.gd" id="3_torch"]
+[ext_resource type="Texture2D" uid="uid://d26nc0f8i4r8w" path="res://CONCEPT/asset/lobby/png-light-effects-115521554800e7rmiqraz.png" id="4_kx7w4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_72pgl"]
 atlas = ExtResource("1_kx7w4")
@@ -307,7 +307,8 @@ region_rect = Rect2(5, 37, 22, 22)
 z_index = 1
 color = Color(1, 0.64705884, 0.59607846, 1)
 energy = 0.8
-texture = ExtResource("1_pa17o")
+blend_mode = 2
+texture = ExtResource("4_kx7w4")
 texture_scale = 0.8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
