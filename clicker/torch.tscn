@@ -305,9 +305,8 @@ region_rect = Rect2(5, 37, 22, 22)
 
 [node name="Light2D" type="PointLight2D" parent="."]
 z_index = 1
-color = Color(1, 0.64705884, 0.59607846, 0.5)
-energy = 11.91
-blend_mode = 2
+color = Color(1, 0.64705884, 0.59607846, 1)
+energy = 0.8
 texture = ExtResource("1_pa17o")
 texture_scale = 0.8
 

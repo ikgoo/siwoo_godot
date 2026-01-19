@@ -1,12 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=10 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://ejlxnt1kknfi" path="res://camera_2d.gd" id="4_1bvp3"]
+[ext_resource type="Shader" uid="uid://s4pjsvlw80yi" path="res://brightness_clamp.gdshader" id="5_5vw27"]
 [ext_resource type="PackedScene" uid="uid://cciuktwcjunn7" path="res://alba_buy.tscn" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://cu1tafa850nj7" path="res://ending.tscn" id="12_ycdy4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
+shader = ExtResource("5_5vw27")
+shader_parameter/max_brightness = 0.3
 
 [node name="main" type="Node2D"]
 
@@ -31,6 +36,15 @@ color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("8_5vw27")]
 metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_kek77")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="goal_area" parent="." instance=ExtResource("9_kek77")]
 position = Vector2(477, -172)
