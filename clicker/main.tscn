@@ -11,7 +11,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
 shader = ExtResource("5_5vw27")
-shader_parameter/max_brightness = 0.3
+shader_parameter/compression = 4.0
 
 [node name="main" type="Node2D"]
 
