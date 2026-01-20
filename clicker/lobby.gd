@@ -4,6 +4,11 @@ extends Node2D
 const MINC_CLICKER_LOBBY_BUTTON_START_3 = preload("uid://byi030cxhp7oc")
 
 @onready var animation_player = $AnimationPlayer
+@onready var label = $Label
+
+## 씬 초기화 시 레이블 깜빡임 애니메이션 시작
+func _ready():
+	animation_player.play("label_blink")
 
 func _on_start_button_up():
 	animation_player.play("close")

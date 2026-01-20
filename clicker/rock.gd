@@ -79,7 +79,6 @@ func _physics_process(delta):
 		if cooldown_timer <= 0.0:
 			is_cooldown = false
 			cooldown_timer = 0.0
-			print("바위 채굴 가능!")
 	
 	# 카메라 고정 해제 체크 (5초 동안 채굴하지 않거나 영역을 벗어나면)
 	if is_camera_locked:
@@ -170,21 +169,6 @@ func complete_mining():
 		money_gained *= 2
 	
 	Globals.money += money_gained
-	
-	# 초당 돈 증가 적용 (업그레이드 수치만큼 초당 수입에 추가)
-	if Globals.money_per_second_upgrade > 0:
-		Globals.money_per_second += Globals.money_per_second_upgrade
-		print("💎 초당 수입 증가! +💎", Globals.money_per_second_upgrade, "/초 (현재 총 💎", Globals.money_per_second, "/초)")
-	
-	# 획득 메시지 출력
-	if is_x3:
-		print("🌟 잭팟! +💎", money_gained, " (x3), 현재 돈: 💎", Globals.money)
-	elif is_x2:
-		print("💥 크리티컬! +💎", money_gained, " (x2), 현재 돈: 💎", Globals.money)
-	elif Globals.is_fever_active:
-		print("🔥 피버 채굴! +💎", money_gained, " (", Globals.fever_multiplier, "배), 현재 돈: 💎", Globals.money)
-	else:
-		print("💎 획득! +💎", money_gained, ", 현재 돈: 💎", Globals.money)
 	
 	now_time = 0
 	
@@ -372,14 +356,12 @@ func _on_area_2d_body_shape_entered(_body_rid, body, _body_shape_index, _local_s
 	# 들어온 body가 CharacterBody2D 타입인지 확인
 	if body is CharacterBody2D:
 		is_character_inside = true
-		print("캐릭터가 바위 영역에 들어왔습니다!")
 
 
 func _on_area_2d_body_shape_exited(_body_rid, body, _body_shape_index, _local_shape_index):
 	# 나간 body가 CharacterBody2D 타입인지 확인
 	if body is CharacterBody2D:
 		is_character_inside = false
-		print("캐릭터가 바위 영역에서 나갔습니다!")
 		
 		# 영역을 벗어나면 카메라 고정 해제
 		if is_camera_locked:
@@ -398,7 +380,6 @@ func lock_camera():
 	var camera = get_tree().get_first_node_in_group("camera")
 	if camera and camera.has_method("lock_to_target"):
 		camera.lock_to_target(global_position)
-		print("카메라가 돌에 고정되었습니다!")
 
 # 카메라 고정 해제
 func unlock_camera():
@@ -409,7 +390,6 @@ func unlock_camera():
 	var camera = get_tree().get_first_node_in_group("camera")
 	if camera and camera.has_method("unlock_from_target"):
 		camera.unlock_from_target()
-		print("카메라 고정이 해제되었습니다!")
 
 # 바위 흔들림 효과
 func update_shake_effect(delta):

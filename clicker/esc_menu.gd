@@ -26,15 +26,9 @@ func _ready():
 	# 버튼 시그널 연결
 	if resume_button:
 		resume_button.pressed.connect(_on_resume_pressed)
-		print("계속하기 버튼 연결됨")
-	else:
-		print("⚠️ 계속하기 버튼을 찾을 수 없음!")
 	
 	if exit_button:
 		exit_button.pressed.connect(_on_exit_to_auto_pressed)
-		print("나가기 버튼 연결됨")
-	else:
-		print("⚠️ 나가기 버튼을 찾을 수 없음!")
 
 
 ## ESC 키 입력 처리 - 메뉴 토글
@@ -64,20 +58,13 @@ func close_menu():
 
 # 계속하기 버튼
 func _on_resume_pressed():
-	print("계속하기 버튼 클릭됨")
 	close_menu()
 
 
 # Auto Scene으로 나가기 버튼
 func _on_exit_to_auto_pressed():
-	print("나가기 버튼 클릭됨!")
-	
 	# 게임 재개 (씬 전환 전에)
 	get_tree().paused = false
-	print("일시정지 해제됨")
 	
 	# auto_scene.tscn으로 이동
-	print("auto_scene.tscn으로 이동 시도...")
-	var result = get_tree().change_scene_to_file("res://auto_scene.tscn")
-	if result != OK:
-		print("⚠️ 씬 전환 실패! 에러 코드: ", result)
+	get_tree().change_scene_to_file("res://auto_scene.tscn")

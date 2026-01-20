@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="clicker"
-run/main_scene="uid://cqqkn2ouybgke"
+run/main_scene="uid://b1mwwyp3u0j5f"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Globals="*res://globals.gd"
+GlobalInput="*res://addons/global_input/autoload/global_input_csharp/GlobalInputCSharp.tscn"
 
 [display]
 
@@ -34,7 +35,7 @@ project/assembly_name="clicker"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/global_input/plugin.cfg")
 
 [input]
 

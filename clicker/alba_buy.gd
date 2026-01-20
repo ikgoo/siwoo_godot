@@ -87,14 +87,12 @@ func purchase_alba():
 	if Globals.money >= price:
 		# 돈 차감
 		Globals.money -= price
-		print("💎 차감: ", price, ", 남은 돈: 💎", Globals.money)
 		
 		# 프리셋 적용 후 알바 배치
 		apply_preset_to_alba(alba_instance)
 		alba_instance.global_position = global_position
 		# 부모 노드(보통 main 씬)에 추가
 		get_tree().current_scene.add_child(alba_instance)
-		print("알바 생성 완료! 위치: ", global_position, ", 수입: 💎", alba_instance.money_amount, "/초")
 		
 		# 구매 완료 표시
 		is_purchased = true
@@ -106,7 +104,6 @@ func purchase_alba():
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
 	else:
-		print("💎 부족! 필요: 💎", price, ", 보유: 💎", Globals.money)
 		# 인스턴스 삭제 (구매하지 않았으므로)
 		alba_instance.queue_free()
 

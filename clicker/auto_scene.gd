@@ -52,14 +52,9 @@ func _ready():
 	
 	# 스킨 시그널 연결
 	Globals.skin_changed.connect(_on_skin_changed)
-	print("원래 viewport 크기: ", original_viewport_size)
-	print("원래 창 모드: ", original_window_mode)
-	print("원래 창 위치: ", original_window_position)
-	print("원래 always on top: ", original_always_on_top)
 	
 	# 창을 항상 최상위로 설정
 	get_window().always_on_top = true
-	print("창을 항상 최상위로 설정")
 	
 	# 창 모드로 전환 (풀스크린이었다면)
 	get_window().mode = Window.MODE_WINDOWED
@@ -81,7 +76,6 @@ func _ready():
 		roundi(default_viewport.y * 0.4)
 	)
 	get_window().size = final_window_size
-	print("창 크기 설정 후: ", final_window_size)
 	
 	# 창을 화면 중앙으로 이동
 	var screen_size = DisplayServer.screen_get_size()
@@ -89,8 +83,6 @@ func _ready():
 		(screen_size.x - final_window_size.x) / 2,
 		(screen_size.y - final_window_size.y) / 2
 	)
-	
-	print("Auto Scene - Viewport: ", default_viewport, ", 창: ", final_window_size)
 	
 	# 버튼 시그널 연결
 	back_button.pressed.connect(_on_back_button_pressed)
@@ -147,8 +139,6 @@ func _on_back_button_pressed():
 	get_viewport().transparent_bg = false
 	RenderingServer.set_default_clear_color(original_clear_color)
 	
-	print("창 모드, viewport 크기, 위치, always on top 복원 완료")
-	
 	# 로비로 돌아가기
 	get_tree().change_scene_to_file("res://lobby.tscn")
 
@@ -165,7 +155,6 @@ func _input(event: InputEvent):
 		else:
 			# 다른 키는 auto_money 증가
 			Globals.auto_money += 1
-			print("키 입력! Auto Money +1 (현재: 🪙", Globals.auto_money, ")")
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			is_dragging = true
@@ -186,7 +175,6 @@ func _input(event: InputEvent):
 func _on_shop_button_button_down():
 	if shop_menu:
 		shop_menu.visible = !shop_menu.visible
-		print("shop_menu visible: ", shop_menu.visible)
 
 ## /** 현재 스킨을 적용한다 (Sprite1, Sprite2 각각)
 ##  * @returns void
@@ -201,8 +189,6 @@ func _apply_current_skin() -> void:
 	var skin2: SkinItem = Globals.get_current_sprite2_skin()
 	if skin2:
 		skin2.apply_to_scene(self)
-	
-	print("스킨 적용 완료 - Sprite1: ", Globals.current_sprite1_skin, ", Sprite2: ", Globals.current_sprite2_skin)
 
 ## /** 스킨 변경 시그널 핸들러
 ##  * @param skin_id String 변경된 스킨 ID

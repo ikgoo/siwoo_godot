@@ -22,7 +22,6 @@ func teleport_character():
 	if character_in_area != null:
 		# 텔레포트 목적지를 전역 좌표로 변환하여 캐릭터 이동
 		character_in_area.global_position = teleport_destination
-		print("텔레포트 완료: ", teleport_destination)
 
 
 func _on_area_2d_body_entered(body):
@@ -31,7 +30,6 @@ func _on_area_2d_body_entered(body):
 		character_in_area = body
 		# UI에 액션 텍스트 표시
 		Globals.show_action_text(action_text)
-		print("캐릭터가 텔레포트 영역에 진입했습니다. F키를 눌러 텔레포트하세요.")
 
 func _on_area_2d_body_exited(body):
 	# 나간 객체가 저장된 캐릭터와 같은지 확인
@@ -39,4 +37,3 @@ func _on_area_2d_body_exited(body):
 		character_in_area = null
 		# UI에서 액션 텍스트 숨김
 		Globals.hide_action_text()
-		print("캐릭터가 텔레포트 영역에서 나갔습니다.")

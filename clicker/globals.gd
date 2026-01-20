@@ -12,22 +12,14 @@ func _ready():
 	# 초기 값 계산
 	update_pickaxe_speed()
 	update_diamond_value()
-	update_diamond_per_second()
+	update_mining_tier()
+	update_auto_mining_speed()
 	update_mining_key_count()
 	update_money_randomize()
-	# 초기 티어 계산
-	update_tier("init")
-	max_tier = current_tier
+	update_rock_money()
 	# 스킨 시스템 초기화
 	_initialize_skins()
 	_load_skin_data()
-	print("Globals 초기화: money=", money, ", current_tier=", current_tier, ", max_tier=", max_tier, ", diamond_value_level=", diamond_value_level)
-	print("  곡괭이 속도 레벨: ", pickaxe_speed_level, " (필요 클릭: ", mining_clicks_required, "회)")
-	print("  다이아 획득량 레벨: ", diamond_value_level, " (획득량: ", money_up, ")")
-	print("  초당 다이아 레벨: ", diamond_per_second_level, " (추가량: ", money_per_second_upgrade, ")")
-	print("  채굴 키 개수 레벨: ", mining_key_count_level, " (키 개수: ", mining_key_count, "개)")
-	print("  돈 랜덤 레벨: ", money_randomize_level, " (x2: ", int(x2_chance * 100), "%, x3: ", int(x3_chance * 100), "%)")
-	print("  스킨 시스템: owned=", owned_skins.size(), ", sprite1=", current_sprite1_skin, ", sprite2=", current_sprite2_skin)
 
 # ========================================
 # 게임 밸런스 변수
@@ -36,24 +28,26 @@ func _ready():
 var pickaxe_speed_level : int = 0
 # 다이아몬드 획득량 레벨 (dv Lv) - 0부터 시작, 최대 20
 var diamond_value_level : int = 0
-# 초당 다이아몬드 레벨 (da Lv) - 0부터 시작, 최대 5
-var diamond_per_second_level : int = 0
+# 채굴 티어 레벨 (mt Lv) - 0부터 시작, 최대 20
+var mining_tier_level : int = 0
 # 자동 채굴 속도 레벨 (as Lv) - 0부터 시작, 최대 10
 var auto_mining_speed_level : int = 0
 # 채굴 키 개수 레벨 (mk Lv) - 0부터 시작, 최대 2 (최대 4키)
 var mining_key_count_level : int = 0
 # 돈 랜덤 레벨 (mr Lv) - 0부터 시작, 최대 5
 var money_randomize_level : int = 0
+# 타일 채굴 보너스 레벨 (rm Lv) - 0부터 시작, 최대 2
+var rock_money_level : int = 0
 
 # 실제 게임 값들 (레벨에 따라 계산됨)
 var money_up : int = 1  # 채굴 시 획득하는 다이아몬드 (dv 레벨에 따라 결정)
-var mining_clicks_required : int = 1  # 채굴에 필요한 클릭 수 (pv 레벨에 따라 감소) - 테스트용으로 1로 설정
-var money_per_second : int = 0  # 초당 자동으로 증가하는 돈 (알바 + 광물 채굴로 누적)
-var money_per_second_upgrade : int = 0  # 업그레이드로 얻은 초당 돈 증가량 (da 레벨에 따라 결정)
+var mining_clicks_required : int = 5  # 채굴에 필요한 클릭 수 (pv 레벨에 따라 감소) - 테스트용으로 1로 설정
+var mining_tier : int = 1  # 채굴 가능한 최대 레이어 (mt 레벨에 따라 결정, 1 = layer1만)
 var auto_mining_interval : float = 0.5  # 자동 채굴 간격 (초) - 레벨에 따라 감소
 var mining_key_count : int = 2  # 채굴 키 개수 (기본 2개: F, J)
 var x2_chance : float = 0.10  # x2배 확률 (기본 10%)
 var x3_chance : float = 0.01  # x3배 확률 (기본 1%)
+var rock_money_bonus : int = 1  # 타일 채굴 시 추가 보너스 (기본 1)
 
 # ========================================
 # 피버 시스템
@@ -76,9 +70,6 @@ var money : int:
 		
 		# Signal 발생 - UI 업데이트용
 		money_changed.emit(_money, delta_money)
-		
-		# 티어 계산 (이제 돈이 아닌 다이아 획득량 강화 레벨 기반)
-		update_tier("money_change")
 
 # auto_scene에서 사용할 새로운 돈 시스템
 var auto_money : int = 0
@@ -92,47 +83,16 @@ var current_sprite2_skin: String = "default_sprite2"  # Sprite2D2에 적용중�
 var available_skins: Dictionary = {}  # 구매 가능한 스킨 데이터 (id -> SkinItem)
 
 # ========================================
-# 티어 시스템 (빌드업 느낌)
+# 티어 시스템 (mining_tier 업그레이드 기반)
 # ========================================
-# 현재 티어
-var current_tier : int = 0
-# 최대 달성 티어 (한번 올라가면 내려가지 않음)
-var max_tier : int = 0
+# 현재 채굴 가능 티어 (mining_tier_level + 1)
+# 티어 1 = layer 1만 캘 수 있음, 티어 2 = layer 1~2 캘 수 있음
 
-# 다이아몬드 획득량 강화 레벨 기반 티어 요구치 (인덱스 = 티어)
-# 요청: 티어1=레벨3, 티어2=레벨4, 티어3=레벨7, 티어4=레벨10
-var tier_level_thresholds: Array[int] = [
-	0,  # 티어 0
-	3,  # 티어 1
-	4,  # 티어 2
-	7,  # 티어 3
-	10, # 티어 4
-	12, # 티어 5
-	14, # 티어 6
-	16, # 티어 7
-	18, # 티어 8
-	20  # 티어 9
-]
-
-# 다이아 획득량 강화 레벨로 티어를 계산하고 필요 시 Signal을 발생
-func update_tier(reason: String = ""):
-	var new_tier = 0
-	for i in range(tier_level_thresholds.size() - 1, -1, -1):
-		if diamond_value_level >= tier_level_thresholds[i]:
-			new_tier = i
-			break
-	
-	var old_tier = current_tier
-	var old_max_tier = max_tier
-	current_tier = new_tier
-	
-	# 최대 티어 갱신 시에만 Signal
-	if current_tier > max_tier:
-		max_tier = current_tier
-		print("✨ 최대 티어 갱신! ", old_max_tier, " → ", max_tier, " (획득량 레벨: ", diamond_value_level, ", reason: ", reason, ")")
-		tier_up.emit(max_tier)
-	elif reason != "" and old_tier != current_tier:
-		print("티어 변경: ", old_tier, " → ", current_tier, " (획득량 레벨: ", diamond_value_level, ", reason: ", reason, ")")
+# 채굴 티어 업데이트 함수
+func update_mining_tier():
+	# mining_tier_level이 0이면 티어 1 (layer 1만)
+	# mining_tier_level이 1이면 티어 2 (layer 1~2)
+	mining_tier = mining_tier_level + 1
 
 # ========================================
 # 업그레이드 시스템 (마인크래프트 타이쿤 맵과 동일)
@@ -171,14 +131,12 @@ var diamond_value_upgrades: Array[Vector2i] = [
 	Vector2i(100000, 800) # Lv 20 (MAX: 800)
 ]
 
-# 초당 다이아몬드 강화 (da Lv) - 5레벨, 총 330,000
-# [가격, 초당 추가량] 형식
-var diamond_per_second_upgrades: Array[Vector2i] = [
-	Vector2i(25000, 2),  # Lv 1
-	Vector2i(40000, 4),  # Lv 2
-	Vector2i(60000, 6),  # Lv 3
-	Vector2i(80000, 10),  # Lv 4
-	Vector2i(125000, 25) # Lv 5 (MAX: 25)
+# 채굴 티어 강화 (mt Lv) - 3레벨
+# [가격, 해금 티어] 형식 - 티어가 높을수록 더 깊은 레이어의 돌을 캘 수 있음
+var mining_tier_upgrades: Array[Vector2i] = [
+	Vector2i(5000, 2),     # Lv 1: 티어 2 (layer 1~2 채굴 가능)
+	Vector2i(60000, 3),    # Lv 2: 티어 3 (layer 1~3 채굴 가능)
+	Vector2i(100000, 4),   # Lv 3 (MAX): 티어 4 (layer 1~4 채굴 가능)
 ]
 
 # 자동 채굴 속도 강화 (as Lv) - 10레벨
@@ -215,6 +173,13 @@ var money_randomize_upgrades: Array[Vector3i] = [
 	Vector3i(100000, 50, 20),  # Lv 5 (MAX): x2 50%, x3 20%
 ]
 
+# 타일 채굴 보너스 강화 (rm Lv) - 실험적
+# [가격, 추가 획득량] 형식 - 타일 돌을 캘 때 추가 보너스
+var rock_money_upgrades: Array[Vector2i] = [
+	Vector2i(100, 10),    # Lv 1: +10
+	Vector2i(1000, 100),  # Lv 2 (MAX): +100
+]
+
 # 레벨에 따른 실제 값 계산 함수들
 func update_pickaxe_speed():
 	# 곡괭이 속도는 레벨에 따라 필요 클릭 수 감소 (기본 5회)
@@ -237,15 +202,6 @@ func update_diamond_value():
 		# MAX 레벨 (21) = 800
 		money_up = 800
 
-func update_diamond_per_second():
-	# 초당 다이아몬드 추가량 계산
-	money_per_second_upgrade = 0
-	if diamond_per_second_level > 0:
-		for i in range(min(diamond_per_second_level, diamond_per_second_upgrades.size())):
-			money_per_second_upgrade += diamond_per_second_upgrades[i].y
-	# MAX 레벨 (6) = 25
-	if diamond_per_second_level >= 6:
-		money_per_second_upgrade = 25
 
 func update_auto_mining_speed():
 	# 자동 채굴 간격 계산 (레벨에 따라 감소)
@@ -279,11 +235,28 @@ func update_money_randomize():
 		x2_chance = 0.50
 		x3_chance = 0.20
 
+func update_rock_money():
+	# 타일 채굴 보너스 계산 (레벨에 따라 증가)
+	if rock_money_level == 0:
+		rock_money_bonus = 1  # 기본값 1
+	elif rock_money_level <= rock_money_upgrades.size():
+		# 레벨에 해당하는 보너스 사용 (레벨 1 = 인덱스 0)
+		rock_money_bonus = rock_money_upgrades[rock_money_level - 1].y
+	else:
+		# MAX 레벨 = 100
+		rock_money_bonus = 100
+
 # ========================================
 # 참조
 # ========================================
 # 플레이어 캐릭터 참조 (다른 스크립트에서 접근 가능)
 var player = null
+
+# ========================================
+# 설치 모드 상태 (전역)
+# ========================================
+var is_build_mode: bool = false  # 플랫폼 설치 모드
+var is_torch_mode: bool = false  # 횃불 설치 모드
 
 # ========================================
 # 채굴 키 설정
@@ -341,7 +314,6 @@ func _initialize_skins() -> void:
 func _load_skins_from_folder(folder_path: String) -> void:
 	var dir = DirAccess.open(folder_path)
 	if dir == null:
-		print("스킨 폴더를 열 수 없음: ", folder_path)
 		return
 	
 	dir.list_dir_begin()
@@ -363,14 +335,10 @@ func _load_skins_from_folder(folder_path: String) -> void:
 					skin_resource.name = skin_resource.id
 				
 				available_skins[skin_resource.id] = skin_resource
-				print("스킨 로드 완료: ", skin_resource.id, " (", full_path, ")")
-			else:
-				print("스킨 로드 실패 (SkinItem 아님): ", full_path)
 		
 		file_name = dir.get_next()
 	
 	dir.list_dir_end()
-	print("스킨 로드 완료: 총 ", available_skins.size(), "개")
 
 ## /** 스킨을 구매한다
 ##  * @param skin_id String 구매할 스킨 ID
@@ -378,22 +346,18 @@ func _load_skins_from_folder(folder_path: String) -> void:
 ##  */
 func buy_skin(skin_id: String) -> bool:
 	if not available_skins.has(skin_id):
-		print("존재하지 않는 스킨: ", skin_id)
 		return false
 	
 	if is_skin_owned(skin_id):
-		print("이미 소유한 스킨: ", skin_id)
 		return false
 	
 	var skin: SkinItem = available_skins[skin_id]
 	if auto_money < skin.price:
-		print("돈이 부족합니다: ", auto_money, " < ", skin.price)
 		return false
 	
 	auto_money -= skin.price
 	owned_skins.append(skin_id)
 	_save_skin_data()
-	print("스킨 구매 성공: ", skin_id, " (남은 돈: ", auto_money, ")")
 	return true
 
 ## /** 스킨을 적용한다
@@ -402,21 +366,17 @@ func buy_skin(skin_id: String) -> bool:
 ##  */
 func apply_skin(skin_id: String) -> bool:
 	if not available_skins.has(skin_id):
-		print("존재하지 않는 스킨: ", skin_id)
 		return false
 	
 	if not is_skin_owned(skin_id):
-		print("소유하지 않은 스킨: ", skin_id)
 		return false
 	
 	var skin: SkinItem = available_skins[skin_id]
 	# 스킨 타입에 따라 적용
 	if skin.target_sprite == 1:
 		current_sprite1_skin = skin_id
-		print("Sprite1 스킨 적용: ", skin_id)
 	else:
 		current_sprite2_skin = skin_id
-		print("Sprite2 스킨 적용: ", skin_id)
 	
 	_save_skin_data()
 	skin_changed.emit(skin_id)
@@ -453,11 +413,7 @@ func _save_skin_data() -> void:
 	config.set_value("skins", "owned_skins", ",".join(owned_skins))
 	config.set_value("skins", "current_sprite1_skin", current_sprite1_skin)
 	config.set_value("skins", "current_sprite2_skin", current_sprite2_skin)
-	var err = config.save("user://skins.cfg")
-	if err != OK:
-		print("스킨 데이터 저장 실패: ", err)
-	else:
-		print("스킨 데이터 저장 완료")
+	config.save("user://skins.cfg")
 
 ## /** 스킨 데이터를 로드한다
 ##  * @returns void
@@ -466,7 +422,6 @@ func _load_skin_data() -> void:
 	var config = ConfigFile.new()
 	var err = config.load("user://skins.cfg")
 	if err != OK:
-		print("스킨 데이터 로드 실패 (처음 실행): ", err)
 		return
 	
 	var owned_str = config.get_value("skins", "owned_skins", "default_sprite1,default_sprite2")
@@ -476,4 +431,3 @@ func _load_skin_data() -> void:
 	
 	current_sprite1_skin = config.get_value("skins", "current_sprite1_skin", "default_sprite1")
 	current_sprite2_skin = config.get_value("skins", "current_sprite2_skin", "default_sprite2")
-	print("스킨 데이터 로드 완료: owned=", owned_skins, ", sprite1=", current_sprite1_skin, ", sprite2=", current_sprite2_skin)

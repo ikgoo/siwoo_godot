@@ -25,7 +25,7 @@ script = ExtResource("4_1bvp3")
 [node name="walls" type="Node2D" parent="."]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.2, 0.2, 0.2, 1)
+color = Color(0.03, 0.03, 0.05, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

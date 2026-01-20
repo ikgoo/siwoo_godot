@@ -20,8 +20,6 @@ func _ready():
 	if area_2d:
 		area_2d.body_entered.connect(_on_area_2d_body_entered)
 		area_2d.body_exited.connect(_on_area_2d_body_exited)
-	
-	print("교환소 준비 완료! 다이아 💎", diamond_cost, " → Auto Money 🪙", auto_money_reward)
 
 
 func _process(_delta):
@@ -40,14 +38,8 @@ func exchange_diamond_to_auto_money():
 		# auto_money 추가
 		Globals.auto_money += auto_money_reward
 		
-		print("✨ 교환 완료! 다이아 💎", diamond_cost, " → Auto Money 🪙", auto_money_reward)
-		print("   현재 보유: 다이아 💎", Globals.money, ", Auto Money 🪙", Globals.auto_money)
-		
 		# 액션 텍스트 업데이트
 		Globals.show_action_text(get_exchange_info_text())
-	else:
-		var needed = diamond_cost - Globals.money
-		print("💎 부족! 필요: 💎", diamond_cost, ", 보유: 💎", Globals.money, " (부족: 💎", needed, ")")
 
 
 # 교환소 정보 텍스트 생성
@@ -65,7 +57,6 @@ func get_exchange_info_text() -> String:
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		is_player_inside = true
-		print("플레이어가 교환소 영역에 들어왔습니다!")
 		
 		# 액션 텍스트로 교환 정보 표시
 		Globals.show_action_text(get_exchange_info_text())
@@ -75,7 +66,6 @@ func _on_area_2d_body_entered(body):
 func _on_area_2d_body_exited(body):
 	if body is CharacterBody2D:
 		is_player_inside = false
-		print("플레이어가 교환소 영역에서 나갔습니다!")
 		
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()

@@ -35,15 +35,12 @@ func activate_fever():
 	# 이미 피버 중이면 타이머만 리셋
 	if Globals.is_fever_active:
 		fever_timer.start(fever_duration)
-		print("🔥 피버 시간 연장! ", fever_duration, "초")
 		return
 	
 	# 피버 활성화
 	Globals.is_fever_active = true
 	Globals.fever_multiplier = fever_multiplier
 	fever_timer.start(fever_duration)
-	
-	print("🔥🔥🔥 피버 모드 시작! ", fever_multiplier, "배 수입, ", fever_duration, "초 동안 지속")
 
 # 캐릭터 텔레포트
 func teleport_character(character):
@@ -55,8 +52,6 @@ func teleport_character(character):
 	
 	# 도착 지점에도 이펙트
 	spawn_teleport_effect(teleport_position)
-	
-	print("🌀 텔레포트! ", teleport_position)
 
 # 텔레포트 이펙트 생성
 func spawn_teleport_effect(pos: Vector2):
@@ -86,4 +81,3 @@ func spawn_teleport_effect(pos: Vector2):
 func _on_fever_timeout():
 	Globals.is_fever_active = false
 	Globals.fever_multiplier = 1.0
-	print("피버 모드 종료")
