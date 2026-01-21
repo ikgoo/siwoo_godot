@@ -168,12 +168,7 @@ func _process(delta):
 	
 	# 초당 수입 적용 (money_per_second)
 	passive_income_timer += delta
-	if passive_income_timer >= 1.0:
-		if Globals.money_per_second > 0:
-			# 피버 배율 적용
-			var passive_income = int(Globals.money_per_second * Globals.fever_multiplier)
-			Globals.money += passive_income
-		passive_income_timer = 0.0
+
 	
 	# 초당 수입 계산 (1초마다 업데이트)
 	income_update_timer += delta
@@ -194,11 +189,7 @@ func _process(delta):
 			income_label.text = "0/초"
 			income_label.modulate = Color(0.7, 0.7, 0.7)  # 회색
 	
-	# 초당 자동 수입 표시 업데이트
-	if Globals.money_per_second > 0:
-		var actual_passive = int(Globals.money_per_second * Globals.fever_multiplier)
-		passive_income_label.text = "자동 수입: +" + str(actual_passive) + "/초"
-		# 피버 중이면 색상 변경
+
 		if Globals.is_fever_active:
 			passive_income_label.modulate = Color(1.0, 0.5, 0.2)  # 주황색
 		else:

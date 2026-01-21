@@ -20,7 +20,7 @@ var y_limit_top : float = -200.0  # 위쪽 y 제한선 (이보다 위로 가면 
 var x_limit_left : float = -200.0  # 왼쪽 x 제한선 (이보다 왼쪽으로 가면 줌 증가)
 var x_limit_right : float = 200.0  # 오른쪽 x 제한선 (이보다 오른쪽으로 가면 줌 증가)
 var max_zoom_distance : float = 100.0  # 이 거리만큼 벗어나면 최대 확대
-var max_extra_zoom : float = 0.8  # 최대 추가 확대량 (기본줌 + 이 값)
+var max_extra_zoom : float = 1.6  # 최대 추가 확대량 (기본줌 + 이 값)
 
 
 

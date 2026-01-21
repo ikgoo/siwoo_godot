@@ -8,10 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://cu1tafa850nj7" path="res://ending.tscn" id="12_ycdy4"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kek77"]
-shader = ExtResource("5_5vw27")
-shader_parameter/compression = 4.0
-
 [node name="main" type="Node2D"]
 
 [node name="TileMap" parent="." instance=ExtResource("1_0xm2m")]
@@ -29,7 +25,7 @@ script = ExtResource("4_1bvp3")
 [node name="walls" type="Node2D" parent="."]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0.2, 0.2, 0.2, 1)
+color = Color(0.03, 0.03, 0.05, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

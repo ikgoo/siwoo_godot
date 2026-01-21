@@ -121,21 +121,14 @@ func _ready():
 	create_charge_bar()
 	
 	# 부채꼴 빛 생성
-	if flashlight_enabled:
-		create_flashlight()
+
 	
 	# 기본 대기 애니메이션 재생
 	play_animation("idle")
 
-func _input(event: InputEvent):
-	# 아무 키나 누르면 돈 1씩 증가
-	if event is InputEventKey and event.pressed and not event.echo:
-		Globals.money += 1
-		print("키 입력! 돈 +1 (현재: 💎", Globals.money, ")")
 
 func _process(delta):
 	# 부채꼴 빛 방향 업데이트
-	update_flashlight_direction()
 	# 카메라가 돌에 고정되어 있으면 계속 돌 쪽을 바라봄
 	update_facing_direction_to_rock()
 	
@@ -158,16 +151,11 @@ func _physics_process(delta):
 	# 이전 프레임에서 바닥에 있었는지 기록
 	var was_on_floor = is_on_floor()
 	
-	# 채굴 키 입력 처리 (돌이나 타일 근처에 있을 때)
-	if current_nearby_rock or is_near_mineable_tile:
-		# 디버그 (1초마다)
-		if Engine.get_frames_drawn() % 60 == 0:
-			print("🎮 [character] 채굴 키 입력 처리 가능")
-			print("  - Rock 근처: ", current_nearby_rock != null)
-			print("  - 타일 근처: ", is_near_mineable_tile)
-			print("  - 차징 중: ", is_charging)
-			print("  - 차징량: ", charge_amount)
-		
+	# 채굴 키 입력 처리 (돌이나 타일 근처에 있을 때, 설치 모드가 아닐 때)
+	# 설치 모드(플랫폼/횃불)일 때는 채굴 비활성화
+	var is_any_build_mode = Globals.is_build_mode or Globals.is_torch_mode
+	
+	if (current_nearby_rock or is_near_mineable_tile) and not is_any_build_mode:
 		# 현재 사용 가능한 키 개수만큼 순회
 		for i in range(Globals.mining_key_count):
 			var key = Globals.all_mining_keys[i]
@@ -181,7 +169,6 @@ func _physics_process(delta):
 			
 			# 키를 처음 누르면 즉시 채굴 + 타이머 리셋
 			if key_just_pressed:
-				print("⌨️ [character] 채굴 키 눌림! (키 ", i + 1, ")")
 				add_charge()
 				auto_mining_timers[i] = 0.0
 			
@@ -194,7 +181,7 @@ func _physics_process(delta):
 			else:
 				auto_mining_timers[i] = 0.0
 	else:
-		# 돌이나 타일 근처가 아니면 키 상태 및 타이머 초기화
+		# 돌이나 타일 근처가 아니거나 설치 모드면 키 상태 및 타이머 초기화
 		for i in range(6):
 			was_mining_keys_pressed[i] = false
 			auto_mining_timers[i] = 0.0
@@ -663,40 +650,6 @@ func create_cone_texture(size: int, angle_degrees: float) -> ImageTexture:
 var flashlight_angle_offset: float = 0.0
 var flashlight_angle_time: float = 0.0
 
-# 부채꼴 빛을 생성합니다.
-func create_flashlight():
-	flashlight = PointLight2D.new()
-	flashlight.color = flashlight_color
-	flashlight.energy = flashlight_energy
-	flashlight.texture_scale = flashlight_scale
-	flashlight.blend_mode = Light2D.BLEND_MODE_ADD
-	
-	# 부채꼴 텍스처 생성 (크기 128, 각도 115도 - 중간값)
-	flashlight.texture = create_cone_texture(128, 115)
-	
-	# 플레이어 위치에서 시작
-	flashlight.position = Vector2.ZERO
-	flashlight.z_index = -1
-	
-	add_child(flashlight)
-	update_flashlight_direction()
-
-# 부채꼴 빛의 방향을 캐릭터가 바라보는 방향으로 업데이트합니다.
-func update_flashlight_direction():
-	if not flashlight:
-		return
-	
-	# 각도 부드럽게 흔들림 (110~120도 사이)
-	flashlight_angle_time += get_process_delta_time() * 2.0
-	flashlight_angle_offset = sin(flashlight_angle_time) * 0.03  # 스케일로 약간의 변화
-	flashlight.texture_scale = flashlight_scale + flashlight_angle_offset
-	
-	if facing_direction == 1:
-		# 오른쪽을 바라볼 때
-		flashlight.rotation_degrees = 0
-	else:
-		# 왼쪽을 바라볼 때
-		flashlight.rotation_degrees = 180
 
 ## 채굴 가능한 타일이 Area2D 안에 있는지 확인합니다.
 func check_nearby_tiles():
@@ -750,12 +703,7 @@ func check_nearby_tiles():
 					# Area2D 안에 있으면
 					if distance <= mining_radius:
 						is_near_mineable_tile = true
-						if not was_near:
-							print("✅ [character] 채굴 가능한 타일이 Area2D 안에 있음!")
 						return
-	
-	if was_near and not is_near_mineable_tile:
-		print("❌ [character] Area2D 안에 채굴 가능한 타일 없음")
 	
 	return
 

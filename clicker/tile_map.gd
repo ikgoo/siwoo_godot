@@ -19,17 +19,10 @@ extends Node2D
 @onready var map_2 = $map_2
 
 # === map_1 노드 참조 ===
-@onready var inside_cave = $map_1/inside_cave
-@onready var inside_cave2 = $map_1/inside_cave2
-@onready var inside_cave3 = $map_1/inside_cave3
-@onready var inside_cave4 = $map_1/inside_cave4
 @onready var maps = $map_1/maps  # maps TileMap 참조
 @onready var platform = $map_1/platform  # platform TileMap 참조
 @onready var background = $map_1/background  # background TileMap 참조
 @onready var cave_always = $map_1/cave_always  # 동굴 밖에서만 보이는 타일맵
-
-# === map_2 노드 참조 ===
-@onready var map_2_inside_cave = $map_2/inside_cave
 # 캐릭터 참조 (부모 노드를 통해 접근)
 var character: CharacterBody2D
 
@@ -49,11 +42,16 @@ const PLATFORM_LAYER_INDEX = 0
 # 플랫폼 collision layer (2번 비트 = 4)
 const PLATFORM_COLLISION_LAYER = 4
 
-# 반투명 타일들을 저장하는 별도 레이어 (1번 레이어 사용)
-var transparent_layer_index: int = 1  # inside_cave의 두 번째 레이어 사용
+# 반투명 타일들을 저장하는 별도 레이어
+# layer 0, 2 = 원본 타일 (채굴 가능), layer 1, 3 = 반투명 타일
+var transparent_layer_map: Dictionary = {
+	0: 1,  # layer 0 → layer 1로 반투명 처리
+	2: 3,  # layer 2 → layer 3로 반투명 처리
+}
 
-# 현재 반투명하게 처리된 타일들의 좌표 (각 TileMap별로 저장)
-var current_transparent_tiles: Dictionary = {}  # TileMap -> Array[Vector2i]
+# 현재 반투명하게 처리된 타일들의 좌표 (각 TileMap별, 레이어별로 저장)
+# TileMap -> {original_layer: Array[Vector2i]}
+var current_transparent_tiles: Dictionary = {}
 
 # 캐릭터가 이전 프레임에 타일 위에 있었는지 여부 (각 TileMap별로 저장)
 var was_character_on_tile: Dictionary = {}  # TileMap -> bool
@@ -73,33 +71,32 @@ func _ready():
 	if parent:
 		character = parent.get_node_or_null("character")
 	
-	# 모든 inside_cave TileMap들을 배열에 추가
-	# map_1의 inside_cave들
-	if inside_cave:
-		cave_tilemaps.append(inside_cave)
-	if inside_cave2:
-		cave_tilemaps.append(inside_cave2)
-	if inside_cave3:
-		cave_tilemaps.append(inside_cave3)
-	if inside_cave4:
-		cave_tilemaps.append(inside_cave4)
-	# map_2의 inside_cave들
-	if map_2_inside_cave:
-		cave_tilemaps.append(map_2_inside_cave)
+	# 모든 맵에서 동굴 TileMap들을 자동으로 찾기
+	# "cave"가 이름에 포함된 TileMap들을 모두 수집
+	var all_maps = [map_1, map_2]
+	for map_node in all_maps:
+		if not map_node:
+			continue
+		for child in map_node.get_children():
+			# TileMap이고, 이름에 "cave"가 포함되어 있으면 추가
+			# (cave_always는 제외 - 반투명 처리 안 함)
+			if child is TileMap and "cave" in child.name.to_lower() and child.name != "cave_always":
+				cave_tilemaps.append(child)
 	
 	# 각 TileMap 초기화
 	for cave in cave_tilemaps:
-		# 두 번째 레이어가 없으면 생성
-		if cave.get_layers_count() <= transparent_layer_index:
-			cave.add_layer(transparent_layer_index)
+		# 필요한 레이어들 생성 (layer 0, 1, 2, 3)
+		while cave.get_layers_count() < 4:
+			cave.add_layer(cave.get_layers_count())
 		
-		# 두 번째 레이어를 반투명하게 설정
-		cave.set_layer_modulate(transparent_layer_index, Color(1.0, 1.0, 1.0, transparency_alpha))
+		# 반투명 레이어들(layer 1, 3) 설정
+		cave.set_layer_modulate(1, Color(1.0, 1.0, 1.0, transparency_alpha))
+		cave.set_layer_modulate(3, Color(1.0, 1.0, 1.0, transparency_alpha))
 		
-		# 초기화
-		current_transparent_tiles[cave] = []
+		# 초기화 (레이어별로 저장)
+		current_transparent_tiles[cave] = {0: [], 2: []}
 		was_character_on_tile[cave] = false
-		tile_info_cache[cave] = {}
+		tile_info_cache[cave] = {0: {}, 2: {}}
 	
 	# 플랫폼 타일들의 Physics Layer 설정 확인
 	check_platform_tiles_physics_layers()
@@ -109,6 +106,64 @@ func _ready():
 	
 	# 맵 활성화 상태 적용
 	_apply_all_maps()
+
+func _unhandled_input(event):
+	# 4번 키를 누르면 마우스 위치의 플랫폼/횃불 삭제
+	if event is InputEventKey and event.pressed and event.keycode == KEY_4:
+		delete_object_at_mouse()
+
+## 마우스 위치의 플랫폼 또는 횃불을 삭제하는 함수
+func delete_object_at_mouse():
+	var mouse_pos = get_global_mouse_position()
+	
+	# 1. 먼저 횃불 삭제 시도
+	if delete_torch_at_position(mouse_pos):
+		return
+	
+	# 2. 플랫폼 타일 삭제 시도
+	if delete_platform_at_position(mouse_pos):
+		return
+
+## 해당 위치의 횃불을 삭제하는 함수
+## @param pos: 전역 좌표
+## @returns: 삭제 성공 여부
+func delete_torch_at_position(pos: Vector2) -> bool:
+	var delete_radius = 20.0  # 삭제 감지 범위
+	
+	# map_1과 map_2의 torchs 노드들을 확인
+	var torch_containers = []
+	if map_1 and map_1.has_node("torchs"):
+		torch_containers.append(map_1.get_node("torchs"))
+	if map_2 and map_2.has_node("torchs"):
+		torch_containers.append(map_2.get_node("torchs"))
+	
+	for container in torch_containers:
+		for torch in container.get_children():
+			if torch.global_position.distance_to(pos) < delete_radius:
+				torch.queue_free()
+				return true
+	
+	return false
+
+## 해당 위치의 플랫폼 타일을 삭제하는 함수
+## @param pos: 전역 좌표
+## @returns: 삭제 성공 여부
+func delete_platform_at_position(pos: Vector2) -> bool:
+	if not platform:
+		return false
+	
+	# 전역 좌표를 타일맵 로컬 좌표로 변환
+	var local_pos = platform.to_local(pos)
+	var tile_pos = platform.local_to_map(local_pos)
+	
+	# 해당 위치에 타일이 있는지 확인
+	var source_id = platform.get_cell_source_id(PLATFORM_LAYER_INDEX, tile_pos)
+	if source_id != -1:
+		# 타일 삭제
+		platform.set_cell(PLATFORM_LAYER_INDEX, tile_pos, -1)
+		return true
+	
+	return false
 
 func _process(_delta):
 	if not character:
@@ -126,10 +181,15 @@ func _process(_delta):
 		var character_local_pos = cave.to_local(character.global_position)
 		var character_tile_pos = cave.local_to_map(character_local_pos)
 		
-		# 원본 레이어와 반투명 레이어 모두 확인
-		var source_id_original = cave.get_cell_source_id(0, character_tile_pos)
-		var source_id_transparent = cave.get_cell_source_id(transparent_layer_index, character_tile_pos)
-		var is_character_on_tile = (source_id_original != -1 or source_id_transparent != -1)
+		# 원본 레이어(0, 2)와 반투명 레이어(1, 3) 모두 확인
+		var is_character_on_tile = false
+		for orig_layer in transparent_layer_map.keys():
+			var trans_layer = transparent_layer_map[orig_layer]
+			var source_id_original = cave.get_cell_source_id(orig_layer, character_tile_pos)
+			var source_id_transparent = cave.get_cell_source_id(trans_layer, character_tile_pos)
+			if source_id_original != -1 or source_id_transparent != -1:
+				is_character_on_tile = true
+				break
 		
 		# 동굴 안에 있는지 체크
 		if is_character_on_tile:
@@ -138,8 +198,7 @@ func _process(_delta):
 		# 상태가 변경되었을 때만 실행
 		if is_character_on_tile and not was_character_on_tile[cave]:
 			# 캐릭터가 타일에 처음 들어옴 - 연결된 모든 타일 찾기
-			if source_id_original != -1:
-				find_and_make_transparent(cave, character_tile_pos)
+			find_and_make_transparent(cave, character_tile_pos)
 		elif not is_character_on_tile and was_character_on_tile[cave]:
 			# 캐릭터가 타일에서 나감 - 한 번만 복원
 			clear_transparent_tiles(cave)
@@ -154,17 +213,10 @@ func _process(_delta):
 	animate_waterfall(_delta)
 
 # 연결된 모든 타일을 찾아서 반투명하게 만드는 함수 (Flood Fill 방식)
+# 모든 원본 레이어(0, 2)에 대해 처리
 func find_and_make_transparent(cave: TileMap, start_tile_pos: Vector2i):
 	# 먼저 이전 타일들을 복원
 	restore_transparent_tiles(cave)
-	
-	# 연결된 모든 타일을 찾기 (BFS - Breadth First Search)
-	var visited: Dictionary = {}  # 이미 확인한 타일들
-	var queue: Array[Vector2i] = []  # 확인할 타일들의 큐
-	
-	# 시작 타일을 큐에 추가
-	queue.append(start_tile_pos)
-	visited[start_tile_pos] = true
 	
 	# 인접한 타일들의 방향 (상, 하, 좌, 우, 대각선)
 	var adjacent_positions = [
@@ -178,86 +230,95 @@ func find_and_make_transparent(cave: TileMap, start_tile_pos: Vector2i):
 		Vector2i(1, 1),    # 오른쪽 아래
 	]
 	
-	# 먼저 모든 연결된 타일을 찾아서 리스트에 저장 (타일 이동 전에)
-	var tiles_to_process: Array[Vector2i] = []
-	
-	# BFS로 연결된 모든 타일 찾기 (타일 이동 전에)
-	while queue.size() > 0:
-		var current_pos = queue.pop_front()
+	# 각 원본 레이어에 대해 처리
+	for orig_layer in transparent_layer_map.keys():
+		var trans_layer = transparent_layer_map[orig_layer]
 		
-		# 현재 타일이 원본 레이어에 존재하는지 확인
-		var source_id = cave.get_cell_source_id(0, current_pos)
-		if source_id == -1:
-			continue  # 타일이 없으면 스킵
+		# 연결된 모든 타일을 찾기 (BFS - Breadth First Search)
+		var visited: Dictionary = {}
+		var queue: Array[Vector2i] = []
 		
-		tiles_to_process.append(current_pos)
+		# 시작 타일을 큐에 추가
+		queue.append(start_tile_pos)
+		visited[start_tile_pos] = true
 		
-		# 인접한 타일들 확인
-		for offset in adjacent_positions:
-			var next_pos = current_pos + offset
+		# 먼저 모든 연결된 타일을 찾아서 리스트에 저장
+		var tiles_to_process: Array[Vector2i] = []
+		
+		# BFS로 연결된 모든 타일 찾기
+		while queue.size() > 0:
+			var current_pos = queue.pop_front()
 			
-			# 이미 확인했으면 스킵
-			if next_pos in visited:
+			# 현재 타일이 해당 레이어에 존재하는지 확인
+			var source_id = cave.get_cell_source_id(orig_layer, current_pos)
+			if source_id == -1:
 				continue
 			
-			visited[next_pos] = true
+			tiles_to_process.append(current_pos)
 			
-			# 인접한 타일이 원본 레이어에 존재하는지 확인
-			var next_source_id = cave.get_cell_source_id(0, next_pos)
-			if next_source_id != -1:
-				# 큐에 추가
-				queue.append(next_pos)
-	
-	# 이제 찾은 모든 타일을 한 번에 처리 (타일 이동)
-	# 깜빡거림 방지를 위해 모든 타일 정보를 먼저 수집
-	var tiles_data: Array = []
-	for tile_pos in tiles_to_process:
-		# 타일 정보 가져오기
-		var source_id = cave.get_cell_source_id(0, tile_pos)
-		var atlas_coords = cave.get_cell_atlas_coords(0, tile_pos)
-		var alternative_tile = cave.get_cell_alternative_tile(0, tile_pos)
+			# 인접한 타일들 확인
+			for offset in adjacent_positions:
+				var next_pos = current_pos + offset
+				
+				if next_pos in visited:
+					continue
+				
+				visited[next_pos] = true
+				
+				var next_source_id = cave.get_cell_source_id(orig_layer, next_pos)
+				if next_source_id != -1:
+					queue.append(next_pos)
 		
-		# 타일 정보 캐시에 저장 (복원용)
-		tile_info_cache[cave][tile_pos] = {
-			"source_id": source_id,
-			"atlas_coords": atlas_coords,
-			"alternative_tile": alternative_tile
-		}
+		# 찾은 모든 타일 정보 수집
+		var tiles_data: Array = []
+		for tile_pos in tiles_to_process:
+			var source_id = cave.get_cell_source_id(orig_layer, tile_pos)
+			var atlas_coords = cave.get_cell_atlas_coords(orig_layer, tile_pos)
+			var alternative_tile = cave.get_cell_alternative_tile(orig_layer, tile_pos)
+			
+			# 타일 정보 캐시에 저장 (복원용)
+			tile_info_cache[cave][orig_layer][tile_pos] = {
+				"source_id": source_id,
+				"atlas_coords": atlas_coords,
+				"alternative_tile": alternative_tile
+			}
+			
+			tiles_data.append({
+				"pos": tile_pos,
+				"source_id": source_id,
+				"atlas_coords": atlas_coords,
+				"alternative_tile": alternative_tile
+			})
 		
-		tiles_data.append({
-			"pos": tile_pos,
-			"source_id": source_id,
-			"atlas_coords": atlas_coords,
-			"alternative_tile": alternative_tile
-		})
-	
-	# 모든 타일을 한 번에 이동 (반투명 레이어에 먼저 추가한 후 원본에서 제거)
-	for tile_data in tiles_data:
-		var tile_pos = tile_data["pos"]
-		# 반투명 레이어에 타일 추가
-		cave.set_cell(transparent_layer_index, tile_pos, tile_data["source_id"], tile_data["atlas_coords"], tile_data["alternative_tile"])
-		current_transparent_tiles[cave].append(tile_pos)
-	
-	# 모든 타일을 반투명 레이어에 추가한 후, 원본 레이어에서 제거
-	for tile_data in tiles_data:
-		var tile_pos = tile_data["pos"]
-		# 원본 레이어에서 타일 제거
-		cave.set_cell(0, tile_pos, -1)
+		# 반투명 레이어에 먼저 추가
+		for tile_data in tiles_data:
+			var tile_pos = tile_data["pos"]
+			cave.set_cell(trans_layer, tile_pos, tile_data["source_id"], tile_data["atlas_coords"], tile_data["alternative_tile"])
+			current_transparent_tiles[cave][orig_layer].append(tile_pos)
+		
+		# 원본 레이어에서 제거
+		for tile_data in tiles_data:
+			var tile_pos = tile_data["pos"]
+			cave.set_cell(orig_layer, tile_pos, -1)
 
 # 반투명 타일들을 모두 원본 레이어로 복원하는 함수
 func restore_transparent_tiles(cave: TileMap):
-	for tile_pos in current_transparent_tiles[cave]:
-		# 캐시에서 타일 정보 가져오기
-		if tile_pos in tile_info_cache[cave]:
-			var tile_info = tile_info_cache[cave][tile_pos]
-			# 원본 레이어에 복원
-			cave.set_cell(0, tile_pos, tile_info["source_id"], tile_info["atlas_coords"], tile_info["alternative_tile"])
+	# 각 원본 레이어에 대해 처리
+	for orig_layer in transparent_layer_map.keys():
+		var trans_layer = transparent_layer_map[orig_layer]
 		
-		# 반투명 레이어에서 제거
-		cave.set_cell(transparent_layer_index, tile_pos, -1)
-	
-	current_transparent_tiles[cave].clear()
-	tile_info_cache[cave].clear()
+		for tile_pos in current_transparent_tiles[cave][orig_layer]:
+			# 캐시에서 타일 정보 가져오기
+			if tile_pos in tile_info_cache[cave][orig_layer]:
+				var tile_info = tile_info_cache[cave][orig_layer][tile_pos]
+				# 원본 레이어에 복원
+				cave.set_cell(orig_layer, tile_pos, tile_info["source_id"], tile_info["atlas_coords"], tile_info["alternative_tile"])
+			
+			# 반투명 레이어에서 제거
+			cave.set_cell(trans_layer, tile_pos, -1)
+		
+		current_transparent_tiles[cave][orig_layer].clear()
+		tile_info_cache[cave][orig_layer].clear()
 
 # 반투명 타일들을 모두 제거하는 함수 (원본 레이어는 유지)
 func clear_transparent_tiles(cave: TileMap):
@@ -266,64 +327,16 @@ func clear_transparent_tiles(cave: TileMap):
 # 플랫폼 타일들의 Physics Layer 설정 확인 함수
 func check_platform_tiles_physics_layers():
 	if platform == null:
-		print("platform TileMap을 찾을 수 없습니다!")
 		return
 	
 	var tile_set = platform.tile_set
 	if tile_set == null:
-		print("TileSet을 찾을 수 없습니다!")
 		return
-	
-	# 플랫폼 레이어에서 사용되는 타일들 가져오기
-	var used_cells = platform.get_used_cells(PLATFORM_LAYER_INDEX)
-	print("플랫폼 레이어에 사용된 타일 개수: ", used_cells.size())
-	
-	# 사용된 타일들의 physics layer 확인
-	var processed_tiles: Dictionary = {}
-	for cell_pos in used_cells:
-		var source_id = platform.get_cell_source_id(PLATFORM_LAYER_INDEX, cell_pos)
-		var atlas_coords = platform.get_cell_atlas_coords(PLATFORM_LAYER_INDEX, cell_pos)
-		
-		# 이미 확인한 타일은 스킵
-		var tile_key = str(source_id) + "_" + str(atlas_coords)
-		if tile_key in processed_tiles:
-			continue
-		processed_tiles[tile_key] = true
-		
-		# TileSet에서 타일 소스 가져오기
-		var tile_source = tile_set.get_source(source_id)
-		if tile_source == null:
-			continue
-		
-		# TileSetAtlasSource인 경우
-		if tile_source is TileSetAtlasSource:
-			var atlas_source = tile_source as TileSetAtlasSource
-			# alternative_tile 0번의 tile_data 가져오기
-			var tile_data = atlas_source.get_tile_data(atlas_coords, 0)
-			if tile_data:
-				# Physics Layer 0과 1의 사용 여부 확인
-				var has_physics_0 = tile_data.get_collision_polygons_count(0) > 0
-				var has_physics_1 = tile_data.get_collision_polygons_count(1) > 0
-				print("타일 ", atlas_coords, " (source_id: ", source_id, "): Physics Layer 0 사용: ", has_physics_0, ", Physics Layer 1 사용: ", has_physics_1)
-				
-				# Physics Layer 1의 설정 확인
-				if has_physics_1:
-					# TileSet에서 Physics Layer 1의 collision_layer 확인
-					var physics_layer_1_collision = tile_set.get_physics_layer_collision_layer(1)
-					print("  Physics Layer 1의 collision_layer: ", physics_layer_1_collision, " (예상: 4)")
-					print("  ✅ Physics Layer 1이 활성화되어 있습니다!")
-				
-				if has_physics_0:
-					print("  ⚠️ 경고: 이 타일은 Physics Layer 0을 사용하고 있습니다! Physics Layer 0은 비활성화해야 합니다.")
-				if not has_physics_1:
-					print("  ⚠️ 경고: 이 타일은 Physics Layer 1을 사용하지 않습니다! Physics Layer 1을 활성화해야 합니다.")
-					print("  💡 팁: TileSet에서 이 타일을 선택하고 Physics Layer 1에 collision polygon을 추가하세요.")
 
 # === 폭포 애니메이션 함수들 ===
 
 func find_waterfall_tiles():
 	if not background or not background.tile_set:
-		print("background TileMap을 찾을 수 없습니다!")
 		return
 	
 	var tile_set = background.tile_set
@@ -338,11 +351,9 @@ func find_waterfall_tiles():
 			if atlas_source.texture and "warterfall" in atlas_source.texture.resource_path:
 				waterfall_source_id = source_id
 				waterfall_atlas_source = atlas_source
-				print("✅ 폭포 텍스처 발견! Source ID: ", source_id)
 				break
 	
 	if waterfall_source_id == -1 or not waterfall_atlas_source:
-		print("❌ 폭포 텍스처를 찾을 수 없습니다!")
 		return
 	
 	# 사용 가능한 atlas 좌표들을 x별로 그룹화 (각 x 좌표별로 사용 가능한 y 좌표들)
@@ -368,11 +379,6 @@ func find_waterfall_tiles():
 		if y_coords.size() == 3:
 			available_coords_by_x[x] = [y_coords[0], y_coords[2], y_coords[1]]
 	
-	print("📋 사용 가능한 폭포 타일 좌표 (x별): ", available_coords_by_x)
-	print("📊 각 x 좌표별 y 패턴:")
-	for x in available_coords_by_x.keys():
-		print("  x=", x, " → y 좌표들: ", available_coords_by_x[x])
-	
 	# background에서 폭포 타일을 사용하는 셀 찾기
 	var used_cells = background.get_used_cells(WATERFALL_LAYER)
 	for cell_pos in used_cells:
@@ -394,8 +400,6 @@ func find_waterfall_tiles():
 					"available_y": available_y_coords,  # 순환할 y 좌표들
 					"alternative": alternative_tile
 				})
-	
-	print("💧 폭포 타일 개수: ", waterfall_tiles.size())
 
 func animate_waterfall(delta: float):
 	if waterfall_tiles.is_empty() or not waterfall_animation_enabled:
@@ -460,11 +464,9 @@ func update_cave_always_visibility(currently_in_cave: bool):
 		if is_in_any_cave:
 			# 동굴 안에 들어감 - cave_always 숨기기
 			cave_always.visible = false
-			print("🚪 동굴 진입: cave_always 타일맵 숨김")
 		else:
 			# 동굴 밖으로 나감 - cave_always 보이기
 			cave_always.visible = true
-			print("🌞 동굴 탈출: cave_always 타일맵 표시")
 
 # === 맵 전체 켜기/끄기 ===
 

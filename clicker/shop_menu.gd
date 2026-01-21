@@ -118,9 +118,6 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 func _on_buy_skin(skin_id: String) -> void:
 	if Globals.buy_skin(skin_id):
 		_update_skin_list()
-		print("스킨 구매 성공: ", skin_id)
-	else:
-		print("스킨 구매 실패: ", skin_id)
 
 ## /** 스킨 적용 버튼 핸들러
 ##  * @param skin_id String 적용할 스킨 ID
@@ -129,9 +126,6 @@ func _on_buy_skin(skin_id: String) -> void:
 func _on_apply_skin(skin_id: String) -> void:
 	if Globals.apply_skin(skin_id):
 		_update_skin_list()
-		print("스킨 적용 성공: ", skin_id)
-	else:
-		print("스킨 적용 실패: ", skin_id)
 
 ## /** 닫기 버튼 핸들러
 ##  * @returns void
@@ -180,9 +174,6 @@ func _show_shop() -> void:
 ##  * @returns void
 ##  */
 func _show_inventory() -> void:
-	print("인벤토리 표시 시도...")
-	print("inventory_panel 존재: ", inventory_panel != null)
-	
 	# 상점 UI 숨김
 	if background:
 		background.visible = false
@@ -201,9 +192,6 @@ func _show_inventory() -> void:
 	if inventory_panel:
 		inventory_panel.visible = true
 		_update_inventory()
-		print("인벤토리 표시 완료!")
-	else:
-		print("⚠️ inventory_panel이 없습니다! Godot 에디터에서 씬을 다시 로드하세요.")
 
 ## /** 인벤토리를 업데이트한다
 ##  * @returns void
@@ -297,4 +285,3 @@ func _on_inventory_item_clicked(skin_id: String) -> void:
 	if Globals.apply_skin(skin_id):
 		_update_inventory()
 		_update_skin_list()
-		print("인벤토리에서 스킨 적용: ", skin_id)

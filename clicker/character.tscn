@@ -310,9 +310,6 @@ rotation = 0.5235988
 texture = ExtResource("2_wa5vi")
 region_rect = Rect2(0, 0, 16, 16)
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-visible = false
-
 [node name="sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_hvi53")
