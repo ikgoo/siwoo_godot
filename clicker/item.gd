@@ -15,3 +15,4 @@ func _init(p_id: String = "", p_name: String = "", p_price: int = 0, p_descripti
 	name = p_name
 	price = p_price
 	description = p_description
+

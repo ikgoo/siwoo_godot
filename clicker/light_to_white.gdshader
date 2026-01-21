@@ -11,3 +11,4 @@ void fragment() {
 	COLOR = vec4(brightness, brightness, brightness, color.a);
 }
 
+
