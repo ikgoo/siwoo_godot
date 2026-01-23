@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SkinItem" load_steps=2 format=3 uid="uid://cv3oegpayfl0"]
+
+[ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_hmk4s"]
+
+[resource]
+script = ExtResource("1_hmk4s")
+target_sprite = 2
+metadata/_custom_type_script = "uid://dmhpjy8ra7v44"

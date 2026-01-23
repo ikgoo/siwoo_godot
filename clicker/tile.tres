@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://b4ld043a2qmp4"]
+[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://c81unat76wdlu"]
 
 [ext_resource type="Texture2D" uid="uid://5sgy6fqkhx1l" path="res://spr_tileset_sunnysideworld_16px.png" id="1_urd33"]
 [ext_resource type="Texture2D" uid="uid://db22u3uj8sakx" path="res://KakaoTalk_20521.png" id="2_11ay0"]

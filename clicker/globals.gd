@@ -59,7 +59,7 @@ var is_fever_active : bool = false  # 피버 활성화 여부
 # 경제 시스템
 # ========================================
 # 플레이어가 보유한 돈 (전역 변수)
-var _money : int = 10000000000000
+var _money : int = 0
 var money : int:
 	get:
 		return _money
@@ -77,9 +77,9 @@ var auto_money : int = 0
 # ========================================
 # 스킨 상점 시스템
 # ========================================
-var owned_skins: Array[String] = ["default_sprite1", "default_sprite2"]  # 구매한 스킨 ID 목록
-var current_sprite1_skin: String = "default_sprite1"  # Sprite2D에 적용중인 스킨
-var current_sprite2_skin: String = "default_sprite2"  # Sprite2D2에 적용중인 스킨
+var owned_skins: Array[String] = ["normal1", "normal2"]  # 구매한 스킨 ID 목록
+var current_sprite1_skin: String = "normal1"  # Sprite2D에 적용중인 스킨
+var current_sprite2_skin: String = "normal2"  # Sprite2D2에 적용중인 스킨
 var available_skins: Dictionary = {}  # 구매 가능한 스킨 데이터 (id -> SkinItem)
 
 # ========================================
@@ -286,25 +286,8 @@ func hide_action_text():
 ##  * @returns void
 ##  */
 func _initialize_skins() -> void:
-	# 기본 Sprite1 스킨 (텍스처 변경 없음)
-	var default_sprite1 = SkinItem.new()
-	default_sprite1.id = "default_sprite1"
-	default_sprite1.name = "기본 캐릭터"
-	default_sprite1.price = 0
-	default_sprite1.description = "기본 캐릭터 스킨"
-	default_sprite1.target_sprite = 1  # Sprite2D
-	available_skins["default_sprite1"] = default_sprite1
-	
-	# 기본 Sprite2 스킨 (텍스처 변경 없음)
-	var default_sprite2 = SkinItem.new()
-	default_sprite2.id = "default_sprite2"
-	default_sprite2.name = "기본 도구"
-	default_sprite2.price = 0
-	default_sprite2.description = "기본 도구 스킨"
-	default_sprite2.target_sprite = 2  # Sprite2D2
-	available_skins["default_sprite2"] = default_sprite2
-	
 	# bongo_cat_skins 폴더에서 모든 .tres 파일 로드
+	# normal1, normal2가 초기 스킨으로 사용됨
 	_load_skins_from_folder("res://bongo_cat_skins/")
 
 ## /** 폴더에서 스킨 리소스 파일들을 로드한다
@@ -424,10 +407,10 @@ func _load_skin_data() -> void:
 	if err != OK:
 		return
 	
-	var owned_str = config.get_value("skins", "owned_skins", "default_sprite1,default_sprite2")
+	var owned_str = config.get_value("skins", "owned_skins", "normal1,normal2")
 	if owned_str != "":
 		# Array[String] 타입에 맞게 assign() 사용
 		owned_skins.assign(owned_str.split(",", false))
 	
-	current_sprite1_skin = config.get_value("skins", "current_sprite1_skin", "default_sprite1")
-	current_sprite2_skin = config.get_value("skins", "current_sprite2_skin", "default_sprite2")
+	current_sprite1_skin = config.get_value("skins", "current_sprite1_skin", "normal1")
+	current_sprite2_skin = config.get_value("skins", "current_sprite2_skin", "normal2")

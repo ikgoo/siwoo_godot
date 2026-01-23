@@ -151,11 +151,13 @@ func _physics_process(delta):
 	# 이전 프레임에서 바닥에 있었는지 기록
 	var was_on_floor = is_on_floor()
 	
-	# 채굴 키 입력 처리 (돌이나 타일 근처에 있을 때, 설치 모드가 아닐 때)
-	# 설치 모드(플랫폼/횃불)일 때는 채굴 비활성화
-	var is_any_build_mode = Globals.is_build_mode or Globals.is_torch_mode
+	# 채굴 키 입력 처리 (돌이나 타일 근처에 있을 때)
+	# - 돌(rock): 키보드로 채굴하므로 횃불 모드에서도 허용
+	# - 타일: 마우스로 채굴하므로 설치 모드에서 비활성화
+	var can_mine_rock = current_nearby_rock and not Globals.is_build_mode  # 돌은 플랫폼 모드에서만 비활성화
+	var can_mine_tile = is_near_mineable_tile and not (Globals.is_build_mode or Globals.is_torch_mode)
 	
-	if (current_nearby_rock or is_near_mineable_tile) and not is_any_build_mode:
+	if can_mine_rock or can_mine_tile:
 		# 현재 사용 가능한 키 개수만큼 순회
 		for i in range(Globals.mining_key_count):
 			var key = Globals.all_mining_keys[i]
@@ -518,8 +520,7 @@ func add_charge():
 			current_nearby_rock.lock_camera_on_first_hit()
 	
 	# 필요 클릭 수에 따라 차지량 계산 (1/필요클릭수)
-	# 테스트용으로 1회로 설정
-	var dynamic_charge_per_hit = 1.0  # 원래: 1.0 / float(Globals.mining_clicks_required)
+	var dynamic_charge_per_hit = 1.0 / float(Globals.mining_clicks_required)
 	charge_amount += dynamic_charge_per_hit
 	last_charge_time = Time.get_ticks_msec() / 1000.0
 	

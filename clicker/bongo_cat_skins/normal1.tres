@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkinItem" load_steps=4 format=3 uid="uid://b3g4ughfyedxo"]
+
+[ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_km46r"]
+[ext_resource type="Texture2D" uid="uid://ckc12h17ih44a" path="res://CONCEPT/asset/mine_clicker-miner.png" id="2_3sp00"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4xssc"]
+atlas = ExtResource("2_3sp00")
+region = Rect2(39, 32, 18, 32)
+
+[resource]
+script = ExtResource("1_km46r")
+texture = SubResource("AtlasTexture_4xssc")
+flip_h = true
+id = "miner"
+name = "신입광부"
+description = "돌을 캐는것이 아직 미숙한 광부입니다."
+metadata/_custom_type_script = "uid://dmhpjy8ra7v44"

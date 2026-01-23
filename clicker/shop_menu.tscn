@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://rw744pqh5eta"]
+[gd_scene load_steps=5 format=3 uid="uid://rw744pqh5eta"]
 
 [ext_resource type="Script" uid="uid://bgc4hdomck2pp" path="res://shop_menu.gd" id="1_shop_menu"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="2_xn0n2"]
 [ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_price_bg"]
 
 [node name="shop_menu" type="Control"]
@@ -15,31 +16,35 @@ offset_bottom = -274.0
 grow_vertical = 2
 script = ExtResource("1_shop_menu")
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -51.0
-offset_bottom = -60.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.15, 0.15, 0.2, 0.3)
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = -15.0
+offset_top = -63.0
+offset_right = 96.333336
+offset_bottom = 94.33333
+scale = Vector2(3, 3)
+texture = ExtResource("2_xn0n2")
+region_rect = Rect2(0, 0, 64, 64)
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 9
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -108.0
-offset_top = -42.0
-offset_right = 92.0
-offset_bottom = -2.0
+offset_left = -31.0
+offset_top = -43.0
+offset_right = 33.0
+offset_bottom = -3.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 32
-text = "스킨 상점"
+text = "상점"
 horizontal_alignment = 1
 
 [node name="MoneyLabel" type="Label" parent="."]
@@ -82,10 +87,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 63.0
-offset_top = -487.0
-offset_right = 141.0
-offset_bottom = -447.0
+offset_left = 71.0
+offset_top = -486.0
+offset_right = 149.0
+offset_bottom = -446.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_font")
@@ -191,10 +196,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -487.0
-offset_right = 55.0
-offset_bottom = -447.0
+offset_left = -151.0
+offset_top = -486.0
+offset_right = -63.0
+offset_bottom = -446.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_font")
