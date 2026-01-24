@@ -2,8 +2,8 @@ extends Camera2D
 
 @onready var character = $"../character"
 
-# 카메라가 플레이어를 따라가는 속도 (0~1 사이, 클수록 빠름)
-var follow_speed : float = 0.2
+# 카메라가 플레이어를 따라가는 속도 (높을수록 빠름)
+var follow_speed : float = 8.0  # delta 기반으로 변경
 
 # 카메라 고정 관련 변수
 var is_locked : bool = false  # 카메라가 특정 위치에 고정되었는지
@@ -38,13 +38,17 @@ func _ready():
 
 
 
-func _process(delta):
+func _physics_process(delta):
+	# _physics_process로 변경하여 캐릭터 이동과 동기화 (끊김 방지)
 	if is_locked:
 		# 카메라가 고정된 경우: 고정된 위치로 부드럽게 이동
-		global_position = global_position.lerp(locked_target_position, follow_speed)
+		var smooth_factor = 1.0 - exp(-follow_speed * delta)
+		global_position = global_position.lerp(locked_target_position, smooth_factor)
 	elif character:
 		# 일반 모드: 캐릭터를 따라가기
-		global_position = global_position.lerp(character.global_position, follow_speed)
+		# exp() 기반 보간으로 프레임 독립적인 부드러운 이동
+		var smooth_factor = 1.0 - exp(-follow_speed * delta)
+		global_position = global_position.lerp(character.global_position, smooth_factor)
 	
 	# 캐릭터가 경계선을 벗어나면 거리에 비례해서 확대
 	_update_zoom_by_boundary_distance()

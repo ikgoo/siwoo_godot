@@ -22,9 +22,9 @@ script = ExtResource("1_auto_scene")
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 texture_filter = 1
 layout_mode = 0
-offset_left = 422.0
+offset_left = 433.0
 offset_top = 627.0
-offset_right = 698.0
+offset_right = 690.5
 offset_bottom = 672.0
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_5364r")
@@ -46,20 +46,20 @@ text = "돌아가기"
 
 [node name="shop_button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 776.0
-offset_top = 636.0
-offset_right = 928.0
-offset_bottom = 713.0
+offset_left = 798.0
+offset_top = 649.0
+offset_right = 886.0
+offset_bottom = 701.0
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 40
 text = "상점"
 
 [node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
 layout_mode = 1
-offset_left = 492.0
-offset_top = 52.0
-offset_right = 798.0
-offset_bottom = -220.0
+offset_left = 540.0
+offset_top = 68.0
+offset_right = 846.0
+offset_bottom = -204.0
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(593, 571)
@@ -74,10 +74,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -124.0
+offset_left = 14.5
 offset_top = 284.0
-offset_right = 203.0
-offset_bottom = 470.5
+offset_right = 64.5
+offset_bottom = 339.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
@@ -86,6 +86,7 @@ theme_override_constants/separation = 30
 [node name="AutoMoneyLabel" type="Label" parent="CenterContainer"]
 texture_filter = 1
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 50
 text = " 0"

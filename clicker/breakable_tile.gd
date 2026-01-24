@@ -130,42 +130,46 @@ func _process(_delta):
 				if collision_shape and collision_shape.shape is CircleShape2D:
 					mining_radius = collision_shape.shape.radius
 	
-	# Rock이 근처에 있으면 타일 채굴 비활성화
+	# Rock이 근처에 있는지 확인
 	var near_rock = is_near_rock()
-	if near_rock:
-		target_tile = Vector2i(-9999, -9999)
-		if highlight_sprite:
-			highlight_sprite.visible = false
-		return
 	
-	# 캐릭터에서 마우스 방향으로 raycast를 쏴서 타일 찾기
-	var raycast_tile = get_tile_from_raycast()
-	
-	if raycast_tile != Vector2i(-9999, -9999):
-		var prev_target = target_tile
-		target_tile = raycast_tile
-		
-		# 하이라이트 표시
-		if highlight_sprite:
-			var tile_world_pos = to_global(map_to_local(target_tile))
-			highlight_sprite.global_position = tile_world_pos
-			highlight_sprite.visible = true
-		
-	else:
-		target_tile = Vector2i(-9999, -9999)
-		
-		# 하이라이트 숨기기
-		if highlight_sprite:
-			highlight_sprite.visible = false
-	
-	# 좌클릭 꾹 누르고 있으면 연속 채굴 (설치 모드가 아닐 때만)
-	if not Globals.is_build_mode and is_mouse_holding and target_tile != Vector2i(-9999, -9999):
+	# 쿨다운 항상 감소 (연타 방지용)
+	if mining_cooldown > 0.0:
 		mining_cooldown -= _delta
-		if mining_cooldown <= 0.0:
-			mine_tile(target_tile)
-			mining_cooldown = get_current_mining_interval()
 	
-	# 설치 모드일 때 빈 공간 하이라이트
+	# 타일 채굴 관련 (Rock 근처가 아닐 때만)
+	if not near_rock:
+		# 캐릭터에서 마우스 방향으로 raycast를 쏴서 타일 찾기
+		var raycast_tile = get_tile_from_raycast()
+		
+		if raycast_tile != Vector2i(-9999, -9999):
+			var _prev_target = target_tile
+			target_tile = raycast_tile
+			
+			# 하이라이트 표시
+			if highlight_sprite:
+				var tile_world_pos = to_global(map_to_local(target_tile))
+				highlight_sprite.global_position = tile_world_pos
+				highlight_sprite.visible = true
+		else:
+			target_tile = Vector2i(-9999, -9999)
+			
+			# 하이라이트 숨기기
+			if highlight_sprite:
+				highlight_sprite.visible = false
+		
+		# 좌클릭 꾹 누르고 있으면 연속 채굴 (설치 모드가 아닐 때만)
+		if not Globals.is_build_mode and is_mouse_holding and target_tile != Vector2i(-9999, -9999):
+			if mining_cooldown <= 0.0:
+				mine_tile(target_tile)
+				mining_cooldown = get_current_mining_interval()
+	else:
+		# Rock 근처면 타일 채굴 비활성화
+		target_tile = Vector2i(-9999, -9999)
+		if highlight_sprite:
+			highlight_sprite.visible = false
+	
+	# 설치 모드일 때 빈 공간 하이라이트 (Rock 근처여도 항상 동작)
 	if Globals.is_build_mode:
 		update_build_mode_highlight()
 	else:
@@ -173,7 +177,7 @@ func _process(_delta):
 			build_highlight_sprite.visible = false
 		build_target_tile = Vector2i(-9999, -9999)
 	
-	# 횃불 모드일 때 하이라이트
+	# 횃불 모드일 때 하이라이트 (Rock 근처여도 항상 동작)
 	if Globals.is_torch_mode:
 		update_torch_mode_highlight()
 	else:
@@ -221,17 +225,16 @@ func _input(event):
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if not Globals.is_build_mode:
 				if event.pressed:
-					# 좌클릭 눌림 - 즉시 채굴 + 연속 채굴 모드 시작
+					# 좌클릭 눌림 - 연속 채굴 모드 시작
 					is_mouse_holding = true
-					mining_cooldown = get_current_mining_interval()  # 첫 클릭 후 잠시 대기
 					
-					# 타겟 타일이 있으면 즉시 채굴
-					if target_tile != Vector2i(-9999, -9999):
+					# 쿨다운이 끝났을 때만 즉시 채굴 (연타 방지)
+					if mining_cooldown <= 0.0 and target_tile != Vector2i(-9999, -9999):
 						mine_tile(target_tile)
+						mining_cooldown = get_current_mining_interval()
 				else:
-					# 좌클릭 뗌 - 연속 채굴 모드 종료
+					# 좌클릭 뗌 - 연속 채굴 모드 종료 (쿨다운은 유지!)
 					is_mouse_holding = false
-					mining_cooldown = 0.0
 
 ## 하이라이트 스프라이트 생성
 func create_highlight_sprite():
