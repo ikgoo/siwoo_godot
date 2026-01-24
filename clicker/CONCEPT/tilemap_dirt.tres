@@ -1,10 +1,9 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bc4jub32w6yl5"]
 
-[ext_resource type="Texture2D" uid="uid://cdrmueua2nuy7" path="res://CONCEPT/asset/24/mine_clicker-24_dirt.png" id="1_6ey11"]
+[ext_resource type="Texture2D" uid="uid://ckhdwdewkckm5" path="res://CONCEPT/asset/16/mine_clicker16_DIRT.png" id="1_6ey11"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_airrb"]
 texture = ExtResource("1_6ey11")
-texture_region_size = Vector2i(24, 24)
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -336,9 +335,10 @@ texture_region_size = Vector2i(24, 24)
 11:3/0/terrains_peering_bit/top_side = 0
 
 [resource]
-tile_size = Vector2i(24, 24)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_0/terrain_1/name = "Terrain 1"
+terrain_set_0/terrain_1/color = Color(0.7104934, 0.7730419, 0.820115, 1)
 navigation_layer_0/layers = 1
-sources/2 = SubResource("TileSetAtlasSource_airrb")
+sources/0 = SubResource("TileSetAtlasSource_airrb")
