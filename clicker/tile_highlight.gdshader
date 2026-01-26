@@ -2,8 +2,8 @@ shader_type canvas_item;
 
 // 하이라이트할 타일의 월드 좌표 (중심점)
 uniform vec2 highlight_position = vec2(-99999.0, -99999.0);
-// 타일 크기 (픽셀) - breakable_tile은 32x32
-uniform vec2 tile_size = vec2(32.0, 32.0);
+// 타일 크기 (픽셀) - breakable_tile은 16x16
+uniform vec2 tile_size = vec2(16.0, 16.0);
 // 하이라이트 색상 (밝기 조절용, 1.0 이상이면 밝아짐)
 uniform vec4 highlight_color : source_color = vec4(1.4, 1.4, 1.0, 1.0);
 // 하이라이트 활성화 여부

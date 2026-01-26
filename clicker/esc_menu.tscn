@@ -24,6 +24,7 @@ offset_top = -40.0
 offset_right = 50.0
 offset_bottom = 10.0
 scale = Vector2(8, 8)
+mouse_filter = 2
 texture = ExtResource("2_ljgwf")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -48,6 +49,14 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 24
 text = "계속하기"
+
+[node name="SettingButton" type="Button" parent="VBoxContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "설정"
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]
 process_mode = 3

@@ -306,10 +306,10 @@ region_rect = Rect2(5, 37, 22, 22)
 
 [node name="Light2D" type="PointLight2D" parent="."]
 z_index = 1
-energy = 1.4
+energy = 2.2
 blend_mode = 2
 texture = ExtResource("4_kx7w4")
-texture_scale = 1.2
+texture_scale = 2.4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

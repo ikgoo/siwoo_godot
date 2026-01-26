@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3iup24b62ol2"]
+[gd_scene load_steps=7 format=3 uid="uid://d3iup24b62ol2"]
 
 [ext_resource type="Script" uid="uid://cpdo3u3cff3ub" path="res://auto_scene.gd" id="1_auto_scene"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
@@ -8,6 +8,18 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_5364r"]
 atlas = ExtResource("6_g53jw")
 region = Rect2(0, 16, 160, 48)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.12, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.5, 0.6, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="AutoScene" type="Control"]
 layout_mode = 3
@@ -36,19 +48,29 @@ patch_margin_bottom = 16
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 445.0
-offset_top = 643.0
-offset_right = 613.0
-offset_bottom = 703.0
+offset_left = 450.0
+offset_top = 648.0
+offset_right = 494.0
+offset_bottom = 700.0
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
-text = "돌아가기"
+text = "<-"
+
+[node name="setting" type="Button" parent="."]
+layout_mode = 0
+offset_left = 734.0
+offset_top = 647.0
+offset_right = 822.0
+offset_bottom = 699.0
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "설정"
 
 [node name="shop_button" type="Button" parent="."]
 layout_mode = 0
-offset_left = 798.0
+offset_left = 519.0
 offset_top = 649.0
-offset_right = 886.0
+offset_right = 607.0
 offset_bottom = 701.0
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
@@ -98,4 +120,134 @@ scale = Vector2(5, 5)
 flip_h = true
 region_rect = Rect2(39, 32, 18, 32)
 
+[node name="SettingPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 440.0
+offset_top = 200.0
+offset_right = 840.0
+offset_bottom = 480.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "설정"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UIScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="UIScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "UI 크기"
+
+[node name="UIScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "-"
+
+[node name="UIScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.7, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "1.0x"
+horizontal_alignment = 1
+
+[node name="UIScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "+"
+
+[node name="CharScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "캐릭터 크기"
+
+[node name="CharScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "-"
+
+[node name="CharScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.9, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "1.0x"
+horizontal_alignment = 1
+
+[node name="CharScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "+"
+
+[node name="HSeparator2" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="ApplyButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "적용"
+
+[node name="CloseButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "닫기"
+
+[connection signal="button_down" from="setting" to="." method="_on_setting_button_down"]
 [connection signal="button_down" from="shop_button" to="." method="_on_shop_button_button_down"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer/UIScaleMinus" to="." method="_on_ui_scale_minus"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer/UIScalePlus" to="." method="_on_ui_scale_plus"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer/CharScaleMinus" to="." method="_on_char_scale_minus"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer/CharScalePlus" to="." method="_on_char_scale_plus"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer/ApplyButton" to="." method="_on_apply_pressed"]
+[connection signal="pressed" from="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer/CloseButton" to="." method="_on_setting_close_pressed"]

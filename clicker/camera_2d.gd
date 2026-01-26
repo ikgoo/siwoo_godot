@@ -10,8 +10,8 @@ var is_locked : bool = false  # 카메라가 특정 위치에 고정되었는지
 var locked_target_position : Vector2 = Vector2.ZERO  # 고정된 목표 위치
 
 # 줌 관련 변수
-var default_zoom : Vector2 = Vector2(2, 2)  # 기본 줌 레벨
-var target_zoom : Vector2 = Vector2(2, 2)  # 목표 줌 레벨
+var default_zoom : Vector2 = Vector2(3.5, 3.5)  # 기본 줌 레벨 (캐릭터 크게 보이도록)
+var target_zoom : Vector2 = Vector2(3.5, 3.5)  # 목표 줌 레벨
 var zoom_speed : float = 2.0  # 줌 변경 속도
 
 # 경계 제한 관련 확대 변수

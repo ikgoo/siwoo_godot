@@ -8,6 +8,8 @@ const MINC_CLICKER_LOBBY_BUTTON_START_3 = preload("uid://byi030cxhp7oc")
 
 ## 씬 초기화 시 레이블 깜빡임 애니메이션 시작
 func _ready():
+	# UI 텍스트 번역 적용
+	label.text = Globals.get_text("LOBBY PRESS KEY")
 	animation_player.play("label_blink")
 
 func _on_start_button_up():

@@ -20,6 +20,8 @@ func _ready():
 	# 스킨 시스템 초기화
 	_initialize_skins()
 	_load_skin_data()
+	# 설정 로드
+	load_settings()
 
 # ========================================
 # 게임 밸런스 변수
@@ -74,6 +76,9 @@ var money : int:
 # auto_scene에서 사용할 새로운 돈 시스템
 var auto_money : int = 0
 
+# 초당 수입 (알바 시스템용)
+var money_per_second : int = 0
+
 # ========================================
 # 스킨 상점 시스템
 # ========================================
@@ -112,9 +117,9 @@ var diamond_value_upgrades: Array[Vector2i] = [
 	Vector2i(40, 2),      # Lv 1
 	Vector2i(100, 4),    # Lv 2
 	Vector2i(250, 8),    # Lv 3
-	Vector2i(800, 10),    # Lv 4
-	Vector2i(1250, 14),  # Lv 5
-	Vector2i(2000, 20),  # Lv 6
+	Vector2i(800, 16),    # Lv 4
+	Vector2i(1250, 25),  # Lv 5
+	Vector2i(2000, 30),  # Lv 6
 	Vector2i(3000, 45),  # Lv 7
 	Vector2i(5000, 60),  # Lv 8
 	Vector2i(10000, 100), # Lv 9
@@ -266,6 +271,172 @@ var is_torch_mode: bool = false  # 횃불 설치 모드
 var all_mining_keys : Array[int] = [KEY_F, KEY_J, KEY_G, KEY_K, KEY_H, KEY_L]
 var mining_key1 : int = KEY_F
 var mining_key2 : int = KEY_J
+
+# ========================================
+# 게임 설정 (Settings)
+# ========================================
+# 볼륨 설정 (0.0 ~ 1.0)
+var master_volume: float = 1.0
+var bgm_volume: float = 1.0
+var sfx_volume: float = 1.0
+
+# 언어 설정
+var current_language: String = "ko"  # "ko" = 한국어, "en" = 영어
+var available_languages: Dictionary = {
+	"ko": "한국어",
+	"en": "English"
+}
+
+# ========================================
+# Auto Scene 설정
+# ========================================
+# UI 크기 배율 (0.5 ~ 3.0)
+var auto_ui_scale: float = 1.0
+# 캐릭터 크기 배율 (0.5 ~ 3.0)
+var auto_character_scale: float = 1.0
+
+# 번역 데이터
+var translations: Dictionary = {
+	"ko": {
+		"MENU TITLE": "메뉴",
+		"MENU RESUME": "계속하기",
+		"MENU SETTING": "설정",
+		"MENU EXIT": "나가기",
+		"SETTING TITLE": "설정",
+		"SETTING MASTER": "마스터",
+		"SETTING BGM": "BGM",
+		"SETTING SFX": "효과음",
+		"SETTING LANGUAGE": "언어",
+		"SETTING BACK": "뒤로가기",
+		"SHOP TITLE": "상점",
+		"SHOP OWNED": "보유:",
+		"SHOP CLOSE": "닫기",
+		"SHOP BUY": "구매",
+		"SHOP APPLY": "적용",
+		"SHOP APPLIED": "✓ 적용됨",
+		"SHOP FREE": "무료",
+		"SHOP OWNED ITEM": "보유중",
+		"SHOP DEFAULT": "기본",
+		"SHOP INVENTORY": "인벤토리",
+		"SHOP CHARACTER SKIN": "캐릭터 스킨",
+		"SHOP TOOL SKIN": "도구 스킨",
+		"SHOP BACK": "뒤로",
+		"UI PRESS KEY": "키를 누르세요...",
+		"UI KEY BLOCKED": "사용 불가!",
+		"UI TIER UP": "티어 %d 달성!",
+		"UI MINING KEY N": "채굴 키 %d:",
+		"AUTO GO BACK": "돌아가기",
+		"AUTO SHOP": "상점",
+		"AUTO SETTING": "설정",
+		"AUTO SETTING TITLE": "설정",
+		"AUTO UI SCALE": "UI 크기",
+		"AUTO CHAR SCALE": "캐릭터 크기",
+		"AUTO SETTING APPLY": "적용",
+		"AUTO SETTING CLOSE": "닫기",
+		"LOBBY PRESS KEY": "- 아무 키나 누르세요 -",
+	},
+	"en": {
+		"MENU TITLE": "Menu",
+		"MENU RESUME": "Resume",
+		"MENU SETTING": "Settings",
+		"MENU EXIT": "Exit",
+		"SETTING TITLE": "Settings",
+		"SETTING MASTER": "Master",
+		"SETTING BGM": "BGM",
+		"SETTING SFX": "SFX",
+		"SETTING LANGUAGE": "Language",
+		"SETTING BACK": "Back",
+		"SHOP TITLE": "Shop",
+		"SHOP OWNED": "Owned:",
+		"SHOP CLOSE": "Close",
+		"SHOP BUY": "Buy",
+		"SHOP APPLY": "Apply",
+		"SHOP APPLIED": "✓ Applied",
+		"SHOP FREE": "Free",
+		"SHOP OWNED ITEM": "Owned",
+		"SHOP DEFAULT": "Default",
+		"SHOP INVENTORY": "Inventory",
+		"SHOP CHARACTER SKIN": "Character",
+		"SHOP TOOL SKIN": "Tool",
+		"SHOP BACK": "Back",
+		"UI PRESS KEY": "Press a key...",
+		"UI KEY BLOCKED": "Not Available!",
+		"UI TIER UP": "Tier %d Reached!",
+		"UI MINING KEY N": "Mining Key %d:",
+		"AUTO GO BACK": "Go Back",
+		"AUTO SHOP": "Shop",
+		"AUTO SETTING": "Settings",
+		"AUTO SETTING TITLE": "Settings",
+		"AUTO UI SCALE": "UI Scale",
+		"AUTO CHAR SCALE": "Character",
+		"AUTO SETTING APPLY": "Apply",
+		"AUTO SETTING CLOSE": "Close",
+		"LOBBY PRESS KEY": "- Press Any Key -",
+	}
+}
+
+## 번역된 텍스트를 가져온다
+## @param key String 번역 키
+## @returns String 번역된 텍스트
+func get_text(key: String) -> String:
+	if translations.has(current_language):
+		var lang_dict = translations[current_language]
+		if lang_dict.has(key):
+			return lang_dict[key]
+	# 키를 찾지 못하면 키 자체를 반환
+	return key
+
+# 설정 저장/로드
+func save_settings() -> void:
+	var config = ConfigFile.new()
+	config.set_value("audio", "master_volume", master_volume)
+	config.set_value("audio", "bgm_volume", bgm_volume)
+	config.set_value("audio", "sfx_volume", sfx_volume)
+	config.set_value("locale", "language", current_language)
+	config.set_value("auto_scene", "ui_scale", auto_ui_scale)
+	config.set_value("auto_scene", "character_scale", auto_character_scale)
+	config.save("user://settings.cfg")
+	
+	# 오디오 버스에 볼륨 적용
+	_apply_audio_settings()
+
+func load_settings() -> void:
+	var config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	if err != OK:
+		# 파일이 없으면 기본값 사용
+		return
+	
+	master_volume = config.get_value("audio", "master_volume", 1.0)
+	bgm_volume = config.get_value("audio", "bgm_volume", 1.0)
+	sfx_volume = config.get_value("audio", "sfx_volume", 1.0)
+	current_language = config.get_value("locale", "language", "ko")
+	auto_ui_scale = config.get_value("auto_scene", "ui_scale", 1.0)
+	auto_character_scale = config.get_value("auto_scene", "character_scale", 1.0)
+	
+	# 오디오 버스에 볼륨 적용
+	_apply_audio_settings()
+	# 언어 적용
+	_apply_language()
+
+func _apply_audio_settings() -> void:
+	# Master 버스 (인덱스 0)
+	var master_db = linear_to_db(master_volume) if master_volume > 0 else -80.0
+	AudioServer.set_bus_volume_db(0, master_db)
+	
+	# BGM 버스 (인덱스 1, 존재하는 경우)
+	if AudioServer.bus_count > 1:
+		var bgm_db = linear_to_db(bgm_volume) if bgm_volume > 0 else -80.0
+		AudioServer.set_bus_volume_db(1, bgm_db)
+	
+	# SFX 버스 (인덱스 2, 존재하는 경우)
+	if AudioServer.bus_count > 2:
+		var sfx_db = linear_to_db(sfx_volume) if sfx_volume > 0 else -80.0
+		AudioServer.set_bus_volume_db(2, sfx_db)
+
+func _apply_language() -> void:
+	# Godot의 번역 시스템 사용
+	TranslationServer.set_locale(current_language)
 
 # ========================================
 # 액션 텍스트 시스템

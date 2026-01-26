@@ -1,8 +1,17 @@
-[gd_resource type="Resource" script_class="SkinItem" load_steps=2 format=3 uid="uid://cv3oegpayfl0"]
+[gd_resource type="Resource" script_class="SkinItem" load_steps=4 format=3 uid="uid://cv3oegpayfl0"]
 
 [ext_resource type="Script" uid="uid://dmhpjy8ra7v44" path="res://skin_item.gd" id="1_hmk4s"]
+[ext_resource type="Texture2D" uid="uid://d6ptpkex8ug5" path="res://CONCEPT/asset/mine_clicker32-mine_tile.png" id="2_xq4j8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqyi0"]
+atlas = ExtResource("2_xq4j8")
+region = Rect2(0, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_hmk4s")
 target_sprite = 2
+texture = SubResource("AtlasTexture_fqyi0")
+id = "normal2"
+name = "다이아몬드 돌"
+description = "[Tool]"
 metadata/_custom_type_script = "uid://dmhpjy8ra7v44"

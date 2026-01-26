@@ -18,6 +18,9 @@ var base_scale: float = 0.8
 var max_scale: float = 0.9
 
 func _ready():
+	# torches 그룹에 추가 (중복 설치 체크용)
+	add_to_group("torches")
+	
 	# AUTO 모드면 레이캐스트로 벽 방향 감지
 	if torch_type == TorchType.AUTO:
 		# 레이캐스트 강제 업데이트 (첫 프레임에 충돌 감지)
@@ -27,11 +30,12 @@ func _ready():
 		var left_wall = raycast_left.is_colliding()
 		var right_wall = raycast_right.is_colliding()
 		
-		# 왼쪽 벽에 붙어있으면 wall_fire, 오른쪽 벽에 붙어있으면 reverse_wall_fire
+		# 왼쪽 벽에 붙어있으면 reverse_wall_fire (횃불이 오른쪽 향함)
+		# 오른쪽 벽에 붙어있으면 wall_fire (횃불이 왼쪽 향함)
 		if left_wall and not right_wall:
-			torch_type = TorchType.WALL
-		elif right_wall and not left_wall:
 			torch_type = TorchType.WALL_REVERSE
+		elif right_wall and not left_wall:
+			torch_type = TorchType.WALL
 		else:
 			torch_type = TorchType.STAND
 	
@@ -44,9 +48,6 @@ func _ready():
 				animation_player.play("reverse_wall_fire")
 			TorchType.STAND:
 				animation_player.play("stand_fire")
-	
-	# y좌표가 높을수록(화면 아래) z_index가 높게 설정
-	z_index = int(global_position.y)
 	
 	# Sprite2D(횃불 받침대)가 항상 AnimatedSprite2D(불꽃) 위에 렌더링되도록 설정
 	if torch_sprite:

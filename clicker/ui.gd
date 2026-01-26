@@ -229,7 +229,7 @@ func _on_money_changed(new_amount: int, delta_money: int):
 # 티어가 올라갔을 때 호출되는 콜백
 func _on_tier_up(new_tier: int):
 	# 티어 업 알림 표시 (액션바 스타일)
-	tier_notification.text = "티어 " + str(new_tier) + " 달성!"
+	tier_notification.text = Globals.get_text("UI TIER UP") % new_tier
 	
 	# 페이드 인 → 유지 → 페이드 아웃
 	var tween = create_tween()
@@ -270,7 +270,7 @@ func _on_key_input_gui_input(event: InputEvent, key_index: int):
 		if key_index < key_inputs.size():
 			waiting_for_key = key_inputs[key_index]
 			waiting_for_key_index = key_index
-			key_inputs[key_index].text = "키를 누르세요..."
+			key_inputs[key_index].text = Globals.get_text("UI PRESS KEY")
 
 # 사용 불가능한 키 목록 (이동 및 시스템 키)
 const BLOCKED_KEYS: Array[int] = [
@@ -297,7 +297,7 @@ func _input(event: InputEvent):
 		
 		# 사용 불가능한 키 체크
 		if keycode in BLOCKED_KEYS:
-			waiting_for_key.text = "사용 불가!"
+			waiting_for_key.text = Globals.get_text("UI KEY BLOCKED")
 			# 1초 후 원래 키 표시
 			await get_tree().create_timer(0.5).timeout
 			if waiting_for_key_index >= 0 and waiting_for_key_index < Globals.all_mining_keys.size():
@@ -340,7 +340,7 @@ func update_key_settings_ui():
 		
 		# 라벨 생성
 		var lbl = Label.new()
-		lbl.text = "채굴 키 %d:" % (i + 1)
+		lbl.text = Globals.get_text("UI MINING KEY N") % (i + 1)
 		lbl.add_theme_font_override("font", GALMURI_9)
 		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		container.add_child(lbl)

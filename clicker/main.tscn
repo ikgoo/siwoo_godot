@@ -1,12 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=5 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://ejlxnt1kknfi" path="res://camera_2d.gd" id="4_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cciuktwcjunn7" path="res://alba_buy.tscn" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
-[ext_resource type="PackedScene" uid="uid://b7awbgdqx0dgd" path="res://goal_area.tscn" id="9_kek77"]
-[ext_resource type="PackedScene" uid="uid://cu1tafa850nj7" path="res://ending.tscn" id="12_ycdy4"]
 
 [node name="main" type="Node2D"]
 
@@ -19,10 +16,8 @@ acceleration = 1000.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 88)
-zoom = Vector2(2.4, 2.4)
+zoom = Vector2(3.5, 3.5)
 script = ExtResource("4_1bvp3")
-
-[node name="walls" type="Node2D" parent="."]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.03, 0.03, 0.05, 1)
@@ -31,19 +26,3 @@ color = Color(0.03, 0.03, 0.05, 1)
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("8_5vw27")]
 metadata/_edit_lock_ = true
-
-[node name="goal_area" parent="." instance=ExtResource("9_kek77")]
-position = Vector2(477, -172)
-teleport_position = Vector2(87, 190)
-
-[node name="alba_buy" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(279, 186)
-
-[node name="alba_buy2" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(311, 95)
-
-[node name="alba_buy3" parent="." instance=ExtResource("6_7mycd")]
-position = Vector2(-284, -8)
-
-[node name="ending" parent="." instance=ExtResource("12_ycdy4")]
-position = Vector2(-111, -24)

@@ -1,0 +1,166 @@
+[gd_scene load_steps=4 format=3 uid="uid://i5mym0fua3y4"]
+
+[ext_resource type="Script" uid="uid://d0fa26mr4kyyg" path="res://setting.gd" id="1_setting"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="3_bg"]
+
+[node name="SettingLayer" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_setting")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel"]
+layout_mode = 1
+offset_left = -6.0
+offset_top = -8.0
+offset_right = 45.5
+offset_bottom = 43.5
+scale = Vector2(8, 8)
+texture = ExtResource("3_bg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 370.0
+offset_bottom = 370.0
+theme_override_constants/separation = 15
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "설정"
+horizontal_alignment = 1
+
+[node name="Separator1" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="MasterVolumeContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MasterLabel" type="Label" parent="Panel/VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "마스터"
+
+[node name="MasterSlider" type="HSlider" parent="Panel/VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MasterValue" type="Label" parent="Panel/VBoxContainer/MasterVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+
+[node name="BGMVolumeContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BGMLabel" type="Label" parent="Panel/VBoxContainer/BGMVolumeContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "BGM"
+
+[node name="BGMSlider" type="HSlider" parent="Panel/VBoxContainer/BGMVolumeContainer"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="BGMValue" type="Label" parent="Panel/VBoxContainer/BGMVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+
+[node name="SFXVolumeContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SFXLabel" type="Label" parent="Panel/VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "효과음"
+
+[node name="SFXSlider" type="HSlider" parent="Panel/VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="SFXValue" type="Label" parent="Panel/VBoxContainer/SFXVolumeContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+
+[node name="Separator2" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="LanguageContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LanguageLabel" type="Label" parent="Panel/VBoxContainer/LanguageContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "언어"
+
+[node name="LanguageOption" type="OptionButton" parent="Panel/VBoxContainer/LanguageContainer"]
+custom_minimum_size = Vector2(150, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+
+[node name="Separator3" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Panel/VBoxContainer/ButtonContainer"]
+process_mode = 3
+custom_minimum_size = Vector2(120, 45)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+text = "뒤로가기"

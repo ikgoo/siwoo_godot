@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bi1wlgreouwk8" path="res://CONCEPT/asset/mine_clicker-miner-SHEET.png" id="3_wa5vi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vu45j"]
-size = Vector2(13, 22)
+size = Vector2(7, 15)
 
 [sub_resource type="Animation" id="Animation_0qfo5"]
 length = 0.1250125
@@ -288,14 +288,14 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wa5vi"]
-radius = 51.24451
+radius = 38.013157
 
 [node name="character" type="CharacterBody2D"]
 collision_mask = 5
 script = ExtResource("1_glpr6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_vu45j")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -305,17 +305,21 @@ libraries = {
 autoplay = "idle"
 
 [node name="pickaxe" type="Sprite2D" parent="."]
-position = Vector2(14, -6)
+position = Vector2(5.999999, -0.9999995)
 rotation = 0.5235988
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_wa5vi")
 region_rect = Rect2(0, 0, 16, 16)
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -1)
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_hvi53")
+metadata/_edit_lock_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 16
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_wa5vi")
+metadata/_edit_lock_ = true

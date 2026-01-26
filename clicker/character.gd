@@ -3,8 +3,11 @@ extends CharacterBody2D
 const SPEED = 100.0
 const RUN_SPEED = 150.0  # 달리기 속도
 
-const JUMP_VELOCITY = -300.0  # 최대 점프 높이
-const MIN_JUMP_VELOCITY = -200.0  # 최소 점프 높이 (빠르게 뗄 때)
+const JUMP_VELOCITY = -180.0  # 최대 점프 높이
+const MIN_JUMP_VELOCITY = -120.0  # 최소 점프 높이 (빠르게 뗄 때)
+
+# 중력 배율 (기본 중력에 곱해짐)
+const GRAVITY_SCALE = 0.7  # 중력을 30% 낮춤
 
 # 가속도 설정
 @export var acceleration: float = 800.0  # 가속도 (픽셀/초²)
@@ -16,10 +19,10 @@ const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
 const NORMAL_COLLISION_LAYER = 1    # 일반 타일 collision layer
 const ALL_COLLISION_LAYERS = 5      # 일반 타일 + 플랫폼
  
-# S 키를 눌렀을 때 플랫폼 통과 상태 (y 위치 기반)
+# S 키를 눌렀을 때 플랫폼 통과 상태 (0.2초 동안)
 var platform_out: bool = false
-var platform_out_y: float = 0.0  # S키 눌렀을 때의 y 위치
-const PLATFORM_DROP_DISTANCE: float = 20.0  # 이 거리만큼 내려가면 다시 충돌 활성화
+var platform_out_timer: float = 0.0
+const PLATFORM_OUT_DURATION: float = 0.2  # 0.2초
 
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
@@ -88,8 +91,8 @@ var charge_bar_background: Panel = null
 @export var charge_pickaxe_position: Vector2 = Vector2(8, -15)  # 차징 중 곡괭이 위치
 
 # 돌 근처 감지
-var current_nearby_rock: Node2D = null  # 현재 근처에 있는 돌
-var is_near_mineable_tile: bool = false  # 채굴 가능한 타일 근처에 있는지
+var current_nearby_rock: Node2D = null  # 현재 근처에 있는 돌 (rock.gd)
+var current_nearby_tilemap: TileMap = null  # 현재 근처에 있는 타일맵 (breakable_tile.gd)
 
 # 스태미나 시스템
 var max_stamina: float = 100.0
@@ -103,6 +106,14 @@ var flashlight: PointLight2D = null
 @export var flashlight_color: Color = Color(1.0, 0.95, 0.8, 0.6)  # 따뜻한 노란빛
 @export var flashlight_energy: float = 0.8
 @export var flashlight_scale: float = 1.5
+
+# 설치 모드용 프리뷰
+var torch_scene: PackedScene = null
+var platform_tile_source_id: int = -1  # 플랫폼 타일 소스 ID
+
+# 설치 모드 하이라이트 (설치 가능: 초록, 불가능: 빨강)
+var build_highlight_sprite: Sprite2D = null
+var build_highlight_pulse_time: float = 0.0
 
 func _ready():
 	# player 그룹에 추가 (rock.gd에서 찾을 수 있도록)
@@ -121,14 +132,103 @@ func _ready():
 	create_charge_bar()
 	
 	# 부채꼴 빛 생성
-
+	if flashlight_enabled:
+		create_flashlight()
+	
+	# 설치용 씬 로드
+	if ResourceLoader.exists("res://torch.tscn"):
+		torch_scene = load("res://torch.tscn")
+		print("✅ torch.tscn 로드 완료")
+	else:
+		print("❌ torch.tscn을 찾을 수 없음!")
+	
+	# 설치 모드 하이라이트 생성
+	create_build_highlight_sprite()
 	
 	# 기본 대기 애니메이션 재생
 	play_animation("idle")
 
+# 2, 3, B번 키 이전 프레임 상태 추적
+var was_key_2_pressed: bool = false
+var was_key_3_pressed: bool = false
+var was_key_b_pressed: bool = false
+var was_mouse_left_pressed: bool = false
+
+# 좌클릭 홀드 채굴 시스템
+var is_mining_held: bool = false
+var mining_hold_timer: float = 0.0
+var mining_hold_interval: float = 0.5  # 0.5초마다 채굴 (티어에 따라 변동)
+
+func _input(event: InputEvent):
+	# 마우스 좌클릭: 돌 캐기 (breakable_tile)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			# 좌클릭 시작
+			if not is_mining_held:
+				# 첫 클릭인 경우: 즉시 채굴 가능하도록 타이머를 간격 이상으로 설정
+				is_mining_held = true
+				var speed_bonus = 1.0 + (Globals.mining_tier - 1) * 0.2
+				var current_interval = mining_hold_interval / speed_bonus
+				mining_hold_timer = current_interval  # 즉시 채굴 가능
+		else:
+			# 좌클릭 해제
+			is_mining_held = false
+
+## breakable_tile 채굴을 시도합니다 (모든 tilemap 검사)
+func try_mine_breakable_tile():
+	# 모든 breakable_tile을 검사하여 마우스 방향에 타일이 있는지 확인
+	var tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	var nearest_tile = null
+	var nearest_tilemap = null
+	var nearest_distance = 999999.0
+	
+	for tilemap in tilemaps:
+		if not tilemap or not tilemap.has_method("get_nearest_breakable_tile"):
+			continue
+		
+		# 각 tilemap의 마우스 방향 타일 검사
+		var tile_info = tilemap.get_nearest_breakable_tile()
+		if tile_info and tile_info.has("distance"):
+			if tile_info.distance < nearest_distance:
+				nearest_distance = tile_info.distance
+				nearest_tile = tile_info
+				nearest_tilemap = tilemap
+	
+	# 타일을 찾았으면 채굴
+	if nearest_tilemap and nearest_tilemap.has_method("mine_nearest_tile"):
+		start_pickaxe_animation()
+		nearest_tilemap.mine_nearest_tile()
+
+## 설치 모드 키 입력을 처리합니다 (_physics_process에서 호출)
+func handle_build_mode_input():
+	# 2번 키: 횃불 설치 모드 토글
+	var is_key_2_pressed = Input.is_key_pressed(KEY_2)
+	if is_key_2_pressed and not was_key_2_pressed:
+		Globals.is_torch_mode = not Globals.is_torch_mode
+		Globals.is_build_mode = false  # 플랫폼 모드는 해제
+	was_key_2_pressed = is_key_2_pressed
+	
+	# 3번 키: 플랫폼 설치 모드 토글
+	var is_key_3_pressed = Input.is_key_pressed(KEY_3)
+	if is_key_3_pressed and not was_key_3_pressed:
+		Globals.is_build_mode = not Globals.is_build_mode
+		Globals.is_torch_mode = false  # 횃불 모드는 해제
+	was_key_3_pressed = is_key_3_pressed
+	
+	# B키: 설치 실행
+	var is_key_b_pressed = Input.is_key_pressed(KEY_B)
+	if is_key_b_pressed and not was_key_b_pressed:
+		# 횃불 설치 모드
+		if Globals.is_torch_mode and torch_scene:
+			place_torch()
+		# 플랫폼 설치 모드
+		elif Globals.is_build_mode:
+			place_platform()
+	was_key_b_pressed = is_key_b_pressed
 
 func _process(delta):
 	# 부채꼴 빛 방향 업데이트
+	update_flashlight_direction()
 	# 카메라가 돌에 고정되어 있으면 계속 돌 쪽을 바라봄
 	update_facing_direction_to_rock()
 	
@@ -140,24 +240,35 @@ func _process(delta):
 	
 	# 차징 게이지 업데이트
 	update_charge_bar()
+	
+	# 설치 모드 하이라이트 업데이트
+	update_build_highlight(delta)
 
 func _physics_process(delta):
+	# 설치 모드 키 입력 처리
+	handle_build_mode_input()
+	
+	# 디버그: breakable_tiles 그룹 확인 (한 번만)
+	_debug_check_tilemaps()
+	
 	# 돌 근처 확인
 	check_nearby_rocks()
 	
-	# 타일 근처 확인
-	check_nearby_tiles()
+	# 좌클릭 홀드 채굴 처리 (모드 상관없이 항상 가능)
+	if is_mining_held:
+		mining_hold_timer += delta
+		# 티어에 따라 채굴 속도 증가 (티어 1: 0.15초, 티어 5: 0.07초)
+		var speed_bonus = 1.0 + (Globals.mining_tier - 1) * 0.2
+		var current_interval = mining_hold_interval / speed_bonus
+		if mining_hold_timer >= current_interval:
+			mining_hold_timer = 0.0
+			try_mine_breakable_tile()
 	
 	# 이전 프레임에서 바닥에 있었는지 기록
 	var was_on_floor = is_on_floor()
 	
-	# 채굴 키 입력 처리 (돌이나 타일 근처에 있을 때)
-	# - 돌(rock): 키보드로 채굴하므로 횃불 모드에서도 허용
-	# - 타일: 마우스로 채굴하므로 설치 모드에서 비활성화
-	var can_mine_rock = current_nearby_rock and not Globals.is_build_mode  # 돌은 플랫폼 모드에서만 비활성화
-	var can_mine_tile = is_near_mineable_tile and not (Globals.is_build_mode or Globals.is_torch_mode)
-	
-	if can_mine_rock or can_mine_tile:
+	# 채굴 키 입력 처리 (돌 또는 타일맵 근처에 있을 때만)
+	if current_nearby_rock or current_nearby_tilemap:
 		# 현재 사용 가능한 키 개수만큼 순회
 		for i in range(Globals.mining_key_count):
 			var key = Globals.all_mining_keys[i]
@@ -183,7 +294,7 @@ func _physics_process(delta):
 			else:
 				auto_mining_timers[i] = 0.0
 	else:
-		# 돌이나 타일 근처가 아니거나 설치 모드면 키 상태 및 타이머 초기화
+		# 돌/타일맵 근처가 아니면 키 상태 및 타이머 초기화
 		for i in range(6):
 			was_mining_keys_pressed[i] = false
 			auto_mining_timers[i] = 0.0
@@ -192,16 +303,31 @@ func _physics_process(delta):
 	var is_s_key_pressed = Input.is_key_pressed(KEY_S)
 	var is_s_key_just_pressed = is_s_key_pressed and not was_s_key_pressed
 	
-	# S 키를 처음 눌렀을 때 y를 1 증가 (one-way collision이 자동으로 통과 처리)
-	if (Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed) and is_on_floor():
-		global_position.y += 1
+	# S 키를 처음 눌렀을 때 platform_out 활성화
+	if Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed:
+		platform_out = true
+		platform_out_timer = PLATFORM_OUT_DURATION
 	
 	# 이전 프레임의 S 키 상태 저장
 	was_s_key_pressed = is_s_key_pressed
 	
+	# platform_out 타이머 감소
+	if platform_out:
+		platform_out_timer -= delta
+		if platform_out_timer <= 0.0:
+			platform_out = false
+	
+	# collision_mask 설정
+	# 1. velocity.y < 0 (위로 올라갈 때) 플랫폼 통과
+	# 2. platform_out == true (S 키로 1초간) 플랫폼 통과
+	if velocity.y < 0 or platform_out:
+		collision_mask = NORMAL_COLLISION_LAYER  # 플랫폼 레이어 무시
+	else:
+		collision_mask = ALL_COLLISION_LAYERS  # 모든 레이어 충돌
+	
 	# 중력 적용 - 바닥에 있지 않으면 계속 떨어짐
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * GRAVITY_SCALE * delta
 	
 	# Space 키로 점프 - 바닥에 있을 때만 가능
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -515,9 +641,10 @@ func update_charging_system(delta: float):
 # 키 입력 시 차지량을 증가시킵니다.
 func add_charge():
 	# 첫 번째 클릭 시 카메라 고정 (차징 시작)
-	if current_nearby_rock and charge_amount == 0.0:
-		if current_nearby_rock.has_method("lock_camera_on_first_hit"):
+	if charge_amount == 0.0:
+		if current_nearby_rock and current_nearby_rock.has_method("lock_camera_on_first_hit"):
 			current_nearby_rock.lock_camera_on_first_hit()
+		# 타일맵은 별도의 카메라 고정 없이 진행 (필요시 추가 가능)
 	
 	# 필요 클릭 수에 따라 차지량 계산 (1/필요클릭수)
 	var dynamic_charge_per_hit = 1.0 / float(Globals.mining_clicks_required)
@@ -537,9 +664,16 @@ func release_charge():
 	# 곡괭이 스윙 애니메이션 시작
 	start_pickaxe_animation()
 	
-	# 근처 돌에 채굴 신호 전송
+	# 1. 일반 돌 근처에 채굴 신호 전송
 	if current_nearby_rock and current_nearby_rock.has_method("mine_from_player"):
+		print("⛏️ rock 채굴 시도")
 		current_nearby_rock.mine_from_player()
+	# 2. 타일맵 돌 채굴
+	elif current_nearby_tilemap and current_nearby_tilemap.has_method("mine_nearest_tile"):
+		print("⛏️ breakable_tile 채굴 시도")
+		current_nearby_tilemap.mine_nearest_tile()
+	else:
+		print("❌ 채굴 대상 없음 - rock:", current_nearby_rock, " tilemap:", current_nearby_tilemap)
 	
 	# 차지 초기화
 	charge_amount = 0.0
@@ -561,17 +695,40 @@ func update_charge_pickaxe_pose():
 		pickaxe.rotation_degrees = -charge_pickaxe_angle
 		pickaxe.flip_h = true
 
-# 돌 근처에 있는지 확인합니다.
+# 돌 또는 파괴 가능한 타일 근처에 있는지 확인합니다.
 func check_nearby_rocks():
 	var rocks = get_tree().get_nodes_in_group("rocks")
+	var previous_tilemap = current_nearby_tilemap
 	current_nearby_rock = null
+	current_nearby_tilemap = null
 	
+	# 1. 일반 돌 (rocks 그룹) 확인
 	for rock in rocks:
 		if rock and global_position.distance_to(rock.global_position) < 50:
 			current_nearby_rock = rock
 			return true
 	
+	# 2. 파괴 가능한 타일맵 (breakable_tiles 그룹) 확인
+	var tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	for tilemap in tilemaps:
+		if tilemap and tilemap.has_method("has_nearby_breakable_tile"):
+			var has_tile = tilemap.has_nearby_breakable_tile()
+			if has_tile:
+				current_nearby_tilemap = tilemap
+				return true
+	
 	return false
+
+# 디버그용: 한 번만 출력
+var _debug_printed: bool = false
+func _debug_check_tilemaps():
+	if _debug_printed:
+		return
+	_debug_printed = true
+	var tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	print("📋 breakable_tiles 그룹 노드 수:", tilemaps.size())
+	for tm in tilemaps:
+		print("  - ", tm.name, " tile_set:", tm.tile_set != null)
 
 # 카메라가 돌에 고정되어 있으면 계속 돌 쪽을 바라봅니다.
 func update_facing_direction_to_rock():
@@ -602,6 +759,99 @@ func update_facing_direction_to_rock():
 				# 차징 중이면 곡괭이 자세도 업데이트
 				if is_charging and not is_pickaxe_animating:
 					update_charge_pickaxe_pose()
+
+# === 설치 모드 함수들 ===
+
+## 마우스 위치에 횃불을 설치합니다 (타일 그리드에 맞춤).
+func place_torch():
+	if not torch_scene:
+		print("❌ 횃불 씬이 로드되지 않음")
+		return
+	
+	var mouse_pos = get_global_mouse_position()
+	
+	# 타일 크기 (8x8 - 16x16을 0.5 스케일)
+	var tile_size = 8.0
+	
+	# 마우스 위치를 타일 그리드에 맞춤 (타일 중앙 좌표)
+	var tile_x = int(floor(mouse_pos.x / tile_size))
+	var tile_y = int(floor(mouse_pos.y / tile_size))
+	var snapped_pos = Vector2(tile_x * tile_size + tile_size / 2, tile_y * tile_size + tile_size / 2)
+	
+	# 캐릭터와의 거리 체크 (너무 멀면 설치 불가)
+	var max_place_distance = 80.0
+	var distance = global_position.distance_to(snapped_pos)
+	if distance > max_place_distance:
+		print("❌ 거리 초과: %.1f / %.1f" % [distance, max_place_distance])
+		return
+	
+	# 해당 위치에 타일이 있는지 체크 (모든 TileMap에서 확인)
+	if _is_position_inside_any_tile(snapped_pos):
+		return  # 메시지는 _is_position_inside_any_tile에서 출력
+	
+	# 해당 타일에 이미 횃불이 있는지 체크
+	if _has_torch_at_tile(tile_x, tile_y, tile_size):
+		print("❌ 이미 횃불 있음 at (%d, %d)" % [tile_x, tile_y])
+		return
+	
+	# 횃불 인스턴스 생성
+	var torch_instance = torch_scene.instantiate()
+	torch_instance.global_position = snapped_pos
+	torch_instance.scale = Vector2(0.5, 0.5)  # 크기를 절반으로 축소
+	
+	# map_2/torchs 노드에 추가 (없으면 현재 씬에 추가)
+	var torchs_container = get_tree().current_scene.get_node_or_null("tile_map/map_2/torchs")
+	if torchs_container:
+		torchs_container.add_child(torch_instance)
+	else:
+		get_tree().current_scene.add_child(torch_instance)
+	
+	print("✅ 횃불 설치 완료 at %v" % snapped_pos)
+
+## 마우스 위치에 플랫폼을 설치합니다.
+func place_platform():
+	var mouse_pos = get_global_mouse_position()
+	
+	# 캐릭터와의 거리 체크
+	var max_place_distance = 80.0
+	var distance = global_position.distance_to(mouse_pos)
+	if distance > max_place_distance:
+		print("❌ 플랫폼 거리 초과: %.1f / %.1f" % [distance, max_place_distance])
+		return
+	
+	# 해당 위치에 타일이 있는지 체크 (모든 TileMap에서 확인)
+	if _is_position_inside_any_tile(mouse_pos):
+		print("❌ 플랫폼 설치: 타일 중복")
+		return
+	
+	# TileMap 노드 찾기 (대문자 주의!)
+	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if not tile_map_node:
+		print("❌ TileMap 노드를 찾을 수 없음")
+		return
+	
+	# platform TileMap 찾기 (map_2 우선, 없으면 map_1)
+	var platform_tilemap = tile_map_node.get_node_or_null("map_2/platform")
+	if not platform_tilemap:
+		platform_tilemap = tile_map_node.get_node_or_null("map_1/platform")
+	if not platform_tilemap:
+		print("❌ platform TileMap을 찾을 수 없음")
+		return
+	
+	# 마우스 위치를 타일 좌표로 변환
+	var local_pos = platform_tilemap.to_local(mouse_pos)
+	var tile_pos = platform_tilemap.local_to_map(local_pos)
+	
+	# 이미 타일이 있는지 확인
+	if platform_tilemap.get_cell_source_id(0, tile_pos) != -1:
+		print("❌ 플랫폼 이미 존재 at %v" % tile_pos)
+		return
+	
+	# 플랫폼 타일 설치
+	# source_id: 1 (두 번째 TileSetAtlasSource)
+	# atlas_coords: Vector2i(6, 0) - 플랫폼 타일 (Physics Layer 1, 위에서만 충돌)
+	platform_tilemap.set_cell(0, tile_pos, 1, Vector2i(6, 0))
+	print("✅ 플랫폼 설치 완료 at %v (world: %v)" % [tile_pos, mouse_pos])
 
 # === 부채꼴 빛 (손전등) 함수들 ===
 
@@ -651,106 +901,251 @@ func create_cone_texture(size: int, angle_degrees: float) -> ImageTexture:
 var flashlight_angle_offset: float = 0.0
 var flashlight_angle_time: float = 0.0
 
+# 부채꼴 빛을 생성합니다.
+func create_flashlight():
+	flashlight = PointLight2D.new()
+	flashlight.color = flashlight_color
+	flashlight.energy = flashlight_energy
+	flashlight.texture_scale = flashlight_scale
+	flashlight.blend_mode = Light2D.BLEND_MODE_ADD
+	
+	# 부채꼴 텍스처 생성 (크기 128, 각도 115도 - 중간값)
+	flashlight.texture = create_cone_texture(128, 115)
+	
+	# 플레이어 위치에서 시작
+	flashlight.position = Vector2.ZERO
+	flashlight.z_index = -1
+	
+	add_child(flashlight)
+	update_flashlight_direction()
 
-## 채굴 가능한 타일이 Area2D 안에 있는지 확인합니다.
-func check_nearby_tiles():
-	# breakable_tile 노드들 찾기
-	var tilemaps = get_tree().get_nodes_in_group("breakable_tilemaps")
+# 부채꼴 빛의 방향을 캐릭터가 바라보는 방향으로 업데이트합니다.
+func update_flashlight_direction():
+	if not flashlight:
+		return
 	
-	# 그룹이 비어있으면 수동으로 찾기
-	if tilemaps.is_empty():
-		var tile_map_node = get_tree().root.get_node_or_null("main/TileMap")
-		if tile_map_node:
-			var breakable1 = tile_map_node.get_node_or_null("map_1/breakable_tile")
-			var breakable2 = tile_map_node.get_node_or_null("map_2/breakable_tile")
-			if breakable1:
-				tilemaps.append(breakable1)
-			if breakable2:
-				tilemaps.append(breakable2)
+	# 각도 부드럽게 흔들림 (110~120도 사이)
+	flashlight_angle_time += get_process_delta_time() * 2.0
+	flashlight_angle_offset = sin(flashlight_angle_time) * 0.03  # 스케일로 약간의 변화
+	flashlight.texture_scale = flashlight_scale + flashlight_angle_offset
 	
-	var was_near = is_near_mineable_tile
-	is_near_mineable_tile = false
+	if facing_direction == 1:
+		# 오른쪽을 바라볼 때
+		flashlight.rotation_degrees = 0
+	else:
+		# 왼쪽을 바라볼 때
+		flashlight.rotation_degrees = 180
+
+
+## 특정 위치가 어떤 TileMap의 타일 안에 있는지 확인합니다.
+## @param world_pos: 월드 좌표
+## @returns: 타일 안에 있으면 true
+func _is_position_inside_any_tile(world_pos: Vector2) -> bool:
+	# 씬의 모든 TileMap 노드 찾기
+	var tilemaps = _get_all_tilemaps(get_tree().current_scene)
 	
-	# Area2D 반지름 가져오기
-	var area = get_node_or_null("Area2D")
-	var mining_radius = 50.0  # 기본값
-	if area:
-		var collision_shape = area.get_node_or_null("CollisionShape2D")
-		if collision_shape and collision_shape.shape is CircleShape2D:
-			mining_radius = collision_shape.shape.radius
-	
-	# 각 타일맵에서 채굴 가능한 타일이 Area2D 안에 있는지 확인
 	for tilemap in tilemaps:
-		if not tilemap or not tilemap is TileMap:
+		if not tilemap is TileMap:
 			continue
 		
-		# 캐릭터 주변의 타일들 확인
-		var char_local_pos = tilemap.to_local(global_position)
-		var char_tile_pos = tilemap.local_to_map(char_local_pos)
-		
-		# Area2D 반지름 기준으로 검색 범위 계산 (타일 단위)
-		var search_range = int(mining_radius / 16) + 1  # 타일 크기 16 기준
-		
-		for x_offset in range(-search_range, search_range + 1):
-			for y_offset in range(-search_range, search_range + 1):
-				var check_tile_pos = char_tile_pos + Vector2i(x_offset, y_offset)
-				var tile_exists = tilemap.get_cell_source_id(0, check_tile_pos) != -1
-				
-				if tile_exists:
-					# 타일의 월드 위치 계산
-					var tile_world_pos = tilemap.to_global(tilemap.map_to_local(check_tile_pos))
-					var distance = global_position.distance_to(tile_world_pos)
-					
-					# Area2D 안에 있으면
-					if distance <= mining_radius:
-						is_near_mineable_tile = true
-						return
-	
-	return
-
-## 캐릭터 발이 플랫폼 타일 안에 있는지 확인합니다.
-## 발이 플랫폼 상단보다 아래에 있으면 true (플랫폼 무시해야 함)
-func is_inside_any_platform() -> bool:
-	# platform 타일맵 찾기
-	var tile_map_node = get_tree().root.get_node_or_null("main/TileMap")
-	if not tile_map_node:
-		return false
-	
-	var platform_tilemaps: Array[TileMap] = []
-	var platform1 = tile_map_node.get_node_or_null("map_1/platform")
-	var platform2 = tile_map_node.get_node_or_null("map_2/platform")
-	
-	if platform1 and platform1 is TileMap:
-		platform_tilemaps.append(platform1)
-	if platform2 and platform2 is TileMap:
-		platform_tilemaps.append(platform2)
-	
-	if platform_tilemaps.is_empty():
-		return false
-	
-	# 캐릭터 발 위치
-	var feet_y = global_position.y
-	
-	for platform_tilemap in platform_tilemaps:
-		if not platform_tilemap.visible:
+		# breakable_tiles 그룹의 TileMap은 제외 (파괴 가능한 타일)
+		if tilemap.is_in_group("breakable_tiles"):
 			continue
 		
-		# 캐릭터 위치의 타일 확인
-		var local_pos = platform_tilemap.to_local(global_position)
-		var tile_pos = platform_tilemap.local_to_map(local_pos)
+		# 비활성화된 맵(map_1, map_2)의 타일은 무시
+		var parent = tilemap.get_parent()
+		while parent:
+			if not parent.visible:
+				break
+			parent = parent.get_parent()
+		if parent and not parent.visible:
+			continue
 		
-		# 현재 위치와 바로 위 타일 확인
-		for y_offset in range(-1, 1):
-			var check_tile_pos = tile_pos + Vector2i(0, y_offset)
-			var source_id = platform_tilemap.get_cell_source_id(0, check_tile_pos)
-			
+		# TileMap의 로컬 좌표로 변환
+		var local_pos = tilemap.to_local(world_pos)
+		var tile_pos = tilemap.local_to_map(local_pos)
+		
+		# 모든 레이어에서 타일 확인
+		# 설치 가능한 TileMap들은 체크 제외
+		var tilemap_name = tilemap.name.to_lower()
+		# - background: 배경 (장식용)
+		# - ui_tile: UI용 타일
+		# - platform: 플랫폼 (별도 체크)
+		# - inside_cave 계열: 벽 장식 (설치 허용)
+		if tilemap_name in ["background", "ui_tile", "platform"] or tilemap_name.begins_with("inside_cave"):
+			continue
+		
+		# 모든 레이어에서 타일 확인
+		for layer_idx in range(tilemap.get_layers_count()):
+			var source_id = tilemap.get_cell_source_id(layer_idx, tile_pos)
 			if source_id != -1:
-				# 플랫폼 타일의 상단 y 좌표
-				var tile_center = platform_tilemap.to_global(platform_tilemap.map_to_local(check_tile_pos))
-				var tile_top_y = tile_center.y - 8  # 타일 상단 (16픽셀 타일 기준)
-				
-				# 발이 플랫폼 상단보다 아래에 있으면 → 플랫폼 안에 있음
-				if feet_y > tile_top_y + 2:  # 2픽셀 여유
-					return true
+				# 단단한 타일 발견! 설치 불가 (로그 제거 - 너무 많이 출력됨)
+				return true
 	
 	return false
+
+
+## 노드와 모든 자식에서 TileMap을 재귀적으로 찾습니다.
+func _get_all_tilemaps(node: Node) -> Array:
+	var result = []
+	
+	if node is TileMap:
+		result.append(node)
+	
+	for child in node.get_children():
+		result.append_array(_get_all_tilemaps(child))
+	
+	return result
+
+
+## 특정 타일 좌표에 횃불이 있는지 확인합니다.
+## @param tile_x: 타일 X 좌표
+## @param tile_y: 타일 Y 좌표
+## @param tile_size: 타일 크기
+## @returns: 횃불이 있으면 true
+func _has_torch_at_tile(tile_x: int, tile_y: int, tile_size: float) -> bool:
+	# torchs 컨테이너에서 확인
+	var torchs_container = get_tree().current_scene.get_node_or_null("tile_map/map_2/torchs")
+	if torchs_container:
+		for torch in torchs_container.get_children():
+			var torch_tile_x = int(floor(torch.global_position.x / tile_size))
+			var torch_tile_y = int(floor(torch.global_position.y / tile_size))
+			if torch_tile_x == tile_x and torch_tile_y == tile_y:
+				return true
+	
+	# 루트에 직접 추가된 횃불도 확인 (torch 그룹 사용)
+	var all_torches = get_tree().get_nodes_in_group("torches")
+	for torch in all_torches:
+		var torch_tile_x = int(floor(torch.global_position.x / tile_size))
+		var torch_tile_y = int(floor(torch.global_position.y / tile_size))
+		if torch_tile_x == tile_x and torch_tile_y == tile_y:
+			return true
+	
+	return false
+
+## ========================================
+## 설치 모드 하이라이트 시스템
+## ========================================
+
+
+func create_build_highlight_sprite():
+	build_highlight_sprite = Sprite2D.new()
+	build_highlight_sprite.name = "BuildHighlightSprite"
+	build_highlight_sprite.z_index = 100  # 타일 위에 표시
+	build_highlight_sprite.visible = false
+	build_highlight_sprite.scale = Vector2(0.5, 0.5)  # 횃불과 동일한 크기로 축소
+	
+	# 16x16 테두리 텍스처 생성
+	var size = 16
+	var border = 2
+	var image = Image.create(size, size, false, Image.FORMAT_RGBA8)
+	image.fill(Color(0, 0, 0, 0))  # 투명 배경
+	
+	# 테두리만 그리기 (기본 초록색)
+	var highlight_color = Color(0.3, 1.0, 0.3, 0.8)  # 초록색
+	for x in range(size):
+		for y in range(size):
+			# 테두리 영역인지 확인
+			if x < border or x >= size - border or y < border or y >= size - border:
+				image.set_pixel(x, y, highlight_color)
+	
+	var texture = ImageTexture.create_from_image(image)
+	build_highlight_sprite.texture = texture
+	
+	# 씬에 추가
+	add_child(build_highlight_sprite)
+	print("✅ 설치 모드 하이라이트 스프라이트 생성 완료 (8x8)")
+
+
+func update_build_highlight(delta):
+	if not build_highlight_sprite:
+		return
+	
+	# 횃불 모드 또는 플랫폼 모드일 때만 하이라이트 표시
+	if not Globals.is_torch_mode and not Globals.is_build_mode:
+		build_highlight_sprite.visible = false
+		return
+	
+	# 마우스 위치 가져오기
+	var mouse_pos = get_global_mouse_position()
+	var tile_size = 8.0  # 실제 표시 크기 (16x16을 0.5 스케일)
+	
+	# 타일 그리드에 맞춘 위치 계산
+	var tile_x = int(floor(mouse_pos.x / tile_size))
+	var tile_y = int(floor(mouse_pos.y / tile_size))
+	var snapped_pos = Vector2(tile_x * tile_size + tile_size / 2, tile_y * tile_size + tile_size / 2)
+	
+	# 하이라이트 위치 업데이트
+	build_highlight_sprite.global_position = snapped_pos
+	build_highlight_sprite.visible = true
+	
+	# 설치 가능 여부에 따라 색상 변경
+	var can_place = false
+	if Globals.is_torch_mode:
+		can_place = can_place_torch_at(mouse_pos)
+	elif Globals.is_build_mode:
+		can_place = can_place_platform_at(mouse_pos)
+	
+	if can_place:
+		# 초록색 (설치 가능)
+		build_highlight_sprite.modulate = Color(0.3, 1.0, 0.3, 0.7)
+	else:
+		# 빨간색 (설치 불가)
+		build_highlight_sprite.modulate = Color(1.0, 0.3, 0.3, 0.7)
+	
+	# 펄스 애니메이션 (알파 값 변화)
+	build_highlight_pulse_time += delta * 4.0
+	var pulse = (sin(build_highlight_pulse_time) + 1.0) / 2.0  # 0.0 ~ 1.0
+	var alpha = 0.4 + pulse * 0.3  # 0.4 ~ 0.7
+	build_highlight_sprite.modulate.a = alpha
+
+
+func can_place_torch_at(mouse_pos: Vector2) -> bool:
+	if not torch_scene:
+		return false
+	
+	var tile_size = 8.0
+	var tile_x = int(floor(mouse_pos.x / tile_size))
+	var tile_y = int(floor(mouse_pos.y / tile_size))
+	var snapped_pos = Vector2(tile_x * tile_size + tile_size / 2, tile_y * tile_size + tile_size / 2)
+	
+	# 1. 거리 체크
+	var max_place_distance = 80.0
+	if global_position.distance_to(snapped_pos) > max_place_distance:
+		return false
+	
+	# 2. 타일 중복 체크
+	if _is_position_inside_any_tile(snapped_pos):
+		return false
+	
+	# 3. 횃불 중복 체크
+	if _has_torch_at_tile(tile_x, tile_y, tile_size):
+		return false
+	
+	return true
+
+
+func can_place_platform_at(mouse_pos: Vector2) -> bool:
+	# 1. 거리 체크
+	var max_place_distance = 80.0
+	if global_position.distance_to(mouse_pos) > max_place_distance:
+		return false
+	
+	# 2. 타일 중복 체크
+	if _is_position_inside_any_tile(mouse_pos):
+		return false
+	
+	# 3. platform TileMap에 이미 타일이 있는지 체크
+	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if tile_map_node:
+		var platform_tilemap = tile_map_node.get_node_or_null("map_2/platform")
+		if not platform_tilemap:
+			platform_tilemap = tile_map_node.get_node_or_null("map_1/platform")
+		
+		if platform_tilemap:
+			var local_pos = platform_tilemap.to_local(mouse_pos)
+			var tile_pos = platform_tilemap.local_to_map(local_pos)
+			if platform_tilemap.get_cell_source_id(0, tile_pos) != -1:
+				return false  # 이미 플랫폼이 있음
+	
+	return true

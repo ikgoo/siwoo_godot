@@ -29,8 +29,18 @@ func _ready():
 	if inventory_panel:
 		inventory_panel.visible = false
 	
+	# UI 텍스트 번역 적용
+	_update_ui_texts()
+	
 	# 스킨 목록 업데이트
 	_update_skin_list()
+
+
+## UI 텍스트에 번역 적용
+func _update_ui_texts() -> void:
+	title.text = Globals.get_text("SHOP TITLE")
+	close_button.text = Globals.get_text("SHOP CLOSE")
+	inventory_button.text = Globals.get_text("SHOP INVENTORY")
 
 ## /** 스킨 목록을 업데이트한다
 ##  * @returns void
@@ -47,7 +57,7 @@ func _update_skin_list() -> void:
 		skin_list_container.add_child(item)
 	
 	# 보유 돈 업데이트
-	money_label.text = "보유: 🪙 " + str(Globals.auto_money)
+	money_label.text = Globals.get_text("SHOP OWNED") + " 🪙 " + str(Globals.auto_money)
 
 ## /** 스킨 아이템 UI를 생성한다 (템플릿 복제 방식)
 ##  * @param skin SkinItem 스킨 데이터
@@ -82,14 +92,14 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 	# 데이터 바인딩
 	name_label.text = skin.name
 	# 스킨 타입 표시 (Sprite1 = 캐릭터, Sprite2 = 도구)
-	var type_str = "[캐릭터] " if skin.target_sprite == 1 else "[도구] "
+	var type_str = "[" + Globals.get_text("SHOP CHARACTER SKIN") + "] " if skin.target_sprite == 1 else "[" + Globals.get_text("SHOP TOOL SKIN") + "] "
 	desc_label.text = type_str + skin.description
 	# 텍스처 미리보기 설정
 	if skin.texture:
 		texture_preview.texture = skin.texture
 	
 	# 가격 표시
-	price_label.text = "🪙 " + str(skin.price) if skin.price > 0 else "무료"
+	price_label.text = "🪙 " + str(skin.price) if skin.price > 0 else Globals.get_text("SHOP FREE")
 	
 	# 상점에서는 구매만 가능 (적용은 인벤토리에서)
 	# 소유 여부에 따라 버튼 표시
@@ -97,13 +107,13 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 		# 이미 소유한 스킨 - 구매 불가 표시
 		buy_button.visible = true
 		buy_button.disabled = true
-		buy_button.text = "보유중"
+		buy_button.text = Globals.get_text("SHOP OWNED ITEM")
 		apply_button.visible = false
 		applied_label.visible = false
 	else:
 		# 구매 버튼 표시
 		buy_button.visible = true
-		buy_button.text = "구매"
+		buy_button.text = Globals.get_text("SHOP BUY")
 		apply_button.visible = false
 		applied_label.visible = false
 		buy_button.disabled = Globals.auto_money < skin.price
@@ -269,7 +279,7 @@ func _create_inventory_item(skin: SkinItem) -> Control:
 		button.add_child(tex_rect)
 	else:
 		# 텍스처가 없으면 기본 아이콘 표시
-		button.text = "기본"
+		button.text = Globals.get_text("SHOP DEFAULT")
 		button.add_theme_font_size_override("font_size", 10)
 	
 	# 클릭 시 스킨 적용
