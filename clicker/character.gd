@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const SPEED = 100.0
-const RUN_SPEED = 150.0  # 달리기 속도
+const SPEED = 70.0  # 걷기 속도 (100 → 70)
+const RUN_SPEED = 110.0  # 달리기 속도 (150 → 110)
 
 const JUMP_VELOCITY = -180.0  # 최대 점프 높이
 const MIN_JUMP_VELOCITY = -120.0  # 최소 점프 높이 (빠르게 뗄 때)
@@ -10,9 +10,9 @@ const MIN_JUMP_VELOCITY = -120.0  # 최소 점프 높이 (빠르게 뗄 때)
 const GRAVITY_SCALE = 0.7  # 중력을 30% 낮춤
 
 # 가속도 설정
-@export var acceleration: float = 800.0  # 가속도 (픽셀/초²)
-@export var friction: float = 600.0  # 마찰력/감속도 (픽셀/초²)
-@export var air_acceleration: float = 400.0  # 공중 가속도 (픽셀/초²) - 낮을수록 미끄러짐
+@export var acceleration: float = 1000.0  # 가속도 (픽셀/초²) - 반응성 유지
+@export var friction: float = 1500.0  # 마찰력/감속도 (픽셀/초²) - 미끄러짐 감소
+@export var air_acceleration: float = 500.0  # 공중 가속도 (픽셀/초²)
 
 # 플랫폼 레이어 마스크
 const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
@@ -809,6 +809,7 @@ func place_torch():
 	print("✅ 횃불 설치 완료 at %v" % snapped_pos)
 
 ## 마우스 위치에 플랫폼을 설치합니다.
+## 아래에 블록이 있으면 지지대용(1,1), 없으면 공중용(1,0) 타일 사용
 func place_platform():
 	var mouse_pos = get_global_mouse_position()
 	
@@ -847,11 +848,54 @@ func place_platform():
 		print("❌ 플랫폼 이미 존재 at %v" % tile_pos)
 		return
 	
-	# 플랫폼 타일 설치
-	# source_id: 1 (두 번째 TileSetAtlasSource)
-	# atlas_coords: Vector2i(6, 0) - 플랫폼 타일 (Physics Layer 1, 위에서만 충돌)
-	platform_tilemap.set_cell(0, tile_pos, 1, Vector2i(6, 0))
-	print("✅ 플랫폼 설치 완료 at %v (world: %v)" % [tile_pos, mouse_pos])
+	# === 16x16 플랫폼 타일 설치 (source 7: mine_clicker-16_platform.png) ===
+	# 아래 타일 좌표
+	var below_pos = tile_pos + Vector2i(0, 1)
+	
+	# 아래에 블록이 있는지 확인
+	var has_block_below = _check_block_below_for_platform(below_pos, platform_tilemap)
+	
+	# atlas 좌표 결정: 아래 블록 있으면 (1,1), 없으면 (1,0)
+	var atlas_coords = Vector2i(1, 1) if has_block_below else Vector2i(1, 0)
+	
+	# 플랫폼 타일 설치 (source_id: 7 = mine_clicker-16_platform.png)
+	platform_tilemap.set_cell(0, tile_pos, 7, atlas_coords)
+	print("✅ 플랫폼 설치 완료 at %v (atlas: %v, 아래 블록: %s)" % [tile_pos, atlas_coords, has_block_below])
+
+## 플랫폼 설치 시 아래 위치에 블록이 있는지 확인합니다.
+## @param below_tile_pos: 확인할 타일 좌표 (플랫폼 바로 아래)
+## @param platform_tilemap: 플랫폼 TileMap (좌표 변환용)
+## @returns: 블록이 있으면 true
+func _check_block_below_for_platform(below_tile_pos: Vector2i, platform_tilemap: TileMap) -> bool:
+	# 타일 좌표를 월드 좌표로 변환
+	var local_pos = platform_tilemap.map_to_local(below_tile_pos)
+	var world_pos = platform_tilemap.to_global(local_pos)
+	
+	# 1. breakable_tiles 그룹의 TileMap에서 확인
+	var tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	for tilemap in tilemaps:
+		if not tilemap is TileMap:
+			continue
+		var tm_local = tilemap.to_local(world_pos)
+		var tm_tile_pos = tilemap.local_to_map(tm_local)
+		for layer_idx in range(tilemap.get_layers_count()):
+			if tilemap.get_cell_source_id(layer_idx, tm_tile_pos) != -1:
+				return true
+	
+	# 2. maps TileMap (일반 타일)에서 확인
+	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if tile_map_node:
+		var maps_tilemap = tile_map_node.get_node_or_null("map_1/maps")
+		if not maps_tilemap:
+			maps_tilemap = tile_map_node.get_node_or_null("map_2/maps")
+		if maps_tilemap:
+			var maps_local = maps_tilemap.to_local(world_pos)
+			var maps_tile_pos = maps_tilemap.local_to_map(maps_local)
+			for layer_idx in range(maps_tilemap.get_layers_count()):
+				if maps_tilemap.get_cell_source_id(layer_idx, maps_tile_pos) != -1:
+					return true
+	
+	return false
 
 # === 부채꼴 빛 (손전등) 함수들 ===
 

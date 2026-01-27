@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://c81unat76wdlu"]
+[gd_resource type="TileSet" load_steps=18 format=3 uid="uid://c81unat76wdlu"]
 
 [ext_resource type="Texture2D" uid="uid://5sgy6fqkhx1l" path="res://spr_tileset_sunnysideworld_16px.png" id="1_urd33"]
 [ext_resource type="Texture2D" uid="uid://db22u3uj8sakx" path="res://KakaoTalk_20521.png" id="2_11ay0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bfv6sp8gu6ax4" path="res://CONCEPT/asset/mine_clicker32-background.png" id="5_dg03d"]
 [ext_resource type="Texture2D" uid="uid://ckhdwdewkckm5" path="res://CONCEPT/asset/16/mine_clicker16_DIRT.png" id="6_dm6ke"]
 [ext_resource type="Texture2D" uid="uid://dadqg7mu5k3lo" path="res://CONCEPT/asset/16/mine_clicker16_STONE.png" id="7_m24ev"]
+[ext_resource type="Texture2D" uid="uid://bbfjfpc0l7ldj" path="res://CONCEPT/asset/16/mine_clicker-16_platform.png" id="8_11ay0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sqirv"]
 texture = ExtResource("1_urd33")
@@ -2799,6 +2800,14 @@ texture = ExtResource("7_m24ev")
 11:3/0/terrains_peering_bit/top_left_corner = 2
 11:3/0/terrains_peering_bit/top_side = 2
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mmry8"]
+texture = ExtResource("8_11ay0")
+1:1/0 = 0
+1:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -2.1583042, -8, -1.978445)
+2:1/0 = 0
+2:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -2.1583042, -8, -1.978445)
+1:0/0 = 0
+
 [resource]
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
@@ -2818,3 +2827,4 @@ sources/2 = SubResource("TileSetAtlasSource_i6cpi")
 sources/4 = SubResource("TileSetAtlasSource_47trr")
 sources/5 = SubResource("TileSetAtlasSource_mvv3g")
 sources/6 = SubResource("TileSetAtlasSource_k8jdh")
+sources/7 = SubResource("TileSetAtlasSource_mmry8")

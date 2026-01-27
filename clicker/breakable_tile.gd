@@ -358,6 +358,21 @@ func break_tile(tile_pos: Vector2i, layer_idx: int):
 	# 사운드 재생
 	if break_sound:
 		break_sound.play()
+	
+	# 위에 있는 플랫폼 타일 업데이트 (지지대 → 공중용으로 변경)
+	_update_platform_above(tile_world_pos)
+
+## 블록 파괴 후 위에 있는 플랫폼 타일을 업데이트합니다.
+## @param world_pos: 파괴된 블록의 월드 좌표
+func _update_platform_above(world_pos: Vector2) -> void:
+	# tile_map 노드 찾기 (부모의 부모가 tilemaps 노드)
+	var tile_map_node = get_node_or_null("/root/main/tilemaps")
+	if not tile_map_node:
+		# 다른 경로 시도
+		tile_map_node = get_tree().get_first_node_in_group("tile_map_manager")
+	
+	if tile_map_node and tile_map_node.has_method("update_platform_above"):
+		tile_map_node.update_platform_above(world_pos)
 
 ## [더 이상 사용 안 함] 제거된 타일 주변의 terrain 연결을 업데이트합니다.
 ## set_cells_terrain_connect()가 자동으로 처리하므로 이 함수는 더 이상 필요 없습니다.

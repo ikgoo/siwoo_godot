@@ -51,6 +51,16 @@ const PLATFORM_LAYER_INDEX = 0
 # 플랫폼 collision layer (2번 비트 = 4)
 const PLATFORM_COLLISION_LAYER = 4
 
+# === 플랫폼 타일 조건부 변경 설정 ===
+# 플랫폼 타일의 source_id (TileSet에서 mine_clicker-16_platform.png = source 7)
+# -1로 설정하면 모든 source의 플랫폼 타일에 적용
+@export var platform_source_id: int = 7
+
+# 플랫폼 타일 atlas 좌표 (mine_clicker-16_platform.png 기준)
+# (1, 0): 공중용 (아래 블록 없음), (1, 1): 지지대용 (아래 블록 있음)
+@export var platform_atlas_no_support: Vector2i = Vector2i(1, 0)  # 아래에 블록 없을 때 (공중용)
+@export var platform_atlas_with_support: Vector2i = Vector2i(1, 1)  # 아래에 블록 있을 때 (지지대용)
+
 # 반투명 타일들을 저장하는 별도 레이어 (1번 레이어 사용)
 var transparent_layer_index: int = 1  # inside_cave의 두 번째 레이어 사용
 
@@ -70,6 +80,9 @@ var tile_info_cache: Dictionary = {}  # TileMap -> {Vector2i -> {source_id, atla
 var is_in_any_cave: bool = false
 
 func _ready():
+	# tile_map_manager 그룹에 추가 (breakable_tile에서 찾을 수 있도록)
+	add_to_group("tile_map_manager")
+	
 	# 부모 노드(main)에서 캐릭터 찾기
 	var parent = get_parent()
 	if parent:
@@ -115,6 +128,11 @@ func _ready():
 	
 	# 맵 활성화 상태 적용
 	_apply_all_maps()
+	
+	# 플랫폼 타일 초기화 (아래 블록 유무에 따라 atlas 설정)
+	# 약간의 딜레이 후 실행 (다른 노드들이 준비된 후)
+	await get_tree().process_frame
+	initialize_all_platform_tiles()
 
 func _process(_delta):
 	if not character:
@@ -496,3 +514,126 @@ func _apply_map_state(map_node: Node2D, enabled: bool):
 func _apply_all_maps():
 	_apply_map_state($map_1, map_1_enabled)
 	_apply_map_state($map_2, map_2_enabled)
+
+# ========================================
+# 플랫폼 타일 조건부 변경 시스템
+# ========================================
+# 아래 블록 유무에 따라 플랫폼 타일의 텍스처를 변경합니다.
+# - 아래에 블록 있음 → atlas (1, 0) 지지대용
+# - 아래에 블록 없음 → atlas (0, 0) 공중용
+# ========================================
+
+## 특정 위치의 플랫폼 타일을 아래 블록 유무에 따라 업데이트합니다.
+## @param tile_pos: 플랫폼 타일의 좌표
+## @param platform_tilemap: 대상 platform TileMap (null이면 기본 platform 사용)
+func update_platform_tile_at(tile_pos: Vector2i, platform_tilemap: TileMap = null) -> void:
+	var target_platform = platform_tilemap if platform_tilemap else platform
+	if not target_platform:
+		return
+	
+	# 현재 타일 정보 가져오기
+	var source_id = target_platform.get_cell_source_id(PLATFORM_LAYER_INDEX, tile_pos)
+	if source_id == -1:
+		return  # 타일이 없음
+	
+	# 플랫폼 source_id 체크 (설정된 경우에만)
+	if platform_source_id != -1 and source_id != platform_source_id:
+		return  # 다른 타일셋의 타일
+	
+	var current_atlas = target_platform.get_cell_atlas_coords(PLATFORM_LAYER_INDEX, tile_pos)
+	var alternative = target_platform.get_cell_alternative_tile(PLATFORM_LAYER_INDEX, tile_pos)
+	
+	# 아래 타일 확인 (platform 좌표 기준)
+	var below_pos = tile_pos + Vector2i(0, 1)
+	var has_block_below = check_block_at_position(below_pos, target_platform)
+	
+	# 새로운 atlas 좌표 결정
+	var new_atlas = platform_atlas_with_support if has_block_below else platform_atlas_no_support
+	
+	# 변경이 필요한 경우에만 업데이트
+	if current_atlas != new_atlas:
+		target_platform.set_cell(PLATFORM_LAYER_INDEX, tile_pos, source_id, new_atlas, alternative)
+		print("🔧 플랫폼 타일 업데이트: ", tile_pos, " → atlas ", new_atlas, " (아래 블록: ", has_block_below, ")")
+
+## 특정 위치에 블록이 있는지 확인합니다 (breakable_tile, maps 등).
+## @param tile_pos: 확인할 타일 좌표 (platform TileMap 기준)
+## @param platform_tilemap: 기준이 되는 platform TileMap
+## @returns: 블록이 있으면 true
+func check_block_at_position(tile_pos: Vector2i, platform_tilemap: TileMap) -> bool:
+	# platform의 월드 좌표 계산
+	var world_pos = platform_tilemap.to_global(platform_tilemap.map_to_local(tile_pos))
+	
+	# breakable_tile 그룹에서 모든 파괴 가능 타일맵 확인
+	var breakable_tiles = get_tree().get_nodes_in_group("breakable_tiles")
+	for breakable in breakable_tiles:
+		if breakable is TileMap:
+			var local_pos = breakable.to_local(world_pos)
+			var check_tile_pos = breakable.local_to_map(local_pos)
+			
+			# 모든 레이어에서 타일 확인
+			for layer_idx in range(breakable.get_layers_count()):
+				var source_id = breakable.get_cell_source_id(layer_idx, check_tile_pos)
+				if source_id != -1:
+					return true  # 블록 발견
+	
+	# maps TileMap 확인
+	if maps:
+		var local_pos = maps.to_local(world_pos)
+		var check_tile_pos = maps.local_to_map(local_pos)
+		
+		for layer_idx in range(maps.get_layers_count()):
+			var source_id = maps.get_cell_source_id(layer_idx, check_tile_pos)
+			if source_id != -1:
+				return true  # 블록 발견
+	
+	return false
+
+## 특정 위치 위에 있는 플랫폼 타일을 업데이트합니다.
+## breakable_tile에서 블록 파괴 시 호출됩니다.
+## @param world_pos: 파괴된 블록의 월드 좌표
+func update_platform_above(world_pos: Vector2) -> void:
+	# map_1의 platform 확인
+	if platform:
+		_check_and_update_platform_above(platform, world_pos)
+	
+	# map_2의 platform 확인 (있다면)
+	var platform_m2 = get_node_or_null("map_2/platform")
+	if platform_m2:
+		_check_and_update_platform_above(platform_m2, world_pos)
+
+## 특정 platform TileMap에서 주어진 위치 위의 플랫폼을 확인하고 업데이트합니다.
+func _check_and_update_platform_above(platform_tilemap: TileMap, world_pos: Vector2) -> void:
+	if not platform_tilemap or not platform_tilemap.tile_set:
+		return
+	
+	# 타일 크기 가져오기
+	var tile_size = platform_tilemap.tile_set.tile_size.y
+	
+	# 위 위치 계산 (한 타일 위)
+	var above_world_pos = world_pos - Vector2(0, tile_size)
+	
+	var local_pos = platform_tilemap.to_local(above_world_pos)
+	var tile_pos = platform_tilemap.local_to_map(local_pos)
+	update_platform_tile_at(tile_pos, platform_tilemap)
+
+## 모든 플랫폼 타일을 초기화합니다 (게임 시작 시 호출).
+## 각 플랫폼 타일의 아래 블록 유무를 확인하여 적절한 atlas로 설정합니다.
+func initialize_all_platform_tiles() -> void:
+	print("🔧 모든 플랫폼 타일 초기화 중...")
+	
+	# map_1 platform
+	if platform:
+		_initialize_platform_tilemap(platform)
+	
+	# map_2 platform
+	var platform_m2 = get_node_or_null("map_2/platform")
+	if platform_m2:
+		_initialize_platform_tilemap(platform_m2)
+	
+	print("✅ 플랫폼 타일 초기화 완료")
+
+## 특정 platform TileMap의 모든 타일을 초기화합니다.
+func _initialize_platform_tilemap(platform_tilemap: TileMap) -> void:
+	var used_cells = platform_tilemap.get_used_cells(PLATFORM_LAYER_INDEX)
+	for tile_pos in used_cells:
+		update_platform_tile_at(tile_pos, platform_tilemap)
