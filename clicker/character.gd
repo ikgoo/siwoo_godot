@@ -64,14 +64,15 @@ var current_animation: String = ""
 
 # 곡괭이 애니메이션 관련 (원호 궤적)
 @export var pickaxe_arc_radius: float = 20.0  # 원호 반지름
-@export var pickaxe_arc_center_offset: Vector2 = Vector2(5, 5)  # 원호 중심점 오프셋
-@export var pickaxe_start_angle: float = -60.0  # 시작 각도 (도, 위쪽)
-@export var pickaxe_end_angle: float = -10.0  # 끝 각도 (도, 앞쪽 아래)
-@export var pickaxe_rotation_offset: float = 90.0  # 곡괭이 회전 오프셋 (궤적에 수직이 되도록)
-@export var pickaxe_animation_duration: float = 0.3  # 애니메이션 총 시간
+@export var pickaxe_swing_angle: float = 25.0  # 스윙 각도 범위 (도) - 앞쪽으로만 스윙
+@export var pickaxe_animation_duration: float = 0.25  # 애니메이션 총 시간
 
 var pickaxe_animation_time: float = 0.0  # 현재 애니메이션 진행 시간
 var is_pickaxe_animating: bool = false  # 애니메이션 진행 중인지
+
+# 에디터에서 설정한 곡괭이 초기 위치/회전 (기준점)
+var pickaxe_initial_position: Vector2 = Vector2.ZERO
+var pickaxe_initial_rotation: float = 0.0
 
 # 차징 시스템
 var is_charging: bool = false  # 차징 중인지
@@ -86,9 +87,9 @@ var last_charge_time: float = 0.0  # 마지막 차징 시간
 var charge_bar: ProgressBar = null
 var charge_bar_background: Panel = null
 
-# 차징 중 곡괭이 자세
-@export var charge_pickaxe_angle: float = -80.0  # 차징 중 곡괭이 각도 (위로 들어올림)
-@export var charge_pickaxe_position: Vector2 = Vector2(8, -15)  # 차징 중 곡괭이 위치
+# 차징 중 곡괭이 자세 (에디터 기본 위치 기준 오프셋)
+@export var charge_angle_offset: float = -15.0  # 차징 시 추가 회전 각도 (살짝 위로)
+@export var charge_position_offset: Vector2 = Vector2(0, -2)  # 차징 시 추가 위치 오프셋 (살짝 위로)
 
 # 돌 근처 감지
 var current_nearby_rock: Node2D = null  # 현재 근처에 있는 돌 (rock.gd)
@@ -102,7 +103,7 @@ var is_tired: bool = false
 
 # 부채꼴 빛 (손전등 효과)
 var flashlight: PointLight2D = null
-@export var flashlight_enabled: bool = true
+@export var flashlight_enabled: bool = false  # 비활성화
 @export var flashlight_color: Color = Color(1.0, 0.95, 0.8, 0.6)  # 따뜻한 노란빛
 @export var flashlight_energy: float = 0.8
 @export var flashlight_scale: float = 1.5
@@ -124,9 +125,10 @@ func _ready():
 	# Globals에 캐릭터 참조 저장 (다른 스크립트에서 접근 가능)
 	Globals.player = self
 	
-	# 곡괭이 초기 위치 설정
+	# 에디터에서 설정한 곡괭이 초기 위치/회전 저장 (애니메이션 기준점)
 	if pickaxe:
-		update_pickaxe_position()
+		pickaxe_initial_position = pickaxe.position
+		pickaxe_initial_rotation = pickaxe.rotation_degrees
 	
 	# 차징 게이지 생성
 	create_charge_bar()
@@ -167,7 +169,10 @@ func _input(event: InputEvent):
 			if not is_mining_held:
 				# 첫 클릭인 경우: 즉시 채굴 가능하도록 타이머를 간격 이상으로 설정
 				is_mining_held = true
-				var speed_bonus = 1.0 + (Globals.mining_tier - 1) * 0.2
+				# 티어별 채굴 속도 배율 (누적): 1→2: 1.8배, 2→3: 1.5배, 3→4: 1.3배, 4→5: 1.2배
+				var tier_multipliers = [1.0, 1.8, 2.7, 3.51, 4.212]  # 티어 1~5
+				var tier_idx = clampi(Globals.mining_tier - 1, 0, tier_multipliers.size() - 1)
+				var speed_bonus = tier_multipliers[tier_idx]
 				var current_interval = mining_hold_interval / speed_bonus
 				mining_hold_timer = current_interval  # 즉시 채굴 가능
 		else:
@@ -257,8 +262,10 @@ func _physics_process(delta):
 	# 좌클릭 홀드 채굴 처리 (모드 상관없이 항상 가능)
 	if is_mining_held:
 		mining_hold_timer += delta
-		# 티어에 따라 채굴 속도 증가 (티어 1: 0.15초, 티어 5: 0.07초)
-		var speed_bonus = 1.0 + (Globals.mining_tier - 1) * 0.2
+		# 티어별 채굴 속도 배율 (누적): 1→2: 1.8배, 2→3: 1.5배, 3→4: 1.3배, 4→5: 1.2배
+		var tier_multipliers = [1.0, 1.8, 2.7, 3.51, 4.212]  # 티어 1~5
+		var tier_idx = clampi(Globals.mining_tier - 1, 0, tier_multipliers.size() - 1)
+		var speed_bonus = tier_multipliers[tier_idx]
 		var current_interval = mining_hold_interval / speed_bonus
 		if mining_hold_timer >= current_interval:
 			mining_hold_timer = 0.0
@@ -367,7 +374,7 @@ func _physics_process(delta):
 			if facing_direction != direction:
 				facing_direction = direction
 				if pickaxe and not is_pickaxe_animating:
-					update_pickaxe_position()
+					reset_pickaxe_to_initial()
 		else:
 			# 키를 누르지 않으면 마찰력으로 감속
 			velocity.x = move_toward(velocity.x, 0, friction * delta)
@@ -390,7 +397,7 @@ func _physics_process(delta):
 			if facing_direction != direction:
 				facing_direction = direction
 				if pickaxe and not is_pickaxe_animating:
-					update_pickaxe_position()
+					reset_pickaxe_to_initial()
 		# 공중에서는 키를 떼도 속도 유지 (감속 없음)
 
 	move_and_slide()
@@ -456,13 +463,18 @@ func set_state(new_state: State):
 func update_state_and_animation(was_on_floor_before: bool):
 	var on_floor_now = is_on_floor()
 	
-	# 점프 착지 애니메이션이 재생 중이면 완료까지 유지
-	if animation_player and animation_player.current_animation == "jump_end" and animation_player.is_playing() and on_floor_now:
-		return
+	# 점프 착지 애니메이션 처리
+	if animation_player and animation_player.current_animation == "jump_end":
+		if animation_player.is_playing() and on_floor_now:
+			# 재생 중이면 완료까지 유지
+			return
+		elif not animation_player.is_playing() and on_floor_now:
+			# 애니메이션이 끝났으면 current_animation 리셋하여 idle이 재생되도록 함
+			current_animation = ""
 	
 	# 막 착지했을 때는 landing 전용 애니메이션 우선
 	if (not was_on_floor_before) and on_floor_now:
-		current_state = State.IDLE
+		current_state = State.FALLING  # IDLE이 아닌 FALLING으로 설정 (애니메이션 끝난 후 IDLE 전환 가능하도록)
 		play_animation("jump_end")
 		return
 	
@@ -491,7 +503,7 @@ func start_pickaxe_animation():
 	is_pickaxe_animating = true
 
 # 곡괭이 애니메이션을 업데이트합니다.
-# _process에서 매 프레임 호출되어 원호를 따라 위치를 부드럽게 변경합니다.
+# _process에서 매 프레임 호출되어 에디터에서 설정한 위치를 기준으로 스윙합니다.
 # @param delta: 프레임 간 경과 시간
 func update_pickaxe_animation(delta: float):
 	if not pickaxe:
@@ -502,8 +514,9 @@ func update_pickaxe_animation(delta: float):
 		update_charge_pickaxe_pose()
 		return
 	
-	# 애니메이션 중이 아니면 리턴
+	# 애니메이션 중이 아니면 기본 위치로 복귀
 	if not is_pickaxe_animating:
+		reset_pickaxe_to_initial()
 		return
 	
 	# 애니메이션 시간 증가
@@ -512,67 +525,47 @@ func update_pickaxe_animation(delta: float):
 	# 애니메이션 완료 체크
 	if pickaxe_animation_time >= pickaxe_animation_duration:
 		is_pickaxe_animating = false
-		pickaxe_animation_time = pickaxe_animation_duration
+		pickaxe_animation_time = 0.0
+		reset_pickaxe_to_initial()
+		return
 	
 	# 진행도 계산 (0.0 ~ 1.0)
 	var progress = pickaxe_animation_time / pickaxe_animation_duration
 	
-	# 시작 → 끝 → 시작 (삼각파 형태)
-	var lerp_value = 0.0
-	if progress < 0.5:
-		# 전반부: 0 → 1 (시작 각도에서 끝 각도로)
-		lerp_value = progress * 2.0
+	# 스윙 애니메이션: 위로 들기 → 아래로 내려치기 → 원위치
+	# 사인파 형태로 부드러운 스윙
+	var swing_progress = sin(progress * PI)  # 0 → 1 → 0 곡선
+	
+	# 스윙 각도 계산 (에디터 기본 회전에서 swing_angle만큼 회전)
+	var swing_offset = pickaxe_swing_angle * swing_progress
+	
+	# facing_direction에 따라 회전 방향 결정
+	if facing_direction == 1:
+		# 오른쪽: 시계 방향 스윙 (각도 증가)
+		pickaxe.rotation_degrees = pickaxe_initial_rotation + swing_offset
+		pickaxe.position = pickaxe_initial_position
+		pickaxe.flip_h = false
 	else:
-		# 후반부: 1 → 0 (끝 각도에서 시작 각도로)
-		lerp_value = (1.0 - progress) * 2.0
-	
-	# 현재 각도 계산 (lerp로 부드럽게 보간)
-	var current_angle_deg = lerp(pickaxe_start_angle, pickaxe_end_angle, lerp_value)
-	var current_angle_rad = deg_to_rad(current_angle_deg)
-	
-	# 원호 위의 위치 계산 (극좌표 → 직교좌표)
-	# x = center_x + radius * cos(angle)
-	# y = center_y + radius * sin(angle)
-	var arc_position = Vector2(
-		pickaxe_arc_center_offset.x + pickaxe_arc_radius * cos(current_angle_rad),
-		pickaxe_arc_center_offset.y + pickaxe_arc_radius * sin(current_angle_rad)
-	)
-	
-	# 곡괭이 위치 및 회전 업데이트
-	update_pickaxe_position(arc_position, current_angle_deg)
+		# 왼쪽: 반시계 방향 스윙 (x 반전, 각도 반전)
+		pickaxe.rotation_degrees = -pickaxe_initial_rotation - swing_offset
+		pickaxe.position = Vector2(-pickaxe_initial_position.x, pickaxe_initial_position.y)
+		pickaxe.flip_h = true
 
-# facing_direction에 따라 곡괭이의 위치, 방향, 회전을 조정합니다.
-# @param target_pos: 목표 위치 (기본값: 원호 시작 위치)
-# @param angle_deg: 현재 원호 각도 (기본값: 시작 각도)
-func update_pickaxe_position(target_pos: Vector2 = Vector2(-9999, -9999), angle_deg: float = -9999.0):
+# 곡괭이를 에디터에서 설정한 초기 위치로 복귀시킵니다.
+func reset_pickaxe_to_initial():
 	if not pickaxe:
 		return
 	
-	# target_pos가 지정되지 않으면 원호 시작 위치 계산
-	var final_pos = target_pos
-	var final_angle = angle_deg
-	if target_pos.x == -9999:
-		var start_angle_rad = deg_to_rad(pickaxe_start_angle)
-		final_pos = Vector2(
-			pickaxe_arc_center_offset.x + pickaxe_arc_radius * cos(start_angle_rad),
-			pickaxe_arc_center_offset.y + pickaxe_arc_radius * sin(start_angle_rad)
-		)
-		final_angle = pickaxe_start_angle
-	
-	# facing_direction에 따라 위치, flip, 회전 설정
 	if facing_direction == 1:
-		# 오른쪽을 바라볼 때
-		pickaxe.position = final_pos
+		# 오른쪽을 바라볼 때: 에디터 설정 그대로
+		pickaxe.position = pickaxe_initial_position
+		pickaxe.rotation_degrees = pickaxe_initial_rotation
 		pickaxe.flip_h = false
-		# 곡괭이 회전 (원호 각도 + 오프셋)
-		pickaxe.rotation_degrees = final_angle + pickaxe_rotation_offset
 	else:
-		# 왼쪽을 바라볼 때 (x 좌표 반전)
-		pickaxe.position = Vector2(-final_pos.x, final_pos.y)
+		# 왼쪽을 바라볼 때: x 좌표와 각도 반전
+		pickaxe.position = Vector2(-pickaxe_initial_position.x, pickaxe_initial_position.y)
+		pickaxe.rotation_degrees = -pickaxe_initial_rotation
 		pickaxe.flip_h = true
-		# 왼쪽을 볼 때는 각도를 좌우 대칭으로 반전
-		# flip_h가 이미 스프라이트를 뒤집으므로, 각도는 음수로만 변경
-		pickaxe.rotation_degrees = -(final_angle + pickaxe_rotation_offset)
 
 # === 차징 시스템 함수들 ===
 
@@ -680,19 +673,24 @@ func release_charge():
 	is_charging = false
 
 # 차징 중 곡괭이 자세를 업데이트합니다.
+# 에디터 기본 위치에서 오프셋을 적용하여 위로 들어올린 자세를 만듭니다.
 func update_charge_pickaxe_pose():
 	if not pickaxe or is_pickaxe_animating:
 		return
 	
-	# 차징 중에는 곡괭이를 위로 들어올림
+	# 에디터 기본 위치 + 오프셋으로 차징 자세 계산
+	var charge_pos = pickaxe_initial_position + charge_position_offset
+	var charge_rot = pickaxe_initial_rotation + charge_angle_offset
+	
 	if facing_direction == 1:
-		pickaxe.position = charge_pickaxe_position
-		pickaxe.rotation_degrees = charge_pickaxe_angle
+		# 오른쪽: 에디터 설정 기준
+		pickaxe.position = charge_pos
+		pickaxe.rotation_degrees = charge_rot
 		pickaxe.flip_h = false
 	else:
-		pickaxe.position = Vector2(-charge_pickaxe_position.x, charge_pickaxe_position.y)
-		# flip_h가 스프라이트를 뒤집으므로, 각도는 음수로만 변경
-		pickaxe.rotation_degrees = -charge_pickaxe_angle
+		# 왼쪽: x 좌표와 각도 반전
+		pickaxe.position = Vector2(-charge_pos.x, charge_pos.y)
+		pickaxe.rotation_degrees = -charge_rot
 		pickaxe.flip_h = true
 
 # 돌 또는 파괴 가능한 타일 근처에 있는지 확인합니다.
@@ -855,8 +853,8 @@ func place_platform():
 	# 아래에 블록이 있는지 확인
 	var has_block_below = _check_block_below_for_platform(below_pos, platform_tilemap)
 	
-	# atlas 좌표 결정: 아래 블록 있으면 (1,1), 없으면 (1,0)
-	var atlas_coords = Vector2i(1, 1) if has_block_below else Vector2i(1, 0)
+	# atlas 좌표 결정: 아래 블록 있으면 (2,1) 지지대용, 없으면 (1,1) 공중용
+	var atlas_coords = Vector2i(2, 1) if has_block_below else Vector2i(1, 1)
 	
 	# 플랫폼 타일 설치 (source_id: 7 = mine_clicker-16_platform.png)
 	platform_tilemap.set_cell(0, tile_pos, 7, atlas_coords)
@@ -871,30 +869,65 @@ func _check_block_below_for_platform(below_tile_pos: Vector2i, platform_tilemap:
 	var local_pos = platform_tilemap.map_to_local(below_tile_pos)
 	var world_pos = platform_tilemap.to_global(local_pos)
 	
+	print("🔍 아래 블록 체크 - tile_pos: %v, world_pos: %v" % [below_tile_pos, world_pos])
+	
 	# 1. breakable_tiles 그룹의 TileMap에서 확인
 	var tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	print("  breakable_tiles 개수: ", tilemaps.size())
 	for tilemap in tilemaps:
 		if not tilemap is TileMap:
 			continue
 		var tm_local = tilemap.to_local(world_pos)
 		var tm_tile_pos = tilemap.local_to_map(tm_local)
+		print("  - %s: tm_tile_pos=%v" % [tilemap.name, tm_tile_pos])
 		for layer_idx in range(tilemap.get_layers_count()):
-			if tilemap.get_cell_source_id(layer_idx, tm_tile_pos) != -1:
+			var source_id = tilemap.get_cell_source_id(layer_idx, tm_tile_pos)
+			if source_id != -1:
+				print("    ✅ 블록 발견! layer=%d, source=%d" % [layer_idx, source_id])
 				return true
 	
 	# 2. maps TileMap (일반 타일)에서 확인
-	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	# tile_map 노드 찾기 (여러 경로 시도)
+	var tile_map_node = get_tree().current_scene.get_node_or_null("tile_map")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("tilemaps")
+	
 	if tile_map_node:
-		var maps_tilemap = tile_map_node.get_node_or_null("map_1/maps")
+		# map_2 우선, 없으면 map_1
+		var maps_tilemap = tile_map_node.get_node_or_null("map_2/maps")
 		if not maps_tilemap:
-			maps_tilemap = tile_map_node.get_node_or_null("map_2/maps")
-		if maps_tilemap:
+			maps_tilemap = tile_map_node.get_node_or_null("map_1/maps")
+		
+		if maps_tilemap and maps_tilemap.tile_set:
+			var maps_tile_size = maps_tilemap.tile_set.tile_size
 			var maps_local = maps_tilemap.to_local(world_pos)
 			var maps_tile_pos = maps_tilemap.local_to_map(maps_local)
-			for layer_idx in range(maps_tilemap.get_layers_count()):
-				if maps_tilemap.get_cell_source_id(layer_idx, maps_tile_pos) != -1:
-					return true
+			print("  - maps: tile_size=%v, maps_tile_pos=%v" % [maps_tile_size, maps_tile_pos])
+			
+			# 주변 타일도 확인 (타일 크기 차이로 인한 오차 보정)
+			var check_positions = [
+				maps_tile_pos,
+				maps_tile_pos + Vector2i(0, -1),  # 위
+				maps_tile_pos + Vector2i(0, 1),   # 아래
+				maps_tile_pos + Vector2i(-1, 0),  # 왼쪽
+				maps_tile_pos + Vector2i(1, 0),   # 오른쪽
+			]
+			
+			for check_pos in check_positions:
+				for layer_idx in range(maps_tilemap.get_layers_count()):
+					var source_id = maps_tilemap.get_cell_source_id(layer_idx, check_pos)
+					if source_id != -1:
+						print("    ✅ maps 블록 발견! pos=%v, layer=%d, source=%d" % [check_pos, layer_idx, source_id])
+						if check_pos == maps_tile_pos:
+							return true
+		else:
+			print("  ⚠️ maps TileMap을 찾지 못함 또는 tile_set 없음")
+	else:
+		print("  ⚠️ tile_map 노드를 찾지 못함")
 	
+	print("  ❌ 아래 블록 없음")
 	return false
 
 # === 부채꼴 빛 (손전등) 함수들 ===

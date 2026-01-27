@@ -58,8 +58,8 @@ const PLATFORM_COLLISION_LAYER = 4
 
 # 플랫폼 타일 atlas 좌표 (mine_clicker-16_platform.png 기준)
 # (1, 0): 공중용 (아래 블록 없음), (1, 1): 지지대용 (아래 블록 있음)
-@export var platform_atlas_no_support: Vector2i = Vector2i(1, 0)  # 아래에 블록 없을 때 (공중용)
-@export var platform_atlas_with_support: Vector2i = Vector2i(1, 1)  # 아래에 블록 있을 때 (지지대용)
+@export var platform_atlas_no_support: Vector2i = Vector2i(1, 1)  # 아래에 블록 없을 때 (공중용)
+@export var platform_atlas_with_support: Vector2i = Vector2i(2, 1)  # 아래에 블록 있을 때 (지지대용)
 
 # 반투명 타일들을 저장하는 별도 레이어 (1번 레이어 사용)
 var transparent_layer_index: int = 1  # inside_cave의 두 번째 레이어 사용
@@ -133,6 +133,10 @@ func _ready():
 	# 약간의 딜레이 후 실행 (다른 노드들이 준비된 후)
 	await get_tree().process_frame
 	initialize_all_platform_tiles()
+	
+	# inside_cave 입구 타일을 breakable_tile로 이전 (terrain 연결을 위해)
+	await get_tree().process_frame
+	migrate_cave_entrance_tiles()
 
 func _process(_delta):
 	if not character:
@@ -637,3 +641,212 @@ func _initialize_platform_tilemap(platform_tilemap: TileMap) -> void:
 	var used_cells = platform_tilemap.get_used_cells(PLATFORM_LAYER_INDEX)
 	for tile_pos in used_cells:
 		update_platform_tile_at(tile_pos, platform_tilemap)
+
+# ========================================
+# Inside Cave 입구 타일 이전 시스템
+# ========================================
+# inside_cave 타일 중 breakable_tile과 인접한 것들을 breakable_tile로 이전합니다.
+# 이렇게 하면 terrain 시스템이 같은 TileMap 내에서 작동하여 자연스러운 지형 변경이 됩니다.
+# ========================================
+
+## inside_cave 입구 타일을 breakable_tile로 이전합니다.
+## breakable_tile과 인접한 inside_cave 타일을 찾아서 breakable_tile로 복사 후 삭제합니다.
+func migrate_cave_entrance_tiles() -> void:
+	# breakable_tiles 그룹에서 모든 breakable TileMap 찾기
+	var breakable_tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	if breakable_tilemaps.is_empty():
+		return
+	
+	var total_migrated = 0
+	
+	# 각 inside_cave TileMap에 대해 처리
+	for cave in cave_tilemaps:
+		if not cave or not cave.tile_set:
+			continue
+		
+		# 이 cave와 가장 가까운 breakable_tile 찾기 (같은 부모 아래)
+		var target_breakable: TileMap = null
+		for breakable in breakable_tilemaps:
+			if _is_same_map_group(cave, breakable):
+				target_breakable = breakable
+				break
+		
+		if not target_breakable:
+			continue
+		
+		# inside_cave의 모든 타일을 확인
+		var tiles_to_migrate: Array[Vector2i] = []
+		var used_cells = cave.get_used_cells(0)
+		
+		for tile_pos in used_cells:
+			# 이 타일이 breakable_tile과 인접한지 확인
+			if _is_adjacent_to_breakable(cave, tile_pos, target_breakable):
+				tiles_to_migrate.append(tile_pos)
+		
+		if tiles_to_migrate.is_empty():
+			continue
+		
+		# breakable_tile의 terrain 정보 미리 가져오기
+		var breakable_cells = target_breakable.get_used_cells(0)
+		var b_terrain_set = -1
+		var b_terrain = -1
+		for cell in breakable_cells:
+			var td = target_breakable.get_cell_tile_data(0, cell)
+			if td and td.terrain_set >= 0:
+				b_terrain_set = td.terrain_set
+				b_terrain = td.terrain
+				break
+		
+		# 이전할 breakable 좌표 수집
+		var new_tile_positions: Array[Vector2i] = []
+		
+		for cave_tile_pos in tiles_to_migrate:
+			# cave 타일의 월드 좌표 → breakable 타일 좌표
+			var world_pos = cave.to_global(cave.map_to_local(cave_tile_pos))
+			var breakable_tile_pos = target_breakable.local_to_map(target_breakable.to_local(world_pos))
+			
+			# 이미 타일이 있으면 스킵
+			if target_breakable.get_cell_source_id(0, breakable_tile_pos) != -1:
+				continue
+			
+			# inside_cave에서 타일 제거
+			cave.set_cell(0, cave_tile_pos, -1)
+			new_tile_positions.append(breakable_tile_pos)
+			total_migrated += 1
+		
+		# terrain으로 타일 추가
+		if new_tile_positions.size() > 0 and b_terrain_set >= 0:
+			target_breakable.set_cells_terrain_connect(0, new_tile_positions, b_terrain_set, b_terrain, true)
+	
+	if total_migrated > 0:
+		print("✅ 입구 타일 이전: ", total_migrated, "개")
+
+## 두 노드가 같은 map 그룹(map_1 또는 map_2) 아래에 있는지 확인합니다.
+func _is_same_map_group(node1: Node, node2: Node) -> bool:
+	# map_1 또는 map_2 부모 찾기
+	var map_parent1 = _find_map_parent(node1)
+	var map_parent2 = _find_map_parent(node2)
+	
+	# 둘 다 map 부모가 있고 같으면 true
+	if map_parent1 and map_parent2:
+		return map_parent1 == map_parent2
+	
+	# map 부모가 없는 경우 (map_2에만 breakable_tile이 있을 수 있음)
+	# breakable_tile이 map_2 아래에 있는지 확인
+	if map_parent1 and map_parent1.name == "map_2":
+		return true  # map_2의 cave는 breakable_tile과 매칭
+	
+	# map_1의 cave도 map_2의 breakable_tile과 매칭 시도
+	if map_parent1 and map_parent1.name == "map_1":
+		# map_2에 breakable_tile이 있으면 매칭
+		return true
+	
+	return false
+
+## 노드의 map_1 또는 map_2 부모를 찾습니다.
+func _find_map_parent(node: Node) -> Node:
+	var current = node
+	while current:
+		if current.name == "map_1" or current.name == "map_2":
+			return current
+		current = current.get_parent()
+	return null
+
+## inside_cave 타일이 breakable_tile과 인접한지 확인합니다.
+func _is_adjacent_to_breakable(cave: TileMap, cave_tile_pos: Vector2i, breakable: TileMap) -> bool:
+	# 4방향 확인 (상하좌우)
+	var directions = [
+		Vector2i(0, -1),  # 위
+		Vector2i(0, 1),   # 아래
+		Vector2i(-1, 0),  # 왼쪽
+		Vector2i(1, 0)    # 오른쪽
+	]
+	
+	for dir in directions:
+		var neighbor_cave_pos = cave_tile_pos + dir
+		
+		# 인접 위치의 월드 좌표 계산
+		var world_pos = cave.to_global(cave.map_to_local(neighbor_cave_pos))
+		
+		# breakable_tile의 타일 좌표로 변환
+		var breakable_local = breakable.to_local(world_pos)
+		var breakable_tile_pos = breakable.local_to_map(breakable_local)
+		
+		# breakable_tile에 타일이 있는지 확인
+		var source_id = breakable.get_cell_source_id(0, breakable_tile_pos)
+		if source_id != -1:
+			return true  # breakable_tile과 인접함
+	
+	return false
+
+## breakable_tile의 terrain을 업데이트합니다 (이전된 타일 주변).
+func _update_breakable_terrain(breakable: TileMap, migrated_tiles: Array[Dictionary]) -> void:
+	if migrated_tiles.is_empty():
+		return
+	
+	# 이전된 타일들과 그 주변 타일들의 좌표 수집
+	var tiles_to_update: Array[Vector2i] = []
+	var terrain_set = -1
+	var terrain = -1
+	
+	for tile_info in migrated_tiles:
+		var cave_tile_pos = tile_info["cave_tile_pos"]
+		
+		# 이 타일의 breakable 좌표 계산 (대략적)
+		# 정확한 변환을 위해 다시 계산
+		if tile_info["terrain_set"] >= 0:
+			terrain_set = tile_info["terrain_set"]
+			terrain = tile_info["terrain"]
+	
+	if terrain_set < 0 or terrain < 0:
+		return
+	
+	# 모든 breakable 타일의 terrain 업데이트
+	var all_cells = breakable.get_used_cells(0)
+	var cells_with_terrain: Array[Vector2i] = []
+	
+	for cell_pos in all_cells:
+		var tile_data = breakable.get_cell_tile_data(0, cell_pos)
+		if tile_data and tile_data.terrain_set == terrain_set:
+			cells_with_terrain.append(cell_pos)
+	
+	if cells_with_terrain.size() > 0:
+		breakable.set_cells_terrain_connect(0, cells_with_terrain, terrain_set, terrain, false)
+
+## 특정 월드 좌표 주변의 inside_cave 타일들의 terrain을 업데이트합니다.
+## @param world_pos: 파괴된 블록의 월드 좌표
+func update_inside_cave_terrain_around(world_pos: Vector2) -> void:
+	# 이제 입구 타일이 breakable_tile로 이전되었으므로
+	# breakable_tile 자체의 terrain 업데이트만 필요
+	var breakable_tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
+	
+	for breakable in breakable_tilemaps:
+		if not breakable is TileMap:
+			continue
+		
+		var local_pos = breakable.to_local(world_pos)
+		var center_tile_pos = breakable.local_to_map(local_pos)
+		
+		# 주변 타일들 수집
+		var neighbors = [
+			Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1),
+			Vector2i(-1, 0),                   Vector2i(1, 0),
+			Vector2i(-1, 1),  Vector2i(0, 1),  Vector2i(1, 1)
+		]
+		
+		var tiles_to_update: Array[Vector2i] = []
+		var terrain_set = -1
+		var terrain = -1
+		
+		for offset in neighbors:
+			var check_pos = center_tile_pos + offset
+			var source_id = breakable.get_cell_source_id(0, check_pos)
+			if source_id != -1:
+				var tile_data = breakable.get_cell_tile_data(0, check_pos)
+				if tile_data and tile_data.terrain_set >= 0:
+					terrain_set = tile_data.terrain_set
+					terrain = tile_data.terrain
+					tiles_to_update.append(check_pos)
+		
+		if tiles_to_update.size() > 0 and terrain_set >= 0 and terrain >= 0:
+			breakable.set_cells_terrain_connect(0, tiles_to_update, terrain_set, terrain, false)

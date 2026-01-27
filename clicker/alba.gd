@@ -1,8 +1,8 @@
 extends Node2D
 
 # 알바 스텟 (export로 설정)
-@export var price: int = 2000  # 구매 가격
-@export var money_amount: int = 50  # 초당 돈 증가량 (기본)
+@export var price: int = 600  # 구매 가격
+@export var money_amount: int = 25  # 초당 돈 증가량 (기본)
 # 프리셋 선택 (alba1/alba2 값을 한 씬에서 설정)
 @export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
 # 에디터에서 선택할 알바 스킨 (단일 텍스처만 사용)
@@ -36,8 +36,8 @@ var _last_facing_direction: int = 1  # 이전 바라보는 방향
 var _pet_current_facing: int = 1  # 펫이 현재 사용 중인 방향
 
 # 강화 시스템 (export로 설정 가능)
-@export var upgrade_costs: Array[int] = [2000, 3000, 4000]  # 각 레벨별 강화 비용
-@export var upgrade_incomes: Array[int] = [120, 200, 350]  # 각 레벨별 강화 후 수입
+@export var upgrade_costs: Array[int] = [1000, 2000, 4000]  # 각 레벨별 강화 비용
+@export var upgrade_incomes: Array[int] = [50, 100, 150]  # 각 레벨별 강화 후 수입
 
 var upgrade_level: int = 0  # 현재 강화 레벨 (0 = 기본, 1~3 = 강화)
 

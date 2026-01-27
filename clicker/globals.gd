@@ -80,6 +80,30 @@ var auto_money : int = 0
 var money_per_second : int = 0
 
 # ========================================
+# 클리어 시스템
+# ========================================
+var goal_money : int = 1000000  # 목표 금액 (100만원)
+var game_clear_points : int = 0  # 클리어 시 획득한 포인트
+var total_points : int = 0  # 누적 포인트 (auto_scene에서 사용)
+var is_game_cleared : bool = false  # 게임 클리어 여부
+
+## 클리어 시간에 따른 포인트 계산
+## 15분(900초) = 10000포인트 기준, 빠를수록 더 많이, 느릴수록 적게
+## 45분(2700초) 이상이면 불쌍 보너스 +1000점
+func calculate_clear_points(clear_time_seconds: float) -> int:
+	# 기준: 900초에 10000점
+	# 공식: points = 10000 * (900 / clear_time)
+	var base_time = 900.0  # 15분
+	var base_points = 10000.0
+	var points = int(base_points * (base_time / max(clear_time_seconds, 60.0)))
+	
+	# 45분 이상이면 불쌍 보너스 +1000점
+	if clear_time_seconds >= 2700.0:
+		points += 1000
+	
+	return clampi(points, 1000, 100000)
+
+# ========================================
 # 스킨 상점 시스템
 # ========================================
 var owned_skins: Array[String] = ["normal1", "normal2"]  # 구매한 스킨 ID 목록
@@ -105,84 +129,83 @@ func update_mining_tier():
 # 곡괭이 속도 강화 (pv Lv) - 4레벨 (5번 클릭 → 1번 클릭)
 # [가격, 필요 클릭 수] 형식
 var pickaxe_speed_upgrades: Array[Vector2i] = [
-	Vector2i(1000, 4),    # Lv 1: 5회 → 4회
-	Vector2i(10000, 3),   # Lv 2: 4회 → 3회
-	Vector2i(50000, 2),   # Lv 3: 3회 → 2회
-	Vector2i(100000, 1),  # Lv 4 (MAX): 2회 → 1회
+	Vector2i(150, 4),     # Lv 1: 5회 → 4회 (초반에 빠르게 구매 가능)
+	Vector2i(800, 3),     # Lv 2: 4회 → 3회
+	Vector2i(5000, 2),    # Lv 3: 3회 → 2회
+	Vector2i(30000, 1),   # Lv 4 (MAX): 2회 → 1회
 ]
 
-# 다이아몬드 획득량 증가 (dv Lv) - 20레벨, 총 591,940
-# [가격, 획득량] 형식
+# 다이아몬드 획득량 증가 (dv Lv) - 20레벨
+# [가격, 획득량] 형식 - 초반 저렴, 후반 비쌈
 var diamond_value_upgrades: Array[Vector2i] = [
-	Vector2i(40, 2),      # Lv 1
-	Vector2i(100, 4),    # Lv 2
-	Vector2i(250, 8),    # Lv 3
-	Vector2i(800, 16),    # Lv 4
-	Vector2i(1250, 25),  # Lv 5
-	Vector2i(2000, 30),  # Lv 6
-	Vector2i(3000, 45),  # Lv 7
-	Vector2i(5000, 60),  # Lv 8
-	Vector2i(10000, 100), # Lv 9
-	Vector2i(18500, 110),# Lv 10
-	Vector2i(25000, 155),# Lv 11
-	Vector2i(38000, 250),# Lv 12
-	Vector2i(44000, 280),# Lv 13
-	Vector2i(58000, 350),# Lv 14
-	Vector2i(65000, 420),# Lv 15
-	Vector2i(75000, 500),# Lv 16
-	Vector2i(84000, 550),# Lv 17
-	Vector2i(90000, 600),# Lv 18
-	Vector2i(95000, 650),# Lv 19
-	Vector2i(100000, 800) # Lv 20 (MAX: 800)
+	Vector2i(20, 3),      # Lv 1: 빠른 시작
+	Vector2i(50, 5),      # Lv 2
+	Vector2i(120, 8),     # Lv 3
+	Vector2i(300, 12),    # Lv 4
+	Vector2i(600, 18),    # Lv 5
+	Vector2i(1200, 25),   # Lv 6
+	Vector2i(2500, 35),   # Lv 7
+	Vector2i(5000, 50),   # Lv 8
+	Vector2i(8000, 70),   # Lv 9
+	Vector2i(12000, 100), # Lv 10
+	Vector2i(18000, 140), # Lv 11
+	Vector2i(25000, 190), # Lv 12
+	Vector2i(35000, 250), # Lv 13
+	Vector2i(50000, 330), # Lv 14
+	Vector2i(65000, 420), # Lv 15
+	Vector2i(80000, 520), # Lv 16
+	Vector2i(95000, 630), # Lv 17
+	Vector2i(110000, 750),# Lv 18
+	Vector2i(130000, 900),# Lv 19
+	Vector2i(150000, 1100)# Lv 20 (MAX)
 ]
 
 # 채굴 티어 강화 (mt Lv) - 3레벨
 # [가격, 해금 티어] 형식 - 티어가 높을수록 더 깊은 레이어의 돌을 캘 수 있음
 var mining_tier_upgrades: Array[Vector2i] = [
-	Vector2i(5000, 2),     # Lv 1: 티어 2 (layer 1~2 채굴 가능)
-	Vector2i(60000, 3),    # Lv 2: 티어 3 (layer 1~3 채굴 가능)
-	Vector2i(100000, 4),   # Lv 3 (MAX): 티어 4 (layer 1~4 채굴 가능)
+	Vector2i(1500, 2),     # Lv 1: 티어 2 (layer 1~2 채굴 가능)
+	Vector2i(15000, 3),    # Lv 2: 티어 3 (layer 1~3 채굴 가능)
+	Vector2i(60000, 4),    # Lv 3 (MAX): 티어 4 (layer 1~4 채굴 가능)
 ]
 
 # 자동 채굴 속도 강화 (as Lv) - 10레벨
 # [가격, 채굴 간격(초)] 형식 - 간격이 짧을수록 빠름
 var auto_mining_speed_upgrades: Array[Vector2] = [
-	Vector2(100, 0.45),   # Lv 1: 0.5초 → 0.45초
-	Vector2(300, 0.40),   # Lv 2: 0.40초
-	Vector2(800, 0.35),   # Lv 3: 0.35초
-	Vector2(2000, 0.30),  # Lv 4: 0.30초
-	Vector2(5000, 0.25),  # Lv 5: 0.25초
-	Vector2(10000, 0.20), # Lv 6: 0.20초
-	Vector2(20000, 0.15), # Lv 7: 0.15초
-	Vector2(40000, 0.12), # Lv 8: 0.12초
-	Vector2(70000, 0.10), # Lv 9: 0.10초
+	Vector2(50, 0.45),    # Lv 1: 0.5초 → 0.45초 (저렴하게 시작)
+	Vector2(150, 0.40),   # Lv 2: 0.40초
+	Vector2(400, 0.35),   # Lv 3: 0.35초
+	Vector2(1000, 0.30),  # Lv 4: 0.30초
+	Vector2(2500, 0.25),  # Lv 5: 0.25초
+	Vector2(6000, 0.20),  # Lv 6: 0.20초
+	Vector2(15000, 0.15), # Lv 7: 0.15초
+	Vector2(35000, 0.12), # Lv 8: 0.12초
+	Vector2(60000, 0.10), # Lv 9: 0.10초
 	Vector2(100000, 0.08) # Lv 10 (MAX): 0.08초
 ]
 
 # 채굴 키 개수 강화 (mk Lv) - 2레벨
 # [가격, 총 키 개수] 형식 - 기본 2개에서 최대 4개까지
-# 총 비용: 3,240 (기존 5,400 대비 약 40% 감소)
 var mining_key_count_upgrades: Array[Vector2i] = [
-	Vector2i(240, 3),      # Lv 1: 2개 → 3개 (D 추가)
-	Vector2i(3000, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
+	Vector2i(100, 3),      # Lv 1: 2개 → 3개 (D 추가) - 초반에 쉽게
+	Vector2i(1500, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
 ]
 
 # 돈 랜덤 강화 (mr Lv) - 5레벨
 # [가격, x2확률(%), x3확률(%)] 형식 - 채굴 시 x2배, x3배 확률
 # 기본값: x2 10%, x3 1%
 var money_randomize_upgrades: Array[Vector3i] = [
-	Vector3i(200, 15, 2),      # Lv 1: x2 15%, x3 2%
-	Vector3i(600, 20, 4),      # Lv 2: x2 20%, x3 4%
-	Vector3i(5000, 30, 8),     # Lv 3: x2 30%, x3 8%
-	Vector3i(20000, 40, 12),   # Lv 4: x2 40%, x3 12%
-	Vector3i(100000, 50, 20),  # Lv 5 (MAX): x2 50%, x3 20%
+	Vector3i(80, 15, 3),       # Lv 1: x2 15%, x3 3%
+	Vector3i(400, 22, 6),      # Lv 2: x2 22%, x3 6%
+	Vector3i(2000, 32, 10),    # Lv 3: x2 32%, x3 10%
+	Vector3i(10000, 42, 15),   # Lv 4: x2 42%, x3 15%
+	Vector3i(50000, 55, 22),   # Lv 5 (MAX): x2 55%, x3 22%
 ]
 
 # 타일 채굴 보너스 강화 (rm Lv) - 실험적
 # [가격, 추가 획득량] 형식 - 타일 돌을 캘 때 추가 보너스
 var rock_money_upgrades: Array[Vector2i] = [
-	Vector2i(100, 10),    # Lv 1: +10
-	Vector2i(1000, 100),  # Lv 2 (MAX): +100
+	Vector2i(60, 8),      # Lv 1: +8
+	Vector2i(500, 50),    # Lv 2 (MAX): +50
 ]
 
 # 레벨에 따른 실제 값 계산 함수들
@@ -204,8 +227,8 @@ func update_diamond_value():
 		# 레벨에 해당하는 획득량 사용 (레벨 1 = 인덱스 0)
 		money_up = diamond_value_upgrades[diamond_value_level - 1].y
 	else:
-		# MAX 레벨 (21) = 800
-		money_up = 800
+		# MAX 레벨 (21) = 1100
+		money_up = 1100
 
 
 func update_auto_mining_speed():
@@ -248,8 +271,8 @@ func update_rock_money():
 		# 레벨에 해당하는 보너스 사용 (레벨 1 = 인덱스 0)
 		rock_money_bonus = rock_money_upgrades[rock_money_level - 1].y
 	else:
-		# MAX 레벨 = 100
-		rock_money_bonus = 100
+		# MAX 레벨 = 50
+		rock_money_bonus = 50
 
 # ========================================
 # 참조

@@ -1,7 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://cciuktwcjunn7"]
+[gd_scene load_steps=7 format=3 uid="uid://cciuktwcjunn7"]
 
 [ext_resource type="Script" uid="uid://dh2alqa4b2u2t" path="res://alba_buy.gd" id="1_eqvli"]
 [ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_ue127"]
+[ext_resource type="Texture2D" uid="uid://br0mmtxe75ap4" path="res://CONCEPT/asset/mine_clicker32-NPC.png" id="3_ik6pa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmyll"]
+atlas = ExtResource("3_ik6pa")
+region = Rect2(144, 0, 48, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ue127"]
 
@@ -14,6 +19,7 @@ pet_texture = ExtResource("2_ue127")
 pet_scale = Vector2(0.001, 0.001)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_nmyll")
 
 [node name="Area2D" type="Area2D" parent="."]
 

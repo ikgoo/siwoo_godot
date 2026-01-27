@@ -371,8 +371,14 @@ func _update_platform_above(world_pos: Vector2) -> void:
 		# 다른 경로 시도
 		tile_map_node = get_tree().get_first_node_in_group("tile_map_manager")
 	
-	if tile_map_node and tile_map_node.has_method("update_platform_above"):
-		tile_map_node.update_platform_above(world_pos)
+	if tile_map_node:
+		# 플랫폼 타일 업데이트
+		if tile_map_node.has_method("update_platform_above"):
+			tile_map_node.update_platform_above(world_pos)
+		
+		# inside_cave terrain 업데이트 (인접한 동굴 타일 지형 변경)
+		if tile_map_node.has_method("update_inside_cave_terrain_around"):
+			tile_map_node.update_inside_cave_terrain_around(world_pos)
 
 ## [더 이상 사용 안 함] 제거된 타일 주변의 terrain 연결을 업데이트합니다.
 ## set_cells_terrain_connect()가 자동으로 처리하므로 이 함수는 더 이상 필요 없습니다.

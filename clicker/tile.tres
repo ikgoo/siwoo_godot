@@ -2804,8 +2804,10 @@ texture = ExtResource("7_m24ev")
 texture = ExtResource("8_11ay0")
 1:1/0 = 0
 1:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -2.1583042, -8, -1.978445)
+1:1/0/physics_layer_1/polygon_0/one_way = true
 2:1/0 = 0
 2:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -2.1583042, -8, -1.978445)
+2:1/0/physics_layer_1/polygon_0/one_way = true
 1:0/0 = 0
 
 [resource]

@@ -44,6 +44,10 @@ var fever_label : Label
 var playtime_label : Label
 var playtime_seconds : float = 0.0  # 플레이 시간 (초)
 
+# 클리어 진행도 표시
+var goal_progress_bar : ProgressBar
+var goal_label : Label  # 목표 금액 텍스트
+
 # 채굴 키 설정
 var waiting_for_key : LineEdit = null  # 키 입력 대기 중인 입력 필드
 var waiting_for_key_index : int = -1  # 어떤 키 인덱스를 변경 중인지
@@ -123,6 +127,45 @@ func _ready():
 	playtime_label.text = "00:00:00"
 	add_child(playtime_label)
 	
+	# === 클리어 진행도 프로그레스 바 (화면 상단 중앙) ===
+	var viewport_size = get_viewport_rect().size
+	
+	# 목표 금액 레이블
+	goal_label = Label.new()
+	goal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	goal_label.position = Vector2(viewport_size.x / 2 - 150, 5)
+	goal_label.size = Vector2(300, 20)
+	goal_label.add_theme_font_override("font", GALMURI_9)
+	goal_label.add_theme_font_size_override("font_size", 14)
+	goal_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
+	goal_label.text = "목표: 💎0 / 💎%s" % format_money(Globals.goal_money)
+	add_child(goal_label)
+	
+	# 프로그레스 바
+	goal_progress_bar = ProgressBar.new()
+	goal_progress_bar.position = Vector2(viewport_size.x / 2 - 150, 25)
+	goal_progress_bar.size = Vector2(300, 20)
+	goal_progress_bar.min_value = 0
+	goal_progress_bar.max_value = Globals.goal_money
+	goal_progress_bar.value = 0
+	goal_progress_bar.show_percentage = false
+	# 스타일 설정
+	var style_bg = StyleBoxFlat.new()
+	style_bg.bg_color = Color(0.2, 0.2, 0.2, 0.8)
+	style_bg.corner_radius_top_left = 5
+	style_bg.corner_radius_top_right = 5
+	style_bg.corner_radius_bottom_left = 5
+	style_bg.corner_radius_bottom_right = 5
+	goal_progress_bar.add_theme_stylebox_override("background", style_bg)
+	var style_fill = StyleBoxFlat.new()
+	style_fill.bg_color = Color(1.0, 0.8, 0.2, 1.0)  # 금색
+	style_fill.corner_radius_top_left = 5
+	style_fill.corner_radius_top_right = 5
+	style_fill.corner_radius_bottom_left = 5
+	style_fill.corner_radius_bottom_right = 5
+	goal_progress_bar.add_theme_stylebox_override("fill", style_fill)
+	add_child(goal_progress_bar)
+	
 	# 초기 수입 계산
 	last_money = Globals.money
 	
@@ -158,6 +201,15 @@ func _process(delta):
 	playtime_seconds += delta
 	playtime_label.text = format_playtime(playtime_seconds)
 	
+	# 클리어 진행도 업데이트
+	if goal_progress_bar and not Globals.is_game_cleared:
+		goal_progress_bar.value = min(Globals.money, Globals.goal_money)
+		goal_label.text = "목표: 💎%s / 💎%s" % [format_money(Globals.money), format_money(Globals.goal_money)]
+		
+		# 목표 달성 체크
+		if Globals.money >= Globals.goal_money:
+			trigger_game_clear()
+	
 	# 부드러운 돈 증가 애니메이션 (Tween 없이 수동으로)
 	if displayed_money != target_money:
 		var diff = target_money - displayed_money
@@ -166,9 +218,14 @@ func _process(delta):
 		displayed_money = move_toward(displayed_money, target_money, speed * delta)
 		label.text = '💎' + str(int(displayed_money))
 	
-	# 초당 수입 적용 (money_per_second)
+	# 초당 수입 적용 (money_per_second) - 알바 등 자동 수입
 	passive_income_timer += delta
-
+	if passive_income_timer >= 1.0:
+		passive_income_timer -= 1.0
+		if Globals.money_per_second > 0:
+			Globals.money += Globals.money_per_second
+			# 자동 수입 라벨 업데이트
+			passive_income_label.text = "+💎%d/초 (알바)" % Globals.money_per_second
 	
 	# 초당 수입 계산 (1초마다 업데이트)
 	income_update_timer += delta
@@ -387,3 +444,102 @@ func format_playtime(seconds: float) -> String:
 func load_esc_menu():
 	esc_menu = ESC_MENU_SCENE.instantiate()
 	add_child(esc_menu)
+
+# ========================================
+# 클리어 시스템
+# ========================================
+
+## 돈을 읽기 쉬운 형식으로 변환 (1000000 → 1,000,000)
+func format_money(amount: int) -> String:
+	var str_amount = str(amount)
+	var result = ""
+	var count = 0
+	for i in range(str_amount.length() - 1, -1, -1):
+		if count > 0 and count % 3 == 0:
+			result = "," + result
+		result = str_amount[i] + result
+		count += 1
+	return result
+
+## 게임 클리어 처리
+func trigger_game_clear():
+	if Globals.is_game_cleared:
+		return
+	
+	Globals.is_game_cleared = true
+	
+	# 포인트 계산
+	var clear_time = playtime_seconds
+	var points = Globals.calculate_clear_points(clear_time)
+	Globals.game_clear_points = points
+	Globals.total_points += points
+	
+	print("🎉 게임 클리어! 시간: %.1f초, 포인트: %d" % [clear_time, points])
+	
+	# 클리어 화면 표시
+	show_clear_screen(clear_time, points)
+
+## 클리어 화면 표시
+func show_clear_screen(clear_time: float, points: int):
+	# 반투명 배경 패널
+	var overlay = ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.8)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.z_index = 2000
+	add_child(overlay)
+	
+	# 클리어 메시지 컨테이너
+	var container = VBoxContainer.new()
+	container.set_anchors_preset(Control.PRESET_CENTER)
+	container.position = Vector2(-150, -150)
+	container.z_index = 2001
+	add_child(container)
+	
+	# 축하 메시지
+	var title = Label.new()
+	title.text = "🎉 게임 클리어! 🎉"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_override("font", GALMURI_9)
+	title.add_theme_font_size_override("font_size", 36)
+	title.modulate = Color(1.0, 0.9, 0.3)  # 금색
+	container.add_child(title)
+	
+	# 클리어 시간
+	var time_label = Label.new()
+	time_label.text = "클리어 시간: %s" % format_playtime(clear_time)
+	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	time_label.add_theme_font_override("font", GALMURI_9)
+	time_label.add_theme_font_size_override("font_size", 24)
+	container.add_child(time_label)
+	
+	# 획득 포인트
+	var points_label = Label.new()
+	points_label.text = "획득 포인트: %s P" % format_money(points)
+	points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	points_label.add_theme_font_override("font", GALMURI_9)
+	points_label.add_theme_font_size_override("font_size", 28)
+	points_label.modulate = Color(0.5, 1.0, 0.5)  # 연두색
+	container.add_child(points_label)
+	
+	# 누적 포인트
+	var total_label = Label.new()
+	total_label.text = "누적 포인트: %s P" % format_money(Globals.total_points)
+	total_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	total_label.add_theme_font_override("font", GALMURI_9)
+	total_label.add_theme_font_size_override("font_size", 20)
+	total_label.modulate = Color(0.8, 0.8, 0.8)
+	container.add_child(total_label)
+	
+	# 빈 공간
+	var spacer = Control.new()
+	spacer.custom_minimum_size = Vector2(0, 30)
+	container.add_child(spacer)
+	
+	# 계속하기 버튼
+	var continue_btn = Button.new()
+	continue_btn.text = "auto_scene으로 이동"
+	continue_btn.add_theme_font_override("font", GALMURI_9)
+	continue_btn.add_theme_font_size_override("font_size", 20)
+	continue_btn.custom_minimum_size = Vector2(200, 50)
+	continue_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://auto_scene.tscn"))
+	container.add_child(continue_btn)

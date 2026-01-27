@@ -21,6 +21,7 @@ var monologues_success: Array[String] = [
 	"이 정도면 괜찮지?",
 	"이제 채굴이 더 쉬워지겠지",
 ]
+@onready var animation_player = $AnimationPlayer
 
 var monologues_fail: Array[String] = [
 	"돈이 부족해",
@@ -141,7 +142,7 @@ func get_current_increment() -> int:
 			if current_level < Globals.diamond_value_upgrades.size():
 				return Globals.diamond_value_upgrades[current_level].y
 			else:
-				return 800  # MAX
+				return 1100  # MAX
 		upgrade.mining_tier:  # 채굴 티어
 			if current_level < Globals.mining_tier_upgrades.size():
 				return Globals.mining_tier_upgrades[current_level].y
@@ -160,7 +161,7 @@ func get_current_increment() -> int:
 			if current_level < Globals.rock_money_upgrades.size():
 				return Globals.rock_money_upgrades[current_level].y
 			else:
-				return 100  # MAX
+				return 50  # MAX
 		_:
 			return 0
 
@@ -169,6 +170,7 @@ func get_current_increment() -> int:
 
 # 플레이어가 영역 안에 있는지 추적하는 변수
 var is_character_inside: bool = false
+@onready var animated_sprite_2d = $AnimatedSprite2D
 
 # UI 노드 참조
 var ui_node: Control = null
@@ -181,7 +183,8 @@ var ui_node: Control = null
 
 func _ready():
 	if flip:
-		sprite.flip_h = true
+		animated_sprite_2d.flip_h = true
+	animation_player.play("idle")
 	# Area2D의 body_shape_entered/exited 시그널 연결
 	if area_2d:
 		area_2d.body_shape_entered.connect(_on_area_2d_body_shape_entered)
