@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://ddocumwv3cjdd"]
+[gd_scene load_steps=28 format=4 uid="uid://ddocumwv3cjdd"]
 
 [ext_resource type="Texture2D" uid="uid://bfv6sp8gu6ax4" path="res://CONCEPT/asset/mine_clicker32-background.png" id="1_olnm2"]
 [ext_resource type="TileSet" uid="uid://bc4jub32w6yl5" path="res://CONCEPT/tilemap_dirt.tres" id="2_3mish"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dyca5wwrxt3qs" path="res://CONCEPT/asset/mine_clicker32-torch_sheet.png" id="5_i8h3n"]
 [ext_resource type="Texture2D" uid="uid://bi1wlgreouwk8" path="res://CONCEPT/asset/mine_clicker-miner-SHEET.png" id="6_i8h3n"]
 [ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="7_olnm2"]
+[ext_resource type="Texture2D" uid="uid://u0giuap8ef6j" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="9_segga"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v7ehw"]
 texture = ExtResource("1_olnm2")
@@ -585,6 +586,45 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="Animation" id="Animation_p77g4"]
+resource_name = "new_animation"
+length = 0.7500125
+loop_mode = 1
+step = 0.16666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("npc/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.33333334, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6db2q"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("npc/Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dvooh"]
+_data = {
+&"RESET": SubResource("Animation_6db2q"),
+&"new_animation": SubResource("Animation_p77g4")
+}
+
 [node name="Concept" type="Node2D"]
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="."]
@@ -649,3 +689,17 @@ position = Vector2(883, 522)
 sprite_frames = SubResource("SpriteFrames_rnap6")
 frame_progress = 0.57907647
 flip_h = true
+
+[node name="npc" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="npc"]
+position = Vector2(859, 552)
+texture = ExtResource("9_segga")
+hframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="npc"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_dvooh")
+}
+autoplay = "new_animation"
