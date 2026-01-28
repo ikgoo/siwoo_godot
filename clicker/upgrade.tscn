@@ -125,4 +125,4 @@ sprite_frames = SubResource("SpriteFrames_4t3gl")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("5_moly5")
 hframes = 6
-frame = 5
+frame = 3
