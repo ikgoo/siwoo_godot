@@ -196,6 +196,37 @@ func has_nearby_breakable_tile() -> bool:
 		pass
 	return nearest != null
 
+## 특정 위치 근처에 파괴 가능한 타일이 있는지 확인합니다 (요정용).
+## @param position: 확인할 위치 (월드 좌표)
+## @returns: 범위 내 타일이 있으면 true
+func has_nearby_breakable_tile_at_position(position: Vector2) -> bool:
+	# TileSet이 없으면 검색 불가
+	if not tile_set:
+		return false
+	
+	# 해당 위치 주변의 타일 확인
+	var local_pos = to_local(position)
+	var tile_pos = local_to_map(local_pos)
+	
+	# 주변 3x3 범위 검사
+	for dx in range(-1, 2):
+		for dy in range(-1, 2):
+			var check_pos = tile_pos + Vector2i(dx, dy)
+			
+			# 모든 레이어에서 타일 찾기
+			for layer_idx in range(get_layers_count()):
+				var source_id = get_cell_source_id(layer_idx, check_pos)
+				if source_id != -1:
+					# 타일 발견
+					var tile_world_pos = to_global(map_to_local(check_pos))
+					var distance = position.distance_to(tile_world_pos)
+					
+					# mining_range 내에 있으면 true
+					if distance <= mining_range:
+						return true
+	
+	return false
+
 ## 캐릭터 근처의 가장 가까운 타일을 채굴합니다 (character.gd에서 호출).
 ## 클릭할 때마다 HP가 줄어들고, 0이 되면 타일 파괴
 ## @returns: 채굴 성공 여부

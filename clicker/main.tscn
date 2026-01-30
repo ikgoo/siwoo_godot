@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene load_steps=6 format=3 uid="uid://cqqkn2ouybgke"]
 
 [ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://ejlxnt1kknfi" path="res://camera_2d.gd" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
+[ext_resource type="Script" path="res://tutorial_manager.gd" id="9_tutorial"]
 
 [node name="main" type="Node2D"]
 
@@ -21,6 +22,9 @@ script = ExtResource("4_1bvp3")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.03, 0.03, 0.05, 1)
+
+[node name="TutorialManager" type="Node" parent="."]
+script = ExtResource("9_tutorial")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

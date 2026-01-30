@@ -287,6 +287,13 @@ var is_build_mode: bool = false  # 플랫폼 설치 모드
 var is_torch_mode: bool = false  # 횃불 설치 모드
 
 # ========================================
+# 튜토리얼 시스템
+# ========================================
+var is_tutorial_completed: bool = false  # 튜토리얼 완료 여부
+var show_tutorial_popup: bool = true     # 팝업 표시 여부 (설정에서 제어)
+var is_tutorial_active: bool = false     # 튜토리얼 진행 중 여부
+
+# ========================================
 # 채굴 키 설정
 # ========================================
 # 채굴 키 배열 (레벨에 따라 사용 가능한 키가 증가)
@@ -418,6 +425,8 @@ func save_settings() -> void:
 	config.set_value("locale", "language", current_language)
 	config.set_value("auto_scene", "ui_scale", auto_ui_scale)
 	config.set_value("auto_scene", "character_scale", auto_character_scale)
+	config.set_value("tutorial", "is_completed", is_tutorial_completed)
+	config.set_value("tutorial", "show_popup", show_tutorial_popup)
 	config.save("user://settings.cfg")
 	
 	# 오디오 버스에 볼륨 적용
@@ -436,6 +445,8 @@ func load_settings() -> void:
 	current_language = config.get_value("locale", "language", "ko")
 	auto_ui_scale = config.get_value("auto_scene", "ui_scale", 1.0)
 	auto_character_scale = config.get_value("auto_scene", "character_scale", 1.0)
+	is_tutorial_completed = config.get_value("tutorial", "is_completed", false)
+	show_tutorial_popup = config.get_value("tutorial", "show_popup", true)
 	
 	# 오디오 버스에 볼륨 적용
 	_apply_audio_settings()

@@ -27,11 +27,17 @@ signal closed
 @onready var language_label: Label = $Panel/VBoxContainer/LanguageContainer/LanguageLabel
 @onready var language_option: OptionButton = $Panel/VBoxContainer/LanguageContainer/LanguageOption
 @onready var back_button: Button = $Panel/VBoxContainer/ButtonContainer/BackButton
+@onready var vbox_container: VBoxContainer = $Panel/VBoxContainer
+
+# 튜토리얼 UI 요소들
+var tutorial_checkbox: CheckBox
+var tutorial_restart_button: Button
 
 
 func _ready():
-	# 일시정지 중에도 작동하도록 설정
+	# 일시정지 중에도 작동하도록 설정 (모든 자식 노드에 적용)
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_set_process_mode_recursive(self, Node.PROCESS_MODE_ALWAYS)
 	
 	# 스타일 설정 (esc_menu와 동일한 스타일)
 	var style_box = StyleBoxFlat.new()
@@ -54,12 +60,22 @@ func _ready():
 	# UI 텍스트 번역 적용
 	_update_ui_texts()
 	
+	# 튜토리얼 UI 추가
+	_setup_tutorial_ui()
+	
 	# 시그널 연결
 	master_slider.value_changed.connect(_on_master_volume_changed)
 	bgm_slider.value_changed.connect(_on_bgm_volume_changed)
 	sfx_slider.value_changed.connect(_on_sfx_volume_changed)
 	language_option.item_selected.connect(_on_language_selected)
 	back_button.pressed.connect(_on_back_pressed)
+
+
+## 모든 자식 노드에 process_mode 재귀적으로 설정
+func _set_process_mode_recursive(node: Node, mode: ProcessMode):
+	node.process_mode = mode
+	for child in node.get_children():
+		_set_process_mode_recursive(child, mode)
 
 
 ## 현재 설정값을 UI에 반영
@@ -155,6 +171,49 @@ func _on_back_pressed():
 	Globals.save_settings()
 	closed.emit()
 
+
+## 튜토리얼 UI 설정
+func _setup_tutorial_ui():
+	# 튜토리얼 컨테이너 생성
+	var tutorial_container = HBoxContainer.new()
+	tutorial_container.name = "TutorialContainer"
+	tutorial_container.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
+	
+	# 체크박스 생성
+	tutorial_checkbox = CheckBox.new()
+	tutorial_checkbox.text = "튜토리얼 팝업 표시"
+	tutorial_checkbox.button_pressed = Globals.show_tutorial_popup
+	tutorial_checkbox.toggled.connect(_on_tutorial_popup_toggled)
+	tutorial_checkbox.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
+	tutorial_container.add_child(tutorial_checkbox)
+	
+	# 다시 시작 버튼 생성
+	tutorial_restart_button = Button.new()
+	tutorial_restart_button.text = "튜토리얼 다시 보기"
+	tutorial_restart_button.custom_minimum_size = Vector2(150, 0)
+	tutorial_restart_button.pressed.connect(_on_tutorial_restart_pressed)
+	tutorial_restart_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
+	tutorial_container.add_child(tutorial_restart_button)
+	
+	# ButtonContainer 앞에 추가
+	var button_container_index = back_button.get_parent().get_index()
+	vbox_container.add_child(tutorial_container)
+	vbox_container.move_child(tutorial_container, button_container_index)
+
+## 튜토리얼 팝업 토글
+func _on_tutorial_popup_toggled(toggled_on: bool):
+	Globals.show_tutorial_popup = toggled_on
+	Globals.save_settings()
+
+## 튜토리얼 다시 보기 버튼 클릭
+func _on_tutorial_restart_pressed():
+	# 튜토리얼 완료 상태 초기화
+	Globals.is_tutorial_completed = false
+	Globals.show_tutorial_popup = true
+	Globals.save_settings()
+	
+	# 게임 재시작 (main.tscn으로)
+	get_tree().change_scene_to_file("res://main.tscn")
 
 ## ESC 키로도 닫을 수 있도록 처리
 func _input(event: InputEvent):

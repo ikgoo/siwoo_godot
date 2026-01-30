@@ -125,6 +125,13 @@ func _ready():
 	# Globals에 캐릭터 참조 저장 (다른 스크립트에서 접근 가능)
 	Globals.player = self
 	
+	# FollowPoint 생성 (요정이 따라다닐 지점)
+	if sprite and not sprite.has_node("FollowPoint"):
+		var follow_point = Marker2D.new()
+		follow_point.name = "FollowPoint"
+		follow_point.position = Vector2(-30, 0)  # 플레이어 뒤쪽
+		sprite.add_child(follow_point)
+	
 	# 에디터에서 설정한 곡괭이 초기 위치/회전 저장 (애니메이션 기준점)
 	if pickaxe:
 		pickaxe_initial_position = pickaxe.position
@@ -274,32 +281,45 @@ func _physics_process(delta):
 	# 이전 프레임에서 바닥에 있었는지 기록
 	var was_on_floor = is_on_floor()
 	
-	# 채굴 키 입력 처리 (돌 또는 타일맵 근처에 있을 때만)
+	# 채굴 키 입력 처리 - 튜토리얼 중에는 F키만, 아니면 모든 키
 	if current_nearby_rock or current_nearby_tilemap:
-		# 현재 사용 가능한 키 개수만큼 순회
-		for i in range(Globals.mining_key_count):
-			var key = Globals.all_mining_keys[i]
+		if Globals.is_tutorial_active:
+			# 튜토리얼 중: F키(첫 번째 키)만 사용
+			var key = Globals.all_mining_keys[0]
 			var is_key_pressed = Input.is_key_pressed(key)
+			var key_just_pressed = is_key_pressed and not was_mining_keys_pressed[0]
+			was_mining_keys_pressed[0] = is_key_pressed
 			
-			# 키를 방금 눌렀는지 확인
-			var key_just_pressed = is_key_pressed and not was_mining_keys_pressed[i]
-			
-			# 이전 프레임 상태 업데이트
-			was_mining_keys_pressed[i] = is_key_pressed
-			
-			# 키를 처음 누르면 즉시 채굴 + 타이머 리셋
 			if key_just_pressed:
 				add_charge()
-				auto_mining_timers[i] = 0.0
+				auto_mining_timers[0] = 0.0
 			
-			# 키를 꾹 누르고 있으면 자동 채굴
 			if is_key_pressed:
-				auto_mining_timers[i] += delta
-				if auto_mining_timers[i] >= Globals.auto_mining_interval:
-					auto_mining_timers[i] = 0.0
+				auto_mining_timers[0] += delta
+				if auto_mining_timers[0] >= Globals.auto_mining_interval:
+					auto_mining_timers[0] = 0.0
 					add_charge()
 			else:
-				auto_mining_timers[i] = 0.0
+				auto_mining_timers[0] = 0.0
+		else:
+			# 튜토리얼 아님: 모든 활성화된 키 사용
+			for i in range(Globals.mining_key_count):
+				var key = Globals.all_mining_keys[i]
+				var is_key_pressed = Input.is_key_pressed(key)
+				var key_just_pressed = is_key_pressed and not was_mining_keys_pressed[i]
+				was_mining_keys_pressed[i] = is_key_pressed
+				
+				if key_just_pressed:
+					add_charge()
+					auto_mining_timers[i] = 0.0
+				
+				if is_key_pressed:
+					auto_mining_timers[i] += delta
+					if auto_mining_timers[i] >= Globals.auto_mining_interval:
+						auto_mining_timers[i] = 0.0
+						add_charge()
+				else:
+					auto_mining_timers[i] = 0.0
 	else:
 		# 돌/타일맵 근처가 아니면 키 상태 및 타이머 초기화
 		for i in range(6):

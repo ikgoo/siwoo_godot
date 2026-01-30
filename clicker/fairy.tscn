@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7qvx8j3nfykg"]
+
+[ext_resource type="Script" path="res://fairy.gd" id="1_fairy"]
+
+[node name="Fairy" type="CharacterBody2D"]
+script = ExtResource("1_fairy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+
