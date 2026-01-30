@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://wccy2d63t5qm" path="res://upgrade.gd" id="1_w52ek"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="3_hj5gr"]
 [ext_resource type="Texture2D" uid="uid://uu4s5fgq7laa" path="res://CONCEPT/asset/lobby/upgrade_particle.png" id="4_50jy6"]
-[ext_resource type="Texture2D" uid="uid://u0giuap8ef6j" path="res://CONCEPT/asset/mine_clicker_npc1.png" id="5_klxme"]
+[ext_resource type="Texture2D" uid="uid://bcnjnmerqfw6b" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_klxme"]
 [ext_resource type="Texture2D" uid="uid://bcnjnmerqfw6b" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_moly5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w52ek"]
