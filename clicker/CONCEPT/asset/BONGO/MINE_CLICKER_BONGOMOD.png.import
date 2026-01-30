@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u0giuap8ef6j"
-path="res://.godot/imported/mine_clicker_npc1.png-f864729693d86670c6776ec1b8b0154c.ctex"
+uid="uid://di0iuy4ct4xg"
+path="res://.godot/imported/MINE_CLICKER_BONGOMOD.png-820b164b2b3ea178bd7f76cefc73b247.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://CONCEPT/asset/npc/mine_clicker_npc1.png"
-dest_files=["res://.godot/imported/mine_clicker_npc1.png-f864729693d86670c6776ec1b8b0154c.ctex"]
+source_file="res://CONCEPT/asset/BONGO/MINE_CLICKER_BONGOMOD.png"
+dest_files=["res://.godot/imported/MINE_CLICKER_BONGOMOD.png-820b164b2b3ea178bd7f76cefc73b247.ctex"]
 
 [params]
 
