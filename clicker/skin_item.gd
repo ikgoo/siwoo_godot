@@ -11,16 +11,21 @@ class_name SkinItem
 @export var region_rect: Rect2 = Rect2()        # region_rect (비어있으면 기본값 사용)
 @export var flip_h: bool = false                # 수평 반전 (좌우 뒤집기)
 @export var flip_v: bool = false                # 수직 반전 (상하 뒤집기)
+@export var sprite1_position: Vector2 = Vector2.ZERO  # Sprite1(캐릭터)의 위치 오프셋
+@export var sprite2_position: Vector2 = Vector2.ZERO  # Sprite2(도구)의 위치 오프셋
 
 func _init(p_id: String = "", p_name: String = "", p_price: int = 0, p_description: String = "",
 		   p_target_sprite: int = 1, p_texture: Texture2D = null, p_region_rect: Rect2 = Rect2(),
-		   p_flip_h: bool = false, p_flip_v: bool = false):
+		   p_flip_h: bool = false, p_flip_v: bool = false,
+		   p_sprite1_position: Vector2 = Vector2.ZERO, p_sprite2_position: Vector2 = Vector2.ZERO):
 	super._init(p_id, p_name, p_price, p_description)
 	target_sprite = p_target_sprite
 	texture = p_texture
 	region_rect = p_region_rect
 	flip_h = p_flip_h
 	flip_v = p_flip_v
+	sprite1_position = p_sprite1_position
+	sprite2_position = p_sprite2_position
 
 ## /** 씬에 스킨을 적용한다
 ##  * @param scene_node Node 스킨을 적용할 씬 노드
@@ -39,3 +44,15 @@ func apply_to_scene(scene_node: Node) -> void:
 		sprite.flip_h = flip_h
 		sprite.flip_v = flip_v
 		print("스킨 적용: ", sprite_name, " <- ", id, " (flip_h: ", flip_h, ", flip_v: ", flip_v, ")")
+	
+	# Sprite1(캐릭터)과 Sprite2(도구) 위치 적용
+	var sprite1: Sprite2D = scene_node.get_node_or_null("Sprite2D")
+	var sprite2: Sprite2D = scene_node.get_node_or_null("Sprite2D2")
+	
+	if sprite1 and sprite1_position != Vector2.ZERO:
+		sprite1.position = sprite1_position
+		print("Sprite1 위치 적용: ", sprite1_position)
+	
+	if sprite2 and sprite2_position != Vector2.ZERO:
+		sprite2.position = sprite2_position
+		print("Sprite2 위치 적용: ", sprite2_position)

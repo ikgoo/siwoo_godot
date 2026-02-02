@@ -11,7 +11,7 @@ class_name DialogueBox
 @onready var panel: Panel = $Panel
 @onready var fairy_portrait: Sprite2D = $Panel/FairyPortrait
 @onready var text_label: RichTextLabel = $Panel/TextLabel
-@onready var continue_hint: Label = $Panel/ContinueHint
+@onready var continue_button: Button = $Panel/ContinueButton
 
 # ========================================
 # Export 설정
@@ -35,6 +35,9 @@ var dialogues: Array[String] = []
 var current_dialogue_index: int = 0
 var is_waiting_for_input: bool = false
 
+# 이전 프레임의 Enter 키 상태 추적
+var was_enter_key_pressed: bool = false
+
 # ========================================
 # 시그널
 # ========================================
@@ -51,18 +54,31 @@ func _ready():
 	# 초기에는 숨김
 	visible = false
 	
+	# 화면 중앙 하단에 배치
+	var viewport_size = get_viewport_rect().size
+	var panel_width = 900.0  # 패널 가로 크기
+	var panel_height = 150.0  # 패널 세로 크기
+	var margin_bottom = 30.0  # 화면 하단에서 여백
+	
+	# 패널을 화면 중앙 하단에 배치
+	panel.global_position = Vector2(
+		(viewport_size.x - panel_width) / 2.0,  # 중앙 정렬
+		viewport_size.y - panel_height - margin_bottom  # 하단에서 여백만큼 위
+	)
+	panel.size = Vector2(panel_width, panel_height)
+	
 	# 폰트 설정
 	text_label.add_theme_font_override("normal_font", GALMURI_9)
 	text_label.add_theme_font_size_override("normal_font_size", 18)
-	continue_hint.add_theme_font_override("font", GALMURI_9)
-	continue_hint.add_theme_font_size_override("font_size", 14)
 	
 	# 요정 초상화 설정
 	if fairy_texture and fairy_portrait:
 		fairy_portrait.texture = fairy_texture
 	
-	# 계속 힌트 숨김
-	continue_hint.visible = false
+	# 계속 버튼 숨김 및 시그널 연결
+	continue_button.visible = false
+	continue_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
+	continue_button.pressed.connect(_on_continue_button_pressed)
 
 func _process(delta):
 	# 타이핑 중이면 타이머 업데이트
@@ -72,10 +88,17 @@ func _process(delta):
 			typing_timer = 0.0
 			type_next_character()
 	
-	# 입력 대기 중이면 Space/Enter 감지
+	# 입력 대기 중이면 Enter 키만 감지 (스페이스바는 점프용)
 	if is_waiting_for_input:
-		if Input.is_action_just_pressed("ui_accept") or Input.is_key_pressed(KEY_SPACE):
+		var is_enter_pressed = Input.is_key_pressed(KEY_ENTER)
+		var is_enter_just_pressed = is_enter_pressed and not was_enter_key_pressed
+		was_enter_key_pressed = is_enter_pressed
+		
+		if is_enter_just_pressed:
 			next_dialogue()
+	else:
+		# 입력 대기 중이 아니면 상태 초기화
+		was_enter_key_pressed = Input.is_key_pressed(KEY_ENTER)
 
 ## /** 대화 시작
 ##  * @param dialogue_list Array[String] 표시할 대화 목록
@@ -108,7 +131,7 @@ func show_next_line():
 	is_typing = true
 	is_waiting_for_input = false
 	typing_timer = 0.0
-	continue_hint.visible = false
+	continue_button.visible = false
 	
 	# 텍스트 초기화
 	text_label.text = ""
@@ -121,7 +144,7 @@ func type_next_character():
 		# 한 줄 타이핑 완료
 		is_typing = false
 		is_waiting_for_input = true
-		continue_hint.visible = true
+		continue_button.visible = true
 		dialogue_line_complete.emit()
 		return
 	
@@ -139,7 +162,7 @@ func skip_typing():
 		typing_index = current_text.length()
 		is_typing = false
 		is_waiting_for_input = true
-		continue_hint.visible = true
+		continue_button.visible = true
 		dialogue_line_complete.emit()
 
 ## /** 다음 대화로 진행
@@ -172,3 +195,8 @@ func end_dialogue():
 func force_close():
 	end_dialogue()
 
+## /** 다음 버튼 클릭 시 호출
+##  * @returns void
+##  */
+func _on_continue_button_pressed():
+	next_dialogue()

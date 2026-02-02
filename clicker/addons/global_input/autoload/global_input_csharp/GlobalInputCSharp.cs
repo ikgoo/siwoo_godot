@@ -9,6 +9,10 @@ public partial class GlobalInputCSharp : Node
 {
     #region Setup
     readonly TaskPoolGlobalHook _hook = new();
+    
+    // 인게임에서 GlobalInput 비활성화 플래그
+    public static bool IsEnabled = false;
+    
     static readonly Dictionary<KeyCode, Key> _hKeyToGodotKey = new()
     {
         {KeyCode.VcUndefined, Key.None},
@@ -153,30 +157,45 @@ public partial class GlobalInputCSharp : Node
     #region Signals
     void OnHookKeyPressed(object _, KeyboardHookEventArgs args)
     {
+        // 인게임에서는 GlobalInput 비활성화
+        if (!IsEnabled) return;
+        
         InputEventKey e = GetInputEventKey(args.Data.KeyCode, true);
         Input.ParseInputEvent(e);
     }
 
     void OnHookKeyReleased(object _, KeyboardHookEventArgs args)
     {
+        // 인게임에서는 GlobalInput 비활성화
+        if (!IsEnabled) return;
+        
         InputEventKey e = GetInputEventKey(args.Data.KeyCode, false);
         Input.ParseInputEvent(e);
     }
 
     void OnHookMousePressed(object _, MouseHookEventArgs args)
     {
+        // 인게임에서는 GlobalInput 비활성화
+        if (!IsEnabled) return;
+        
         InputEventMouseButton e = GetInputEventMouseButton(args.Data, true);
         Input.ParseInputEvent(e);
     }
 
     void OnHookMouseReleased(object _, MouseHookEventArgs args)
     {
+        // 인게임에서는 GlobalInput 비활성화
+        if (!IsEnabled) return;
+        
         InputEventMouseButton e = GetInputEventMouseButton(args.Data, false);
         Input.ParseInputEvent(e);
     }
 
     void OnHookMouseWheel(object _, MouseWheelHookEventArgs args)
     {
+        // 인게임에서는 GlobalInput 비활성화
+        if (!IsEnabled) return;
+        
         InputEventMouseButton e = GetInputEventMouseButton(args.RawEvent.Mouse, true);
 
         if (args.Data.Direction == MouseWheelScrollDirection.Vertical)
@@ -240,5 +259,22 @@ public partial class GlobalInputCSharp : Node
     {
         InitializeSharpHookSignals();
         _hook.RunAsync();
+        
+        // 인게임에서는 기본적으로 비활성화 (포커스 밖 입력 방지)
+        IsEnabled = false;
+        GD.Print("🚫 GlobalInput 비활성화 (인게임 모드)");
+    }
+    
+    // 필요 시 외부에서 활성화/비활성화 가능
+    public void Enable()
+    {
+        IsEnabled = true;
+        GD.Print("✅ GlobalInput 활성화");
+    }
+    
+    public void Disable()
+    {
+        IsEnabled = false;
+        GD.Print("🚫 GlobalInput 비활성화");
     }
 }

@@ -309,7 +309,7 @@ z_index = 1
 energy = 2.2
 blend_mode = 2
 texture = ExtResource("4_kx7w4")
-texture_scale = 2.4
+texture_scale = 3.6
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

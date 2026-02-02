@@ -107,9 +107,15 @@ func initialize_tutorial():
 	# 대화창 생성
 	create_dialogue_box()
 	
-	# 팝업 표시
-	print("📋 [튜토리얼] 팝업 표시 시작")
-	show_popup()
+	# 튜토리얼 다시보기로 시작한 경우 팝업 건너뛰기
+	if Globals.is_tutorial_restart:
+		print("🔁 [튜토리얼] 다시보기 모드 - 팝업 건너뛰고 바로 시작")
+		Globals.is_tutorial_restart = false  # 플래그 초기화
+		start_tutorial()
+	else:
+		# 팝업 표시
+		print("📋 [튜토리얼] 팝업 표시 시작")
+		show_popup()
 
 ## /** 대화창 UI 생성
 ##  * @returns void
@@ -242,6 +248,7 @@ func start_tutorial():
 func _on_dialogue_complete():
 	print("📢 [튜토리얼] 대화 완료 콜백 호출됨 - 현재 단계: ", current_step)
 	# 현재 단계에 따라 다음 행동
+	# 참고: await를 사용하는 경우에는 여기서 처리하지 않음
 	match current_step:
 		TutorialStep.INTRO:
 			print("  → INTRO 완료, SHOW_ROCK으로")
@@ -250,8 +257,8 @@ func _on_dialogue_complete():
 			print("  → SHOW_ROCK 완료, MINE_ROCK으로")
 			advance_to_mine_rock()
 		TutorialStep.MINE_ROCK:
-			print("  → MINE_ROCK - 채굴 중 (대기)")
-			pass  # 채굴 중에는 대기
+			print("  → MINE_ROCK - 채굴 중 또는 완료 대화 중 (대기)")
+			pass  # 채굴 중이거나 완료 대화는 await로 처리
 		TutorialStep.SHOW_UPGRADE:
 			print("  → SHOW_UPGRADE 완료, DO_UPGRADE로")
 			advance_to_do_upgrade()
@@ -259,8 +266,8 @@ func _on_dialogue_complete():
 			print("  → DO_UPGRADE - 업그레이드 대기")
 			pass  # 업그레이드 대기
 		TutorialStep.SHOW_CAVE:
-			print("  → SHOW_CAVE 완료, BREAK_WALL로")
-			advance_to_break_wall()
+			print("  → SHOW_CAVE - await로 처리")
+			pass  # await로 처리됨
 		TutorialStep.BREAK_WALL:
 			print("  → BREAK_WALL - 벽 부수기 대기")
 			pass  # 벽 부수기 대기
@@ -268,14 +275,14 @@ func _on_dialogue_complete():
 			print("  → PLACE_TORCH - 횃불 설치 대기")
 			pass  # 횃불 설치 대기
 		TutorialStep.GO_BACK:
-			print("  → GO_BACK 완료, PLACE_PLATFORM으로")
-			advance_to_place_platform()
+			print("  → GO_BACK - await로 처리")
+			pass  # await로 처리됨
 		TutorialStep.PLACE_PLATFORM:
 			print("  → PLACE_PLATFORM - 플랫폼 쌓기 대기")
 			pass  # 플랫폼 쌓기 대기
 		TutorialStep.COMPLETE:
-			print("  → COMPLETE, 튜토리얼 종료")
-			finish_tutorial()
+			print("  → COMPLETE - await로 처리")
+			pass  # await로 처리됨
 
 ## /** 돌 보여주기 단계로 진행
 ##  * @returns void
@@ -336,13 +343,17 @@ func _on_money_changed_during_mining(new_amount: int, delta: int):
 			Globals.money_changed.disconnect(_on_money_changed_during_mining)
 			Globals.hide_action_text()
 			
-			# 단계를 미리 변경 (MINE_ROCK_COMPLETE 임시 상태)
-			current_step = TutorialStep.SHOW_UPGRADE  # 미리 변경해서 _on_dialogue_complete가 작동하도록
+			# 완료 대화 전에 임시 상태로 변경 (MINE_ROCK → MINE_ROCK_COMPLETE)
+			# 이렇게 하면 _on_dialogue_complete에서 pass하지 않고 다음 단계로 진행
+			current_step = TutorialStep.MINE_ROCK  # 임시로 유지
 			
 			# 완료 대화
 			if dialogue_box:
 				dialogue_box.start_dialogue(tutorial_data.mine_rock_complete, tutorial_data.typing_speed)
-				# 대화 끝나면 _on_dialogue_complete가 자동으로 호출됨
+				# 대화 완료 시그널을 기다린 후 다음 단계로
+				await dialogue_box.dialogue_all_complete
+				print("📢 [튜토리얼] mine_rock_complete 대화 완료 - advance_to_show_upgrade 호출")
+				advance_to_show_upgrade()
 			else:
 				print("❌ [튜토리얼] 대화창 없음 - 바로 다음 단계로")
 				advance_to_show_upgrade()
@@ -358,7 +369,7 @@ func advance_to_show_upgrade():
 	var all_nodes = get_tree().get_nodes_in_group("upgrade")
 	print("  🔍 upgrade 그룹 노드 수: ", all_nodes.size())
 	for node in all_nodes:
-		if node.has("type"):
+		if "type" in node:
 			print("    - ", node.name, " type: ", node.type)
 			if node.type == 0:  # money_up = 0
 				money_up_npc = node
@@ -555,4 +566,3 @@ func spawn_fairy():
 		fairy_instance.global_position = player.global_position + Vector2(-30, 0)
 		
 		print("✅ 요정 스폰 완료!")
-

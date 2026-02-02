@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cciuktwcjunn7"]
+[gd_scene load_steps=8 format=3 uid="uid://alba_buy_2"]
 
 [ext_resource type="Script" uid="uid://dh2alqa4b2u2t" path="res://alba_buy.gd" id="1_eqvli"]
-[ext_resource type="Resource" path="res://alba_data_basic.tres" id="2_alba_data"]
+[ext_resource type="Resource" path="res://alba_data_2.tres" id="2_alba_data"]
 [ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_ue127"]
 [ext_resource type="Texture2D" uid="uid://br0mmtxe75ap4" path="res://CONCEPT/asset/mine_clicker32-NPC.png" id="3_ik6pa"]
 
@@ -14,7 +14,7 @@ region = Rect2(144, 0, 48, 48)
 [sub_resource type="CircleShape2D" id="CircleShape2D_eqvli"]
 radius = 70.256676
 
-[node name="alba_buy" type="Node2D"]
+[node name="alba_buy_2" type="Node2D"]
 script = ExtResource("1_eqvli")
 alba_data = ExtResource("2_alba_data")
 
@@ -35,3 +35,4 @@ shape = SubResource("CircleShape2D_eqvli")
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
 [connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
 [connection signal="area_exited" from="Area2D2" to="." method="_on_area_2d_2_area_exited"]
+

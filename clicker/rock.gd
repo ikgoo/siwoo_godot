@@ -378,8 +378,14 @@ func lock_camera():
 	
 	# 카메라에 신호 전송
 	var camera = get_tree().get_first_node_in_group("camera")
-	if camera and camera.has_method("lock_to_target"):
-		camera.lock_to_target(global_position)
+	if camera:
+		# 카메라 고정
+		if camera.has_method("lock_to_target"):
+			camera.lock_to_target(global_position)
+		
+		# 줌 인 효과 (3.5 → 5.0으로 확대, 0.3초 동안)
+		if camera.has_method("zoom_in"):
+			camera.zoom_in(Vector2(5.0, 5.0), 0.3)
 
 # 카메라 고정 해제
 func unlock_camera():
@@ -388,8 +394,14 @@ func unlock_camera():
 	
 	# 카메라에 신호 전송
 	var camera = get_tree().get_first_node_in_group("camera")
-	if camera and camera.has_method("unlock_from_target"):
-		camera.unlock_from_target()
+	if camera:
+		# 카메라 고정 해제
+		if camera.has_method("unlock_from_target"):
+			camera.unlock_from_target()
+		
+		# 줌 아웃 (원래 줌으로 복귀, 0.5초 동안)
+		if camera.has_method("zoom_out"):
+			camera.zoom_out(0.5)
 
 # 바위 흔들림 효과
 func update_shake_effect(delta):
