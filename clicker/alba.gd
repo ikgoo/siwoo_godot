@@ -1,23 +1,25 @@
 extends Node2D
 
-## ========================================
-## 알바 노드 - 리소스 기반 시스템
-## ========================================
-## AlbaData 리소스를 받아서 알바를 생성합니다
-
-# 알바 데이터 리소스
-@export var alba_data: AlbaData
-
-# 현재 알바 스텟 (리소스에서 복사됨)
-var price: int = 600  # 구매 가격
-var money_amount: int = 25  # 현재 초당 돈 증가량
+# 알바 스텟 (export로 설정)
+@export var price: int = 600  # 구매 가격
+@export var money_amount: int = 25  # 초당 돈 증가량 (기본)
+# 프리셋 선택 (alba1/alba2 값을 한 씬에서 설정)
+@export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
+# 에디터에서 선택할 알바 스킨 (단일 텍스처만 사용)
+@export var alba_texture: Texture2D  # custom 스킨
+@export_enum("alba1", "alba2", "custom") var alba_variant: String = "custom"
+# 펫/스프라이트 크기 배율
+@export var pet_scale: Vector2 = Vector2(1.0, 1.0)
+# 펫 전체 크기 스케일 (단일 값)
+@export var pet_scale_factor: float = 1.0
+var pet_texture: Texture2D = null  # 상점(alba_buy)에서 전달받을 펫 텍스처
 
 # 펫 노드 참조
 var pet_sprite: Sprite2D = null
 # 알바 인스턴스 순번 (1,2,3...)에 따라 펫 오프셋을 곱해 배치
 var alba_order: int = 1
 # === 펫 추적 설정 (스티어링 방식) ===
-var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치 (리소스에서 로드)
+@export var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치
 @export var max_speed: float = 180.0  # 최대 속도 (빠르게!)
 @export var steering_force: float = 6.0  # 조향력 (민첩도)
 @export var arrive_radius: float = 60.0  # 감속 시작 거리
@@ -33,13 +35,11 @@ var current_visual_scale_x: float = 1.0  # 좌우 반전용 스케일
 var _last_facing_direction: int = 1  # 이전 바라보는 방향
 var _pet_current_facing: int = 1  # 펫이 현재 사용 중인 방향
 
-# 강화 시스템 (리소스에서 로드됨)
-var upgrade_costs: Array[int] = [1000, 2000, 4000]  # 각 레벨별 강화 비용
-var upgrade_incomes: Array[int] = [50, 100, 150]  # 각 레벨별 강화 후 수입
-var upgrade_level: int = 0  # 현재 강화 레벨 (0 = 기본, 1~3 = 강화)
+# 강화 시스템 (export로 설정 가능)
+@export var upgrade_costs: Array[int] = [1000, 2000, 4000]  # 각 레벨별 강화 비용
+@export var upgrade_incomes: Array[int] = [50, 100, 150]  # 각 레벨별 강화 후 수입
 
-# 펫 스케일 (리소스에서 로드됨)
-var pet_scale: Vector2 = Vector2(1.0, 1.0)
+var upgrade_level: int = 0  # 현재 강화 레벨 (0 = 기본, 1~3 = 강화)
 
 # Area2D 노드 참조
 @onready var area_2d = $Area2D if has_node("Area2D") else null
@@ -58,11 +58,8 @@ var ui_node: Control = null
 var glow_particles: CPUParticles2D
 
 func _ready():
-	# 리소스 데이터 로드
-	if alba_data:
-		load_from_resource()
-	else:
-		print("⚠️ 경고: alba_data 리소스가 설정되지 않았습니다!")
+	# 프리셋 적용 (alba1/alba2 값을 이 스크립트에서 바로 설정)
+	apply_alba_preset()
 	
 	# 알바 그룹에 추가하고 순번 계산
 	add_to_group("alba")
@@ -73,8 +70,10 @@ func _ready():
 	print("알바 고용 완료! 초당 수입 +💎", money_amount, ", 현재 초당 수입: 💎", Globals.money_per_second, "/초")
 	
 	# 스프라이트 텍스처 교체
-	if sprite and alba_data and alba_data.alba_texture:
-		sprite.texture = alba_data.alba_texture
+	if sprite:
+		var base_tex = _get_alba_texture()
+		if base_tex:
+			sprite.texture = base_tex
 	# 스프라이트 크기 적용
 	if sprite:
 		sprite.scale = _get_pet_scale()
@@ -107,32 +106,12 @@ func _ready():
 	glow_particles.gravity = Vector2(0, -20)
 	glow_particles.scale_amount_min = 2
 	glow_particles.scale_amount_max = 3
-	# 파티클 색상은 리소스에서 로드
-	glow_particles.color = alba_data.particle_color if alba_data else Color(0.3, 0.8, 1.0, 0.6)
+	glow_particles.color = Color(0.3, 0.8, 1.0, 0.6)  # 파란색 (알바)
 	glow_particles.visible = false
 	add_child(glow_particles)
 	
 	# Globals Signal 구독
 	Globals.money_changed.connect(_on_money_changed)
-
-/** 리소스에서 알바 데이터를 로드합니다 */
-func load_from_resource():
-	if not alba_data:
-		return
-	
-	# 가격 및 수입 정보
-	price = alba_data.initial_price
-	money_amount = alba_data.initial_income
-	
-	# 업그레이드 정보
-	upgrade_costs = alba_data.upgrade_costs.duplicate()
-	upgrade_incomes = alba_data.upgrade_incomes.duplicate()
-	
-	# 펫 설정
-	pet_scale = alba_data.pet_scale
-	pet_offset = alba_data.pet_offset
-	
-	print("✅ 알바 리소스 로드 완료: ", alba_data.alba_name)
 
 func _process(_delta):
 	# 펫 추적 업데이트
@@ -163,18 +142,16 @@ func is_max_level() -> bool:
 
 # 알바 정보 텍스트 생성
 func get_alba_info_text() -> String:
-	var alba_name = alba_data.alba_name if alba_data else "알바"
-	
 	# MAX 레벨 체크
 	if is_max_level():
-		return "%s (MAX)\n현재 수입: 💎%d/초\n더 이상 강화 불가" % [alba_name, money_amount]
+		return "알바 (MAX)\n현재 수입: 💎%d/초\n더 이상 강화 불가" % money_amount
 	
 	var cost = get_upgrade_cost()
 	var current_income = money_amount
 	var next_income = get_upgraded_income()
 	var income_increase = next_income - current_income
 	
-	return "%s 강화 (Lv.%d)\n가격: 💎%d\n현재 수입: 💎%d/초\n강화 후: 💎%d/초 (+%d)" % [alba_name, upgrade_level, cost, current_income, next_income, income_increase]
+	return "알바 강화 (Lv.%d)\n가격: 💎%d\n현재 수입: 💎%d/초\n강화 후: 💎%d/초 (+%d)" % [upgrade_level, cost, current_income, next_income, income_increase]
 
 # 알바 강화
 func upgrade_alba():
@@ -306,11 +283,15 @@ func create_pet_sprite():
 		current_visual_scale_x = float(_pet_current_facing)
 	
 	pet_sprite = Sprite2D.new()
-	# 텍스처는 리소스에서 로드
-	if alba_data and alba_data.alba_texture:
-		pet_sprite.texture = alba_data.alba_texture
-	elif sprite and sprite.texture:
-		pet_sprite.texture = sprite.texture
+	# 텍스처 우선순위: 상점 전달 텍스처 > alba_variant 스킨 > 현재 스프라이트 텍스처
+	if pet_texture:
+		pet_sprite.texture = pet_texture
+	else:
+		var base_tex = _get_alba_texture()
+		if base_tex:
+			pet_sprite.texture = base_tex
+		elif sprite and sprite.texture:
+			pet_sprite.texture = sprite.texture
 	pet_sprite.z_index = Globals.player.z_index - 1
 	add_child(pet_sprite)
 	pet_sprite.scale = _get_pet_scale()
@@ -384,8 +365,29 @@ func get_facing_offset_for_direction(dir: int) -> Vector2:
 
 # 스케일을 최소값으로 보정하여 너무 작아지는 것을 방지
 func _get_pet_scale() -> Vector2:
-	var s = pet_scale
+	var s = pet_scale * pet_scale_factor
 	var min_scale = 0.05
 	s.x = max(min_scale, abs(s.x))
 	s.y = max(min_scale, abs(s.y))
 	return s
+
+# alba1/alba2 프리셋 값을 적용한다.
+func apply_alba_preset():
+	match alba_preset:
+		"alba1":
+			price = 2000
+			money_amount = 50
+			upgrade_costs = [2000, 3000, 4000]
+			upgrade_incomes = [120, 200, 350]
+		"alba2":
+			price = 4000
+			money_amount = 400
+			upgrade_costs = [5000, 6000]
+			upgrade_incomes = [600, 800]
+		_:
+			# custom은 에디터 값 그대로 사용
+			pass
+
+# 알바 스킨 선택
+func _get_alba_texture() -> Texture2D:
+	return alba_texture

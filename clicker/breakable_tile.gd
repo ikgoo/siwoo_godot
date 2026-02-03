@@ -396,44 +396,20 @@ func break_tile(tile_pos: Vector2i, layer_idx: int):
 ## 블록 파괴 후 위에 있는 플랫폼 타일을 업데이트합니다.
 ## @param world_pos: 파괴된 블록의 월드 좌표
 func _update_platform_above(world_pos: Vector2) -> void:
-	# 여러 경로를 시도하여 tile_map 노드 찾기
-	var tile_map_node = null
-	
-	# 1. 절대 경로 시도
-	tile_map_node = get_node_or_null("/root/main/tilemaps")
-	
-	# 2. TileMap 이름으로 시도
+	# tile_map 노드 찾기 (부모의 부모가 tilemaps 노드)
+	var tile_map_node = get_node_or_null("/root/main/tilemaps")
 	if not tile_map_node:
-		tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
-	
-	# 3. tile_map 이름으로 시도
-	if not tile_map_node:
-		tile_map_node = get_tree().current_scene.get_node_or_null("tile_map")
-	
-	# 4. 그룹에서 찾기
-	if not tile_map_node:
+		# 다른 경로 시도
 		tile_map_node = get_tree().get_first_node_in_group("tile_map_manager")
-	
-	# 5. 부모 노드에서 찾기
-	if not tile_map_node:
-		var parent = get_parent()
-		while parent and not tile_map_node:
-			if parent.has_method("update_platform_above"):
-				tile_map_node = parent
-				break
-			parent = parent.get_parent()
 	
 	if tile_map_node:
 		# 플랫폼 타일 업데이트
 		if tile_map_node.has_method("update_platform_above"):
 			tile_map_node.update_platform_above(world_pos)
-			print("🔄 플랫폼 업데이트 요청: ", world_pos)
 		
 		# inside_cave terrain 업데이트 (인접한 동굴 타일 지형 변경)
 		if tile_map_node.has_method("update_inside_cave_terrain_around"):
 			tile_map_node.update_inside_cave_terrain_around(world_pos)
-	else:
-		print("⚠️ tile_map 노드를 찾을 수 없음 - 플랫폼 업데이트 실패")
 
 ## [더 이상 사용 안 함] 제거된 타일 주변의 terrain 연결을 업데이트합니다.
 ## set_cells_terrain_connect()가 자동으로 처리하므로 이 함수는 더 이상 필요 없습니다.

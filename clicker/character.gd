@@ -12,7 +12,7 @@ const GRAVITY_SCALE = 0.7  # 중력을 30% 낮춤
 # 가속도 설정
 @export var acceleration: float = 1000.0  # 가속도 (픽셀/초²) - 반응성 유지
 @export var friction: float = 1500.0  # 마찰력/감속도 (픽셀/초²) - 미끄러짐 감소
-@export var air_acceleration: float = 1500.0  # 공중 가속도 (픽셀/초²) - 빠른 공중 제어
+@export var air_acceleration: float = 500.0  # 공중 가속도 (픽셀/초²)
 
 # 플랫폼 레이어 마스크
 const PLATFORM_COLLISION_LAYER = 4  # 플랫폼 전용 collision layer
@@ -26,9 +26,6 @@ const PLATFORM_OUT_DURATION: float = 0.2  # 0.2초
 
 # 이전 프레임의 S 키 상태 추적
 var was_s_key_pressed: bool = false
-
-# 이전 프레임의 Space 키 상태 추적
-var was_space_key_pressed: bool = false
 
 # 채굴 키 입력 추적 (이전 프레임 상태) - 최대 6개 키 지원
 var was_mining_keys_pressed: Array[bool] = [false, false, false, false, false, false]
@@ -47,11 +44,9 @@ var air_speed: float = 0.0
 enum State {
 	IDLE,      # 대기
 	WALKING,   # 걷기
-	RUNNING,   # 달리기
 	JUMPING,   # 점프
 	FALLING,   # 낙하
-	MINING,    # 채굴 중
-	SITTING    # 앉기
+	MINING     # 채굴 중
 }
 
 # 현재 상태
@@ -162,9 +157,11 @@ func _ready():
 	# 기본 대기 애니메이션 재생
 	play_animation("idle")
 
-# 2, 3번 키 이전 프레임 상태 추적
+# 2, 3, B번 키 이전 프레임 상태 추적
 var was_key_2_pressed: bool = false
 var was_key_3_pressed: bool = false
+var was_key_b_pressed: bool = false
+var was_mouse_left_pressed: bool = false
 
 # 좌클릭 홀드 채굴 시스템
 var is_mining_held: bool = false
@@ -177,23 +174,17 @@ func _input(event: InputEvent):
 		if event.pressed:
 			# 좌클릭 시작
 			if not is_mining_held:
+				# 첫 클릭인 경우: 즉시 채굴 가능하도록 타이머를 간격 이상으로 설정
 				is_mining_held = true
-				mining_hold_timer = 0.0  # 타이머 초기화 (홀드 채굴용)
-				# 첫 클릭 시 즉시 채굴 실행
-				try_mine_breakable_tile()
+				# 티어별 채굴 속도 배율 (누적): 1→2: 1.8배, 2→3: 1.5배, 3→4: 1.3배, 4→5: 1.2배
+				var tier_multipliers = [1.0, 1.8, 2.7, 3.51, 4.212]  # 티어 1~5
+				var tier_idx = clampi(Globals.mining_tier - 1, 0, tier_multipliers.size() - 1)
+				var speed_bonus = tier_multipliers[tier_idx]
+				var current_interval = mining_hold_interval / speed_bonus
+				mining_hold_timer = current_interval  # 즉시 채굴 가능
 		else:
 			# 좌클릭 해제
 			is_mining_held = false
-	
-	# 마우스 우클릭: 횃불/플랫폼 설치
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-		if event.pressed:
-			# 횃불 설치 모드
-			if Globals.is_torch_mode and torch_scene:
-				place_torch()
-			# 플랫폼 설치 모드
-			elif Globals.is_build_mode:
-				place_platform()
 
 ## breakable_tile 채굴을 시도합니다 (모든 tilemap 검사)
 func try_mine_breakable_tile():
@@ -235,6 +226,17 @@ func handle_build_mode_input():
 		Globals.is_build_mode = not Globals.is_build_mode
 		Globals.is_torch_mode = false  # 횃불 모드는 해제
 	was_key_3_pressed = is_key_3_pressed
+	
+	# B키: 설치 실행
+	var is_key_b_pressed = Input.is_key_pressed(KEY_B)
+	if is_key_b_pressed and not was_key_b_pressed:
+		# 횃불 설치 모드
+		if Globals.is_torch_mode and torch_scene:
+			place_torch()
+		# 플랫폼 설치 모드
+		elif Globals.is_build_mode:
+			place_platform()
+	was_key_b_pressed = is_key_b_pressed
 
 func _process(delta):
 	# 부채꼴 빛 방향 업데이트
@@ -328,12 +330,8 @@ func _physics_process(delta):
 	var is_s_key_pressed = Input.is_key_pressed(KEY_S)
 	var is_s_key_just_pressed = is_s_key_pressed and not was_s_key_pressed
 	
-	# Space 키 입력 확인 (점프 전에 먼저 확인)
-	var is_space_pressed = Input.is_key_pressed(KEY_SPACE)
-	var is_space_just_pressed = is_space_pressed and not was_space_key_pressed
-	
-	# S 키를 누른 상태에서 스페이스바를 누르면 플랫폼 통과 활성화
-	if is_s_key_pressed and is_space_just_pressed and is_on_floor():
+	# S 키를 처음 눌렀을 때 platform_out 활성화
+	if Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed:
 		platform_out = true
 		platform_out_timer = PLATFORM_OUT_DURATION
 	
@@ -358,21 +356,17 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity += get_gravity() * GRAVITY_SCALE * delta
 	
-	# Space 키로 점프 - 바닥에 있을 때만 가능 (S키를 누르지 않은 경우)
-	if is_space_just_pressed and is_on_floor() and not is_s_key_pressed:
+	# Space 키로 점프 - 바닥에 있을 때만 가능
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		is_jumping = true
 		velocity.y = JUMP_VELOCITY  # 최대 점프 속도로 시작
 	
 	# Space 키를 떼면 상승 중일 때 속도 감소 (마리오 스타일)
-	var is_space_just_released = not is_space_pressed and was_space_key_pressed
-	if is_jumping and is_space_just_released:
+	if is_jumping and Input.is_action_just_released("ui_accept"):
 		# 위로 올라가는 중이면 속도를 최소 점프 속도로 제한
 		if velocity.y < MIN_JUMP_VELOCITY:
 			velocity.y = MIN_JUMP_VELOCITY
 		is_jumping = false
-	
-	# 이전 프레임의 Space 키 상태 저장
-	was_space_key_pressed = is_space_pressed
 
 	# A/D 키로 좌우 이동
 	var direction = 0
@@ -408,14 +402,11 @@ func _physics_process(delta):
 		# 현재 속도를 공중 속도로 저장 (점프 전 속도)
 		air_speed = abs(velocity.x)
 	else:
-		# 공중에 있을 때: 빠른 공중 제어
+		# 공중에 있을 때: 점프 전 속도를 목표로 공중 가속도 적용
 		if direction != 0:
-			# Shift 키 상태에 따라 목표 속도 결정
-			var is_running = Input.is_key_pressed(KEY_SHIFT)
-			var target_speed = RUN_SPEED if is_running else SPEED
-			var target_velocity = direction * target_speed
-			
-			# 공중 가속도를 적용하여 빠르게 목표 속도로 이동
+			# 목표 속도 (점프 전 속도)
+			var target_velocity = direction * air_speed
+			# 공중 가속도를 적용하여 부드럽게 목표 속도로 이동
 			velocity.x = move_toward(velocity.x, target_velocity, air_acceleration * delta)
 			
 			# 스프라이트 방향 전환
@@ -483,23 +474,14 @@ func set_state(new_state: State):
 			play_animation("idle")
 		State.WALKING:
 			play_animation("walk")
-		State.RUNNING:
-			play_animation("run")
 		State.JUMPING, State.FALLING:
 			play_animation("jump")
 		State.MINING:
 			play_animation("idle")
-		State.SITTING:
-			play_animation("sit")
 
 # 이동/점프 상황에 따라 애니메이션을 갱신합니다.
 func update_state_and_animation(was_on_floor_before: bool):
 	var on_floor_now = is_on_floor()
-	
-	# S키를 누르고 있고 바닥에 있으면 앉기 애니메이션 우선
-	if Input.is_key_pressed(KEY_S) and on_floor_now:
-		set_state(State.SITTING)
-		return
 	
 	# 점프 착지 애니메이션 처리
 	if animation_player and animation_player.current_animation == "jump_end":
@@ -519,11 +501,7 @@ func update_state_and_animation(was_on_floor_before: bool):
 	var is_moving = abs(velocity.x) > 5.0
 	if on_floor_now:
 		if is_moving:
-			# Shift 키를 누르고 있으면 달리기, 아니면 걷기
-			if Input.is_key_pressed(KEY_SHIFT):
-				set_state(State.RUNNING)
-			else:
-				set_state(State.WALKING)
+			set_state(State.WALKING)
 		else:
 			set_state(State.IDLE)
 	else:
@@ -829,16 +807,6 @@ func place_torch():
 	if _is_position_inside_any_tile(snapped_pos):
 		return  # 메시지는 _is_position_inside_any_tile에서 출력
 	
-	# breakable_tile(파괴 가능한 타일) 체크 - 벽 안에는 설치 불가
-	if _is_position_inside_breakable_tile(snapped_pos):
-		print("❌ 벽 타일 안에는 횃불 설치 불가")
-		return
-	
-	# 폭포 타일 체크 - 폭포 위에는 설치 불가
-	if _is_position_on_waterfall(snapped_pos):
-		print("❌ 폭포 위에는 횃불 설치 불가")
-		return
-	
 	# 해당 타일에 이미 횃불이 있는지 체크
 	if _has_torch_at_tile(tile_x, tile_y, tile_size):
 		print("❌ 이미 횃불 있음 at (%d, %d)" % [tile_x, tile_y])
@@ -873,11 +841,6 @@ func place_platform():
 	# 해당 위치에 타일이 있는지 체크 (모든 TileMap에서 확인)
 	if _is_position_inside_any_tile(mouse_pos):
 		print("❌ 플랫폼 설치: 타일 중복")
-		return
-	
-	# breakable_tile(파괴 가능한 타일) 체크 - 벽 안에는 설치 불가
-	if _is_position_inside_breakable_tile(mouse_pos):
-		print("❌ 벽 타일 안에는 플랫폼 설치 불가")
 		return
 	
 	# TileMap 노드 찾기 (대문자 주의!)
@@ -1119,66 +1082,6 @@ func _is_position_inside_any_tile(world_pos: Vector2) -> bool:
 	return false
 
 
-## /** breakable_tile(파괴 가능한 벽) 위치 체크
-##  * @param world_pos Vector2 월드 좌표
-##  * @returns bool 해당 위치에 breakable_tile이 있으면 true
-##  */
-func _is_position_inside_breakable_tile(world_pos: Vector2) -> bool:
-	# breakable_tiles 그룹의 TileMap만 확인
-	var breakable_tilemaps = get_tree().get_nodes_in_group("breakable_tiles")
-	
-	for tilemap in breakable_tilemaps:
-		if not tilemap is TileMap:
-			continue
-		
-		# TileMap의 로컬 좌표로 변환
-		var local_pos = tilemap.to_local(world_pos)
-		var tile_pos = tilemap.local_to_map(local_pos)
-		
-		# 모든 레이어에서 타일 확인
-		for layer_idx in range(tilemap.get_layers_count()):
-			var source_id = tilemap.get_cell_source_id(layer_idx, tile_pos)
-			if source_id != -1:
-				# breakable_tile 발견!
-				return true
-	
-	return false
-
-
-## /** background 타일맵의 폭포 타일 위치 체크
-##  * @param world_pos Vector2 월드 좌표
-##  * @returns bool 해당 위치에 폭포 타일이 있으면 true
-##  */
-func _is_position_on_waterfall(world_pos: Vector2) -> bool:
-	# tile_map_manager 그룹에서 타일맵 매니저 찾기
-	var tile_map_managers = get_tree().get_nodes_in_group("tile_map_manager")
-	
-	for manager in tile_map_managers:
-		# background TileMap 찾기 (map_1/background)
-		var background = manager.get_node_or_null("map_1/background")
-		if not background or not (background is TileMap):
-			continue
-		
-		# TileMap의 로컬 좌표로 변환
-		var local_pos = background.to_local(world_pos)
-		var tile_pos = background.local_to_map(local_pos)
-		
-		# background 레이어(0번)에서 타일 확인
-		var source_id = background.get_cell_source_id(0, tile_pos)
-		if source_id != -1:
-			# TileSet 가져오기
-			var tile_set = background.tile_set
-			if tile_set:
-				var source = tile_set.get_source(source_id)
-				if source is TileSetAtlasSource:
-					var atlas_source = source as TileSetAtlasSource
-					# 폭포 텍스처인지 확인 (파일 경로에 "warterfall" 포함)
-					if atlas_source.texture and "warterfall" in atlas_source.texture.resource_path:
-						return true
-	
-	return false
-
-
 ## 노드와 모든 자식에서 TileMap을 재귀적으로 찾습니다.
 func _get_all_tilemaps(node: Node) -> Array:
 	var result = []
@@ -1312,15 +1215,7 @@ func can_place_torch_at(mouse_pos: Vector2) -> bool:
 	if _is_position_inside_any_tile(snapped_pos):
 		return false
 	
-	# 3. breakable_tile 체크
-	if _is_position_inside_breakable_tile(snapped_pos):
-		return false
-	
-	# 4. 폭포 타일 체크
-	if _is_position_on_waterfall(snapped_pos):
-		return false
-	
-	# 5. 횃불 중복 체크
+	# 3. 횃불 중복 체크
 	if _has_torch_at_tile(tile_x, tile_y, tile_size):
 		return false
 	
@@ -1337,11 +1232,7 @@ func can_place_platform_at(mouse_pos: Vector2) -> bool:
 	if _is_position_inside_any_tile(mouse_pos):
 		return false
 	
-	# 3. breakable_tile 체크
-	if _is_position_inside_breakable_tile(mouse_pos):
-		return false
-	
-	# 4. platform TileMap에 이미 타일이 있는지 체크
+	# 3. platform TileMap에 이미 타일이 있는지 체크
 	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
 	if tile_map_node:
 		var platform_tilemap = tile_map_node.get_node_or_null("map_2/platform")

@@ -129,10 +129,10 @@ func update_mining_tier():
 # 곡괭이 속도 강화 (pv Lv) - 4레벨 (5번 클릭 → 1번 클릭)
 # [가격, 필요 클릭 수] 형식
 var pickaxe_speed_upgrades: Array[Vector2i] = [
-	Vector2i(400, 4),     # Lv 1: 5회 → 4회 (초반에 빠르게 구매 가능)
-	Vector2i(2000, 3),     # Lv 2: 4회 → 3회
-	Vector2i(10000, 2),    # Lv 3: 3회 → 2회
-	Vector2i(100000, 1),   # Lv 4 (MAX): 2회 → 1회
+	Vector2i(150, 4),     # Lv 1: 5회 → 4회 (초반에 빠르게 구매 가능)
+	Vector2i(800, 3),     # Lv 2: 4회 → 3회
+	Vector2i(5000, 2),    # Lv 3: 3회 → 2회
+	Vector2i(30000, 1),   # Lv 4 (MAX): 2회 → 1회
 ]
 
 # 다이아몬드 획득량 증가 (dv Lv) - 20레벨
@@ -186,19 +186,19 @@ var auto_mining_speed_upgrades: Array[Vector2] = [
 # 채굴 키 개수 강화 (mk Lv) - 2레벨
 # [가격, 총 키 개수] 형식 - 기본 2개에서 최대 4개까지
 var mining_key_count_upgrades: Array[Vector2i] = [
-	Vector2i(4000, 3),      # Lv 1: 2개 → 3개 (D 추가) - 초반에 쉽게
-	Vector2i(50000, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
+	Vector2i(100, 3),      # Lv 1: 2개 → 3개 (D 추가) - 초반에 쉽게
+	Vector2i(1500, 4),     # Lv 2 (MAX): 3개 → 4개 (K 추가)
 ]
 
 # 돈 랜덤 강화 (mr Lv) - 5레벨
 # [가격, x2확률(%), x3확률(%)] 형식 - 채굴 시 x2배, x3배 확률
 # 기본값: x2 10%, x3 1%
 var money_randomize_upgrades: Array[Vector3i] = [
-	Vector3i(1000, 15, 3),       # Lv 1: x2 15%, x3 3%
-	Vector3i(2000, 22, 6),      # Lv 2: x2 22%, x3 6%
-	Vector3i(8000, 32, 10),    # Lv 3: x2 32%, x3 10%
+	Vector3i(80, 15, 3),       # Lv 1: x2 15%, x3 3%
+	Vector3i(400, 22, 6),      # Lv 2: x2 22%, x3 6%
+	Vector3i(2000, 32, 10),    # Lv 3: x2 32%, x3 10%
 	Vector3i(10000, 42, 15),   # Lv 4: x2 42%, x3 15%
-	Vector3i(40000, 55, 22),   # Lv 5 (MAX): x2 55%, x3 22%
+	Vector3i(50000, 55, 22),   # Lv 5 (MAX): x2 55%, x3 22%
 ]
 
 # 타일 채굴 보너스 강화 (rm Lv) - 실험적
@@ -206,7 +206,6 @@ var money_randomize_upgrades: Array[Vector3i] = [
 var rock_money_upgrades: Array[Vector2i] = [
 	Vector2i(60, 8),      # Lv 1: +8
 	Vector2i(500, 50),    # Lv 2 (MAX): +50
-	Vector2i(10000,1000)
 ]
 
 # 레벨에 따른 실제 값 계산 함수들
@@ -293,7 +292,6 @@ var is_torch_mode: bool = false  # 횃불 설치 모드
 var is_tutorial_completed: bool = false  # 튜토리얼 완료 여부
 var show_tutorial_popup: bool = true     # 팝업 표시 여부 (설정에서 제어)
 var is_tutorial_active: bool = false     # 튜토리얼 진행 중 여부
-var is_tutorial_restart: bool = false    # 튜토리얼 다시보기로 시작했는지 (팝업 건너뛰기용)
 
 # ========================================
 # 채굴 키 설정
@@ -318,9 +316,6 @@ var available_languages: Dictionary = {
 	"ko": "한국어",
 	"en": "English"
 }
-
-# 언어 변경 시그널
-signal language_changed()
 
 # ========================================
 # Auto Scene 설정
@@ -360,7 +355,7 @@ var translations: Dictionary = {
 		"UI KEY BLOCKED": "사용 불가!",
 		"UI TIER UP": "티어 %d 달성!",
 		"UI MINING KEY N": "채굴 키 %d:",
-		"AUTO GO BACK": "<-",
+		"AUTO GO BACK": "돌아가기",
 		"AUTO SHOP": "상점",
 		"AUTO SETTING": "설정",
 		"AUTO SETTING TITLE": "설정",
@@ -368,11 +363,7 @@ var translations: Dictionary = {
 		"AUTO CHAR SCALE": "캐릭터 크기",
 		"AUTO SETTING APPLY": "적용",
 		"AUTO SETTING CLOSE": "닫기",
-		"LOBBY PRESS KEY": "- Press Any Key -",
-		"SETTING TUTORIAL POPUP": "튜토리얼 팝업 표시",
-		"SETTING TUTORIAL RESTART": "튜토리얼 다시 보기",
-		"UI GOAL": "목표:",
-		"UI PER SECOND": "초당:",
+		"LOBBY PRESS KEY": "- 아무 키나 누르세요 -",
 	},
 	"en": {
 		"MENU TITLE": "Menu",
@@ -402,7 +393,7 @@ var translations: Dictionary = {
 		"UI KEY BLOCKED": "Not Available!",
 		"UI TIER UP": "Tier %d Reached!",
 		"UI MINING KEY N": "Mining Key %d:",
-		"AUTO GO BACK": "<-",
+		"AUTO GO BACK": "Go Back",
 		"AUTO SHOP": "Shop",
 		"AUTO SETTING": "Settings",
 		"AUTO SETTING TITLE": "Settings",
@@ -411,10 +402,6 @@ var translations: Dictionary = {
 		"AUTO SETTING APPLY": "Apply",
 		"AUTO SETTING CLOSE": "Close",
 		"LOBBY PRESS KEY": "- Press Any Key -",
-		"SETTING TUTORIAL POPUP": "Show Tutorial Popup",
-		"SETTING TUTORIAL RESTART": "Restart Tutorial",
-		"UI GOAL": "Goal:",
-		"UI PER SECOND": "/sec:",
 	}
 }
 
