@@ -99,26 +99,20 @@ func _ready():
 	get_viewport().size = default_viewport
 	size = default_viewport  # 루트 Control도 같은 크기로 설정
 	
-<<<<<<< HEAD
-	# 스프라이트 초기 위치/크기 저장 (tscn에서 설정한 값, viewport 비율 적용)
-	var scale_factor = 0.5  # 1280x720 -> 640x360
+	# 스프라이트 초기 위치/크기 저장 (tscn에서 설정한 값)
 	if sprite1:
-		sprite1_initial_pos = sprite1.position * scale_factor
+		sprite1_initial_pos = sprite1.position
 		sprite1_initial_scale = sprite1.scale
 	if sprite2:
-		sprite2_initial_pos = sprite2.position * scale_factor
+		sprite2_initial_pos = sprite2.position
 		sprite2_initial_scale = sprite2.scale
 	
-	# UI 요소들의 위치와 크기를 0.5배로 조정 (원래 1280x720 기준)
-	_scale_ui_elements(0.5)
-=======
 	# 창 크기를 viewport의 0.4배의 가장 가까운 자연수로 설정
 	var final_window_size = Vector2i(
 		roundi(default_viewport.x * 0.4),
 		roundi(default_viewport.y * 0.4)
 	)
 	get_window().size = final_window_size
->>>>>>> 91ec65ae32510c1d66cdc2326e928f4b2bdfe8e5
 	
 	# 창을 화면 중앙으로 이동
 	var screen_size = DisplayServer.screen_get_size()
@@ -132,9 +126,9 @@ func _ready():
 	
 	# UI 텍스트 번역 적용
 	back_button.text = Globals.get_text("AUTO GO BACK")
-	# CenterContainer의 마우스 필터 설정 (드래그 가능하게)
-	$CenterContainer.mouse_filter = Control.MOUSE_FILTER_STOP
-	auto_money_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# 마우스 필터 설정 (입력이 통과되어 _unhandled_input에서 처리됨)
+	$CenterContainer.mouse_filter = Control.MOUSE_FILTER_PASS
+	auto_money_label.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	auto_money_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
 
@@ -192,33 +186,51 @@ func _on_back_button_pressed():
 	get_tree().change_scene_to_file("res://lobby.tscn")
 
 
-# 키보드 입력 처리
-func _input(event: InputEvent):
+# 클릭 판정용 변수
+var click_start_pos: Vector2 = Vector2.ZERO
+const CLICK_THRESHOLD: float = 10.0  # 이 거리 이내면 클릭으로 판정
+var click_processed: bool = false  # 중복 클릭 방지
+
+# 키보드/마우스 입력 처리 (_unhandled_input: UI가 처리하지 않은 입력만 받음)
+func _unhandled_input(event: InputEvent):
+	# 키보드 입력: ESC는 돌아가기, 그 외 모든 키는 돈 증가
 	if event is InputEventKey and event.pressed and not event.echo:
-		# ESC 키는 돌아가기
 		if event.keycode == KEY_ESCAPE:
-			# 씬 전환 전에 입력 처리 완료 표시
-			if get_viewport():
-				get_viewport().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 			_on_back_button_pressed()
-	# 설정 패널이나 상점 메뉴가 열려있으면 창 드래그 비활성화
-	var panel_open = (setting_panel and setting_panel.visible) or (shop_menu and shop_menu.visible)
+		else:
+			# 모든 키보드 입력으로 돈 증가
+			_on_click()
+			get_viewport().set_input_as_handled()
 	
+	# 마우스 좌클릭
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			# 패널이 열려있으면 드래그 시작하지 않음
-			if not panel_open:
-				is_dragging = true
-				# 클릭한 지점(화면 좌표)과 창 좌상단 사이의 오프셋 저장
-				drag_start_mouse = DisplayServer.mouse_get_position()
-				drag_start_window = get_window().position
-				drag_offset_from_origin = Vector2i(drag_start_mouse) - drag_start_window
+			is_dragging = true
+			click_processed = false
+			click_start_pos = DisplayServer.mouse_get_position()
+			drag_start_mouse = click_start_pos
+			drag_start_window = get_window().position
+			drag_offset_from_origin = Vector2i(drag_start_mouse) - drag_start_window
 		else:
+			# 마우스 릴리즈 시 - 드래그 거리가 짧으면 클릭으로 판정
+			if not click_processed:
+				var release_pos = DisplayServer.mouse_get_position()
+				if click_start_pos.distance_to(release_pos) < CLICK_THRESHOLD:
+					_on_click()
+					click_processed = true
 			is_dragging = false
-	elif event is InputEventMouseMotion and is_dragging and not panel_open:
-		# 클릭 지점이 창 안에서 유지되도록 오프셋을 적용해 이동
+	elif event is InputEventMouseMotion and is_dragging:
 		var mouse_pos: Vector2 = DisplayServer.mouse_get_position()
 		get_window().position = Vector2i(mouse_pos) - drag_offset_from_origin
+
+
+## /** 클릭 시 돈 증가
+##  * @returns void
+##  */
+func _on_click() -> void:
+	# auto_money 1 증가 (클릭당 수입은 나중에 업그레이드 가능)
+	Globals.auto_money += 1
 
 ## /** shop_button을 누르면 shop_menu를 토글한다
 ##  * @returns void
@@ -437,45 +449,3 @@ func _apply_character_scale(scale_value: float) -> void:
 	if sprite2:
 		sprite2.scale = sprite2_initial_scale * scale_value
 		sprite2.position = sprite2_initial_pos
-<<<<<<< HEAD
-
-
-## /** UI 요소들을 스케일에 맞게 조정 (초기화용)
-##  * @param scale_factor float 스케일 배율
-##  * @returns void
-##  */
-func _scale_ui_elements(scale_factor: float) -> void:
-	# 재귀적으로 모든 자식 노드의 위치와 크기 조정
-	_scale_node_recursive(self, scale_factor)
-
-
-## /** 노드를 재귀적으로 스케일 조정
-##  * @param node Node 조정할 노드
-##  * @param scale_factor float 스케일 배율
-##  * @returns void
-##  */
-func _scale_node_recursive(node: Node, scale_factor: float) -> void:
-	# Control 노드 처리
-	if node is Control and node != self:
-		node.position = node.position * scale_factor
-		node.size = node.size * scale_factor
-		if node.has_method("get_custom_minimum_size"):
-			var min_size = node.custom_minimum_size
-			if min_size != Vector2.ZERO:
-				node.custom_minimum_size = min_size * scale_factor
-	
-	# Sprite2D 노드는 위치 변경하지 않음 (tscn에서 설정한 값 유지)
-	elif node is Sprite2D:
-		pass  # 위치와 크기 모두 tscn 설정 유지
-	
-	# NinePatchRect 노드 처리
-	elif node is NinePatchRect:
-		node.position = node.position * scale_factor
-		node.size = node.size * scale_factor
-	
-	# 모든 자식 노드에 대해 재귀 호출
-	for child in node.get_children():
-		_scale_node_recursive(child, scale_factor)
-=======
-		sprite2.position = base_sprite2_pos + Vector2(-x_spread, y_offset)
->>>>>>> 91ec65ae32510c1d66cdc2326e928f4b2bdfe8e5

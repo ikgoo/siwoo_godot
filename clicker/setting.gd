@@ -207,12 +207,18 @@ func _on_tutorial_popup_toggled(toggled_on: bool):
 
 ## 튜토리얼 다시 보기 버튼 클릭
 func _on_tutorial_restart_pressed():
+	# 설정 창 숨김
+	visible = false
+	
+	# 게임 일시정지 해제
+	get_tree().paused = false
+	
 	# 튜토리얼 완료 상태 초기화
 	Globals.is_tutorial_completed = false
 	Globals.show_tutorial_popup = true
 	Globals.save_settings()
 	
-	# 게임 재시작 (main.tscn으로)
+	# 게임 재시작
 	get_tree().change_scene_to_file("res://main.tscn")
 
 ## ESC 키로도 닫을 수 있도록 처리

@@ -10,8 +10,14 @@ const GALMURI_9 = preload("res://Galmuri9.ttf")
 @onready var setting_panel = $SettingPanel
 @onready var key1_input = $SettingPanel/VBoxContainer/Key1Container/Key1Input
 @onready var key2_input = $SettingPanel/VBoxContainer/Key2Container/Key2Input
+@onready var tutorial_reset_button = $SettingPanel/VBoxContainer/TutorialResetButton
 @onready var close_button = $SettingPanel/VBoxContainer/CloseButton
 @onready var vbox_container = $SettingPanel/VBoxContainer
+
+# 모드 아이콘 참조 (status의 자식 노드들)
+@onready var pickaxe_slot: Sprite2D = $status/pickaxe
+@onready var torch_slot: Sprite2D = $status/torch
+@onready var platform_slot: Sprite2D = $status/platform
 
 # ESC 메뉴 (씬 파일에서 로드)
 var esc_menu: Panel = null
@@ -61,10 +67,12 @@ func _ready():
 	if get_parent():
 		get_parent().add_to_group("ui")
 	
+	
 	# Globals의 Signal 구독
 	Globals.money_changed.connect(_on_money_changed)
 	Globals.tier_up.connect(_on_tier_up)
 	Globals.action_text_changed.connect(_on_action_text_changed)
+	Globals.build_mode_changed.connect(_on_build_mode_changed)
 	
 	# 초기 돈 표시
 	displayed_money = Globals.money
@@ -171,6 +179,7 @@ func _ready():
 	
 	# 설정 버튼 연결
 	setting_button.pressed.connect(_on_setting_button_pressed)
+	tutorial_reset_button.pressed.connect(_on_tutorial_reset_button_pressed)
 	close_button.pressed.connect(_on_close_button_pressed)
 	
 	# 기존 Key1, Key2 입력 필드를 배열에 추가
@@ -190,6 +199,9 @@ func _ready():
 	
 	# ESC 메뉴 씬 로드
 	load_esc_menu()
+	
+	# 초기 모드 아이콘 설정 (기본: pickaxe)
+	_on_build_mode_changed(Globals.get_current_mode())
 
 func _process(delta):
 	# 키 개수가 변경되었으면 UI 업데이트
@@ -320,6 +332,51 @@ func _on_setting_button_pressed():
 func _on_close_button_pressed():
 	setting_panel.visible = false
 	waiting_for_key = null
+
+## /** 튜토리얼 초기화 버튼 클릭
+##  * Globals.reset_tutorial()을 호출하여 튜토리얼을 초기화하고 씬을 재시작합니다.
+##  * @returns void
+##  */
+func _on_tutorial_reset_button_pressed():
+	print("🔵 [UI] 튜토리얼 초기화 버튼 클릭됨!")
+	
+	# 게임 일시정지 해제 (설정창에서 일시정지되어 있을 수 있음)
+	get_tree().paused = false
+	print("▶️ [UI] 게임 일시정지 해제")
+	
+	# 설정 패널 즉시 숨김 (두 가지 방법 모두 사용)
+	setting_panel.hide()
+	setting_panel.visible = false
+	waiting_for_key = null
+	print("🔵 [UI] 설정 패널 숨김 완료: visible =", setting_panel.visible, ", is_visible =", setting_panel.is_visible())
+	
+	# 튜토리얼 초기화 실행
+	Globals.reset_tutorial()
+	print("🔄 [UI] 튜토리얼 초기화 완료 - 씬을 재시작합니다...")
+	
+	# 반투명 오버레이 생성 (설정 패널이 완전히 가려지도록)
+	var overlay = ColorRect.new()
+	overlay.color = Color(0, 0, 0, 0.8)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.z_index = 2999
+	add_child(overlay)
+	
+	# 확인 메시지 표시
+	var feedback_label = Label.new()
+	feedback_label.text = "🔄 튜토리얼을 다시 시작합니다..."
+	feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	feedback_label.position = Vector2(get_viewport_rect().size.x / 2 - 200, get_viewport_rect().size.y / 2 - 25)
+	feedback_label.size = Vector2(400, 50)
+	feedback_label.add_theme_font_override("font", GALMURI_9)
+	feedback_label.add_theme_font_size_override("font_size", 24)
+	feedback_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
+	feedback_label.z_index = 3000
+	add_child(feedback_label)
+	
+	# 1.5초 후 씬 재시작
+	await get_tree().create_timer(1.5).timeout
+	print("🔄 [UI] 씬 재시작 실행!")
+	get_tree().reload_current_scene()
 
 # 키 입력 필드 클릭 (범용)
 func _on_key_input_gui_input(event: InputEvent, key_index: int):
@@ -543,3 +600,27 @@ func show_clear_screen(clear_time: float, points: int):
 	continue_btn.custom_minimum_size = Vector2(200, 50)
 	continue_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://auto_scene.tscn"))
 	container.add_child(continue_btn)
+
+
+# ========================================
+# 모드 아이콘 투명도 시스템
+# ========================================
+
+## 모드 변경 시그널 핸들러 - 아이콘 visible 업데이트
+## - 채굴 모드 (기본): pickaxe만 보임 (breakable_tile 부술 수 있음)
+## - 횃불 설치 모드: torch만 보임
+## - 플랫폼 설치 모드: platform만 보임
+func _on_build_mode_changed(mode: String):
+	# 모든 아이콘을 숨김
+	pickaxe_slot.visible = false
+	torch_slot.visible = false
+	platform_slot.visible = false
+	
+	# 현재 모드에 해당하는 아이콘만 표시
+	match mode:
+		"pickaxe":
+			pickaxe_slot.visible = true
+		"torch":
+			torch_slot.visible = true
+		"platform":
+			platform_slot.visible = true

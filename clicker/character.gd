@@ -36,6 +36,7 @@ var auto_mining_timers: Array[float] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 # 점프 관련 변수
 var is_jumping: bool = false
 var jump_hold_time: float = 0.0
+var was_space_pressed: bool = false  # 이전 프레임 Space 키 상태
 
 # 공중 이동 속도 (점프 전 속도 저장)
 var air_speed: float = 0.0
@@ -218,6 +219,7 @@ func handle_build_mode_input():
 	if is_key_2_pressed and not was_key_2_pressed:
 		Globals.is_torch_mode = not Globals.is_torch_mode
 		Globals.is_build_mode = false  # 플랫폼 모드는 해제
+		Globals.emit_mode_changed()
 	was_key_2_pressed = is_key_2_pressed
 	
 	# 3번 키: 플랫폼 설치 모드 토글
@@ -225,6 +227,7 @@ func handle_build_mode_input():
 	if is_key_3_pressed and not was_key_3_pressed:
 		Globals.is_build_mode = not Globals.is_build_mode
 		Globals.is_torch_mode = false  # 횃불 모드는 해제
+		Globals.emit_mode_changed()
 	was_key_3_pressed = is_key_3_pressed
 	
 	# B키: 설치 실행
@@ -266,8 +269,9 @@ func _physics_process(delta):
 	# 돌 근처 확인
 	check_nearby_rocks()
 	
-	# 좌클릭 홀드 채굴 처리 (모드 상관없이 항상 가능)
-	if is_mining_held:
+	# 좌클릭 홀드 채굴 처리 (설치 모드가 아닐 때만 가능)
+	var is_in_build_mode = Globals.is_torch_mode or Globals.is_build_mode
+	if is_mining_held and not is_in_build_mode:
 		mining_hold_timer += delta
 		# 티어별 채굴 속도 배율 (누적): 1→2: 1.8배, 2→3: 1.5배, 3→4: 1.3배, 4→5: 1.2배
 		var tier_multipliers = [1.0, 1.8, 2.7, 3.51, 4.212]  # 티어 1~5
@@ -283,7 +287,8 @@ func _physics_process(delta):
 	
 	# 채굴 키 입력 처리 - 튜토리얼 중에는 F키만, 아니면 모든 키
 	# 상호작용 UI가 표시 중이면 채굴 무시 (알바 구매, 업그레이드 등)
-	var can_mine = (current_nearby_rock or current_nearby_tilemap) and not Globals.is_action_text_visible
+	# 단, 튜토리얼 중에는 진행도 텍스트가 표시되어도 채굴 가능
+	var can_mine = (current_nearby_rock or current_nearby_tilemap) and (Globals.is_tutorial_active or not Globals.is_action_text_visible)
 	if can_mine:
 		if Globals.is_tutorial_active:
 			# 튜토리얼 중: F키(첫 번째 키)만 사용
@@ -358,13 +363,13 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity += get_gravity() * GRAVITY_SCALE * delta
 	
-	# Space 키로 점프 - 바닥에 있을 때만 가능
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	# Space 키로 점프 - 바닥에 있을 때만 가능 (Enter 제외)
+	if Input.is_physical_key_pressed(KEY_SPACE) and not was_space_pressed and is_on_floor():
 		is_jumping = true
 		velocity.y = JUMP_VELOCITY  # 최대 점프 속도로 시작
 	
 	# Space 키를 떼면 상승 중일 때 속도 감소 (마리오 스타일)
-	if is_jumping and Input.is_action_just_released("ui_accept"):
+	if is_jumping and was_space_pressed and not Input.is_physical_key_pressed(KEY_SPACE):
 		# 위로 올라가는 중이면 속도를 최소 점프 속도로 제한
 		if velocity.y < MIN_JUMP_VELOCITY:
 			velocity.y = MIN_JUMP_VELOCITY
@@ -423,6 +428,9 @@ func _physics_process(delta):
 		# 공중에서는 키를 떼도 속도 유지 (감속 없음)
 
 	move_and_slide()
+	
+	# 이전 프레임의 Space 키 상태 저장 (점프 로직 이후에 업데이트)
+	was_space_pressed = Input.is_physical_key_pressed(KEY_SPACE)
 	
 	# 애니메이션 및 상태 갱신
 	update_state_and_animation(was_on_floor)

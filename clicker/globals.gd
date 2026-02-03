@@ -286,12 +286,38 @@ var player = null
 var is_build_mode: bool = false  # 플랫폼 설치 모드
 var is_torch_mode: bool = false  # 횃불 설치 모드
 
+# 모드 변경 시그널
+signal build_mode_changed(mode: String)  # "pickaxe", "torch", "platform"
+
+## 현재 모드를 반환 (pickaxe/torch/platform)
+func get_current_mode() -> String:
+	if is_torch_mode:
+		return "torch"
+	elif is_build_mode:
+		return "platform"
+	else:
+		return "pickaxe"
+
+## 모드 변경 시 호출 (시그널 발생)
+func emit_mode_changed():
+	var mode = get_current_mode()
+	build_mode_changed.emit(mode)
+	print("🔧 모드 변경: %s" % mode)
+
 # ========================================
 # 튜토리얼 시스템
 # ========================================
 var is_tutorial_completed: bool = false  # 튜토리얼 완료 여부
 var show_tutorial_popup: bool = true     # 팝업 표시 여부 (설정에서 제어)
 var is_tutorial_active: bool = false     # 튜토리얼 진행 중 여부
+
+## 튜토리얼 초기화 (다시 보기)
+func reset_tutorial():
+	is_tutorial_completed = false
+	show_tutorial_popup = true
+	is_tutorial_active = false
+	save_settings()
+	print("🔄 튜토리얼 초기화 완료")
 
 # ========================================
 # 채굴 키 설정

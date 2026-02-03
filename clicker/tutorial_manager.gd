@@ -14,6 +14,7 @@ enum TutorialStep {
 	INTRO,           # 요정 소개
 	SHOW_ROCK,       # 돌 위치 카메라
 	MINE_ROCK,       # F키로 20개 채굴
+	MINE_ROCK_COMPLETE, # 채굴 완료 대화 중 (→ SHOW_UPGRADE로 전환)
 	SHOW_UPGRADE,    # 업그레이드 NPC 카메라
 	DO_UPGRADE,      # 업그레이드 1번
 	SHOW_CAVE,       # Layer4 동굴 카메라
@@ -125,93 +126,43 @@ func create_dialogue_box():
 ##  * @returns void
 ##  */
 func show_popup():
-	# 팝업 패널 생성
-	popup_panel = Panel.new()
-	popup_panel.set_anchors_preset(Control.PRESET_CENTER)
-	popup_panel.position = Vector2(-200, -100)
-	popup_panel.size = Vector2(400, 200)
-	popup_panel.z_index = 1000
+	# main.tscn에 미리 배치된 TutorialPopup 참조
+	popup_panel = get_tree().current_scene.get_node("CanvasLayer/TutorialPopup")
+	if not popup_panel:
+		print("❌ [튜토리얼] TutorialPopup 노드를 찾을 수 없음!")
+		return
 	
-	# 일시정지 중에도 작동하도록 설정 (중요!)
-	popup_panel.process_mode = Node.PROCESS_MODE_ALWAYS
+	# 텍스트 설정 (tutorial_data에서 가져옴)
+	var title_label = popup_panel.get_node("VBoxContainer/TitleLabel")
+	var desc_label = popup_panel.get_node("VBoxContainer/DescLabel")
+	var yes_button = popup_panel.get_node("VBoxContainer/ButtonContainer/YesButton")
+	var no_button = popup_panel.get_node("VBoxContainer/ButtonContainer/NoButton")
 	
-	# 배경 스타일
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.1, 0.1, 0.15, 0.95)
-	style.corner_radius_top_left = 10
-	style.corner_radius_top_right = 10
-	style.corner_radius_bottom_left = 10
-	style.corner_radius_bottom_right = 10
-	popup_panel.add_theme_stylebox_override("panel", style)
-	
-	# VBox 컨테이너
-	var vbox = VBoxContainer.new()
-	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
-	vbox.add_theme_constant_override("separation", 20)
-	popup_panel.add_child(vbox)
-	
-	# 제목
-	var title_label = Label.new()
 	title_label.text = tutorial_data.popup_title
-	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title_label.add_theme_font_size_override("font_size", 28)
-	title_label.add_theme_color_override("font_color", Color(1, 0.9, 0.3))
-	vbox.add_child(title_label)
-	
-	# 설명
-	var desc_label = Label.new()
 	desc_label.text = tutorial_data.popup_question
-	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	desc_label.custom_minimum_size = Vector2(380, 0)
-	vbox.add_child(desc_label)
-	
-	# 버튼 컨테이너
-	var hbox = HBoxContainer.new()
-	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	hbox.add_theme_constant_override("separation", 20)
-	vbox.add_child(hbox)
-	
-	# 예 버튼
-	var yes_button = Button.new()
 	yes_button.text = tutorial_data.popup_yes
-	yes_button.custom_minimum_size = Vector2(120, 40)
-	yes_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 클릭 가능
-	yes_button.pressed.connect(_on_popup_yes)
-	hbox.add_child(yes_button)
-	print("✅ 예 버튼 생성 및 시그널 연결 완료")
-	
-	# 아니오 버튼
-	var no_button = Button.new()
 	no_button.text = tutorial_data.popup_no
-	no_button.custom_minimum_size = Vector2(120, 40)
-	no_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 클릭 가능
-	no_button.pressed.connect(_on_popup_no)
-	hbox.add_child(no_button)
-	print("✅ 아니오 버튼 생성 및 시그널 연결 완료")
 	
-	# 씬에 추가
-	get_tree().current_scene.get_node("CanvasLayer").add_child(popup_panel)
+	# 팝업의 시그널 구독 (tutorial_popup.gd에서 발생)
+	popup_panel.tutorial_accepted.connect(_on_popup_yes)
+	popup_panel.tutorial_declined.connect(_on_popup_no)
+	print("✅ 팝업 시그널 구독 완료")
 	
-	# 게임 일시정지
-	get_tree().paused = true
+	# 팝업 표시
+	popup_panel.visible = true
 
-## /** 팝업 "예" 버튼 클릭
+## /** 팝업 "예" 버튼 클릭 (시그널 핸들러)
 ##  * @returns void
 ##  */
 func _on_popup_yes():
 	print("🟢 [튜토리얼] 예 버튼 클릭됨!")
-	popup_panel.queue_free()
-	get_tree().paused = false
 	start_tutorial()
 
-## /** 팝업 "아니오" 버튼 클릭
+## /** 팝업 "아니오" 버튼 클릭 (시그널 핸들러)
 ##  * @returns void
 ##  */
 func _on_popup_no():
 	print("🔴 [튜토리얼] 아니오 버튼 클릭됨!")
-	popup_panel.queue_free()
-	get_tree().paused = false
 	# 튜토리얼 완료 처리 (다시 안 뜨게)
 	Globals.is_tutorial_completed = true
 	Globals.save_settings()
@@ -252,6 +203,9 @@ func _on_dialogue_complete():
 		TutorialStep.MINE_ROCK:
 			print("  → MINE_ROCK - 채굴 중 (대기)")
 			pass  # 채굴 중에는 대기
+		TutorialStep.MINE_ROCK_COMPLETE:
+			print("  → MINE_ROCK_COMPLETE 완료, SHOW_UPGRADE로")
+			advance_to_show_upgrade()
 		TutorialStep.SHOW_UPGRADE:
 			print("  → SHOW_UPGRADE 완료, DO_UPGRADE로")
 			advance_to_do_upgrade()
@@ -336,13 +290,13 @@ func _on_money_changed_during_mining(new_amount: int, delta: int):
 			Globals.money_changed.disconnect(_on_money_changed_during_mining)
 			Globals.hide_action_text()
 			
-			# 단계를 미리 변경 (MINE_ROCK_COMPLETE 임시 상태)
-			current_step = TutorialStep.SHOW_UPGRADE  # 미리 변경해서 _on_dialogue_complete가 작동하도록
+			# 단계를 MINE_ROCK_COMPLETE로 변경 (대화 끝나면 SHOW_UPGRADE로 전환됨)
+			current_step = TutorialStep.MINE_ROCK_COMPLETE
 			
 			# 완료 대화
 			if dialogue_box:
 				dialogue_box.start_dialogue(tutorial_data.mine_rock_complete, tutorial_data.typing_speed)
-				# 대화 끝나면 _on_dialogue_complete가 자동으로 호출됨
+				# 대화 끝나면 _on_dialogue_complete가 자동으로 호출됨 → advance_to_show_upgrade()
 			else:
 				print("❌ [튜토리얼] 대화창 없음 - 바로 다음 단계로")
 				advance_to_show_upgrade()
@@ -358,7 +312,8 @@ func advance_to_show_upgrade():
 	var all_nodes = get_tree().get_nodes_in_group("upgrade")
 	print("  🔍 upgrade 그룹 노드 수: ", all_nodes.size())
 	for node in all_nodes:
-		if node.has("type"):
+		# "type" in node로 프로퍼티 존재 확인 (has()는 Node에 없음)
+		if "type" in node:
 			print("    - ", node.name, " type: ", node.type)
 			if node.type == 0:  # money_up = 0
 				money_up_npc = node
@@ -379,6 +334,9 @@ func advance_to_show_upgrade():
 			dialogue_box.start_dialogue(tutorial_data.show_upgrade_dialogues, tutorial_data.typing_speed)
 	else:
 		print("  ❌ money_up NPC를 찾을 수 없음!")
+		# NPC를 못 찾아도 다음 단계로 진행 (튜토리얼 막히지 않도록)
+		if dialogue_box:
+			dialogue_box.start_dialogue(tutorial_data.show_upgrade_dialogues, tutorial_data.typing_speed)
 
 ## /** 업그레이드 실행 단계
 ##  * @returns void
@@ -413,6 +371,7 @@ func advance_to_do_upgrade():
 ##  */
 func advance_to_show_cave():
 	current_step = TutorialStep.SHOW_CAVE
+	print("🗺️ [튜토리얼] 동굴 소개 시작!")
 	
 	# 동굴 입구 위치 (고정 좌표)
 	cave_entrance = Vector2(-112, 48)
@@ -444,8 +403,17 @@ func advance_to_break_wall():
 	if dialogue_box:
 		dialogue_box.start_dialogue(tutorial_data.break_wall_dialogues, tutorial_data.typing_speed)
 	
-	# 벽이 부서질 때까지 대기 (간단히 일정 시간 후 다음 단계)
-	await get_tree().create_timer(10.0).timeout
+	# 플레이어가 동굴 안(x <= -128)으로 들어갈 때까지 대기
+	var cave_enter_x = -128.0
+	print("🚪 [튜토리얼] 동굴 안(x≤-128)으로 들어가세요!")
+	
+	while player.position.x > cave_enter_x:
+		await get_tree().create_timer(0.5).timeout
+		Globals.show_action_text("동굴 안으로 들어가세요!")
+		print("🚪 [튜토리얼] 현재 위치: x=%.1f (동굴까지: %.1f)" % [player.position.x, player.position.x - cave_enter_x])
+	
+	print("✅ [튜토리얼] 동굴 안 진입 완료! (x=%.1f)" % player.position.x)
+	Globals.hide_action_text()
 	
 	# 다음 단계
 	advance_to_place_torch()
@@ -461,12 +429,15 @@ func advance_to_place_torch():
 	if dialogue_box:
 		dialogue_box.start_dialogue(tutorial_data.place_torch_dialogues, tutorial_data.typing_speed)
 	
-	# 횃불이 설치될 때까지 대기 (torches 그룹 모니터링)
+	# 횃불이 설치될 때까지 대기 (어디에 설치해도 상관없음)
 	var initial_torch_count = get_tree().get_nodes_in_group("torches").size()
+	print("🔦 [튜토리얼] 횃불 설치 - 어디든 설치하세요!")
+	
 	while get_tree().get_nodes_in_group("torches").size() <= initial_torch_count:
 		await get_tree().create_timer(0.5).timeout
 	
 	torch_placed = true
+	print("✅ [튜토리얼] 횃불 설치 완료!")
 	
 	# 완료 대화
 	if dialogue_box:
@@ -501,12 +472,19 @@ func advance_to_place_platform():
 	if dialogue_box:
 		dialogue_box.start_dialogue(tutorial_data.place_platform_dialogues, tutorial_data.typing_speed)
 	
-	# 플레이어가 일정 높이 이상 올라갈 때까지 대기
-	var start_y = player.global_position.y
-	while (start_y - player.global_position.y) < (tutorial_data.platform_height_target * 16):
+	# 동굴 밖으로 나가면 완료 (x <= -165이면 동굴 밖)
+	var cave_exit_x = -165.0  # 이 x좌표 이하면 동굴 밖
+	var start_x = player.position.x
+	print("🪜 [튜토리얼] 플랫폼 설치 시작 - 동굴 밖(x≤-165)으로 나가세요!")
+	print("🪜 [튜토리얼] 현재 위치: x=%.1f" % start_x)
+	
+	# 플레이어가 동굴 밖으로 나갈 때까지 대기
+	while player.position.x > cave_exit_x:
 		await get_tree().create_timer(0.5).timeout
 		Globals.show_action_text(tutorial_data.platform_progress)
+		print("🪜 [튜토리얼] 현재 위치: x=%.1f (동굴 밖까지: %.1f)" % [player.position.x, player.position.x - cave_exit_x])
 	
+	print("✅ [튜토리얼] 동굴 밖으로 나왔습니다! (x=%.1f ≤ -165)" % player.position.x)
 	Globals.hide_action_text()
 	
 	# 튜토리얼 완료
@@ -555,4 +533,3 @@ func spawn_fairy():
 		fairy_instance.global_position = player.global_position + Vector2(-30, 0)
 		
 		print("✅ 요정 스폰 완료!")
-

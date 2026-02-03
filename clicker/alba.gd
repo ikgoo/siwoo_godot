@@ -1,5 +1,8 @@
 extends Node2D
 
+# 알바 데이터 리소스 (선택적 - 리소스 기반 설정 시 사용)
+@export var alba_data: AlbaData
+
 # 알바 스텟 (export로 설정)
 @export var price: int = 600  # 구매 가격
 @export var money_amount: int = 25  # 초당 돈 증가량 (기본)
@@ -113,7 +116,7 @@ func _ready():
 	# Globals Signal 구독	
 	Globals.money_changed.connect(_on_money_changed)
 
-<<<<<<< HEAD
+
 func load_from_resource():
 	if not alba_data:
 		return
@@ -132,8 +135,7 @@ func load_from_resource():
 	
 	print("✅ 알바 리소스 로드 완료: ", alba_data.alba_name)
 
-=======
->>>>>>> 91ec65ae32510c1d66cdc2326e928f4b2bdfe8e5
+
 func _process(_delta):
 	# 펫 추적 업데이트
 	update_pet_follow(_delta)

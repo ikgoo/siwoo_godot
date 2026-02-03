@@ -140,5 +140,3 @@ var camera_wait_duration: float = 1.0
 
 # 대사 타이핑 속도
 var typing_speed: float = 0.05  # 글자당 초
-
-

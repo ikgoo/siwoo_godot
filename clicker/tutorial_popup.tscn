@@ -1,0 +1,106 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpb6lslfpgd6i"]
+
+[ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="1_6aqww"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="1_font"]
+[ext_resource type="Script" path="res://tutorial_popup.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.1, 0.15, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_l7lko"]
+font = ExtResource("1_font")
+font_size = 32
+font_color = Color(1, 1, 0, 1)
+outline_size = 4
+outline_color = Color(0.78431374, 0.8, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cnou2"]
+font = ExtResource("1_font")
+font_color = Color(0, 0, 0, 1)
+
+[node name="TutorialPopup" type="Panel"]
+process_mode = 1
+self_modulate = Color(1, 1, 1, 1)
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+script = ExtResource("1_script")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 0
+offset_top = -2.0
+offset_right = 200.0
+offset_bottom = 99.0
+scale = Vector2(2, 2)
+texture = ExtResource("1_6aqww")
+region_rect = Rect2(0, 16, 160, 49)
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 17
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+process_mode = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_fonts/font = ExtResource("1_font")
+theme_override_font_sizes/font_size = 28
+text = "튜토리얼"
+label_settings = SubResource("LabelSettings_l7lko")
+horizontal_alignment = 1
+
+[node name="DescLabel" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "튜토리얼을 진행하시겠습니까?"
+label_settings = SubResource("LabelSettings_cnou2")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+process_mode = 1
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="YesButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+process_mode = 1
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "예"
+
+[node name="NoButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+process_mode = 1
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_font")
+text = "아니오"

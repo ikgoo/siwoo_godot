@@ -71,11 +71,27 @@ func _process(delta):
 		if typing_timer >= typing_speed:
 			typing_timer = 0.0
 			type_next_character()
+
+## /** 입력 처리 (unhandled로 처리해서 점프 등과 충돌 방지)
+##  * @param event InputEvent 입력 이벤트
+##  * @returns void
+##  */
+func _unhandled_input(event: InputEvent):
+	if not visible:
+		return
 	
-	# 입력 대기 중이면 Space/Enter 감지
-	if is_waiting_for_input:
-		if Input.is_action_just_pressed("ui_accept") or Input.is_key_pressed(KEY_SPACE):
+	# 키보드: Enter만 (Space는 점프 키라서 제외)
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_ENTER or event.keycode == KEY_KP_ENTER:
 			next_dialogue()
+			get_viewport().set_input_as_handled()
+			return
+	
+	# 마우스 클릭 (패널 영역 내)
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if panel and panel.get_global_rect().has_point(event.global_position):
+			next_dialogue()
+			get_viewport().set_input_as_handled()
 
 ## /** 대화 시작
 ##  * @param dialogue_list Array[String] 표시할 대화 목록

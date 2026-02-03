@@ -1,8 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bojiqqd4sya5p"]
+[gd_scene load_steps=18 format=3 uid="uid://bojiqqd4sya5p"]
 
 [ext_resource type="Script" uid="uid://dg12enq825mkq" path="res://ui.gd" id="1_fyqef"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_m6e0p"]
 [ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_27fn8"]
+[ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="4_y4yjw"]
+[ext_resource type="Texture2D" uid="uid://ct8mkyvu4ei8l" path="res://CONCEPT/asset/mine_clicker-pickaxe.png" id="5_waa4j"]
+[ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="6_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://bbfjfpc0l7ldj" path="res://CONCEPT/asset/16/mine_clicker-16_platform.png" id="7_irxef"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m6e0p"]
 font = ExtResource("2_m6e0p")
@@ -23,6 +27,21 @@ font = ExtResource("2_m6e0p")
 
 [sub_resource type="LabelSettings" id="LabelSettings_n5ude"]
 font = ExtResource("2_m6e0p")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibotj"]
+atlas = ExtResource("4_y4yjw")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5ude"]
+atlas = ExtResource("5_waa4j")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4yjw"]
+atlas = ExtResource("6_ok7cu")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_waa4j"]
+atlas = ExtResource("7_irxef")
+region = Rect2(16, 16, 16, 16)
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -162,8 +181,33 @@ editable = false
 [node name="HSeparator2" type="HSeparator" parent="SettingPanel/VBoxContainer"]
 layout_mode = 2
 
+[node name="TutorialResetButton" type="Button" parent="SettingPanel/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_m6e0p")
+text = "튜토리얼 초기화"
+
+[node name="HSeparator3" type="HSeparator" parent="SettingPanel/VBoxContainer"]
+layout_mode = 2
+
 [node name="CloseButton" type="Button" parent="SettingPanel/VBoxContainer"]
 texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_m6e0p")
 text = "닫기"
+
+[node name="status" type="Sprite2D" parent="."]
+position = Vector2(73, 658)
+texture = SubResource("AtlasTexture_ibotj")
+
+[node name="pickaxe" type="Sprite2D" parent="status"]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_n5ude")
+
+[node name="torch" type="Sprite2D" parent="status"]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_y4yjw")
+
+[node name="platform" type="Sprite2D" parent="status"]
+scale = Vector2(2.5, 2.5)
+texture = SubResource("AtlasTexture_waa4j")
