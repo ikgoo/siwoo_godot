@@ -84,7 +84,7 @@ offset_right = 846.0
 offset_bottom = -204.0
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(593, 571)
+position = Vector2(296, 285)
 scale = Vector2(3, 3)
 region_rect = Rect2(32, 0, 32, 32)
 
@@ -115,7 +115,7 @@ text = " 0"
 horizontal_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(712, 544)
+position = Vector2(356, 272)
 scale = Vector2(5, 5)
 flip_h = true
 region_rect = Rect2(39, 32, 18, 32)

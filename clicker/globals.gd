@@ -488,12 +488,17 @@ func _apply_language() -> void:
 # ========================================
 # 액션 텍스트 시스템
 # ========================================
+# 액션 텍스트가 표시 중인지 (상호작용 가능 상태)
+var is_action_text_visible: bool = false
+
 # 액션 텍스트 표시
 func show_action_text(text: String):
+	is_action_text_visible = true
 	action_text_changed.emit(text, true)
 
 # 액션 텍스트 숨김
 func hide_action_text():
+	is_action_text_visible = false
 	action_text_changed.emit("", false)
 
 # ========================================
@@ -591,20 +596,30 @@ func is_skin_owned(skin_id: String) -> bool:
 	return owned_skins.has(skin_id)
 
 ## /** 현재 Sprite1 스킨을 가져온다
-##  * @returns SkinItem 현재 적용중인 Sprite1 스킨
+##  * @returns SkinItem 현재 적용중인 Sprite1 스킨, 없으면 null
 ##  */
 func get_current_sprite1_skin() -> SkinItem:
 	if available_skins.has(current_sprite1_skin):
 		return available_skins[current_sprite1_skin]
-	return available_skins["default_sprite1"]
+	# fallback: normal1 또는 첫 번째 스킨, 없으면 null
+	if available_skins.has("normal1"):
+		return available_skins["normal1"]
+	if available_skins.size() > 0:
+		return available_skins.values()[0]
+	return null
 
 ## /** 현재 Sprite2 스킨을 가져온다
-##  * @returns SkinItem 현재 적용중인 Sprite2 스킨
+##  * @returns SkinItem 현재 적용중인 Sprite2 스킨, 없으면 null
 ##  */
 func get_current_sprite2_skin() -> SkinItem:
 	if available_skins.has(current_sprite2_skin):
 		return available_skins[current_sprite2_skin]
-	return available_skins["default_sprite2"]
+	# fallback: normal2 또는 첫 번째 스킨, 없으면 null
+	if available_skins.has("normal2"):
+		return available_skins["normal2"]
+	if available_skins.size() > 0:
+		return available_skins.values()[0]
+	return null
 
 ## /** 스킨 데이터를 저장한다
 ##  * @returns void

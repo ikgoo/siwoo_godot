@@ -112,10 +112,9 @@ func _ready():
 	glow_particles.visible = false
 	add_child(glow_particles)
 	
-	# Globals Signal 구독
+	# Globals Signal 구독	
 	Globals.money_changed.connect(_on_money_changed)
 
-/** 리소스에서 알바 데이터를 로드합니다 */
 func load_from_resource():
 	if not alba_data:
 		return

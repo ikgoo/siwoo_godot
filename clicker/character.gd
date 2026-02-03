@@ -280,7 +280,9 @@ func _physics_process(delta):
 	var was_on_floor = is_on_floor()
 	
 	# 채굴 키 입력 처리 - 튜토리얼 중에는 F키만, 아니면 모든 키
-	if current_nearby_rock or current_nearby_tilemap:
+	# 상호작용 UI가 표시 중이면 채굴 무시 (알바 구매, 업그레이드 등)
+	var can_mine = (current_nearby_rock or current_nearby_tilemap) and not Globals.is_action_text_visible
+	if can_mine:
 		if Globals.is_tutorial_active:
 			# 튜토리얼 중: F키(첫 번째 키)만 사용
 			var key = Globals.all_mining_keys[0]

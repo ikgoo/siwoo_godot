@@ -39,6 +39,12 @@ var temp_char_scale: float = 1.0
 @onready var sprite1: Sprite2D = $Sprite2D
 @onready var sprite2: Sprite2D = $Sprite2D2
 
+# 스프라이트 초기 위치/크기 저장 (tscn에서 설정한 값)
+var sprite1_initial_pos: Vector2
+var sprite2_initial_pos: Vector2
+var sprite1_initial_scale: Vector2
+var sprite2_initial_scale: Vector2
+
 # 돈 표시용 애니메이션 변수
 var displayed_auto_money: float = 0.0
 var target_auto_money: int = 0
@@ -97,6 +103,14 @@ func _ready():
 	get_viewport().size = final_size
 	get_window().size = final_size
 	size = final_size
+	
+	# 스프라이트 초기 위치/크기 저장 (tscn에서 설정한 값)
+	if sprite1:
+		sprite1_initial_pos = sprite1.position
+		sprite1_initial_scale = sprite1.scale
+	if sprite2:
+		sprite2_initial_pos = sprite2.position
+		sprite2_initial_scale = sprite2.scale
 	
 	# UI 요소들의 위치와 크기를 0.5배로 조정 (원래 1280x720 기준)
 	_scale_ui_elements(0.5)
@@ -407,32 +421,20 @@ func _apply_ui_scale(scale_value: float) -> void:
 
 
 ## /** 캐릭터 크기 배율 적용
-##  * - 스프라이트들의 크기와 위치를 조절
+##  * - 스프라이트들의 크기만 조절 (위치는 tscn에서 설정한 값 유지)
 ##  * @param scale_value float 배율 값 (0.5 ~ 3.0)
 ##  * @returns void
 ##  */
 func _apply_character_scale(scale_value: float) -> void:
-	# 기본 스프라이트 크기
+	# 기본 스프라이트 크기 (tscn 파일과 동일)
 	var base_sprite1_scale = Vector2(5, 5)
 	var base_sprite2_scale = Vector2(3, 3)
 	
-	# 기본 위치 (scale 1.0 기준)
-	var base_sprite1_pos = Vector2(750, 520)  # 오른쪽 캐릭터
-	var base_sprite2_pos = Vector2(530, 550)  # 왼쪽 캐릭터
-	
-	# 크기에 따른 위치 조정
-	# - 크기가 커지면 Y를 위로 올림 (UI와 겹침 방지)
-	# - 크기가 커지면 X를 더 벌림 (서로 겹침 방지)
-	var y_offset = (scale_value - 1.0) * -50  # 크기 커지면 위로
-	var x_spread = (scale_value - 1.0) * 40   # 크기 커지면 좌우로 벌림
-	
-	# 새 크기 및 위치 적용
+	# 크기만 적용 (위치는 tscn에서 설정한 값 유지)
 	if sprite1:
 		sprite1.scale = base_sprite1_scale * scale_value
-		sprite1.position = base_sprite1_pos + Vector2(x_spread, y_offset)
 	if sprite2:
 		sprite2.scale = base_sprite2_scale * scale_value
-		sprite2.position = base_sprite2_pos + Vector2(-x_spread, y_offset)
 
 
 ## /** UI 요소들을 스케일에 맞게 조정 (초기화용)
@@ -459,10 +461,9 @@ func _scale_node_recursive(node: Node, scale_factor: float) -> void:
 			if min_size != Vector2.ZERO:
 				node.custom_minimum_size = min_size * scale_factor
 	
-	# Sprite2D 노드 처리
+	# Sprite2D 노드는 위치 변경하지 않음 (tscn에서 설정한 값 유지)
 	elif node is Sprite2D:
-		node.position = node.position * scale_factor
-		# scale은 이미 설정되어 있으므로 건드리지 않음
+		pass  # 위치와 크기 모두 tscn 설정 유지
 	
 	# NinePatchRect 노드 처리
 	elif node is NinePatchRect:

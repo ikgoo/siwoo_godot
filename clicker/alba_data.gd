@@ -38,28 +38,24 @@ class_name AlbaData
 ## 헬퍼 함수들
 ## ========================================
 
-/** 특정 레벨의 업그레이드 비용을 반환합니다
- * @param level int 업그레이드 레벨 (0부터 시작)
- * @returns int 업그레이드 비용 (-1이면 MAX 레벨)
- */
+## 특정 레벨의 업그레이드 비용을 반환합니다
+## @param level: 업그레이드 레벨 (0부터 시작)
+## @returns: 업그레이드 비용 (-1이면 MAX 레벨)
 func get_upgrade_cost(level: int) -> int:
 	if level < upgrade_costs.size():
 		return upgrade_costs[level]
 	return -1  # MAX 레벨
 
-/** 특정 레벨의 업그레이드 후 수입을 반환합니다
- * @param level int 업그레이드 레벨 (0부터 시작)
- * @returns int 업그레이드 후 초당 수입
- */
+## 특정 레벨의 업그레이드 후 수입을 반환합니다
+## @param level: 업그레이드 레벨 (0부터 시작)
+## @returns: 업그레이드 후 초당 수입
 func get_upgrade_income(level: int) -> int:
 	if level < upgrade_incomes.size():
 		return upgrade_incomes[level]
 	return initial_income  # MAX 레벨이면 현재 수입 유지
 
-/** MAX 레벨인지 확인합니다
- * @param current_level int 현재 레벨
- * @returns bool MAX 레벨이면 true
- */
+## MAX 레벨인지 확인합니다
+## @param current_level: 현재 레벨
+## @returns: MAX 레벨이면 true
 func is_max_level(current_level: int) -> bool:
 	return current_level >= upgrade_costs.size()
-
