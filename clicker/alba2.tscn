@@ -1,22 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://ydeq2huss6rh"]
+[gd_scene load_steps=5 format=3 uid="uid://c7alba2scene1"]
 
 [ext_resource type="Script" uid="uid://dl7qfer6q5lfk" path="res://alba.gd" id="1_58bj0"]
-[ext_resource type="Texture2D" uid="uid://br0mmtxe75ap4" path="res://CONCEPT/asset/mine_clicker32-NPC.png" id="2_vd2a7"]
+[ext_resource type="Texture2D" uid="uid://1sirya0t1dc0" path="res://icon.svg" id="2_ywphk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vd2a7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_58bj0"]
 radius = 58.30952
 
-[node name="alba" type="Node2D"]
+[node name="alba2" type="Node2D"]
 script = ExtResource("1_58bj0")
+price = 4000
+money_amount = 400
 pet_scale = Vector2(0.1, 0.1)
-pet_offset = Vector2(20, 0)
+pet_scale_factor = null
+pet_texture = ExtResource("2_ywphk")
+pet_offset = null
+pet_follow_speed = null
+upgrade_costs = Array[int]([5000, 6000])
+upgrade_incomes = Array[int]([600, 800])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_vd2a7")
-region_enabled = true
-region_rect = Rect2(144, 4, 48, 44)
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -32,3 +36,35 @@ shape = SubResource("CircleShape2D_58bj0")
 
 [connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
 [connection signal="area_exited" from="Area2D2" to="." method="_on_area_2d_2_area_exited"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

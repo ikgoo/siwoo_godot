@@ -13,11 +13,6 @@ const GALMURI_9 = preload("res://Galmuri9.ttf")
 @onready var close_button = $SettingPanel/VBoxContainer/CloseButton
 @onready var vbox_container = $SettingPanel/VBoxContainer
 
-# 설치 모드 UI 요소들
-@onready var mining_ui = $mining  # 채굴 (항상 활성화)
-@onready var torch_ui = $mining2  # 횃불 (2번 키)
-@onready var platform_ui = $mining3  # 플랫폼 (3번 키)
-
 # ESC 메뉴 (씬 파일에서 로드)
 var esc_menu: Panel = null
 const ESC_MENU_SCENE = preload("res://esc_menu.tscn")
@@ -70,16 +65,11 @@ func _ready():
 	Globals.money_changed.connect(_on_money_changed)
 	Globals.tier_up.connect(_on_tier_up)
 	Globals.action_text_changed.connect(_on_action_text_changed)
-	Globals.language_changed.connect(_on_language_changed)
 	
 	# 초기 돈 표시
 	displayed_money = Globals.money
 	target_money = Globals.money
 	label.text = '💎' + str(Globals.money)
-	
-	# 설정 버튼 텍스트 번역
-	if setting_button:
-		setting_button.text = Globals.get_text("AUTO SETTING")
 	
 	# 티어 업 알림 레이블 생성 (화면 중앙 살짝 아래, 액션바 스타일)
 	tier_notification = Label.new()
@@ -96,13 +86,8 @@ func _ready():
 	
 	# 초당 수입 표시 레이블 생성 (돈 표시 아래)
 	income_label = Label.new()
-	income_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	income_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	income_label.offset_left = -230.0
-	income_label.offset_top = 50.0
-	income_label.offset_right = -10.0
-	income_label.offset_bottom = 70.0
-	income_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	income_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	income_label.position = label.position + Vector2(0, 30)
 	income_label.add_theme_font_override("font", GALMURI_9)
 	income_label.add_theme_font_size_override("font_size", 16)
 	income_label.modulate = Color(0.7, 1.0, 0.7)  # 연한 초록색
@@ -110,13 +95,8 @@ func _ready():
 	
 	# 초당 자동 수입 표시 레이블 (초당 수입 표시 아래)
 	passive_income_label = Label.new()
-	passive_income_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	passive_income_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	passive_income_label.offset_left = -230.0
-	passive_income_label.offset_top = 70.0
-	passive_income_label.offset_right = -10.0
-	passive_income_label.offset_bottom = 90.0
-	passive_income_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	passive_income_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	passive_income_label.position = label.position + Vector2(0, 50)
 	passive_income_label.add_theme_font_override("font", GALMURI_9)
 	passive_income_label.add_theme_font_size_override("font_size", 14)
 	passive_income_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
@@ -158,7 +138,7 @@ func _ready():
 	goal_label.add_theme_font_override("font", GALMURI_9)
 	goal_label.add_theme_font_size_override("font_size", 14)
 	goal_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
-	goal_label.text = "%s 💎0 / 💎%s" % [Globals.get_text("UI GOAL"), format_money(Globals.goal_money)]
+	goal_label.text = "목표: 💎0 / 💎%s" % format_money(Globals.goal_money)
 	add_child(goal_label)
 	
 	# 프로그레스 바
@@ -224,7 +204,7 @@ func _process(delta):
 	# 클리어 진행도 업데이트
 	if goal_progress_bar and not Globals.is_game_cleared:
 		goal_progress_bar.value = min(Globals.money, Globals.goal_money)
-		goal_label.text = "%s 💎%s / 💎%s" % [Globals.get_text("UI GOAL"), format_money(Globals.money), format_money(Globals.goal_money)]
+		goal_label.text = "목표: 💎%s / 💎%s" % [format_money(Globals.money), format_money(Globals.goal_money)]
 		
 		# 목표 달성 체크
 		if Globals.money >= Globals.goal_money:
@@ -245,7 +225,7 @@ func _process(delta):
 		if Globals.money_per_second > 0:
 			Globals.money += Globals.money_per_second
 			# 자동 수입 라벨 업데이트
-			passive_income_label.text = "+💎%d%s" % [Globals.money_per_second, Globals.get_text("UI PER SECOND")]
+			passive_income_label.text = "+💎%d/초 (알바)" % Globals.money_per_second
 	
 	# 초당 수입 계산 (1초마다 업데이트)
 	income_update_timer += delta
@@ -285,9 +265,6 @@ func _process(delta):
 		fever_label.modulate = Color(1.0, 0.3 + color_shift * 0.4, 0.1, 1.0)
 	else:
 		fever_label.modulate = Color(1, 1, 1, 0)  # 투명
-	
-	# 설치 모드 UI 투명도 업데이트
-	update_build_mode_ui_opacity()
 
 # 돈이 변경되었을 때 호출되는 콜백
 func _on_money_changed(new_amount: int, delta_money: int):
@@ -334,20 +311,6 @@ func _on_action_text_changed(text: String, should_show: bool):
 		# 페이드 아웃
 		var tween = create_tween()
 		tween.tween_property(action_bar_label, "modulate:a", 0.0, 0.2)
-
-# 언어 변경 시 UI 업데이트
-func _on_language_changed():
-	# 목표 라벨 업데이트
-	if goal_label:
-		goal_label.text = "%s 💎%s / 💎%s" % [Globals.get_text("UI GOAL"), format_money(Globals.money), format_money(Globals.goal_money)]
-	
-	# 초당 수입 라벨 업데이트
-	if passive_income_label and Globals.money_per_second > 0:
-		passive_income_label.text = "+💎%d%s" % [Globals.money_per_second, Globals.get_text("UI PER SECOND")]
-	
-	# 설정 버튼 텍스트 업데이트
-	if setting_button:
-		setting_button.text = Globals.get_text("AUTO SETTING")
 
 # 설정 버튼 클릭
 func _on_setting_button_pressed():
@@ -580,29 +543,3 @@ func show_clear_screen(clear_time: float, points: int):
 	continue_btn.custom_minimum_size = Vector2(200, 50)
 	continue_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://auto_scene.tscn"))
 	container.add_child(continue_btn)
-
-## /** 설치 모드 UI 투명도 업데이트
-##  * 현재 상태에 따라 각 UI의 투명도를 조절합니다.
-##  * @returns void
-##  */
-func update_build_mode_ui_opacity():
-	# 채굴 UI - 2번이나 3번 모드가 활성화되어 있으면 비활성화
-	if mining_ui:
-		if not Globals.is_torch_mode and not Globals.is_build_mode:
-			mining_ui.modulate = Color(1.0, 1.0, 1.0, 1.0)  # 100% 불투명
-		else:
-			mining_ui.modulate = Color(1.0, 1.0, 1.0, 0.2)  # 20% 투명도
-	
-	# 횃불 UI - 횃불 모드일 때만 활성화
-	if torch_ui:
-		if Globals.is_torch_mode:
-			torch_ui.modulate = Color(1.0, 1.0, 1.0, 1.0)  # 100% 불투명
-		else:
-			torch_ui.modulate = Color(1.0, 1.0, 1.0, 0.2)  # 20% 투명도
-	
-	# 플랫폼 UI - 플랫폼 모드일 때만 활성화
-	if platform_ui:
-		if Globals.is_build_mode:
-			platform_ui.modulate = Color(1.0, 1.0, 1.0, 1.0)  # 100% 불투명
-		else:
-			platform_ui.modulate = Color(1.0, 1.0, 1.0, 0.2)  # 20% 투명도

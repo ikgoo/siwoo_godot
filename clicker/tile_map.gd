@@ -610,19 +610,15 @@ func _check_and_update_platform_above(platform_tilemap: TileMap, world_pos: Vect
 	if not platform_tilemap or not platform_tilemap.tile_set:
 		return
 	
-	# 파괴된 블록 위치를 플랫폼 타일 좌표로 변환
-	var local_pos = platform_tilemap.to_local(world_pos)
-	var base_tile_pos = platform_tilemap.local_to_map(local_pos)
+	# 타일 크기 가져오기
+	var tile_size = platform_tilemap.tile_set.tile_size.y
 	
-	# 주변 3x3 범위의 플랫폼 타일 체크 (타일 크기 차이 보정)
-	for dx in range(-1, 2):
-		for dy in range(-1, 2):
-			var check_pos = base_tile_pos + Vector2i(dx, dy)
-			
-			# 해당 위치에 플랫폼 타일이 있으면 업데이트
-			var source_id = platform_tilemap.get_cell_source_id(PLATFORM_LAYER_INDEX, check_pos)
-			if source_id != -1:
-				update_platform_tile_at(check_pos, platform_tilemap)
+	# 위 위치 계산 (한 타일 위)
+	var above_world_pos = world_pos - Vector2(0, tile_size)
+	
+	var local_pos = platform_tilemap.to_local(above_world_pos)
+	var tile_pos = platform_tilemap.local_to_map(local_pos)
+	update_platform_tile_at(tile_pos, platform_tilemap)
 
 ## 모든 플랫폼 타일을 초기화합니다 (게임 시작 시 호출).
 ## 각 플랫폼 타일의 아래 블록 유무를 확인하여 적절한 atlas로 설정합니다.

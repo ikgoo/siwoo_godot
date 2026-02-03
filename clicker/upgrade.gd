@@ -182,9 +182,6 @@ var ui_node: Control = null
 @onready var glow_particles: GPUParticles2D = $GlowParticles
 
 func _ready():
-	# upgrade 그룹에 추가 (튜토리얼에서 찾을 수 있도록)
-	add_to_group("upgrade")
-	
 	if flip:
 		animated_sprite_2d.flip_h = true
 	animation_player.play("idle")

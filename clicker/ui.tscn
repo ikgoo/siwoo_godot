@@ -1,12 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://bojiqqd4sya5p"]
+[gd_scene load_steps=10 format=3 uid="uid://bojiqqd4sya5p"]
 
 [ext_resource type="Script" uid="uid://dg12enq825mkq" path="res://ui.gd" id="1_fyqef"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_m6e0p"]
 [ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_27fn8"]
-[ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="4_y4yjw"]
-[ext_resource type="Texture2D" uid="uid://ct8mkyvu4ei8l" path="res://CONCEPT/asset/mine_clicker-pickaxe.png" id="5_waa4j"]
-[ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="6_ok7cu"]
-[ext_resource type="Texture2D" uid="uid://bbfjfpc0l7ldj" path="res://CONCEPT/asset/16/mine_clicker-16_platform.png" id="7_irxef"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m6e0p"]
 font = ExtResource("2_m6e0p")
@@ -28,23 +24,15 @@ font = ExtResource("2_m6e0p")
 [sub_resource type="LabelSettings" id="LabelSettings_n5ude"]
 font = ExtResource("2_m6e0p")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_e2l4f"]
-atlas = ExtResource("6_ok7cu")
-region = Rect2(0, 0, 14, 29)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n5rqp"]
-atlas = ExtResource("7_irxef")
-region = Rect2(16, 16, 16, 15)
-
 [node name="UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+offset_left = 3.0
+offset_top = -3.0
+offset_right = 3.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -52,15 +40,11 @@ script = ExtResource("1_fyqef")
 
 [node name="money" type="Label" parent="."]
 texture_filter = 1
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -230.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 50.0
-grow_horizontal = 0
+layout_mode = 0
+offset_left = 914.0
+offset_top = 29.0
+offset_right = 1140.0
+offset_bottom = 118.0
 text = "현재 돈:"
 label_settings = SubResource("LabelSettings_m6e0p")
 horizontal_alignment = 1
@@ -84,9 +68,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -158.0
-offset_top = -95.0
+offset_top = -87.0
 offset_right = -80.5
-offset_bottom = -72.0
+offset_bottom = -64.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(4, 4)
@@ -183,89 +167,3 @@ texture_filter = 1
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_m6e0p")
 text = "닫기"
-
-[node name="mining" type="NinePatchRect" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -620.0
-offset_top = -80.0
-offset_right = -560.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("4_y4yjw")
-region_rect = Rect2(0, 0, 64, 64)
-patch_margin_left = 7
-patch_margin_top = 7
-patch_margin_right = 7
-patch_margin_bottom = 9
-
-[node name="TextureRect" type="TextureRect" parent="mining"]
-layout_mode = 0
-offset_right = 60.0
-offset_bottom = 60.0
-texture = ExtResource("5_waa4j")
-
-[node name="mining2" type="NinePatchRect" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -526.0
-offset_top = -80.0
-offset_right = -466.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("4_y4yjw")
-region_rect = Rect2(0, 0, 64, 64)
-patch_margin_left = 7
-patch_margin_top = 7
-patch_margin_right = 7
-patch_margin_bottom = 9
-
-[node name="TextureRect" type="TextureRect" parent="mining2"]
-texture_filter = 1
-layout_mode = 0
-offset_left = 18.0
-offset_top = 4.0
-offset_right = 48.0
-offset_bottom = 64.0
-scale = Vector2(0.8, 0.8)
-texture = SubResource("AtlasTexture_e2l4f")
-
-[node name="mining3" type="NinePatchRect" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -436.0
-offset_top = -80.0
-offset_right = -376.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-texture = ExtResource("4_y4yjw")
-region_rect = Rect2(0, 0, 64, 64)
-patch_margin_left = 7
-patch_margin_top = 7
-patch_margin_right = 7
-patch_margin_bottom = 9
-
-[node name="TextureRect" type="TextureRect" parent="mining3"]
-texture_filter = 1
-layout_mode = 0
-offset_left = 14.0
-offset_top = 20.0
-offset_right = 54.0
-offset_bottom = 60.0
-scale = Vector2(0.8, 0.8)
-texture = SubResource("AtlasTexture_n5rqp")

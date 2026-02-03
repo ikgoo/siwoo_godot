@@ -11,7 +11,3 @@ scale = Vector2(0.4, 0.4)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 
-
-
-
-

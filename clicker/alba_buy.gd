@@ -1,42 +1,37 @@
 extends Node2D
 
-## ========================================
-## 알바 구매 시스템 - 리소스 기반
-## ========================================
-## AlbaData 리소스를 사용하여 알바를 판매합니다
+# 알바 씬 경로
+@export var alba_scene_path : String = "res://alba.tscn"
+# 펫 추적 설정 (알바 구매 시 캐릭터 뒤를 따라다님)
+@export var pet_offset: Vector2 = Vector2(-40, -10)  # 캐릭터 기준 뒤쪽 위치
+@export var pet_follow_speed: float = 5.0  # 따라오는 속도 (높을수록 빠름)
+@export var pet_texture: Texture2D  # 알바 펫 스킨 (없으면 알바 스프라이트 사용)
+@export var pet_scale: Vector2 = Vector2(1.0, 1.0)  # 펫 크기 배율
+# 알바 프리셋 선택 (가격/수입 테이블 설정용)
+@export_enum("custom", "alba1", "alba2") var alba_preset: String = "custom"
 
-# 알바 데이터 리소스
-@export var alba_data: AlbaData
-
+# 커스텀 프리셋 값 (alba_preset = custom 일 때 사용)
+@export_group("Custom Preset (preset=custom)")
+@export var custom_price: int = 2000
+@export var custom_money_amount: int = 50
+@export var custom_upgrade_costs: Array[int] = [2000, 3000, 4000]
+@export var custom_upgrade_incomes: Array[int] = [120, 200, 350]
+@export_group("")
 # Area2D 노드 참조
 @onready var area_2d = $Area2D
-
-# 알바 씬 (항상 alba.tscn 사용)
-const ALBA_SCENE_PATH: String = "res://alba.tscn"
-var alba_scene: PackedScene
-
+# 알바 씬을 로드한 PackedScene
+var alba_scene : PackedScene
 # 이미 구매했는지 여부
-var is_purchased: bool = false
+var is_purchased : bool = false
+# 생성된 펫 스프라이트
+var pet_sprite: Sprite2D = null
 
 # 시각 효과
 @onready var sprite: Sprite2D = $Sprite2D if has_node("Sprite2D") else null
 
 func _ready():
-	# 리소스 확인
-	if not alba_data:
-		print("⚠️ 경고: alba_data 리소스가 설정되지 않았습니다!")
-		return
-	
 	# 알바 씬 로드
-	alba_scene = load(ALBA_SCENE_PATH)
-	if not alba_scene:
-		print("❌ 오류: alba.tscn을 찾을 수 없습니다!")
-		return
-	
-	# 스프라이트 텍스처 설정 (리소스에서)
-	if sprite and alba_data.alba_texture:
-		sprite.texture = alba_data.alba_texture
-	
+	alba_scene = load(alba_scene_path)
 	# Area2D의 input_event 시그널 연결
 	area_2d.input_event.connect(_on_area_2d_input_event)
 	# Area2D의 body_entered/exited 시그널 연결
@@ -58,11 +53,13 @@ func _process(_delta):
 
 # 구매 가능 여부 시각 표시
 func update_visual_feedback():
-	if not sprite or not alba_data:
+	if not sprite:
 		return
 	
-	# 리소스에서 가격 확인
-	var price = alba_data.initial_price
+	# 임시로 알바 인스턴스 생성해서 가격 확인
+	var alba_instance = alba_scene.instantiate()
+	var price = alba_instance.price
+	alba_instance.queue_free()
 	
 	# 구매 가능하면 밝게, 불가능하면 어둡게
 	if Globals.money >= price:
@@ -77,25 +74,23 @@ func _on_money_changed(_new_amount: int, _delta: int):
 # 알바 구매 함수
 func purchase_alba():
 	# 이미 구매했으면 무시
-	if is_purchased or not alba_data:
+	if is_purchased:
 		return
 	
-	# 리소스에서 가격 확인
-	var price = alba_data.initial_price
+	# 알바 인스턴스 생성 (가격 확인을 위해 임시로 생성)
+	var alba_instance = alba_scene.instantiate()
+	
+	# 알바의 export 변수에서 가격 가져오기
+	var price = alba_instance.price
 	
 	# 돈이 충분한지 확인
 	if Globals.money >= price:
 		# 돈 차감
 		Globals.money -= price
-		print("💎 알바 구매: ", alba_data.alba_name, " (", price, "원)")
 		
-		# 알바 인스턴스 생성
-		var alba_instance = alba_scene.instantiate()
-		
-		# 리소스 데이터 전달
-		alba_instance.alba_data = alba_data
+		# 프리셋 적용 후 알바 배치
+		apply_preset_to_alba(alba_instance)
 		alba_instance.global_position = global_position
-		
 		# 부모 노드(보통 main 씬)에 추가
 		get_tree().current_scene.add_child(alba_instance)
 		
@@ -109,7 +104,8 @@ func purchase_alba():
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
 	else:
-		print("💎 부족! 필요: 💎", price, ", 보유: 💎", Globals.money)
+		# 인스턴스 삭제 (구매하지 않았으므로)
+		alba_instance.queue_free()
 
 # Area2D 입력 이벤트 처리 (마우스 클릭)
 func _on_area_2d_input_event(_viewport, event, _shape_idx):
@@ -134,10 +130,12 @@ func _on_area_2d_mouse_exited():
 
 # 알바 구매 정보 텍스트 생성
 func get_alba_buy_info_text() -> String:
-	if not alba_data:
-		return "알바 데이터 없음"
+	var alba_instance = alba_scene.instantiate()
+	var buy_price = alba_instance.price
+	var income = alba_instance.money_amount
+	alba_instance.queue_free()
 	
-	return "%s 고용\n가격: 💎%d\n수입: 💎%d/초" % [alba_data.alba_name, alba_data.initial_price, alba_data.initial_income]
+	return "알바 고용\n가격: 💎%d\n수입: 💎%d/초" % [buy_price, income]
 
 # 플레이어가 영역에 들어왔을 때
 func _on_area_2d_body_entered(body):
@@ -152,3 +150,29 @@ func _on_area_2d_body_exited(body):
 		is_character_inside = false
 		# 액션 텍스트 숨김
 		Globals.hide_action_text()
+
+# === 프리셋 적용 ===
+func apply_preset_to_alba(alba_instance: Node):
+	# alba 스크립트에 alba_preset이 있으면 custom으로 맞춰 놓고 값을 직접 세팅
+	if "alba_preset" in alba_instance:
+		alba_instance.alba_preset = "custom"
+	match alba_preset:
+		"alba1":
+			alba_instance.price = 2000
+			alba_instance.money_amount = 50
+			alba_instance.upgrade_costs = [2000, 3000, 4000]
+			alba_instance.upgrade_incomes = [120, 200, 350]
+		"alba2":
+			alba_instance.price = 4000
+			alba_instance.money_amount = 400
+			alba_instance.upgrade_costs = [5000, 6000]
+			alba_instance.upgrade_incomes = [600, 800]
+		_:
+			alba_instance.price = custom_price
+			alba_instance.money_amount = custom_money_amount
+			alba_instance.upgrade_costs = custom_upgrade_costs
+			alba_instance.upgrade_incomes = custom_upgrade_incomes
+	
+	# 펫 텍스처는 상점에서 전달한다.
+	if "pet_texture" in alba_instance:
+		alba_instance.pet_texture = pet_texture

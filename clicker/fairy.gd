@@ -189,3 +189,5 @@ func update_mining_animation(delta: float):
 		# 스프라이트 복구
 		if idle_sprite and sprite:
 			sprite.texture = idle_sprite
+
+
