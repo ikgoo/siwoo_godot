@@ -152,6 +152,12 @@ func _update_ui_texts():
 	sfx_label.text = Globals.get_text("SETTING SFX")
 	language_label.text = Globals.get_text("SETTING LANGUAGE")
 	back_button.text = Globals.get_text("SETTING BACK")
+	
+	# 튜토리얼 UI 텍스트 업데이트
+	if tutorial_checkbox:
+		tutorial_checkbox.text = Globals.get_text("SETTING TUTORIAL POPUP")
+	if tutorial_restart_button:
+		tutorial_restart_button.text = Globals.get_text("SETTING TUTORIAL RESTART")
 
 
 ## 언어 선택 시 호출
@@ -163,6 +169,9 @@ func _on_language_selected(index: int):
 	
 	# UI 텍스트 즉시 업데이트
 	_update_ui_texts()
+	
+	# 언어 변경 시그널 발생 (다른 UI들도 업데이트)
+	Globals.language_changed.emit()
 
 
 ## 뒤로가기 버튼 클릭 시 호출
@@ -181,7 +190,7 @@ func _setup_tutorial_ui():
 	
 	# 체크박스 생성
 	tutorial_checkbox = CheckBox.new()
-	tutorial_checkbox.text = "튜토리얼 팝업 표시"
+	tutorial_checkbox.text = Globals.get_text("SETTING TUTORIAL POPUP")
 	tutorial_checkbox.button_pressed = Globals.show_tutorial_popup
 	tutorial_checkbox.toggled.connect(_on_tutorial_popup_toggled)
 	tutorial_checkbox.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
@@ -189,7 +198,7 @@ func _setup_tutorial_ui():
 	
 	# 다시 시작 버튼 생성
 	tutorial_restart_button = Button.new()
-	tutorial_restart_button.text = "튜토리얼 다시 보기"
+	tutorial_restart_button.text = Globals.get_text("SETTING TUTORIAL RESTART")
 	tutorial_restart_button.custom_minimum_size = Vector2(150, 0)
 	tutorial_restart_button.pressed.connect(_on_tutorial_restart_pressed)
 	tutorial_restart_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
@@ -210,7 +219,14 @@ func _on_tutorial_restart_pressed():
 	# 튜토리얼 완료 상태 초기화
 	Globals.is_tutorial_completed = false
 	Globals.show_tutorial_popup = true
+	Globals.is_tutorial_restart = true  # 팝업 건너뛰기 플래그 설정
 	Globals.save_settings()
+	
+	# 설정창 닫기 시그널 발생 (ESC 메뉴로 돌아가도록)
+	closed.emit()
+	
+	# 게임 일시정지 해제
+	get_tree().paused = false
 	
 	# 게임 재시작 (main.tscn으로)
 	get_tree().change_scene_to_file("res://main.tscn")

@@ -11,18 +11,9 @@ offset_bottom = 360.0
 script = ExtResource("1_dialogue")
 
 [node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -120.0
-offset_right = 300.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 0
+offset_right = 900.0
+offset_bottom = 150.0
 
 [node name="FairyPortrait" type="Sprite2D" parent="Panel"]
 position = Vector2(50, 50)
@@ -45,22 +36,23 @@ bbcode_enabled = true
 scroll_active = false
 autowrap_mode = 3
 
-[node name="ContinueHint" type="Label" parent="Panel"]
+[node name="ContinueButton" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -25.0
+offset_left = -120.0
+offset_top = -40.0
 offset_right = -10.0
-offset_bottom = -5.0
+offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 14
-text = "[Space] 계속"
-horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+text = "다음 [Enter]"
+
+
 
 

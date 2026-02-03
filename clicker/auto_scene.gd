@@ -64,7 +64,8 @@ var drag_offset_from_origin: Vector2i = Vector2i.ZERO
 func _ready():
 	# 원래 viewport 크기, 창 모드, 위치, always on top 상태 저장
 	viewport_rid = get_viewport().get_viewport_rid()
-	original_viewport_size = get_viewport().size
+	# 프로젝트 기본 설정에서 원래 viewport 크기 가져오기
+	original_viewport_size = Vector2i(1280, 720)  # project.godot 기본값
 	original_window_size = get_window().size
 	original_window_mode = get_window().mode
 	original_window_position = get_window().position
@@ -83,28 +84,28 @@ func _ready():
 	get_window().mode = Window.MODE_WINDOWED
 	# 테두리 제거
 	get_window().borderless = true
+	# 크기 조절 불가능하게 설정
+	get_window().unresizable = true
+	
 	# 배경 투명화
 	get_window().transparent = true
 	get_viewport().transparent_bg = true
 	RenderingServer.set_default_clear_color(Color(0, 0, 0, 0))
 	
-	# project.godot 기본 viewport 크기 사용 (F6 실행과 동일하게)
-	var default_viewport = Vector2i(1280, 720)
-	get_viewport().size = default_viewport
-	size = default_viewport  # 루트 Control도 같은 크기로 설정
+	# viewport와 window를 완전히 동일한 크기로 설정 (검은 줄 방지)
+	var final_size = Vector2i(640, 360)
+	get_viewport().size = final_size
+	get_window().size = final_size
+	size = final_size
 	
-	# 창 크기를 viewport의 0.4배의 가장 가까운 자연수로 설정
-	var final_window_size = Vector2i(
-		roundi(default_viewport.x * 0.4),
-		roundi(default_viewport.y * 0.4)
-	)
-	get_window().size = final_window_size
+	# UI 요소들의 위치와 크기를 0.5배로 조정 (원래 1280x720 기준)
+	_scale_ui_elements(0.5)
 	
 	# 창을 화면 중앙으로 이동
 	var screen_size = DisplayServer.screen_get_size()
 	get_window().position = Vector2i(
-		(screen_size.x - final_window_size.x) / 2,
-		(screen_size.y - final_window_size.y) / 2
+		(screen_size.x - final_size.x) / 2,
+		(screen_size.y - final_size.y) / 2
 	)
 	
 	# 버튼 시그널 연결
@@ -158,6 +159,7 @@ func _on_back_button_pressed():
 	# Viewport와 창 크기를 원래대로 복원
 	get_viewport().size = original_viewport_size
 	get_window().size = original_window_size
+	size = original_viewport_size  # Control 크기도 복원
 	
 	# 창 위치 복원 (창 모드였다면)
 	if original_window_mode == Window.MODE_WINDOWED:
@@ -431,3 +433,42 @@ func _apply_character_scale(scale_value: float) -> void:
 	if sprite2:
 		sprite2.scale = base_sprite2_scale * scale_value
 		sprite2.position = base_sprite2_pos + Vector2(-x_spread, y_offset)
+
+
+## /** UI 요소들을 스케일에 맞게 조정 (초기화용)
+##  * @param scale_factor float 스케일 배율
+##  * @returns void
+##  */
+func _scale_ui_elements(scale_factor: float) -> void:
+	# 재귀적으로 모든 자식 노드의 위치와 크기 조정
+	_scale_node_recursive(self, scale_factor)
+
+
+## /** 노드를 재귀적으로 스케일 조정
+##  * @param node Node 조정할 노드
+##  * @param scale_factor float 스케일 배율
+##  * @returns void
+##  */
+func _scale_node_recursive(node: Node, scale_factor: float) -> void:
+	# Control 노드 처리
+	if node is Control and node != self:
+		node.position = node.position * scale_factor
+		node.size = node.size * scale_factor
+		if node.has_method("get_custom_minimum_size"):
+			var min_size = node.custom_minimum_size
+			if min_size != Vector2.ZERO:
+				node.custom_minimum_size = min_size * scale_factor
+	
+	# Sprite2D 노드 처리
+	elif node is Sprite2D:
+		node.position = node.position * scale_factor
+		# scale은 이미 설정되어 있으므로 건드리지 않음
+	
+	# NinePatchRect 노드 처리
+	elif node is NinePatchRect:
+		node.position = node.position * scale_factor
+		node.size = node.size * scale_factor
+	
+	# 모든 자식 노드에 대해 재귀 호출
+	for child in node.get_children():
+		_scale_node_recursive(child, scale_factor)

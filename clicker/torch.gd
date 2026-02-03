@@ -43,8 +43,19 @@ func detect_wall_type() -> TorchType:
 	raycast_left.force_raycast_update()
 	raycast_right.force_raycast_update()
 	
-	var left_wall = raycast_left.is_colliding()
-	var right_wall = raycast_right.is_colliding()
+	# 충돌 객체가 TileMap인지 확인 (플레이어나 다른 객체는 무시)
+	var left_wall = false
+	var right_wall = false
+	
+	if raycast_left.is_colliding():
+		var collider = raycast_left.get_collider()
+		if collider is TileMap:
+			left_wall = true
+	
+	if raycast_right.is_colliding():
+		var collider = raycast_right.get_collider()
+		if collider is TileMap:
+			right_wall = true
 	
 	# 왼쪽 벽에 붙어있으면 reverse_wall_fire (횃불이 오른쪽 향함)
 	# 오른쪽 벽에 붙어있으면 wall_fire (횃불이 왼쪽 향함)
