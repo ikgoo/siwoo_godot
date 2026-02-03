@@ -1,10 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://cqo2mn0ydxbqg"]
+[gd_scene load_steps=19 format=3 uid="uid://cqo2mn0ydxbqg"]
 
 [ext_resource type="Script" uid="uid://wccy2d63t5qm" path="res://upgrade.gd" id="1_w52ek"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="3_hj5gr"]
 [ext_resource type="Texture2D" uid="uid://uu4s5fgq7laa" path="res://CONCEPT/asset/lobby/upgrade_particle.png" id="4_50jy6"]
-[ext_resource type="Texture2D" uid="uid://bcnjnmerqfw6b" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_klxme"]
-[ext_resource type="Texture2D" uid="uid://bcnjnmerqfw6b" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_moly5"]
+[ext_resource type="Texture2D" uid="uid://u0giuap8ef6j" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_moly5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w52ek"]
 radius = 27.018513
@@ -135,19 +134,19 @@ _data = {
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_moly5"]
-atlas = ExtResource("5_klxme")
+atlas = ExtResource("5_moly5")
 region = Rect2(0, 0, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_diibn"]
-atlas = ExtResource("5_klxme")
+atlas = ExtResource("5_moly5")
 region = Rect2(80, 0, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qyjxr"]
-atlas = ExtResource("5_klxme")
+atlas = ExtResource("5_moly5")
 region = Rect2(160, 0, 80, 80)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mehhu"]
-atlas = ExtResource("5_klxme")
+atlas = ExtResource("5_moly5")
 region = Rect2(240, 0, 80, 80)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4t3gl"]
