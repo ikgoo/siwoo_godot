@@ -173,12 +173,13 @@ animations = [{
 }]
 
 [node name="Fairy" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_fairy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8l5sa")
-frame_progress = 0.7118348
+frame = 10
+frame_progress = 0.7787695
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 

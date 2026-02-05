@@ -39,6 +39,7 @@ var upgrade_count: int = 0
 var torch_placed: bool = false
 var platform_count: int = 0
 var initial_money: int = 0
+var initial_upgrade_level: int = 0  # 튜토리얼 시작 시점의 업그레이드 레벨
 
 # ========================================
 # 참조
@@ -67,9 +68,10 @@ signal tutorial_completed()
 func _ready():
 	print("🎯 [튜토리얼] TutorialManager _ready 호출됨")
 	
-	# 튜토리얼 이미 완료했으면 시작 안 함
+	# 튜토리얼 이미 완료했으면 fairy만 스폰하고 종료
 	if Globals.is_tutorial_completed:
-		print("⏭️ [튜토리얼] 이미 완료됨 - 스킵")
+		print("⏭️ [튜토리얼] 이미 완료됨 - Fairy 스폰")
+		call_deferred("spawn_fairy_if_completed")
 		return
 	
 	# 팝업 표시 설정이 꺼져있으면 시작 안 함
@@ -179,6 +181,10 @@ func start_tutorial():
 	
 	# 초기 돈 기록
 	initial_money = Globals.money
+	
+	# 초기 업그레이드 레벨 기록 (미리 업그레이드한 경우 대비)
+	initial_upgrade_level = Globals.diamond_value_level
+	print("📊 [튜토리얼] 초기 업그레이드 레벨: %d" % initial_upgrade_level)
 	
 	# 인트로 대화 시작
 	if dialogue_box:
@@ -354,9 +360,17 @@ func advance_to_do_upgrade():
 		dialogue_box.start_dialogue(tutorial_data.do_upgrade_dialogues, tutorial_data.typing_speed)
 	
 	# 다이아몬드 획득량 레벨 변경 감지
-	var initial_level = Globals.diamond_value_level
-	while Globals.diamond_value_level == initial_level:
-		await get_tree().process_frame
+	# 튜토리얼 시작 시점보다 높아지면 완료 (미리 업그레이드한 경우 대비)
+	print("📊 [튜토리얼] 업그레이드 대기 - 초기 레벨: %d, 현재 레벨: %d" % [initial_upgrade_level, Globals.diamond_value_level])
+	
+	# 이미 업그레이드를 했는지 체크
+	if Globals.diamond_value_level > initial_upgrade_level:
+		print("✅ [튜토리얼] 이미 업그레이드 완료됨!")
+	else:
+		# 레벨이 올라갈 때까지 대기
+		while Globals.diamond_value_level <= initial_upgrade_level:
+			await get_tree().process_frame
+		print("✅ [튜토리얼] 업그레이드 완료 감지!")
 	
 	# 업그레이드 완료
 	if dialogue_box:
@@ -520,11 +534,11 @@ func finish_tutorial():
 	
 	print("✅ 튜토리얼 완료!")
 
-## /** 요정 스폰
+## /** 튜토리얼 완료 시 요정 스폰 (플레이어가 이미 설정된 경우)
 ##  * @returns void
 ##  */
 func spawn_fairy():
-	if fairy_scene:
+	if fairy_scene and player:
 		fairy_instance = fairy_scene.instantiate()
 		fairy_instance.player = player
 		get_tree().current_scene.add_child(fairy_instance)
@@ -533,3 +547,16 @@ func spawn_fairy():
 		fairy_instance.global_position = player.global_position + Vector2(-30, 0)
 		
 		print("✅ 요정 스폰 완료!")
+
+## /** 튜토리얼 이미 완료된 경우 요정 스폰 (플레이어 찾기 후)
+##  * @returns void
+##  */
+func spawn_fairy_if_completed():
+	# 플레이어 찾기
+	player = Globals.player
+	if not player:
+		print("❌ [튜토리얼] 플레이어를 찾을 수 없어서 Fairy 스폰 불가!")
+		return
+	
+	# 요정 스폰
+	spawn_fairy()

@@ -187,4 +187,3 @@ func end_dialogue():
 ##  */
 func force_close():
 	end_dialogue()
-

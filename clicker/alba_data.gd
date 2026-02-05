@@ -59,3 +59,4 @@ func get_upgrade_income(level: int) -> int:
 ## @returns: MAX 레벨이면 true
 func is_max_level(current_level: int) -> bool:
 	return current_level >= upgrade_costs.size()
+

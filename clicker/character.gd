@@ -412,7 +412,9 @@ func _physics_process(delta):
 		# 공중에 있을 때: 점프 전 속도를 목표로 공중 가속도 적용
 		if direction != 0:
 			# 목표 속도 (점프 전 속도)
-			var target_velocity = direction * air_speed
+			# air_speed가 너무 작으면 (제자리 점프) 기본 속도 사용
+			var effective_air_speed = air_speed if air_speed > 5.0 else SPEED
+			var target_velocity = direction * effective_air_speed
 			# 공중 가속도를 적용하여 부드럽게 목표 속도로 이동
 			velocity.x = move_toward(velocity.x, target_velocity, air_acceleration * delta)
 			

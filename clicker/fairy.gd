@@ -17,7 +17,8 @@ class_name Fairy
 @export var bob_amplitude: float = 2.0
 @export var bob_frequency: float = 2.5
 @export var flip_speed: float = 14.0
-@export var follow_distance: float = 10.0  # 캐릭터로부터 10칸 뒤
+@export var follow_distance: float = 20.0  # 캐릭터로부터 20칸 뒤
+@export var stay_on_ground: bool = true  # 땅에 붙어서 이동
 
 # ========================================
 # 내부 변수
@@ -34,8 +35,8 @@ var total_path_distance: float = 0.0  # 전체 경로 길이
 # 채굴 관련 변수
 # ========================================
 var is_mining: bool = false
-var mining_animation_time: float = 0.0
-var mining_animation_duration: float = 0.3
+var mining_cooldown: float = 0.0
+var mining_cooldown_duration: float = 0.3
 
 # 근처 돌 감지
 var current_nearby_rock: Node2D = null
@@ -44,18 +45,13 @@ var current_nearby_tilemap: TileMap = null
 # 채굴 키 (J키 = all_mining_keys[1])
 var fairy_mining_key: int = KEY_J
 
-# ========================================
-# 노드 참조
-# ========================================
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+# 키 입력 상태 추적 (연타 방지)
+var was_j_key_pressed: bool = false
 
 func _ready():
 	# 플레이어가 없으면 Globals에서 가져오기
 	if not player:
 		player = Globals.player
-	
-	# 애니메이션 설정
-	_setup_animations()
 	
 	# fairy 그룹에 추가
 	add_to_group("fairy")
@@ -65,10 +61,6 @@ func _ready():
 		path_points.append(player.global_position)
 		path_distances.append(0.0)
 		global_position = player.global_position
-	
-	# 기본 애니메이션 재생
-	if animated_sprite:
-		animated_sprite.play("idle")
 
 func _physics_process(delta: float) -> void:
 	time_elapsed += delta
@@ -83,11 +75,11 @@ func _physics_process(delta: float) -> void:
 	if Globals.is_tutorial_completed:
 		handle_mining_input()
 	
-	# 4. 채굴 애니메이션 업데이트
+	# 4. 채굴 쿨다운 업데이트
 	if is_mining:
-		update_mining_animation(delta)
+		update_mining_cooldown(delta)
 
-## /** 플레이어 팔로우 로직 (거리 기반 추적)
+## /** 플레이어 팔로우 로직 (거리 기반 추적 - 트레일처럼)
 ##  * 플레이어가 간 경로를 기록하고, follow_distance만큼 뒤를 따라갑니다
 ##  * @param delta float 델타 타임
 ##  * @returns void
@@ -117,39 +109,37 @@ func update_follow(delta: float) -> void:
 	# 3. 해당 거리에 해당하는 위치 찾기
 	var target_position = _get_position_at_distance(target_distance)
 	
-	# 4. 타겟 위치로 이동
-	var direction = global_position.direction_to(target_position)
-	var distance = global_position.distance_to(target_position)
-	
-	if distance > 0.5:
-		velocity = direction * max_speed
-	else:
-		velocity = Vector2.ZERO
-	
-	move_and_slide()
-	
-	# 5. 둥둥 효과 (AnimatedSprite에만 적용)
-	if animated_sprite:
-		var bob_offset = sin(time_elapsed * bob_frequency) * bob_amplitude
-		animated_sprite.position.y = bob_offset
-	
-	# 6. 부드러운 방향 전환
-	if animated_sprite:
-		if velocity.x < -1.0:
-			animated_sprite.flip_h = true
-		elif velocity.x > 1.0:
-			animated_sprite.flip_h = false
-	
-	# 7. 이동 애니메이션
-	if animated_sprite and not is_mining:
-		if velocity.length() > 5.0:
-			if animated_sprite.animation != "walk":
-				animated_sprite.play("walk")
+	# 4. 땅에 붙어서 이동 (X축만 따라가고 Y축은 중력 적용)
+	if stay_on_ground:
+		# 중력 적용
+		if not is_on_floor():
+			velocity.y += get_gravity().y * get_physics_process_delta_time()
 		else:
-			if animated_sprite.animation != "idle":
-				animated_sprite.play("idle")
+			velocity.y = 0
+		
+		# X축 이동만 처리
+		var direction_x = sign(target_position.x - global_position.x)
+		var distance_x = abs(target_position.x - global_position.x)
+		
+		if distance_x > 0.5:
+			velocity.x = direction_x * max_speed
+		else:
+			velocity.x = 0
+		
+		move_and_slide()
+	else:
+		# 공중 이동 (기존 방식)
+		var direction = global_position.direction_to(target_position)
+		var distance = global_position.distance_to(target_position)
+		
+		if distance > 0.5:
+			velocity = direction * max_speed
+		else:
+			velocity = Vector2.ZERO
+		
+		move_and_slide()
 	
-	# 8. 오래된 경로 정리 (100개 이상이면 앞쪽 제거)
+	# 5. 오래된 경로 정리 (100개 이상이면 앞쪽 제거)
 	while path_points.size() > 100:
 		path_points.pop_front()
 		var removed_distance = path_distances.pop_front()
@@ -207,100 +197,39 @@ func check_nearby_rocks():
 ##  * @returns void
 ##  */
 func handle_mining_input():
-	# J키가 눌렸는지 확인
-	if Input.is_key_pressed(fairy_mining_key):
+	# J키 상태 확인
+	var is_j_key_pressed = Input.is_key_pressed(fairy_mining_key)
+	var is_j_key_just_pressed = is_j_key_pressed and not was_j_key_pressed
+	
+	# 이전 프레임의 키 상태 저장
+	was_j_key_pressed = is_j_key_pressed
+	
+	# J키를 처음 눌렀을 때만 채굴 시작 (연타 방지)
+	if is_j_key_just_pressed:
 		# 근처에 돌이 있으면 채굴 시작
 		if (current_nearby_rock or current_nearby_tilemap) and not is_mining:
 			start_mining()
 
-## /** 채굴 시작
+## /** 채굴 시작 (플레이어의 차징 게이지에 기여)
 ##  * @returns void
 ##  */
 func start_mining():
 	is_mining = true
-	mining_animation_time = 0.0
+	mining_cooldown = 0.0
 	
-	# 채굴 애니메이션 재생
-	if animated_sprite:
-		animated_sprite.play("mine")
-	
-	# 실제 채굴 실행
-	if current_nearby_rock and current_nearby_rock.has_method("mine_from_player"):
-		current_nearby_rock.mine_from_player()
-	elif current_nearby_tilemap and current_nearby_tilemap.has_method("mine_nearest_tile"):
-		current_nearby_tilemap.mine_nearest_tile()
+	# 플레이어의 차징 게이지에 기여
+	if player and player.has_method("add_charge"):
+		player.add_charge()
+		print("✨ [Fairy] 차징 게이지 기여!")
 
-## /** 채굴 애니메이션 업데이트
+## /** 채굴 쿨다운 업데이트
 ##  * @param delta float 델타 타임
 ##  * @returns void
 ##  */
-func update_mining_animation(delta: float):
-	mining_animation_time += delta
+func update_mining_cooldown(delta: float):
+	mining_cooldown += delta
 	
-	# 애니메이션 완료
-	if mining_animation_time >= mining_animation_duration:
+	# 쿨다운 완료
+	if mining_cooldown >= mining_cooldown_duration:
 		is_mining = false
-		mining_animation_time = 0.0
-		
-		# 기본 애니메이션으로 복귀
-		if animated_sprite:
-			animated_sprite.play("idle")
-
-## /** 애니메이션 프레임 설정
-##  * mine_clicker-helper.png 스프라이트 시트를 사용하여 애니메이션 생성
-##  * @returns void
-##  */
-func _setup_animations():
-	if not animated_sprite:
-		return
-	
-	# SpriteFrames 생성
-	var sprite_frames = SpriteFrames.new()
-	
-	# 스프라이트 시트 로드
-	var texture = load("res://CONCEPT/asset/helper/mine_clicker-helper.png") as Texture2D
-	if not texture:
-		print("❌ [Fairy] 스프라이트 시트를 찾을 수 없음!")
-		return
-	
-	# 프레임 크기 (이미지를 보니 6x4 = 24프레임, 각 프레임 16x16으로 추정)
-	var frame_width = 16
-	var frame_height = 16
-	var columns = 6
-	
-	# === idle 애니메이션 (1행: 0~5번 프레임) ===
-	sprite_frames.add_animation("idle")
-	sprite_frames.set_animation_loop("idle", true)
-	sprite_frames.set_animation_speed("idle", 8.0)
-	
-	for i in range(6):
-		var atlas = AtlasTexture.new()
-		atlas.atlas = texture
-		atlas.region = Rect2(i * frame_width, 0 * frame_height, frame_width, frame_height)
-		sprite_frames.add_frame("idle", atlas)
-	
-	# === walk 애니메이션 (2행: 6~11번 프레임) ===
-	sprite_frames.add_animation("walk")
-	sprite_frames.set_animation_loop("walk", true)
-	sprite_frames.set_animation_speed("walk", 10.0)
-	
-	for i in range(6):
-		var atlas = AtlasTexture.new()
-		atlas.atlas = texture
-		atlas.region = Rect2(i * frame_width, 1 * frame_height, frame_width, frame_height)
-		sprite_frames.add_frame("walk", atlas)
-	
-	# === mine 애니메이션 (3행: 12~17번 프레임) ===
-	sprite_frames.add_animation("mine")
-	sprite_frames.set_animation_loop("mine", false)
-	sprite_frames.set_animation_speed("mine", 12.0)
-	
-	for i in range(6):
-		var atlas = AtlasTexture.new()
-		atlas.atlas = texture
-		atlas.region = Rect2(i * frame_width, 2 * frame_height, frame_width, frame_height)
-		sprite_frames.add_frame("mine", atlas)
-	
-	# AnimatedSprite2D에 적용
-	animated_sprite.sprite_frames = sprite_frames
-	print("✅ [Fairy] 애니메이션 설정 완료!")
+		mining_cooldown = 0.0
