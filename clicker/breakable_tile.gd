@@ -474,7 +474,7 @@ func give_mining_reward(world_pos: Vector2, is_instant: bool):
 	Globals.money += reward
 	
 	# 떠오르는 텍스트 표시
-	var text = "+💎" + str(reward)
+	var text = "+" + str(reward)
 	var color = Color(1.0, 0.9, 0.3)  # 기본 금색
 	
 	if is_x3:

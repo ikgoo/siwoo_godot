@@ -7,3 +7,13 @@ bin/
 obj/
 *.user
 *.suo
+
+# 빌드/내보내기 파일
+*.exe
+*.pck
+*.zip
+*.console.exe
+data_*/
+
+# 임시 파일
+*.tmp

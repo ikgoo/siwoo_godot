@@ -135,7 +135,7 @@ func get_alba_buy_info_text() -> String:
 	var income = alba_instance.money_amount
 	alba_instance.queue_free()
 	
-	return "알바 고용\n가격: 💎%d\n수입: 💎%d/초" % [buy_price, income]
+	return Globals.get_text("ALBA INFO") % [buy_price, income]
 
 # 플레이어가 영역에 들어왔을 때
 func _on_area_2d_body_entered(body):

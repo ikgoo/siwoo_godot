@@ -11,11 +11,11 @@ extends Control
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var skin_list_container: VBoxContainer = $ScrollContainer/SkinListContainer
 @onready var close_button: Button = $CloseButton
-@onready var skin_item_template: PanelContainer = $SkinItemTemplate
+@onready var skin_item_template: Control = $SkinItemTemplate
 @onready var inventory_button: Button = $InventoryButton
 
 # 인벤토리 노드 참조
-@onready var inventory_panel: Panel = $InventoryPanel
+@onready var inventory_panel: NinePatchRect = $InventoryPanel
 @onready var sprite1_grid: GridContainer = $InventoryPanel/VBoxContainer/Sprite1Grid
 @onready var sprite2_grid: GridContainer = $InventoryPanel/VBoxContainer/Sprite2Grid
 
@@ -61,21 +61,12 @@ func _update_skin_list() -> void:
 
 ## /** 스킨 아이템 UI를 생성한다 (템플릿 복제 방식)
 ##  * @param skin SkinItem 스킨 데이터
-##  * @returns PanelContainer 생성된 스킨 아이템 UI
+##  * @returns Control 생성된 스킨 아이템 UI (NinePatchRect 배경 포함)
 ##  */
-func _create_skin_item(skin: SkinItem) -> PanelContainer:
-	# 템플릿 복제
-	var panel: PanelContainer = skin_item_template.duplicate()
+func _create_skin_item(skin: SkinItem) -> Control:
+	# 템플릿 복제 (ItemBG NinePatchRect + VBoxContainer 포함)
+	var panel: Control = skin_item_template.duplicate()
 	panel.visible = true
-	
-	# 패널 스타일 설정
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.2, 0.2, 0.25, 1.0)
-	style.corner_radius_top_left = 5
-	style.corner_radius_top_right = 5
-	style.corner_radius_bottom_left = 5
-	style.corner_radius_bottom_right = 5
-	panel.add_theme_stylebox_override("panel", style)
 	
 	# 자식 노드들 가져오기
 	var vbox: VBoxContainer = panel.get_node("VBoxContainer")
@@ -126,6 +117,7 @@ func _create_skin_item(skin: SkinItem) -> PanelContainer:
 ##  * @returns void
 ##  */
 func _on_buy_skin(skin_id: String) -> void:
+	Globals.play_click_sound()
 	if Globals.buy_skin(skin_id):
 		_update_skin_list()
 
@@ -141,18 +133,21 @@ func _on_apply_skin(skin_id: String) -> void:
 ##  * @returns void
 ##  */
 func _on_close_button_pressed() -> void:
+	Globals.play_click_sound()
 	visible = false
 
 ## /** 인벤토리 버튼 핸들러 - 상점 숨기고 인벤토리 표시
 ##  * @returns void
 ##  */
 func _on_inventory_button_pressed() -> void:
+	Globals.play_click_sound()
 	_show_inventory()
 
 ## /** 인벤토리 뒤로가기 버튼 핸들러 - 인벤토리 숨기고 상점 표시
 ##  * @returns void
 ##  */
 func _on_inventory_back_pressed() -> void:
+	Globals.play_click_sound()
 	_show_shop()
 
 ## /** 상점 UI를 표시한다
@@ -292,6 +287,7 @@ func _create_inventory_item(skin: SkinItem) -> Control:
 ##  * @returns void
 ##  */
 func _on_inventory_item_clicked(skin_id: String) -> void:
+	Globals.play_click_sound()
 	if Globals.apply_skin(skin_id):
 		_update_inventory()
 		_update_skin_list()

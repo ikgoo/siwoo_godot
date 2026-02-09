@@ -1,0 +1,188 @@
+[gd_scene format=3 uid="uid://c5v434o0xsw4s"]
+
+[ext_resource type="Script" path="res://upgrade_menu.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_texture"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.1, 0.15, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="UpgradeMenu" type="Control" unique_id=832969638]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=419525423]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="Panel" type="Panel" parent="." unique_id=273622656]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -215.0
+offset_right = 220.0
+offset_bottom = 215.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel" unique_id=1676632459]
+layout_mode = 0
+offset_top = -2.0
+offset_right = 220.0
+offset_bottom = 107.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_texture")
+region_rect = Rect2(0, 16, 160, 49)
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 17
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1563730025]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="DialogueLabel" type="Label" parent="Panel/VBox" unique_id=1409171856]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 18
+text = "뭐 할거있어?"
+horizontal_alignment = 1
+
+[node name="Sep1" type="HSeparator" parent="Panel/VBox" unique_id=1610148831]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ButtonGrid" type="GridContainer" parent="Panel/VBox" unique_id=1996726530]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Btn0" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=230420732]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "다이아 획득량"
+
+[node name="Btn1" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=1271689067]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "곡괭이 속도"
+
+[node name="Btn2" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=1935783683]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "돈 랜덤 확률"
+
+[node name="Btn3" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=845964104]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "채굴 티어"
+
+[node name="Btn4" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=1110251519]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "자동 채굴"
+
+[node name="Btn5" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=1782531877]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "채굴 키"
+
+[node name="Btn6" type="Button" parent="Panel/VBox/ButtonGrid" unique_id=59088894]
+custom_minimum_size = Vector2(200, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "타일 보너스"
+
+[node name="Sep2" type="HSeparator" parent="Panel/VBox" unique_id=401852997]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="InfoLabel" type="Label" parent="Panel/VBox" unique_id=1614023549]
+custom_minimum_size = Vector2(0, 65)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "업그레이드를 선택하세요"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Sep3" type="HSeparator" parent="Panel/VBox" unique_id=457566661]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ActionBox" type="HBoxContainer" parent="Panel/VBox" unique_id=830085699]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BuyButton" type="Button" parent="Panel/VBox/ActionBox" unique_id=224200255]
+visible = false
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+text = "구매"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox/ActionBox" unique_id=736000761]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 15
+text = "닫기"

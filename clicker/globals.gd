@@ -4,9 +4,11 @@ extends Node
 # Signals - 다른 노드들이 구독할 수 있는 이벤트
 # ========================================
 signal money_changed(new_amount: int, delta: int)  # 돈이 변경될 때 (새 금액, 변화량)
+signal rock_mined(amount: int)  # 일반 돌(rock)이 채굴되었을 때 (보상 금액)
 signal tier_up(new_tier: int)  # 티어가 올라갈 때
 signal action_text_changed(text: String, visible: bool)  # 액션 텍스트 변경 시그널
 signal skin_changed(skin_id: String)  # 스킨이 변경될 때
+signal upgrade_type_unlocked(type_id: int)  # 업그레이드 타입이 해금될 때
 
 func _ready():
 	# 초기 값 계산
@@ -22,6 +24,98 @@ func _ready():
 	_load_skin_data()
 	# 설정 로드
 	load_settings()
+
+# ========================================
+# 업그레이드 해금 시스템 (동굴 아이템)
+# ========================================
+# 업그레이드 타입 ID:
+# 0 = money_up (다이아몬드 획득량) - 기본 해금
+# 1 = money_time (곡괭이 속도)
+# 2 = money_randomize (돈 랜덤 확률)
+# 3 = mining_tier (채굴 티어)
+# 4 = auto_mining_speed (자동 채굴 속도)
+# 5 = mining_key_count (채굴 키 개수)
+# 6 = rock_money_up (타일 채굴 보너스)
+
+# 해금된 업그레이드 타입 목록 (0 = money_up은 기본 해금)
+var unlocked_upgrade_types: Array[int] = [0]
+
+# 동굴에서 발견한 아이템 ID 목록
+var cave_items_found: Array[String] = []
+
+# 수집한 요정 아이템 ID 목록 (중복 획득 방지)
+var collected_fairy_items: Array[String] = []
+
+# 업그레이드 타입별 이름 (번역 시스템 사용)
+func get_upgrade_type_name(type_id: int) -> String:
+	return get_text("UPGRADE TYPE %d" % type_id)
+
+# 동굴 아이템 ID → 해금되는 업그레이드 타입 ID 매핑
+var cave_item_unlock_map: Dictionary = {
+	"speed_scroll": 1,       # 속도의 두루마리 → 곡괭이 속도
+	"lucky_charm": 2,        # 행운의 부적 → 돈 랜덤 확률
+	"depth_crystal": 3,      # 깊이의 수정 → 채굴 티어
+	"auto_gear": 4,          # 자동 톱니바퀴 → 자동 채굴 속도
+	"multi_key_stone": 5,    # 다중 키 석판 → 채굴 키 개수
+	"rock_hammer": 6         # 바위 망치 → 타일 채굴 보너스
+}
+
+# 동굴 아이템별 설명 (번역 시스템 사용)
+var _cave_item_key_map: Dictionary = {
+	"speed_scroll": "CAVE SPEED SCROLL",
+	"lucky_charm": "CAVE LUCKY CHARM",
+	"depth_crystal": "CAVE DEPTH CRYSTAL",
+	"auto_gear": "CAVE AUTO GEAR",
+	"multi_key_stone": "CAVE MULTI KEY",
+	"rock_hammer": "CAVE ROCK HAMMER",
+}
+func get_cave_item_description(item_id: String) -> String:
+	if _cave_item_key_map.has(item_id):
+		return get_text(_cave_item_key_map[item_id])
+	return ""
+
+## /** 업그레이드 타입을 해금한다
+##  * @param type_id int 해금할 업그레이드 타입 ID
+##  * @returns bool 해금 성공 여부 (이미 해금되면 false)
+##  */
+func unlock_upgrade_type(type_id: int) -> bool:
+	if type_id in unlocked_upgrade_types:
+		return false
+	unlocked_upgrade_types.append(type_id)
+	unlocked_upgrade_types.sort()  # 정렬 유지
+	upgrade_type_unlocked.emit(type_id)
+	save_settings()
+	return true
+
+## /** 동굴 아이템을 수집한다
+##  * 아이템에 연결된 업그레이드 타입이 자동으로 해금된다
+##  * @param item_id String 동굴 아이템 ID
+##  * @returns bool 수집 성공 여부 (이미 수집했으면 false)
+##  */
+func collect_cave_item(item_id: String) -> bool:
+	if item_id in cave_items_found:
+		return false
+	cave_items_found.append(item_id)
+	# 아이템에 연결된 업그레이드 타입 해금
+	if cave_item_unlock_map.has(item_id):
+		var type_id = cave_item_unlock_map[item_id]
+		unlock_upgrade_type(type_id)
+	save_settings()
+	return true
+
+## /** 업그레이드 타입이 해금되었는지 확인한다
+##  * @param type_id int 확인할 업그레이드 타입 ID
+##  * @returns bool 해금 여부
+##  */
+func is_upgrade_unlocked(type_id: int) -> bool:
+	return type_id in unlocked_upgrade_types
+
+## /** 동굴 아이템이 이미 수집되었는지 확인한다
+##  * @param item_id String 확인할 아이템 ID
+##  * @returns bool 수집 여부
+##  */
+func is_cave_item_found(item_id: String) -> bool:
+	return item_id in cave_items_found
 
 # ========================================
 # 게임 밸런스 변수
@@ -138,7 +232,7 @@ var pickaxe_speed_upgrades: Array[Vector2i] = [
 # 다이아몬드 획득량 증가 (dv Lv) - 20레벨
 # [가격, 획득량] 형식 - 초반 저렴, 후반 비쌈
 var diamond_value_upgrades: Array[Vector2i] = [
-	Vector2i(20, 3),      # Lv 1: 빠른 시작
+	Vector2i(10, 3),      # Lv 1: 빠른 시작
 	Vector2i(50, 5),      # Lv 2
 	Vector2i(120, 8),     # Lv 3
 	Vector2i(300, 12),    # Lv 4
@@ -364,6 +458,9 @@ var translations: Dictionary = {
 		"SETTING SFX": "효과음",
 		"SETTING LANGUAGE": "언어",
 		"SETTING BACK": "뒤로가기",
+		"SETTING TUTORIAL POPUP": "튜토리얼 팝업 표시",
+		"SETTING TUTORIAL RESTART": "튜토리얼 다시 보기",
+		"SETTING TUTORIAL SKIP": "스킵하기",
 		"SHOP TITLE": "상점",
 		"SHOP OWNED": "보유:",
 		"SHOP CLOSE": "닫기",
@@ -381,7 +478,17 @@ var translations: Dictionary = {
 		"UI KEY BLOCKED": "사용 불가!",
 		"UI TIER UP": "티어 %d 달성!",
 		"UI MINING KEY N": "채굴 키 %d:",
-		"AUTO GO BACK": "돌아가기",
+		"UI GOAL": "목표: %s / %s",
+		"UI GOAL INIT": "목표: 0 / %s",
+		"UI PASSIVE INCOME": "+%d/초 (알바)",
+		"UI INCOME SUFFIX": "/초",
+		"UI TUTORIAL RESTART": "🔄 튜토리얼을 다시 시작합니다...",
+		"UI GAME CLEAR": "🎉 게임 클리어! 🎉",
+		"UI CLEAR TIME": "클리어 시간: %s",
+		"UI POINTS EARNED": "획득 포인트: %s P",
+		"UI TOTAL POINTS": "누적 포인트: %s P",
+		"UI CONTINUE": "auto_scene으로 이동",
+		"AUTO GO BACK": "<-",
 		"AUTO SHOP": "상점",
 		"AUTO SETTING": "설정",
 		"AUTO SETTING TITLE": "설정",
@@ -390,6 +497,130 @@ var translations: Dictionary = {
 		"AUTO SETTING APPLY": "적용",
 		"AUTO SETTING CLOSE": "닫기",
 		"LOBBY PRESS KEY": "- 아무 키나 누르세요 -",
+		"NPC TALK": "[F] 대화하기",
+		"NPC IDLE 1": "오늘도 장사가 안 되네",
+		"NPC IDLE 2": "손님 없나...",
+		"NPC IDLE 3": "업그레이드 하나 사가세요",
+		"NPC IDLE 4": "좋은 물건 많아요",
+		"NPC IDLE 5": "할인은 없어요",
+		"NPC SUCCESS 1": "좋은 선택이야!",
+		"NPC SUCCESS 2": "이제 좀 쓸만해졌네",
+		"NPC SUCCESS 3": "돈이 아깝지 않을걸?",
+		"NPC SUCCESS 4": "잘 골랐어!",
+		"NPC FAIL 1": "돈이 부족해",
+		"NPC FAIL 2": "아직 못 사네",
+		"NPC FAIL 3": "열심히 더 캐야지",
+		"UPGRADE DIAMOND": "다이아 획득량",
+		"UPGRADE SPEED": "곡괭이 속도",
+		"UPGRADE RANDOM": "돈 랜덤 확률",
+		"UPGRADE TIER": "채굴 티어",
+		"UPGRADE AUTO": "자동 채굴",
+		"UPGRADE KEY": "채굴 키",
+		"UPGRADE TILE": "타일 보너스",
+		"UPGRADE NPC 1": "뭐 할거있어?",
+		"UPGRADE NPC 2": "뭐가 필요해?",
+		"UPGRADE NPC 3": "업그레이드 할래?",
+		"UPGRADE NPC 4": "오늘도 열심히 캐?",
+		"UPGRADE NPC 5": "이것저것 다 있어",
+		"UPGRADE SELECT": "업그레이드를 선택하세요",
+		"UPGRADE LOCKED": "🔒 아직 해금되지 않았습니다\n동굴에서 아이템을 찾아보세요!",
+		"UPGRADE MAX REACHED": "이미 최대 레벨입니다!",
+		"UPGRADE NOT ENOUGH": "💎 부족! 필요: 💎%d\n보유: 💎%d",
+		"UPGRADE MAX STAR": "⭐ 최대 레벨 도달!",
+		"UPGRADE COST": "💎 %d 필요",
+		"UPGRADE BUY AFFORD": "구매 💎%d",
+		"UPGRADE BUY CANT": "💎 부족",
+		"UPGRADE MAX": "최대 레벨",
+		"UPGRADE EFFECT YIELD": "획득량: %d",
+		"UPGRADE EFFECT CLICKS": "필요 클릭: %d회",
+		"UPGRADE EFFECT TIER": "티어 %d (레이어 1~%d)",
+		"UPGRADE EFFECT INTERVAL": "채굴 간격: %.2f초",
+		"UPGRADE EFFECT KEYS": "키 %d개 (%s)",
+		"UPGRADE EFFECT BONUS": "추가 획득: +%d",
+		"UPGRADE INFO FORMAT": "%s (Lv%d → Lv%d)\n%s\n%s",
+		"ALBA INFO": "알바 고용\n가격: %d\n수입: %d/초",
+		"UPGRADE TYPE 0": "다이아몬드 획득량",
+		"UPGRADE TYPE 1": "곡괭이 속도",
+		"UPGRADE TYPE 2": "돈 랜덤 확률",
+		"UPGRADE TYPE 3": "채굴 티어",
+		"UPGRADE TYPE 4": "자동 채굴 속도",
+		"UPGRADE TYPE 5": "채굴 키 개수",
+		"UPGRADE TYPE 6": "타일 채굴 보너스",
+		"CAVE SPEED SCROLL": "속도의 두루마리를 발견했다!\n곡괭이 속도 업그레이드가 해금되었다!",
+		"CAVE LUCKY CHARM": "행운의 부적을 발견했다!\n돈 랜덤 확률 업그레이드가 해금되었다!",
+		"CAVE DEPTH CRYSTAL": "깊이의 수정을 발견했다!\n채굴 티어 업그레이드가 해금되었다!",
+		"CAVE AUTO GEAR": "자동 톱니바퀴를 발견했다!\n자동 채굴 속도 업그레이드가 해금되었다!",
+		"CAVE MULTI KEY": "다중 키 석판을 발견했다!\n채굴 키 개수 업그레이드가 해금되었다!",
+		"CAVE ROCK HAMMER": "바위 망치를 발견했다!\n타일 채굴 보너스 업그레이드가 해금되었다!",
+		"CAVE ITEM SPEED SCROLL": "속도의 두루마리",
+		"CAVE ITEM LUCKY CHARM": "행운의 부적",
+		"CAVE ITEM DEPTH CRYSTAL": "깊이의 수정",
+		"CAVE ITEM AUTO GEAR": "자동화 톱니",
+		"CAVE ITEM MULTI KEY": "다중 키스톤",
+		"CAVE ITEM ROCK HAMMER": "바위 망치",
+		"UPGRADE NEW UNLOCKED": "새로운 업그레이드가 해금되었다!",
+		"FAIRY PICKAXE NAME": "요정의 곡괭이",
+		"FAIRY PICKAXE DESC": "요정에게 곡괭이를 쥐여줍니다",
+		"FAIRY PICKAXE ACQUIRE": "요정이 곡괭이를 사용할 수 있게 되었습니다",
+		"FAIRY LIGHT NAME": "요정의 빛",
+		"FAIRY LIGHT DESC": "요정이 은은한 빛을 냅니다",
+		"FAIRY LIGHT ACQUIRE": "요정이 빛을 낼 수 있게 되었습니다",
+		"FAIRY ITEM DEFAULT": "아이템",
+		"FAIRY ACQUIRE DEFAULT": "요정이 새로운 능력을 얻었습니다",
+		"FAIRY ACQUIRE FORMAT": "[F] %s 획득",
+		"TUTORIAL POPUP TITLE": "튜토리얼",
+		"TUTORIAL POPUP QUESTION": "튜토리얼을 진행하시겠습니까?\n기본 조작법과 게임 방법을 배울 수 있습니다.",
+		"TUTORIAL POPUP YES": "예",
+		"TUTORIAL POPUP NO": "아니오",
+		"TUTORIAL INTRO 1": "안녕! 나는 광산 요정이야!",
+		"TUTORIAL INTRO 2": "여기는 오래된 광산이야.",
+		"TUTORIAL INTRO 3": "이곳에서 돌을 캐서 돈을 벌 수 있어!",
+		"TUTORIAL INTRO 4": "기본적인 방법을 알려줄게!",
+		"TUTORIAL SHOW ROCK 1": "저기 보이는 돌을 봐!",
+		"TUTORIAL SHOW ROCK 2": "F키를 눌러서 돌을 캘 수 있어.",
+		"TUTORIAL SHOW ROCK 3": "키를 여러 번 눌러서 게이지를 채우면 돼!",
+		"TUTORIAL MINE ROCK 1": "좋아! 이제 돌을 10개 캐보자!",
+		"TUTORIAL MINE ROCK 2": "F키를 눌러서 채굴해줘!",
+		"TUTORIAL MINE ROCK 3": "(돌 근처로 가서 F키를 누르세요)",
+		"TUTORIAL MINE PROGRESS": "돌 채굴: %d / 10개",
+		"TUTORIAL MINE COMPLETE 1": "잘했어! 10개를 모았네!",
+		"TUTORIAL MINE COMPLETE 2": "이제 이 돌로 뭘 할 수 있는지 보여줄게.",
+		"TUTORIAL SHOW UPGRADE 1": "저기 있는 NPC를 봐!",
+		"TUTORIAL SHOW UPGRADE 2": "그 친구한테 가면 돈으로 업그레이드를 할 수 있어.",
+		"TUTORIAL SHOW UPGRADE 3": "더 빨리, 더 많이 캘 수 있게 해주지!",
+		"TUTORIAL DO UPGRADE 1": "NPC 근처로 가서 F키를 눌러봐!",
+		"TUTORIAL DO UPGRADE 2": "한 번만 업그레이드해보자!",
+		"TUTORIAL DO UPGRADE 3": "(money_up NPC 근처에서 F키를 누르세요)",
+		"TUTORIAL UPGRADE COMPLETE 1": "완벽해! 이제 더 많은 돈을 벌 수 있을 거야!",
+		"TUTORIAL UPGRADE COMPLETE 2": "이제 더 깊은 곳으로 가볼까?",
+		"TUTORIAL SHOW CAVE 1": "저기 아래에 어두운 동굴이 보이지?",
+		"TUTORIAL SHOW CAVE 2": "그곳에 더 좋은 광물이 있을지도 몰라!",
+		"TUTORIAL SHOW CAVE 3": "같이 가보자!",
+		"TUTORIAL BREAK WALL 1": "이 벽을 부수면 들어갈 수 있어!",
+		"TUTORIAL BREAK WALL 2": "마우스 왼쪽 클릭으로 벽을 부술 수 있어.",
+		"TUTORIAL BREAK WALL 3": "(마우스로 벽을 가리키고 왼쪽 클릭하세요)",
+		"TUTORIAL BREAK PROGRESS": "벽 파괴 중...",
+		"TUTORIAL ENTER CAVE": "동굴 안으로 들어가세요!",
+		"TUTORIAL GO DEEPER": "동굴 안쪽으로 더 들어가세요!",
+		"TUTORIAL TORCH 1": "너무 어둡네! 횃불이 필요해.",
+		"TUTORIAL TORCH 2": "2번 키를 눌러서 횃불 설치 모드로 전환해.",
+		"TUTORIAL TORCH 3": "그 다음 B키를 눌러서 설치할 수 있어!",
+		"TUTORIAL TORCH 4": "(2번 키 → 마우스로 위치 선택 → B키)",
+		"TUTORIAL TORCH PLACED 1": "좋아! 이제 훨씬 밝네!",
+		"TUTORIAL TORCH PLACED 2": "앞으로도 어두운 곳에서 이렇게 하면 돼.",
+		"TUTORIAL TORCH PLACED 3": "이제 2번 키를 다시 눌러서 채굴 모드로 돌아가자!",
+		"TUTORIAL NEED MONEY 1": "앗, 동굴 안의 업그레이드를 하려면 돈이 부족해!",
+		"TUTORIAL NEED MONEY 2": "다시 밖으로 나가서 돌을 더 캐야겠어.",
+		"TUTORIAL NEED MONEY 3": "그런데 입구가 위에 있네...",
+		"TUTORIAL PLATFORM 1": "이제 밖으로 나가보자! 입구가 위에 있네...",
+		"TUTORIAL PLATFORM 2": "3번 키를 눌러서 플랫폼 설치 모드로 전환해.",
+		"TUTORIAL PLATFORM 3": "플랫폼을 계단처럼 쌓아서 올라갈 수 있어!",
+		"TUTORIAL PLATFORM 4": "(3번 키 → 마우스로 위치 → B키 반복)",
+		"TUTORIAL PLATFORM PROGRESS": "플랫폼 설치 중... 입구까지 올라가세요!",
+		"TUTORIAL COMPLETE 1": "완벽해! 기본적인 건 다 배웠어!",
+		"TUTORIAL COMPLETE 2": "이제 나도 너를 도와줄게!",
+		"TUTORIAL COMPLETE 3": "앞으로는 J키로도 돌을 캘 수 있어!",
+		"TUTORIAL COMPLETE 4": "함께 광산의 비밀을 찾아보자!",
 	},
 	"en": {
 		"MENU TITLE": "Menu",
@@ -402,6 +633,9 @@ var translations: Dictionary = {
 		"SETTING SFX": "SFX",
 		"SETTING LANGUAGE": "Language",
 		"SETTING BACK": "Back",
+		"SETTING TUTORIAL POPUP": "Show Tutorial Popup",
+		"SETTING TUTORIAL RESTART": "Restart Tutorial",
+		"SETTING TUTORIAL SKIP": "Skip",
 		"SHOP TITLE": "Shop",
 		"SHOP OWNED": "Owned:",
 		"SHOP CLOSE": "Close",
@@ -419,7 +653,17 @@ var translations: Dictionary = {
 		"UI KEY BLOCKED": "Not Available!",
 		"UI TIER UP": "Tier %d Reached!",
 		"UI MINING KEY N": "Mining Key %d:",
-		"AUTO GO BACK": "Go Back",
+		"UI GOAL": "Goal: %s / %s",
+		"UI GOAL INIT": "Goal: 0 / %s",
+		"UI PASSIVE INCOME": "+%d/s (Worker)",
+		"UI INCOME SUFFIX": "/s",
+		"UI TUTORIAL RESTART": "🔄 Restarting tutorial...",
+		"UI GAME CLEAR": "🎉 Game Clear! 🎉",
+		"UI CLEAR TIME": "Clear Time: %s",
+		"UI POINTS EARNED": "Points Earned: %s P",
+		"UI TOTAL POINTS": "Total Points: %s P",
+		"UI CONTINUE": "Go to Auto Scene",
+		"AUTO GO BACK": "<-",
 		"AUTO SHOP": "Shop",
 		"AUTO SETTING": "Settings",
 		"AUTO SETTING TITLE": "Settings",
@@ -428,6 +672,130 @@ var translations: Dictionary = {
 		"AUTO SETTING APPLY": "Apply",
 		"AUTO SETTING CLOSE": "Close",
 		"LOBBY PRESS KEY": "- Press Any Key -",
+		"NPC TALK": "[F] Talk",
+		"NPC IDLE 1": "Business is slow today",
+		"NPC IDLE 2": "No customers...",
+		"NPC IDLE 3": "Buy an upgrade",
+		"NPC IDLE 4": "I have great stuff",
+		"NPC IDLE 5": "No discounts",
+		"NPC SUCCESS 1": "Good choice!",
+		"NPC SUCCESS 2": "Now that's useful",
+		"NPC SUCCESS 3": "Worth every penny!",
+		"NPC SUCCESS 4": "Nice pick!",
+		"NPC FAIL 1": "Not enough money",
+		"NPC FAIL 2": "Can't afford that yet",
+		"NPC FAIL 3": "Keep mining!",
+		"UPGRADE DIAMOND": "Diamond Yield",
+		"UPGRADE SPEED": "Pickaxe Speed",
+		"UPGRADE RANDOM": "Luck Chance",
+		"UPGRADE TIER": "Mining Tier",
+		"UPGRADE AUTO": "Auto Mining",
+		"UPGRADE KEY": "Mining Keys",
+		"UPGRADE TILE": "Tile Bonus",
+		"UPGRADE NPC 1": "Need something?",
+		"UPGRADE NPC 2": "What do you need?",
+		"UPGRADE NPC 3": "Want an upgrade?",
+		"UPGRADE NPC 4": "Mining hard today?",
+		"UPGRADE NPC 5": "I've got everything",
+		"UPGRADE SELECT": "Select an upgrade",
+		"UPGRADE LOCKED": "🔒 Not unlocked yet\nFind items in the cave!",
+		"UPGRADE MAX REACHED": "Already at max level!",
+		"UPGRADE NOT ENOUGH": "💎 Not enough! Need: 💎%d\nOwned: 💎%d",
+		"UPGRADE MAX STAR": "⭐ Max level reached!",
+		"UPGRADE COST": "💎 %d needed",
+		"UPGRADE BUY AFFORD": "Buy 💎%d",
+		"UPGRADE BUY CANT": "💎 Not enough",
+		"UPGRADE MAX": "Max Level",
+		"UPGRADE EFFECT YIELD": "Yield: %d",
+		"UPGRADE EFFECT CLICKS": "Required clicks: %d",
+		"UPGRADE EFFECT TIER": "Tier %d (Layer 1~%d)",
+		"UPGRADE EFFECT INTERVAL": "Mining interval: %.2fs",
+		"UPGRADE EFFECT KEYS": "%d keys (%s)",
+		"UPGRADE EFFECT BONUS": "Extra yield: +%d",
+		"UPGRADE INFO FORMAT": "%s (Lv%d → Lv%d)\n%s\n%s",
+		"ALBA INFO": "Hire Worker\nPrice: %d\nIncome: %d/s",
+		"UPGRADE TYPE 0": "Diamond Yield",
+		"UPGRADE TYPE 1": "Pickaxe Speed",
+		"UPGRADE TYPE 2": "Luck Chance",
+		"UPGRADE TYPE 3": "Mining Tier",
+		"UPGRADE TYPE 4": "Auto Mining Speed",
+		"UPGRADE TYPE 5": "Mining Key Count",
+		"UPGRADE TYPE 6": "Tile Mining Bonus",
+		"CAVE SPEED SCROLL": "Found a Speed Scroll!\nPickaxe Speed upgrade unlocked!",
+		"CAVE LUCKY CHARM": "Found a Lucky Charm!\nLuck Chance upgrade unlocked!",
+		"CAVE DEPTH CRYSTAL": "Found a Depth Crystal!\nMining Tier upgrade unlocked!",
+		"CAVE AUTO GEAR": "Found an Auto Gear!\nAuto Mining Speed upgrade unlocked!",
+		"CAVE MULTI KEY": "Found a Multi-Key Stone!\nMining Key Count upgrade unlocked!",
+		"CAVE ROCK HAMMER": "Found a Rock Hammer!\nTile Mining Bonus upgrade unlocked!",
+		"CAVE ITEM SPEED SCROLL": "Speed Scroll",
+		"CAVE ITEM LUCKY CHARM": "Lucky Charm",
+		"CAVE ITEM DEPTH CRYSTAL": "Depth Crystal",
+		"CAVE ITEM AUTO GEAR": "Auto Gear",
+		"CAVE ITEM MULTI KEY": "Multi-Key Stone",
+		"CAVE ITEM ROCK HAMMER": "Rock Hammer",
+		"UPGRADE NEW UNLOCKED": "New upgrade unlocked!",
+		"FAIRY PICKAXE NAME": "Fairy's Pickaxe",
+		"FAIRY PICKAXE DESC": "Give the fairy a pickaxe",
+		"FAIRY PICKAXE ACQUIRE": "The fairy can now use a pickaxe",
+		"FAIRY LIGHT NAME": "Fairy's Light",
+		"FAIRY LIGHT DESC": "The fairy emits a gentle glow",
+		"FAIRY LIGHT ACQUIRE": "The fairy can now emit light",
+		"FAIRY ITEM DEFAULT": "Item",
+		"FAIRY ACQUIRE DEFAULT": "The fairy gained a new ability",
+		"FAIRY ACQUIRE FORMAT": "[F] Get %s",
+		"TUTORIAL POPUP TITLE": "Tutorial",
+		"TUTORIAL POPUP QUESTION": "Would you like to play the tutorial?\nLearn basic controls and gameplay.",
+		"TUTORIAL POPUP YES": "Yes",
+		"TUTORIAL POPUP NO": "No",
+		"TUTORIAL INTRO 1": "Hi! I'm the mine fairy!",
+		"TUTORIAL INTRO 2": "This is an old mine.",
+		"TUTORIAL INTRO 3": "You can mine rocks to earn money here!",
+		"TUTORIAL INTRO 4": "Let me show you the basics!",
+		"TUTORIAL SHOW ROCK 1": "Look at that rock over there!",
+		"TUTORIAL SHOW ROCK 2": "Press F to mine rocks.",
+		"TUTORIAL SHOW ROCK 3": "Press the key multiple times to fill the gauge!",
+		"TUTORIAL MINE ROCK 1": "Alright! Let's mine 10 rocks!",
+		"TUTORIAL MINE ROCK 2": "Press F to mine!",
+		"TUTORIAL MINE ROCK 3": "(Go near a rock and press F)",
+		"TUTORIAL MINE PROGRESS": "Rocks mined: %d / 10",
+		"TUTORIAL MINE COMPLETE 1": "Great job! You mined 10!",
+		"TUTORIAL MINE COMPLETE 2": "Let me show you what you can do with these.",
+		"TUTORIAL SHOW UPGRADE 1": "Look at that NPC over there!",
+		"TUTORIAL SHOW UPGRADE 2": "You can spend money on upgrades with them.",
+		"TUTORIAL SHOW UPGRADE 3": "They'll help you mine faster and earn more!",
+		"TUTORIAL DO UPGRADE 1": "Go near the NPC and press F!",
+		"TUTORIAL DO UPGRADE 2": "Let's upgrade once!",
+		"TUTORIAL DO UPGRADE 3": "(Press F near the money_up NPC)",
+		"TUTORIAL UPGRADE COMPLETE 1": "Perfect! Now you can earn more money!",
+		"TUTORIAL UPGRADE COMPLETE 2": "Shall we go deeper?",
+		"TUTORIAL SHOW CAVE 1": "See that dark cave below?",
+		"TUTORIAL SHOW CAVE 2": "There might be better minerals down there!",
+		"TUTORIAL SHOW CAVE 3": "Let's go together!",
+		"TUTORIAL BREAK WALL 1": "Break this wall to enter!",
+		"TUTORIAL BREAK WALL 2": "Left-click to break walls.",
+		"TUTORIAL BREAK WALL 3": "(Point at the wall and left-click)",
+		"TUTORIAL BREAK PROGRESS": "Breaking wall...",
+		"TUTORIAL ENTER CAVE": "Enter the cave!",
+		"TUTORIAL GO DEEPER": "Go deeper into the cave!",
+		"TUTORIAL TORCH 1": "Too dark! We need a torch.",
+		"TUTORIAL TORCH 2": "Press 2 to switch to torch mode.",
+		"TUTORIAL TORCH 3": "Then press B to place it!",
+		"TUTORIAL TORCH 4": "(Press 2 → Point with mouse → Press B)",
+		"TUTORIAL TORCH PLACED 1": "Nice! Much brighter now!",
+		"TUTORIAL TORCH PLACED 2": "Do this whenever it's too dark.",
+		"TUTORIAL TORCH PLACED 3": "Press 2 again to switch back to mining mode!",
+		"TUTORIAL NEED MONEY 1": "Oops, not enough money for cave upgrades!",
+		"TUTORIAL NEED MONEY 2": "Let's go back outside and mine more rocks.",
+		"TUTORIAL NEED MONEY 3": "But the entrance is up there...",
+		"TUTORIAL PLATFORM 1": "Let's head out! The entrance is up there...",
+		"TUTORIAL PLATFORM 2": "Press 3 to switch to platform mode.",
+		"TUTORIAL PLATFORM 3": "Stack platforms like stairs to climb up!",
+		"TUTORIAL PLATFORM 4": "(Press 3 → Point with mouse → Press B repeatedly)",
+		"TUTORIAL PLATFORM PROGRESS": "Placing platforms... Climb to the entrance!",
+		"TUTORIAL COMPLETE 1": "Perfect! You've learned the basics!",
+		"TUTORIAL COMPLETE 2": "I'll help you from now on!",
+		"TUTORIAL COMPLETE 3": "You can also mine with J key now!",
+		"TUTORIAL COMPLETE 4": "Let's discover the mine's secrets together!",
 	}
 }
 
@@ -453,6 +821,14 @@ func save_settings() -> void:
 	config.set_value("auto_scene", "character_scale", auto_character_scale)
 	config.set_value("tutorial", "is_completed", is_tutorial_completed)
 	config.set_value("tutorial", "show_popup", show_tutorial_popup)
+	# 업그레이드 해금 데이터 저장
+	var unlock_str = ",".join(unlocked_upgrade_types.map(func(x): return str(x)))
+	config.set_value("upgrades", "unlocked_types", unlock_str)
+	var cave_str = ",".join(cave_items_found)
+	config.set_value("upgrades", "cave_items", cave_str)
+	# 요정 아이템 수집 데이터 저장
+	var fairy_str = ",".join(collected_fairy_items)
+	config.set_value("fairy", "collected_items", fairy_str)
 	config.save("user://settings.cfg")
 	
 	# 오디오 버스에 볼륨 적용
@@ -473,6 +849,25 @@ func load_settings() -> void:
 	auto_character_scale = config.get_value("auto_scene", "character_scale", 1.0)
 	is_tutorial_completed = config.get_value("tutorial", "is_completed", false)
 	show_tutorial_popup = config.get_value("tutorial", "show_popup", true)
+	
+	# 업그레이드 해금 데이터 로드
+	var unlock_str = config.get_value("upgrades", "unlocked_types", "0")
+	if unlock_str != "":
+		unlocked_upgrade_types.clear()
+		for s in unlock_str.split(",", false):
+			unlocked_upgrade_types.append(int(s))
+	# 동굴 아이템 데이터 로드
+	var cave_str = config.get_value("upgrades", "cave_items", "")
+	if cave_str != "":
+		cave_items_found.assign(cave_str.split(",", false))
+	else:
+		cave_items_found.clear()
+	# 요정 아이템 수집 데이터 로드
+	var fairy_str = config.get_value("fairy", "collected_items", "")
+	if fairy_str != "":
+		collected_fairy_items.assign(fairy_str.split(",", false))
+	else:
+		collected_fairy_items.clear()
 	
 	# 오디오 버스에 볼륨 적용
 	_apply_audio_settings()
@@ -497,6 +892,26 @@ func _apply_audio_settings() -> void:
 func _apply_language() -> void:
 	# Godot의 번역 시스템 사용
 	TranslationServer.set_locale(current_language)
+
+# ========================================
+# UI 클릭 사운드 시스템
+# ========================================
+# UI 클릭 효과음 (전역에서 재생 가능)
+var _click_sfx_player: AudioStreamPlayer = null
+var _click_sfx_stream = preload("res://CONCEPT/asset/ESM_SFSG_cinematic_fx_science_fiction_ui_general_positive_popup_window_synth_fast.wav")
+
+## /** UI 클릭 사운드를 재생한다
+##  * 어떤 씬에서든 Globals.play_click_sound() 로 호출 가능
+##  * @returns void
+##  */
+func play_click_sound():
+	if _click_sfx_player == null:
+		_click_sfx_player = AudioStreamPlayer.new()
+		_click_sfx_player.stream = _click_sfx_stream
+		_click_sfx_player.volume_db = -5.0
+		_click_sfx_player.bus = "Master"
+		add_child(_click_sfx_player)
+	_click_sfx_player.play()
 
 # ========================================
 # 액션 텍스트 시스템

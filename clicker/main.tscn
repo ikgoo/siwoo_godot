@@ -1,34 +1,45 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqqkn2ouybgke"]
+[gd_scene format=3 uid="uid://cqqkn2ouybgke"]
 
-[ext_resource type="PackedScene" uid="uid://mhysjapi61u1" path="res://tile_map.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dkljg4mpurc0f" path="res://tile_map.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bn4r5emxrhk8f" path="res://character.tscn" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://ejlxnt1kknfi" path="res://camera_2d.gd" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bojiqqd4sya5p" path="res://ui.tscn" id="8_5vw27"]
 [ext_resource type="Script" uid="uid://bih73umsk1x3m" path="res://tutorial_manager.gd" id="9_tutorial"]
 [ext_resource type="PackedScene" uid="uid://dpb6lslfpgd6i" path="res://tutorial_popup.tscn" id="10_popup"]
+[ext_resource type="Texture2D" uid="uid://y7jmy07vtly1" path="res://CONCEPT/asset/16/min_clicker_backbackback.png" id="11_bg"]
 
-[node name="main" type="Node2D"]
+[node name="main" type="Node2D" unique_id=1127011073]
 
-[node name="TileMap" parent="." instance=ExtResource("1_0xm2m")]
-scale = Vector2(0.5, 0.5)
-
-[node name="character" parent="." instance=ExtResource("2_h2yge")]
+[node name="character" parent="." unique_id=254591385 instance=ExtResource("2_h2yge")]
 position = Vector2(-6, 2)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1564964889]
 position = Vector2(0, 88)
 zoom = Vector2(3.5, 3.5)
 script = ExtResource("4_1bvp3")
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1404583866]
 color = Color(0.03, 0.03, 0.05, 1)
 
-[node name="TutorialManager" type="Node" parent="."]
+[node name="TutorialManager" type="Node" parent="." unique_id=549689011]
 script = ExtResource("9_tutorial")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1953023194]
 
-[node name="UI" parent="CanvasLayer" instance=ExtResource("8_5vw27")]
+[node name="UI" parent="CanvasLayer" unique_id=1456547799 instance=ExtResource("8_5vw27")]
 metadata/_edit_lock_ = true
 
-[node name="TutorialPopup" parent="CanvasLayer" instance=ExtResource("10_popup")]
+[node name="TutorialPopup" parent="CanvasLayer" unique_id=1489099912 instance=ExtResource("10_popup")]
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1699617177]
+scroll_scale = Vector2(0.3, 0.3)
+scroll_offset = Vector2(0, 265.75)
+repeat_size = Vector2(320, 0)
+repeat_times = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1020369206]
+z_index = -100
+texture = ExtResource("11_bg")
+
+[node name="tilemaps" parent="." unique_id=355856923 instance=ExtResource("1_0xm2m")]
+scale = Vector2(0.5, 0.5)

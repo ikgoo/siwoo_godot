@@ -70,7 +70,7 @@ func _ready():
 	
 	# 초당 돈 증가량에 알바 수입 추가
 	Globals.money_per_second += money_amount
-	print("알바 고용 완료! 초당 수입 +💎", money_amount, ", 현재 초당 수입: 💎", Globals.money_per_second, "/초")
+	print("알바 고용 완료! 초당 수입 +", money_amount, ", 현재 초당 수입: ", Globals.money_per_second, "/초")
 	
 	# 스프라이트 텍스처 교체
 	if sprite:
@@ -167,14 +167,14 @@ func is_max_level() -> bool:
 func get_alba_info_text() -> String:
 	# MAX 레벨 체크
 	if is_max_level():
-		return "알바 (MAX)\n현재 수입: 💎%d/초\n더 이상 강화 불가" % money_amount
+		return "알바 (MAX)\n현재 수입: %d/초\n더 이상 강화 불가" % money_amount
 	
 	var cost = get_upgrade_cost()
 	var current_income = money_amount
 	var next_income = get_upgraded_income()
 	var income_increase = next_income - current_income
 	
-	return "알바 강화 (Lv.%d)\n가격: 💎%d\n현재 수입: 💎%d/초\n강화 후: 💎%d/초 (+%d)" % [upgrade_level, cost, current_income, next_income, income_increase]
+	return "알바 강화 (Lv.%d)\n가격: %d\n현재 수입: %d/초\n강화 후: %d/초 (+%d)" % [upgrade_level, cost, current_income, next_income, income_increase]
 
 # 알바 강화
 func upgrade_alba():
@@ -189,7 +189,7 @@ func upgrade_alba():
 	if Globals.money >= cost:
 		# 돈 차감
 		Globals.money -= cost
-		print("알바 강화 💎 차감: ", cost, ", 남은 돈: 💎", Globals.money)
+		print("알바 강화 차감: ", cost, ", 남은 돈: ", Globals.money)
 		
 		# 이전 수입량 제거
 		Globals.money_per_second -= money_amount
@@ -203,7 +203,7 @@ func upgrade_alba():
 		# 새로운 수입량 추가
 		Globals.money_per_second += money_amount
 		
-		print("알바 강화 완료! Lv.", upgrade_level, ", 초당 수입: 💎", money_amount, "/초")
+		print("알바 강화 완료! Lv.", upgrade_level, ", 초당 수입: ", money_amount, "/초")
 		
 		# 강화 효과 (반짝임)
 		spawn_upgrade_effect()
@@ -211,7 +211,7 @@ func upgrade_alba():
 		# 액션 텍스트 업데이트
 		Globals.show_action_text(get_alba_info_text())
 	else:
-		print("💎 부족! 필요: 💎", cost, ", 보유: 💎", Globals.money)
+		print("부족! 필요: ", cost, ", 보유: ", Globals.money)
 
 # 구매 가능 여부에 따른 시각 효과
 func update_visual_feedback():

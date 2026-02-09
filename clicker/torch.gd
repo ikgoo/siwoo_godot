@@ -43,8 +43,9 @@ func detect_wall_type() -> TorchType:
 	raycast_left.force_raycast_update()
 	raycast_right.force_raycast_update()
 	
-	var left_wall = raycast_left.is_colliding()
-	var right_wall = raycast_right.is_colliding()
+	# 벽(타일맵/정적 바디)만 감지, 캐릭터 등 동적 오브젝트 무시
+	var left_wall = _is_wall_collision(raycast_left)
+	var right_wall = _is_wall_collision(raycast_right)
 	
 	# 왼쪽 벽에 붙어있으면 reverse_wall_fire (횃불이 오른쪽 향함)
 	# 오른쪽 벽에 붙어있으면 wall_fire (횃불이 왼쪽 향함)
@@ -54,6 +55,19 @@ func detect_wall_type() -> TorchType:
 		return TorchType.WALL
 	else:
 		return TorchType.STAND
+
+## 레이캐스트가 벽과 충돌했는지 확인합니다.
+## CharacterBody2D(캐릭터) 등 동적 오브젝트는 벽으로 취급하지 않습니다.
+## @param raycast: 확인할 RayCast2D 노드
+## @returns: 벽과 충돌했으면 true
+func _is_wall_collision(raycast: RayCast2D) -> bool:
+	if not raycast.is_colliding():
+		return false
+	var collider = raycast.get_collider()
+	# CharacterBody2D(캐릭터)는 벽이 아님
+	if collider is CharacterBody2D:
+		return false
+	return true
 
 ## 벽 상태를 감지하고 횃불 타입 및 애니메이션을 적용합니다.
 func detect_and_apply_torch_type():

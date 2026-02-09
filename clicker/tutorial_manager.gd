@@ -13,7 +13,7 @@ enum TutorialStep {
 	POPUP,           # 팝업 표시
 	INTRO,           # 요정 소개
 	SHOW_ROCK,       # 돌 위치 카메라
-	MINE_ROCK,       # F키로 20개 채굴
+	MINE_ROCK,       # F키로 10개 채굴
 	MINE_ROCK_COMPLETE, # 채굴 완료 대화 중 (→ SHOW_UPGRADE로 전환)
 	SHOW_UPGRADE,    # 업그레이드 NPC 카메라
 	DO_UPGRADE,      # 업그레이드 1번
@@ -67,6 +67,7 @@ signal tutorial_completed()
 
 func _ready():
 	print("🎯 [튜토리얼] TutorialManager _ready 호출됨")
+	add_to_group("tutorial_manager")
 	
 	# 튜토리얼 이미 완료했으면 fairy만 스폰하고 종료
 	if Globals.is_tutorial_completed:
@@ -110,9 +111,9 @@ func initialize_tutorial():
 	# 대화창 생성
 	create_dialogue_box()
 	
-	# 팝업 표시
-	print("📋 [튜토리얼] 팝업 표시 시작")
-	show_popup()
+	# 팝업 없이 바로 튜토리얼 시작
+	print("🚀 [튜토리얼] 팝업 없이 바로 시작!")
+	start_tutorial()
 
 ## /** 대화창 UI 생성
 ##  * @returns void
@@ -168,6 +169,9 @@ func _on_popup_no():
 	# 튜토리얼 완료 처리 (다시 안 뜨게)
 	Globals.is_tutorial_completed = true
 	Globals.save_settings()
+	
+	# 건너뛰더라도 요정은 스폰 (J키 채굴 지원)
+	spawn_fairy()
 
 ## /** 튜토리얼 시작
 ##  * @returns void
@@ -185,6 +189,12 @@ func start_tutorial():
 	# 초기 업그레이드 레벨 기록 (미리 업그레이드한 경우 대비)
 	initial_upgrade_level = Globals.diamond_value_level
 	print("📊 [튜토리얼] 초기 업그레이드 레벨: %d" % initial_upgrade_level)
+	
+	# 튜토리얼 중에도 요정 스폰 (곡괭이 없는 버전)
+	spawn_fairy()
+	if fairy_instance:
+		fairy_instance.set_pickaxe_mode(false)  # pickaxe_less 스프라이트
+		print("🧚 [튜토리얼] 요정 스폰 (곡괭이 없음)")
 	
 	# 인트로 대화 시작
 	if dialogue_box:
@@ -219,8 +229,8 @@ func _on_dialogue_complete():
 			print("  → DO_UPGRADE - 업그레이드 대기")
 			pass  # 업그레이드 대기
 		TutorialStep.SHOW_CAVE:
-			print("  → SHOW_CAVE 완료, BREAK_WALL로")
-			advance_to_break_wall()
+			print("  → SHOW_CAVE - await에서 처리 (중복 방지)")
+			pass  # await dialogue_box.dialogue_all_complete에서 처리
 		TutorialStep.BREAK_WALL:
 			print("  → BREAK_WALL - 벽 부수기 대기")
 			pass  # 벽 부수기 대기
@@ -228,14 +238,14 @@ func _on_dialogue_complete():
 			print("  → PLACE_TORCH - 횃불 설치 대기")
 			pass  # 횃불 설치 대기
 		TutorialStep.GO_BACK:
-			print("  → GO_BACK 완료, PLACE_PLATFORM으로")
-			advance_to_place_platform()
+			print("  → GO_BACK - 사용하지 않음")
+			pass
 		TutorialStep.PLACE_PLATFORM:
 			print("  → PLACE_PLATFORM - 플랫폼 쌓기 대기")
 			pass  # 플랫폼 쌓기 대기
 		TutorialStep.COMPLETE:
-			print("  → COMPLETE, 튜토리얼 종료")
-			finish_tutorial()
+			print("  → COMPLETE - await에서 처리 (중복 방지)")
+			pass  # await dialogue_box.dialogue_all_complete에서 처리
 
 ## /** 돌 보여주기 단계로 진행
 ##  * @returns void
@@ -272,40 +282,39 @@ func advance_to_mine_rock():
 	if dialogue_box:
 		dialogue_box.start_dialogue(tutorial_data.mine_rock_dialogues, tutorial_data.typing_speed)
 	
-	# Globals 시그널 구독 (돈 변경 감지)
-	if not Globals.money_changed.is_connected(_on_money_changed_during_mining):
-		Globals.money_changed.connect(_on_money_changed_during_mining)
+	# Globals 시그널 구독 (일반 돌 채굴만 감지 - breakable tile 제외)
+	if not Globals.rock_mined.is_connected(_on_rock_mined_during_mining):
+		Globals.rock_mined.connect(_on_rock_mined_during_mining)
 
-## /** 채굴 중 돈 변경 감지
+## /** 일반 돌(rock) 채굴 감지 (breakable tile은 카운트하지 않음)
 ##  * @returns void
 ##  */
-func _on_money_changed_during_mining(new_amount: int, delta: int):
+func _on_rock_mined_during_mining(amount: int):
 	if current_step != TutorialStep.MINE_ROCK:
 		return
 	
-	if delta > 0:
-		mined_rock_count += delta
-		print("⛏️ [튜토리얼] 채굴 진행: %d / %d" % [mined_rock_count, tutorial_data.mine_rock_target])
+	mined_rock_count += 1
+	print("⛏️ [튜토리얼] 채굴 진행: %d / %d" % [mined_rock_count, tutorial_data.mine_rock_target])
+	
+	# 진행도 표시
+	Globals.show_action_text(tutorial_data.mine_rock_progress % mined_rock_count)
+	
+	# 10개 달성
+	if mined_rock_count >= tutorial_data.mine_rock_target:
+		print("✅ [튜토리얼] 10개 달성! 완료 대화 시작")
+		Globals.rock_mined.disconnect(_on_rock_mined_during_mining)
+		Globals.hide_action_text()
 		
-		# 진행도 표시
-		Globals.show_action_text(tutorial_data.mine_rock_progress % mined_rock_count)
+		# 단계를 MINE_ROCK_COMPLETE로 변경 (대화 끝나면 SHOW_UPGRADE로 전환됨)
+		current_step = TutorialStep.MINE_ROCK_COMPLETE
 		
-		# 20개 달성
-		if mined_rock_count >= tutorial_data.mine_rock_target:
-			print("✅ [튜토리얼] 20개 달성! 완료 대화 시작")
-			Globals.money_changed.disconnect(_on_money_changed_during_mining)
-			Globals.hide_action_text()
-			
-			# 단계를 MINE_ROCK_COMPLETE로 변경 (대화 끝나면 SHOW_UPGRADE로 전환됨)
-			current_step = TutorialStep.MINE_ROCK_COMPLETE
-			
-			# 완료 대화
-			if dialogue_box:
-				dialogue_box.start_dialogue(tutorial_data.mine_rock_complete, tutorial_data.typing_speed)
-				# 대화 끝나면 _on_dialogue_complete가 자동으로 호출됨 → advance_to_show_upgrade()
-			else:
-				print("❌ [튜토리얼] 대화창 없음 - 바로 다음 단계로")
-				advance_to_show_upgrade()
+		# 완료 대화
+		if dialogue_box:
+			dialogue_box.start_dialogue(tutorial_data.mine_rock_complete, tutorial_data.typing_speed)
+			# 대화 끝나면 _on_dialogue_complete가 자동으로 호출됨 → advance_to_show_upgrade()
+		else:
+			print("❌ [튜토리얼] 대화창 없음 - 바로 다음 단계로")
+			advance_to_show_upgrade()
 
 ## /** 업그레이드 NPC 보여주기
 ##  * @returns void
@@ -423,7 +432,7 @@ func advance_to_break_wall():
 	
 	while player.position.x > cave_enter_x:
 		await get_tree().create_timer(0.5).timeout
-		Globals.show_action_text("동굴 안으로 들어가세요!")
+		Globals.show_action_text(Globals.get_text("TUTORIAL ENTER CAVE"))
 		print("🚪 [튜토리얼] 현재 위치: x=%.1f (동굴까지: %.1f)" % [player.position.x, player.position.x - cave_enter_x])
 	
 	print("✅ [튜토리얼] 동굴 안 진입 완료! (x=%.1f)" % player.position.x)
@@ -438,6 +447,18 @@ func advance_to_break_wall():
 func advance_to_place_torch():
 	current_step = TutorialStep.PLACE_TORCH
 	torch_placed = false
+	
+	# 플레이어가 동굴 안쪽(x <= -136)까지 이동할 때까지 대기
+	var torch_area_x = -136.0
+	print("🔦 [튜토리얼] 동굴 안쪽(x≤-136)으로 더 들어가세요!")
+	
+	while player.position.x > torch_area_x:
+		await get_tree().create_timer(0.5).timeout
+		Globals.show_action_text(Globals.get_text("TUTORIAL GO DEEPER"))
+		print("🔦 [튜토리얼] 현재 위치: x=%.1f (목표까지: %.1f)" % [player.position.x, player.position.x - torch_area_x])
+	
+	print("✅ [튜토리얼] 횃불 설치 구역 도착! (x=%.1f)" % player.position.x)
+	Globals.hide_action_text()
 	
 	# 대화 시작
 	if dialogue_box:
@@ -461,11 +482,23 @@ func advance_to_place_torch():
 	# 다음 단계
 	advance_to_go_back()
 
-## /** 돌아가기 안내 단계
+## /** 돌아가기 안내 단계 (x <= -205 도달 후 대사 출력)
 ##  * @returns void
 ##  */
 func advance_to_go_back():
 	current_step = TutorialStep.GO_BACK
+	
+	# 플레이어가 동굴 깊숙이(x <= -205)까지 이동할 때까지 대기
+	var go_back_x = -205.0
+	print("💰 [튜토리얼] 동굴 깊숙이(x≤-205)로 이동하세요!")
+	
+	while player.position.x > go_back_x:
+		await get_tree().create_timer(0.5).timeout
+		Globals.show_action_text(Globals.get_text("TUTORIAL GO DEEPER"))
+		print("💰 [튜토리얼] 현재 위치: x=%.1f (목표까지: %.1f)" % [player.position.x, player.position.x - go_back_x])
+	
+	print("✅ [튜토리얼] 돈 부족 구역 도착! (x=%.1f)" % player.position.x)
+	Globals.hide_action_text()
 	
 	# 대화 시작
 	if dialogue_box:
@@ -486,19 +519,19 @@ func advance_to_place_platform():
 	if dialogue_box:
 		dialogue_box.start_dialogue(tutorial_data.place_platform_dialogues, tutorial_data.typing_speed)
 	
-	# 동굴 밖으로 나가면 완료 (x <= -165이면 동굴 밖)
-	var cave_exit_x = -165.0  # 이 x좌표 이하면 동굴 밖
+	# 동굴 밖으로 나가면 완료 (x >= -128이면 동굴 밖)
+	var cave_exit_x = -128.0  # 이 x좌표 이상이면 동굴 밖
 	var start_x = player.position.x
-	print("🪜 [튜토리얼] 플랫폼 설치 시작 - 동굴 밖(x≤-165)으로 나가세요!")
+	print("🪜 [튜토리얼] 플랫폼 설치 시작 - 동굴 밖(x≥-128)으로 나가세요!")
 	print("🪜 [튜토리얼] 현재 위치: x=%.1f" % start_x)
 	
 	# 플레이어가 동굴 밖으로 나갈 때까지 대기
-	while player.position.x > cave_exit_x:
+	while player.position.x < cave_exit_x:
 		await get_tree().create_timer(0.5).timeout
 		Globals.show_action_text(tutorial_data.platform_progress)
-		print("🪜 [튜토리얼] 현재 위치: x=%.1f (동굴 밖까지: %.1f)" % [player.position.x, player.position.x - cave_exit_x])
+		print("🪜 [튜토리얼] 현재 위치: x=%.1f (동굴 밖까지: %.1f)" % [player.position.x, cave_exit_x - player.position.x])
 	
-	print("✅ [튜토리얼] 동굴 밖으로 나왔습니다! (x=%.1f ≤ -165)" % player.position.x)
+	print("✅ [튜토리얼] 동굴 밖으로 나왔습니다! (x=%.1f ≥ -128)" % player.position.x)
 	Globals.hide_action_text()
 	
 	# 튜토리얼 완료
@@ -527,8 +560,12 @@ func finish_tutorial():
 	Globals.is_tutorial_completed = true
 	Globals.save_settings()
 	
-	# 요정 스폰
-	spawn_fairy()
+	# 이미 요정이 있으면 곡괭이 모드로 전환, 없으면 새로 스폰
+	if fairy_instance and is_instance_valid(fairy_instance):
+		fairy_instance.set_pickaxe_mode(true)  # 곡괭이 있는 스프라이트로 전환
+		print("🧚 [튜토리얼] 요정 곡괭이 모드로 전환!")
+	else:
+		spawn_fairy()
 	
 	tutorial_completed.emit()
 	

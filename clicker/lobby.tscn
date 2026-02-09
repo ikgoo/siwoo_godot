@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b1mwwyp3u0j5f"]
+[gd_scene format=3 uid="uid://b1mwwyp3u0j5f"]
 
 [ext_resource type="Script" uid="uid://dhsedusvogrjl" path="res://lobby.gd" id="1_lobby"]
 [ext_resource type="Texture2D" uid="uid://drfg36bl1wt47" path="res://CONCEPT/asset/lobby/lobby.png" id="2_up7ya"]
@@ -122,23 +122,21 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nu6hm"]
 
-[node name="lobby" type="Node2D"]
+[node name="lobby" type="Node2D" unique_id=2065264270]
 script = ExtResource("1_lobby")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=567122198]
 position = Vector2(640, 360)
 scale = Vector2(4, 4)
 texture = ExtResource("2_up7ya")
 
-[node name="game_title" type="Sprite2D" parent="."]
+[node name="game_title" type="Sprite2D" parent="." unique_id=82308765]
 position = Vector2(624, 152)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_mcopp")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=492695811]
+libraries/ = SubResource("AnimationLibrary_mcopp")
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="." unique_id=1733518648]
 clip_contents = true
 anchors_preset = 2
 anchor_top = 1.0
@@ -153,7 +151,7 @@ label_settings = SubResource("LabelSettings_tftiq")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1779697556]
 self_modulate = Color(0, 0, 0, 0)
 position = Vector2(640, 360)
 scale = Vector2(1280, 720.00006)

@@ -6,132 +6,154 @@ class_name TutorialThings
 ##  */
 
 # ========================================
-# 팝업 관련 대사
+# 팝업 관련 대사 (번역 키)
 # ========================================
-var popup_title: String = "튜토리얼"
-var popup_question: String = "튜토리얼을 진행하시겠습니까?\n기본 조작법과 게임 방법을 배울 수 있습니다."
-var popup_yes: String = "예"
-var popup_no: String = "아니오"
+var popup_title: String:
+	get: return Globals.get_text("TUTORIAL POPUP TITLE")
+var popup_question: String:
+	get: return Globals.get_text("TUTORIAL POPUP QUESTION")
+var popup_yes: String:
+	get: return Globals.get_text("TUTORIAL POPUP YES")
+var popup_no: String:
+	get: return Globals.get_text("TUTORIAL POPUP NO")
 
 # ========================================
 # 인트로 대사 (요정 소개)
 # ========================================
-var intro_dialogues: Array[String] = [
-	"안녕! 나는 광산 요정이야!",
-	"여기는 오래된 광산이야.",
-	"이곳에서 돌을 캐서 돈을 벌 수 있어!",
-	"기본적인 방법을 알려줄게!"
-]
+var intro_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL INTRO 1"),
+		Globals.get_text("TUTORIAL INTRO 2"),
+		Globals.get_text("TUTORIAL INTRO 3"),
+		Globals.get_text("TUTORIAL INTRO 4"),
+	]
 
 # ========================================
 # 돌 채굴 튜토리얼
 # ========================================
-var show_rock_dialogues: Array[String] = [
-	"저기 보이는 돌을 봐!",
-	"F키를 눌러서 돌을 캘 수 있어.",
-	"키를 여러 번 눌러서 게이지를 채우면 돼!"
-]
+var show_rock_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL SHOW ROCK 1"),
+		Globals.get_text("TUTORIAL SHOW ROCK 2"),
+		Globals.get_text("TUTORIAL SHOW ROCK 3"),
+	]
 
-var mine_rock_dialogues: Array[String] = [
-	"좋아! 이제 돌을 20개 캐보자!",
-	"F키를 눌러서 채굴해줘!",
-	"(돌 근처로 가서 F키를 누르세요)"
-]
+var mine_rock_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL MINE ROCK 1"),
+		Globals.get_text("TUTORIAL MINE ROCK 2"),
+		Globals.get_text("TUTORIAL MINE ROCK 3"),
+	]
 
-var mine_rock_progress: String = "돌 채굴: %d / 20개"
-var mine_rock_complete: Array[String] = [
-	"잘했어! 20개를 모았네!",
-	"이제 이 돌로 뭘 할 수 있는지 보여줄게."
-]
+var mine_rock_progress: String:
+	get: return Globals.get_text("TUTORIAL MINE PROGRESS")
+var mine_rock_complete: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL MINE COMPLETE 1"),
+		Globals.get_text("TUTORIAL MINE COMPLETE 2"),
+	]
 
 # ========================================
 # 업그레이드 튜토리얼
 # ========================================
-var show_upgrade_dialogues: Array[String] = [
-	"저기 있는 NPC를 봐!",
-	"그 친구한테 가면 돈으로 업그레이드를 할 수 있어.",
-	"더 빨리, 더 많이 캘 수 있게 해주지!"
-]
+var show_upgrade_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL SHOW UPGRADE 1"),
+		Globals.get_text("TUTORIAL SHOW UPGRADE 2"),
+		Globals.get_text("TUTORIAL SHOW UPGRADE 3"),
+	]
 
-var do_upgrade_dialogues: Array[String] = [
-	"NPC 근처로 가서 F키를 눌러봐!",
-	"한 번만 업그레이드해보자!",
-	"(money_up NPC 근처에서 F키를 누르세요)"
-]
+var do_upgrade_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL DO UPGRADE 1"),
+		Globals.get_text("TUTORIAL DO UPGRADE 2"),
+		Globals.get_text("TUTORIAL DO UPGRADE 3"),
+	]
 
-var upgrade_complete: Array[String] = [
-	"완벽해! 이제 더 많은 돈을 벌 수 있을 거야!",
-	"이제 더 깊은 곳으로 가볼까?"
-]
+var upgrade_complete: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL UPGRADE COMPLETE 1"),
+		Globals.get_text("TUTORIAL UPGRADE COMPLETE 2"),
+	]
 
 # ========================================
 # 동굴 탐험 튜토리얼
 # ========================================
-var show_cave_dialogues: Array[String] = [
-	"저기 아래에 어두운 동굴이 보이지?",
-	"그곳에 더 좋은 광물이 있을지도 몰라!",
-	"같이 가보자!"
-]
+var show_cave_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL SHOW CAVE 1"),
+		Globals.get_text("TUTORIAL SHOW CAVE 2"),
+		Globals.get_text("TUTORIAL SHOW CAVE 3"),
+	]
 
-var break_wall_dialogues: Array[String] = [
-	"이 벽을 부수면 들어갈 수 있어!",
-	"마우스 왼쪽 클릭으로 벽을 부술 수 있어.",
-	"(마우스로 벽을 가리키고 왼쪽 클릭하세요)"
-]
+var break_wall_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL BREAK WALL 1"),
+		Globals.get_text("TUTORIAL BREAK WALL 2"),
+		Globals.get_text("TUTORIAL BREAK WALL 3"),
+	]
 
-var break_wall_progress: String = "벽 파괴 중..."
+var break_wall_progress: String:
+	get: return Globals.get_text("TUTORIAL BREAK PROGRESS")
 
 # ========================================
 # 횃불 설치 튜토리얼
 # ========================================
-var place_torch_dialogues: Array[String] = [
-	"너무 어둡네! 횃불이 필요해.",
-	"2번 키를 눌러서 횃불 설치 모드로 전환해.",
-	"그 다음 B키를 눌러서 설치할 수 있어!",
-	"(2번 키 → 마우스로 위치 선택 → B키)"
-]
+var place_torch_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL TORCH 1"),
+		Globals.get_text("TUTORIAL TORCH 2"),
+		Globals.get_text("TUTORIAL TORCH 3"),
+		Globals.get_text("TUTORIAL TORCH 4"),
+	]
 
-var torch_placed: Array[String] = [
-	"좋아! 이제 훨씬 밝네!",
-	"앞으로도 어두운 곳에서 이렇게 하면 돼."
-]
+var torch_placed: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL TORCH PLACED 1"),
+		Globals.get_text("TUTORIAL TORCH PLACED 2"),
+		Globals.get_text("TUTORIAL TORCH PLACED 3"),
+	]
 
 # ========================================
 # 돈 부족 안내
 # ========================================
-var need_money_dialogues: Array[String] = [
-	"앗, 동굴 안의 업그레이드를 하려면 돈이 부족해!",
-	"다시 밖으로 나가서 돌을 더 캐야겠어.",
-	"그런데 입구가 위에 있네..."
-]
+var need_money_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL NEED MONEY 1"),
+		Globals.get_text("TUTORIAL NEED MONEY 2"),
+		Globals.get_text("TUTORIAL NEED MONEY 3"),
+	]
 
 # ========================================
 # 플랫폼 설치 튜토리얼
 # ========================================
-var place_platform_dialogues: Array[String] = [
-	"3번 키를 눌러서 플랫폼 설치 모드로 전환해.",
-	"플랫폼을 계단처럼 쌓아서 올라갈 수 있어!",
-	"입구까지 3칸 정도 쌓아보자!",
-	"(3번 키 → 마우스로 위치 → B키 반복)"
-]
+var place_platform_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL PLATFORM 1"),
+		Globals.get_text("TUTORIAL PLATFORM 2"),
+		Globals.get_text("TUTORIAL PLATFORM 3"),
+		Globals.get_text("TUTORIAL PLATFORM 4"),
+	]
 
-var platform_progress: String = "플랫폼 설치 중... 입구까지 올라가세요!"
+var platform_progress: String:
+	get: return Globals.get_text("TUTORIAL PLATFORM PROGRESS")
 
 # ========================================
 # 완료 대사
 # ========================================
-var tutorial_complete_dialogues: Array[String] = [
-	"완벽해! 기본적인 건 다 배웠어!",
-	"이제 나도 너를 도와줄게!",
-	"앞으로는 J키로도 돌을 캘 수 있어!",
-	"함께 광산의 비밀을 찾아보자!"
-]
+var tutorial_complete_dialogues: Array[String]:
+	get: return [
+		Globals.get_text("TUTORIAL COMPLETE 1"),
+		Globals.get_text("TUTORIAL COMPLETE 2"),
+		Globals.get_text("TUTORIAL COMPLETE 3"),
+		Globals.get_text("TUTORIAL COMPLETE 4"),
+	]
 
 # ========================================
 # 설정값
 # ========================================
 # 각 단계별 목표량
-var mine_rock_target: int = 20  # 채굴해야 할 돌 개수
+var mine_rock_target: int = 10  # 채굴해야 할 돌 개수
 var platform_height_target: int = 3  # 쌓아야 할 플랫폼 높이
 
 # 카메라 이동 시간

@@ -55,13 +55,17 @@ func _update_ui_texts():
 func _input(event: InputEvent):
 	# ESC 키가 눌렸을 때
 	if event.is_action_pressed("ui_cancel"):
-		# 메뉴가 열려있으면 닫기, 닫혀있으면 열기
 		if visible:
+			# 메뉴가 열려있으면 닫기
+			Globals.play_click_sound()
 			close_menu()
-		else:
+			get_viewport().set_input_as_handled()
+		elif not get_tree().paused:
+			# 다른 메뉴(업그레이드 등)가 일시정지 중이 아닐 때만 열기
+			Globals.play_click_sound()
 			open_menu()
-		# 다른 노드로 입력 전파 방지
-		get_viewport().set_input_as_handled()
+			get_viewport().set_input_as_handled()
+		# 다른 메뉴가 paused 상태이면 이벤트를 소비하지 않고 전파 허용
 
 
 # 메뉴 열기
@@ -78,11 +82,13 @@ func close_menu():
 
 # 계속하기 버튼
 func _on_resume_pressed():
+	Globals.play_click_sound()
 	close_menu()
 
 
 # 설정 버튼
 func _on_setting_pressed():
+	Globals.play_click_sound()
 	# 설정 화면 열기
 	if setting_instance == null:
 		setting_instance = setting_scene.instantiate()
@@ -110,6 +116,7 @@ func _on_setting_closed():
 
 # Auto Scene으로 나가기 버튼
 func _on_exit_to_auto_pressed():
+	Globals.play_click_sound()
 	# 게임 재개 (씬 전환 전에)
 	get_tree().paused = false
 	

@@ -47,10 +47,10 @@ func get_exchange_info_text() -> String:
 	var can_afford = Globals.money >= diamond_cost
 	
 	if can_afford:
-		return "교환소 [F]\n다이아 💎%d → Auto Money 🪙%d\n보유 다이아: 💎%d" % [diamond_cost, auto_money_reward, Globals.money]
+		return "교환소 [F]\n다이아 %d → Auto Money 🪙%d\n보유 다이아: %d" % [diamond_cost, auto_money_reward, Globals.money]
 	else:
 		var needed = diamond_cost - Globals.money
-		return "교환소 [F]\n다이아 💎%d → Auto Money 🪙%d\n보유 다이아: 💎%d (💎%d 부족)" % [diamond_cost, auto_money_reward, Globals.money, needed]
+		return "교환소 [F]\n다이아 %d → Auto Money 🪙%d\n보유 다이아: %d (%d 부족)" % [diamond_cost, auto_money_reward, Globals.money, needed]
 
 
 # 플레이어가 영역에 들어왔을 때

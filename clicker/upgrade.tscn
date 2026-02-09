@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://cqo2mn0ydxbqg"]
+[gd_scene format=3 uid="uid://cqo2mn0ydxbqg"]
 
 [ext_resource type="Script" uid="uid://wccy2d63t5qm" path="res://upgrade.gd" id="1_w52ek"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="3_hj5gr"]
 [ext_resource type="Texture2D" uid="uid://uu4s5fgq7laa" path="res://CONCEPT/asset/lobby/upgrade_particle.png" id="4_50jy6"]
+[ext_resource type="AudioStream" uid="uid://cm3ui7n5n78lj" path="res://CONCEPT/asset/SPLC-5360_FX_Oneshot_Blacksmith_Metal_Hits_Anvil_Medium.wav" id="5_klxme"]
 [ext_resource type="Texture2D" uid="uid://u0giuap8ef6j" path="res://CONCEPT/asset/npc/mine_clicker_npc1.png" id="5_moly5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w52ek"]
@@ -65,6 +66,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [Vector2i(3, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_50jy6"]
 resource_name = "idle"
@@ -125,6 +138,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_klxme"]
 _data = {
@@ -169,38 +194,36 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="upgrade" type="Node2D"]
+[node name="upgrade" type="Node2D" unique_id=1238608540]
 scale = Vector2(2, 2)
 script = ExtResource("1_w52ek")
 
-[node name="Area2D2" type="Area2D" parent="."]
+[node name="Area2D2" type="Area2D" parent="." unique_id=1607354366]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2" unique_id=819233406]
 shape = SubResource("CircleShape2D_w52ek")
 
-[node name="saying" type="Label" parent="."]
+[node name="saying" type="Label" parent="." unique_id=1849624421]
 offset_left = 5.0
 offset_top = -35.0
 offset_right = 45.0
 offset_bottom = -12.0
 label_settings = SubResource("LabelSettings_50jy6")
 
-[node name="GlowParticles" type="GPUParticles2D" parent="."]
+[node name="GlowParticles" type="GPUParticles2D" parent="." unique_id=1941682642]
 amount = 30
 texture = ExtResource("4_50jy6")
 process_material = SubResource("ParticleProcessMaterial_diibn")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_klxme")
-}
-autoplay = "idle"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=740025451]
+libraries/ = SubResource("AnimationLibrary_klxme")
+autoplay = &"idle"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=907512654]
 visible = false
 sprite_frames = SubResource("SpriteFrames_4t3gl")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=544899790]
 position = Vector2(0, -6)
 texture = ExtResource("5_moly5")
 hframes = 7
@@ -208,16 +231,20 @@ vframes = 2
 region_enabled = true
 region_rect = Rect2(0, 0, 560, 160)
 
-[node name="Sprite2D" type="Sprite2D" parent="Sprite2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D" unique_id=1574310848]
 texture = ExtResource("5_moly5")
 hframes = 4
 frame = 3
 region_enabled = true
 region_rect = Rect2(0, 240, 320, 80)
 
-[node name="Sprite2D2" type="Sprite2D" parent="Sprite2D"]
+[node name="Sprite2D2" type="Sprite2D" parent="Sprite2D" unique_id=1378948497]
 texture = ExtResource("5_moly5")
 hframes = 4
 frame = 3
 region_enabled = true
 region_rect = Rect2(0, 160, 320, 80)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1536342177]
+stream = ExtResource("5_klxme")
+volume_db = 2.319

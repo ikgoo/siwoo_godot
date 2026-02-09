@@ -14,6 +14,9 @@ const GALMURI_9 = preload("res://Galmuri9.ttf")
 @onready var close_button = $SettingPanel/VBoxContainer/CloseButton
 @onready var vbox_container = $SettingPanel/VBoxContainer
 
+# UI 클릭 사운드
+@onready var click_sfx: AudioStreamPlayer = $ClickSFX
+
 # 모드 아이콘 참조 (status의 자식 노드들)
 @onready var pickaxe_slot: Sprite2D = $status/pickaxe
 @onready var torch_slot: Sprite2D = $status/torch
@@ -77,7 +80,7 @@ func _ready():
 	# 초기 돈 표시
 	displayed_money = Globals.money
 	target_money = Globals.money
-	label.text = '💎' + str(Globals.money)
+	label.text = str(Globals.money)
 	
 	# 티어 업 알림 레이블 생성 (화면 중앙 살짝 아래, 액션바 스타일)
 	tier_notification = Label.new()
@@ -146,7 +149,7 @@ func _ready():
 	goal_label.add_theme_font_override("font", GALMURI_9)
 	goal_label.add_theme_font_size_override("font_size", 14)
 	goal_label.modulate = Color(1.0, 0.9, 0.3)  # 금색
-	goal_label.text = "목표: 💎0 / 💎%s" % format_money(Globals.goal_money)
+	goal_label.text = Globals.get_text("UI GOAL INIT") % format_money(Globals.goal_money)
 	add_child(goal_label)
 	
 	# 프로그레스 바
@@ -177,10 +180,13 @@ func _ready():
 	# 초기 수입 계산
 	last_money = Globals.money
 	
-	# 설정 버튼 연결
+	# 설정 버튼 연결 (클릭 사운드 포함)
 	setting_button.pressed.connect(_on_setting_button_pressed)
+	setting_button.pressed.connect(play_click_sound)
 	tutorial_reset_button.pressed.connect(_on_tutorial_reset_button_pressed)
+	tutorial_reset_button.pressed.connect(play_click_sound)
 	close_button.pressed.connect(_on_close_button_pressed)
+	close_button.pressed.connect(play_click_sound)
 	
 	# 기존 Key1, Key2 입력 필드를 배열에 추가
 	key_inputs.append(key1_input)
@@ -216,7 +222,7 @@ func _process(delta):
 	# 클리어 진행도 업데이트
 	if goal_progress_bar and not Globals.is_game_cleared:
 		goal_progress_bar.value = min(Globals.money, Globals.goal_money)
-		goal_label.text = "목표: 💎%s / 💎%s" % [format_money(Globals.money), format_money(Globals.goal_money)]
+		goal_label.text = Globals.get_text("UI GOAL") % [format_money(Globals.money), format_money(Globals.goal_money)]
 		
 		# 목표 달성 체크
 		if Globals.money >= Globals.goal_money:
@@ -228,7 +234,7 @@ func _process(delta):
 		# 차이가 크면 빠르게, 작으면 천천히
 		var speed = max(abs(diff) * 5.0, 10.0)
 		displayed_money = move_toward(displayed_money, target_money, speed * delta)
-		label.text = '💎' + str(int(displayed_money))
+		label.text = str(int(displayed_money))
 	
 	# 초당 수입 적용 (money_per_second) - 알바 등 자동 수입
 	passive_income_timer += delta
@@ -237,7 +243,7 @@ func _process(delta):
 		if Globals.money_per_second > 0:
 			Globals.money += Globals.money_per_second
 			# 자동 수입 라벨 업데이트
-			passive_income_label.text = "+💎%d/초 (알바)" % Globals.money_per_second
+			passive_income_label.text = Globals.get_text("UI PASSIVE INCOME") % Globals.money_per_second
 	
 	# 초당 수입 계산 (1초마다 업데이트)
 	income_update_timer += delta
@@ -248,14 +254,15 @@ func _process(delta):
 		income_update_timer = 0.0
 		
 		# 초당 수입 표시 업데이트
+		var suffix = Globals.get_text("UI INCOME SUFFIX")
 		if income_per_second > 0:
-			income_label.text = "+" + str(int(income_per_second)) + "/초"
+			income_label.text = "+" + str(int(income_per_second)) + suffix
 			income_label.modulate = Color(0.7, 1.0, 0.7)  # 초록색
 		elif income_per_second < 0:
-			income_label.text = str(int(income_per_second)) + "/초"
+			income_label.text = str(int(income_per_second)) + suffix
 			income_label.modulate = Color(1.0, 0.5, 0.5)  # 빨간색
 		else:
-			income_label.text = "0/초"
+			income_label.text = "0" + suffix
 			income_label.modulate = Color(0.7, 0.7, 0.7)  # 회색
 	
 
@@ -363,7 +370,7 @@ func _on_tutorial_reset_button_pressed():
 	
 	# 확인 메시지 표시
 	var feedback_label = Label.new()
-	feedback_label.text = "🔄 튜토리얼을 다시 시작합니다..."
+	feedback_label.text = Globals.get_text("UI TUTORIAL RESTART")
 	feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	feedback_label.position = Vector2(get_viewport_rect().size.x / 2 - 200, get_viewport_rect().size.y / 2 - 25)
 	feedback_label.size = Vector2(400, 50)
@@ -378,9 +385,18 @@ func _on_tutorial_reset_button_pressed():
 	print("🔄 [UI] 씬 재시작 실행!")
 	get_tree().reload_current_scene()
 
+## /** UI 클릭 사운드를 재생한다
+##  * 버튼, 키 입력 필드 등 UI 요소 클릭 시 호출
+##  * Globals.play_click_sound()를 호출하여 전역 사운드 재생
+##  * @returns void
+##  */
+func play_click_sound():
+	Globals.play_click_sound()
+
 # 키 입력 필드 클릭 (범용)
 func _on_key_input_gui_input(event: InputEvent, key_index: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		play_click_sound()
 		if key_index < key_inputs.size():
 			waiting_for_key = key_inputs[key_index]
 			waiting_for_key_index = key_index
@@ -396,15 +412,7 @@ const BLOCKED_KEYS: Array[int] = [
 
 # 키 입력 감지
 func _input(event: InputEvent):
-	# ESC 키로 메뉴 토글
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		if esc_menu and esc_menu.visible:
-			esc_menu.close_menu()
-		else:
-			if esc_menu:
-				esc_menu.open_menu()
-		get_viewport().set_input_as_handled()
-		return
+	# ESC 키는 esc_menu.gd에서 직접 처리 (자식이 _input을 먼저 받으므로)
 	
 	if waiting_for_key and event is InputEventKey and event.pressed:
 		var keycode = event.keycode
@@ -554,7 +562,7 @@ func show_clear_screen(clear_time: float, points: int):
 	
 	# 축하 메시지
 	var title = Label.new()
-	title.text = "🎉 게임 클리어! 🎉"
+	title.text = Globals.get_text("UI GAME CLEAR")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_override("font", GALMURI_9)
 	title.add_theme_font_size_override("font_size", 36)
@@ -563,7 +571,7 @@ func show_clear_screen(clear_time: float, points: int):
 	
 	# 클리어 시간
 	var time_label = Label.new()
-	time_label.text = "클리어 시간: %s" % format_playtime(clear_time)
+	time_label.text = Globals.get_text("UI CLEAR TIME") % format_playtime(clear_time)
 	time_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	time_label.add_theme_font_override("font", GALMURI_9)
 	time_label.add_theme_font_size_override("font_size", 24)
@@ -571,7 +579,7 @@ func show_clear_screen(clear_time: float, points: int):
 	
 	# 획득 포인트
 	var points_label = Label.new()
-	points_label.text = "획득 포인트: %s P" % format_money(points)
+	points_label.text = Globals.get_text("UI POINTS EARNED") % format_money(points)
 	points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	points_label.add_theme_font_override("font", GALMURI_9)
 	points_label.add_theme_font_size_override("font_size", 28)
@@ -580,7 +588,7 @@ func show_clear_screen(clear_time: float, points: int):
 	
 	# 누적 포인트
 	var total_label = Label.new()
-	total_label.text = "누적 포인트: %s P" % format_money(Globals.total_points)
+	total_label.text = Globals.get_text("UI TOTAL POINTS") % format_money(Globals.total_points)
 	total_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	total_label.add_theme_font_override("font", GALMURI_9)
 	total_label.add_theme_font_size_override("font_size", 20)
@@ -594,7 +602,7 @@ func show_clear_screen(clear_time: float, points: int):
 	
 	# 계속하기 버튼
 	var continue_btn = Button.new()
-	continue_btn.text = "auto_scene으로 이동"
+	continue_btn.text = Globals.get_text("UI CONTINUE")
 	continue_btn.add_theme_font_override("font", GALMURI_9)
 	continue_btn.add_theme_font_size_override("font_size", 20)
 	continue_btn.custom_minimum_size = Vector2(200, 50)

@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cx6dabxk66sp0"]
+[gd_scene load_steps=8 format=3 uid="uid://cx6dabxk66sp0"]
 
 [ext_resource type="Script" uid="uid://d2vajgosquble" path="res://rock.gd" id="1_o0qsl"]
 [ext_resource type="Texture2D" uid="uid://d6ptpkex8ug5" path="res://CONCEPT/asset/mine_clicker32-mine_tile.png" id="2_46y1q"]
 [ext_resource type="AudioStream" uid="uid://dqa64f30c8oao" path="res://normal_rock.mp3" id="3_46y1q"]
 [ext_resource type="AudioStream" uid="uid://s40vacvqwnpx" path="res://x2_sound.mp3" id="4_o54ku"]
+[ext_resource type="AudioStream" uid="uid://c8jd1k3ii6jk6" path="res://CONCEPT/DirtImpact_BW.60505.wav" id="5_dirt1"]
+[ext_resource type="AudioStream" uid="uid://xhxpfse7161y" path="res://CONCEPT/BulletImpactDirt_BW.54406 (1).wav" id="6_dirt2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b4wt3"]
 radius = 52.009613
@@ -42,6 +44,12 @@ stream = ExtResource("3_46y1q")
 [node name="good_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_o54ku")
 pitch_scale = 2.0
+
+[node name="dirt_sound_1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_dirt1")
+
+[node name="dirt_sound_2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_dirt2")
 
 [connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
 [connection signal="body_shape_exited" from="Area2D" to="." method="_on_area_2d_body_shape_exited"]

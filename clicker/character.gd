@@ -47,7 +47,8 @@ enum State {
 	WALKING,   # 걷기
 	JUMPING,   # 점프
 	FALLING,   # 낙하
-	MINING     # 채굴 중
+	MINING,    # 채굴 중
+	SITTING    # 앉기
 }
 
 # 현재 상태
@@ -288,7 +289,8 @@ func _physics_process(delta):
 	# 채굴 키 입력 처리 - 튜토리얼 중에는 F키만, 아니면 모든 키
 	# 상호작용 UI가 표시 중이면 채굴 무시 (알바 구매, 업그레이드 등)
 	# 단, 튜토리얼 중에는 진행도 텍스트가 표시되어도 채굴 가능
-	var can_mine = (current_nearby_rock or current_nearby_tilemap) and (Globals.is_tutorial_active or not Globals.is_action_text_visible)
+	# F키 게이지 시스템은 돈주는돌(rock)에서만 작동 (breakable_tile은 마우스 좌클릭 전용)
+	var can_mine = current_nearby_rock and (Globals.is_tutorial_active or not Globals.is_action_text_visible)
 	if can_mine:
 		if Globals.is_tutorial_active:
 			# 튜토리얼 중: F키(첫 번째 키)만 사용
@@ -336,9 +338,10 @@ func _physics_process(delta):
 	# S 키 입력 확인
 	var is_s_key_pressed = Input.is_key_pressed(KEY_S)
 	var is_s_key_just_pressed = is_s_key_pressed and not was_s_key_pressed
+	var is_space_just_pressed = Input.is_physical_key_pressed(KEY_SPACE) and not was_space_pressed
 	
-	# S 키를 처음 눌렀을 때 platform_out 활성화
-	if Input.is_action_just_pressed("ui_down") or is_s_key_just_pressed:
+	# S 키 + 스페이스바를 동시에 누르면 플랫폼 통과 (아래로 내려감)
+	if is_s_key_pressed and is_space_just_pressed and is_on_floor():
 		platform_out = true
 		platform_out_timer = PLATFORM_OUT_DURATION
 	
@@ -353,7 +356,7 @@ func _physics_process(delta):
 	
 	# collision_mask 설정
 	# 1. velocity.y < 0 (위로 올라갈 때) 플랫폼 통과
-	# 2. platform_out == true (S 키로 1초간) 플랫폼 통과
+	# 2. platform_out == true (S+Space 키로 0.2초간) 플랫폼 통과
 	if velocity.y < 0 or platform_out:
 		collision_mask = NORMAL_COLLISION_LAYER  # 플랫폼 레이어 무시
 	else:
@@ -363,8 +366,8 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity += get_gravity() * GRAVITY_SCALE * delta
 	
-	# Space 키로 점프 - 바닥에 있을 때만 가능 (Enter 제외)
-	if Input.is_physical_key_pressed(KEY_SPACE) and not was_space_pressed and is_on_floor():
+	# Space 키로 점프 - 바닥에 있을 때만 가능 (S키 누른 상태에서는 점프 대신 플랫폼 통과)
+	if is_space_just_pressed and is_on_floor() and not is_s_key_pressed:
 		is_jumping = true
 		velocity.y = JUMP_VELOCITY  # 최대 점프 속도로 시작
 	
@@ -384,30 +387,36 @@ func _physics_process(delta):
 	
 	# 바닥에 있을 때와 공중에 있을 때 다르게 처리
 	if is_on_floor():
-		# 바닥에 있을 때: 정상적인 가속/감속 처리
-		var is_running = Input.is_key_pressed(KEY_SHIFT)
-		var target_speed = RUN_SPEED if is_running else SPEED
-		
-		if direction != 0:
-			# 목표 속도로 가속
-			var target_velocity = direction * target_speed
-			velocity.x = move_toward(velocity.x, target_velocity, acceleration * delta)
-			
-			# 스프라이트 방향 전환
-			if sprite:
-				sprite.flip_h = (direction < 0)
-			
-			# facing_direction이 변경되면 곡괭이 위치도 업데이트
-			if facing_direction != direction:
-				facing_direction = direction
-				if pickaxe and not is_pickaxe_animating:
-					reset_pickaxe_to_initial()
-		else:
-			# 키를 누르지 않으면 마찰력으로 감속
+		# S 키를 누르고 있으면 앉기 (바닥에 있을 때만)
+		if is_s_key_pressed:
+			# 앉기 상태: 이동 차단, 마찰력으로 정지
 			velocity.x = move_toward(velocity.x, 0, friction * delta)
-		
-		# 현재 속도를 공중 속도로 저장 (점프 전 속도)
-		air_speed = abs(velocity.x)
+			air_speed = abs(velocity.x)
+		else:
+			# 바닥에 있을 때: 정상적인 가속/감속 처리
+			var is_running = Input.is_key_pressed(KEY_SHIFT)
+			var target_speed = RUN_SPEED if is_running else SPEED
+			
+			if direction != 0:
+				# 목표 속도로 가속
+				var target_velocity = direction * target_speed
+				velocity.x = move_toward(velocity.x, target_velocity, acceleration * delta)
+				
+				# 스프라이트 방향 전환
+				if sprite:
+					sprite.flip_h = (direction < 0)
+				
+				# facing_direction이 변경되면 곡괭이 위치도 업데이트
+				if facing_direction != direction:
+					facing_direction = direction
+					if pickaxe and not is_pickaxe_animating:
+						reset_pickaxe_to_initial()
+			else:
+				# 키를 누르지 않으면 마찰력으로 감속
+				velocity.x = move_toward(velocity.x, 0, friction * delta)
+			
+			# 현재 속도를 공중 속도로 저장 (점프 전 속도)
+			air_speed = abs(velocity.x)
 	else:
 		# 공중에 있을 때: 점프 전 속도를 목표로 공중 가속도 적용
 		if direction != 0:
@@ -490,6 +499,8 @@ func set_state(new_state: State):
 			play_animation("jump")
 		State.MINING:
 			play_animation("idle")
+		State.SITTING:
+			play_animation("sit")
 
 # 이동/점프 상황에 따라 애니메이션을 갱신합니다.
 func update_state_and_animation(was_on_floor_before: bool):
@@ -512,7 +523,10 @@ func update_state_and_animation(was_on_floor_before: bool):
 	
 	var is_moving = abs(velocity.x) > 5.0
 	if on_floor_now:
-		if is_moving:
+		# S 키를 누르고 있으면 앉기 상태 우선
+		if Input.is_key_pressed(KEY_S):
+			set_state(State.SITTING)
+		elif is_moving:
 			set_state(State.WALKING)
 		else:
 			set_state(State.IDLE)
@@ -855,8 +869,12 @@ func place_platform():
 		print("❌ 플랫폼 설치: 타일 중복")
 		return
 	
-	# TileMap 노드 찾기 (대문자 주의!)
+	# TileMap 노드 찾기 (여러 이름 시도)
 	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("tile_map")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("tilemaps")
 	if not tile_map_node:
 		print("❌ TileMap 노드를 찾을 수 없음")
 		return
@@ -1246,6 +1264,10 @@ func can_place_platform_at(mouse_pos: Vector2) -> bool:
 	
 	# 3. platform TileMap에 이미 타일이 있는지 체크
 	var tile_map_node = get_tree().current_scene.get_node_or_null("TileMap")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("tile_map")
+	if not tile_map_node:
+		tile_map_node = get_tree().current_scene.get_node_or_null("tilemaps")
 	if tile_map_node:
 		var platform_tilemap = tile_map_node.get_node_or_null("map_2/platform")
 		if not platform_tilemap:

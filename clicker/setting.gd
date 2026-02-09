@@ -32,6 +32,7 @@ signal closed
 # 튜토리얼 UI 요소들
 var tutorial_checkbox: CheckBox
 var tutorial_restart_button: Button
+var tutorial_skip_button: Button
 
 
 func _ready():
@@ -167,6 +168,7 @@ func _on_language_selected(index: int):
 
 ## 뒤로가기 버튼 클릭 시 호출
 func _on_back_pressed():
+	Globals.play_click_sound()
 	# 설정 저장 후 닫기
 	Globals.save_settings()
 	closed.emit()
@@ -181,7 +183,7 @@ func _setup_tutorial_ui():
 	
 	# 체크박스 생성
 	tutorial_checkbox = CheckBox.new()
-	tutorial_checkbox.text = "튜토리얼 팝업 표시"
+	tutorial_checkbox.text = Globals.get_text("SETTING TUTORIAL POPUP")
 	tutorial_checkbox.button_pressed = Globals.show_tutorial_popup
 	tutorial_checkbox.toggled.connect(_on_tutorial_popup_toggled)
 	tutorial_checkbox.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
@@ -189,11 +191,21 @@ func _setup_tutorial_ui():
 	
 	# 다시 시작 버튼 생성
 	tutorial_restart_button = Button.new()
-	tutorial_restart_button.text = "튜토리얼 다시 보기"
+	tutorial_restart_button.text = Globals.get_text("SETTING TUTORIAL RESTART")
 	tutorial_restart_button.custom_minimum_size = Vector2(150, 0)
 	tutorial_restart_button.pressed.connect(_on_tutorial_restart_pressed)
 	tutorial_restart_button.process_mode = Node.PROCESS_MODE_ALWAYS  # 일시정지 중에도 작동
 	tutorial_container.add_child(tutorial_restart_button)
+	
+	# 스킵하기 버튼 생성 (튜토리얼 진행 중일 때만 표시)
+	tutorial_skip_button = Button.new()
+	tutorial_skip_button.text = Globals.get_text("SETTING TUTORIAL SKIP")
+	tutorial_skip_button.custom_minimum_size = Vector2(100, 0)
+	tutorial_skip_button.pressed.connect(_on_tutorial_skip_pressed)
+	tutorial_skip_button.process_mode = Node.PROCESS_MODE_ALWAYS
+	# 튜토리얼이 진행 중이 아니면 숨김
+	tutorial_skip_button.visible = Globals.is_tutorial_active
+	tutorial_container.add_child(tutorial_skip_button)
 	
 	# ButtonContainer 앞에 추가
 	var button_container_index = back_button.get_parent().get_index()
@@ -204,6 +216,30 @@ func _setup_tutorial_ui():
 func _on_tutorial_popup_toggled(toggled_on: bool):
 	Globals.show_tutorial_popup = toggled_on
 	Globals.save_settings()
+
+## 튜토리얼 스킵하기 버튼 클릭 (진행 중인 튜토리얼을 건너뜀)
+func _on_tutorial_skip_pressed():
+	# 설정 창 숨김
+	visible = false
+	
+	# 게임 일시정지 해제
+	get_tree().paused = false
+	
+	# 튜토리얼 완료 처리
+	Globals.is_tutorial_completed = true
+	Globals.is_tutorial_active = false
+	Globals.save_settings()
+	
+	# 진행 중인 TutorialManager 찾아서 종료 처리
+	var tutorial_managers = get_tree().get_nodes_in_group("tutorial_manager")
+	for tm in tutorial_managers:
+		if tm.has_method("finish_tutorial"):
+			tm.finish_tutorial()
+			break
+	
+	# TutorialManager를 못 찾은 경우 씬 재시작으로 깔끔하게 처리
+	if tutorial_managers.is_empty():
+		get_tree().reload_current_scene()
 
 ## 튜토리얼 다시 보기 버튼 클릭
 func _on_tutorial_restart_pressed():

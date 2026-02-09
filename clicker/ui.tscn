@@ -1,12 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://bojiqqd4sya5p"]
+[gd_scene load_steps=20 format=3 uid="uid://bojiqqd4sya5p"]
 
 [ext_resource type="Script" uid="uid://dg12enq825mkq" path="res://ui.gd" id="1_fyqef"]
+[ext_resource type="AudioStreamWAV" uid="uid://d3ir40wahu82t" path="res://CONCEPT/asset/ESM_SFSG_cinematic_fx_science_fiction_ui_general_positive_popup_window_synth_fast.wav" id="9_click_sfx"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_m6e0p"]
 [ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_27fn8"]
 [ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="4_y4yjw"]
 [ext_resource type="Texture2D" uid="uid://ct8mkyvu4ei8l" path="res://CONCEPT/asset/mine_clicker-pickaxe.png" id="5_waa4j"]
 [ext_resource type="Texture2D" uid="uid://cklii4hkk8b6s" path="res://CONCEPT/asset/mine_clicker32-torch_animation.png" id="6_ok7cu"]
 [ext_resource type="Texture2D" uid="uid://bbfjfpc0l7ldj" path="res://CONCEPT/asset/16/mine_clicker-16_platform.png" id="7_irxef"]
+[ext_resource type="Texture2D" uid="uid://c1h68smu7ysa2" path="res://CONCEPT/asset/mine_clicker32-credit.png" id="8_credit"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_m6e0p"]
 font = ExtResource("2_m6e0p")
@@ -67,6 +69,16 @@ offset_bottom = 118.0
 text = "현재 돈:"
 label_settings = SubResource("LabelSettings_m6e0p")
 horizontal_alignment = 1
+
+[node name="diamond_icon" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_left = 890.0
+offset_top = 35.0
+offset_right = 914.0
+offset_bottom = 59.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("8_credit")
 
 [node name="upgrade_thing" type="Label" parent="."]
 layout_mode = 0
@@ -211,3 +223,7 @@ texture = SubResource("AtlasTexture_y4yjw")
 [node name="platform" type="Sprite2D" parent="status"]
 scale = Vector2(2.5, 2.5)
 texture = SubResource("AtlasTexture_waa4j")
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_click_sfx")
+volume_db = -5.0

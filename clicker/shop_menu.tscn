@@ -1,11 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://rw744pqh5eta"]
+[gd_scene format=3 uid="uid://rw744pqh5eta"]
 
 [ext_resource type="Script" uid="uid://bgc4hdomck2pp" path="res://shop_menu.gd" id="1_shop_menu"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
 [ext_resource type="Texture2D" uid="uid://dmtosv6bnp478" path="res://CONCEPT/asset/mine_clicker32-menu.png" id="2_xn0n2"]
 [ext_resource type="Texture2D" uid="uid://b08s8bes8tnal" path="res://CONCEPT/asset/mine_clicker32-UI_TEXTBOX.png" id="3_price_bg"]
 
-[node name="shop_menu" type="Control"]
+[node name="shop_menu" type="Control" unique_id=423395274]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -16,7 +16,7 @@ offset_bottom = -274.0
 grow_vertical = 2
 script = ExtResource("1_shop_menu")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1231400642]
 texture_filter = 1
 layout_mode = 0
 offset_left = -15.0
@@ -31,7 +31,7 @@ patch_margin_top = 7
 patch_margin_right = 7
 patch_margin_bottom = 9
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=905067037]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -47,7 +47,7 @@ theme_override_font_sizes/font_size = 32
 text = "상점"
 horizontal_alignment = 1
 
-[node name="MoneyLabel" type="Label" parent="."]
+[node name="MoneyLabel" type="Label" parent="." unique_id=33182434]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -62,7 +62,7 @@ theme_override_font_sizes/font_size = 20
 text = "보유: 🪙 0"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1364304741]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -76,11 +76,11 @@ offset_bottom = 112.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkinListContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="SkinListContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=512724486]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="CloseButton" type="Button" parent="."]
+[node name="CloseButton" type="Button" parent="." unique_id=756777486]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -97,48 +97,73 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
 text = "닫기"
 
-[node name="SkinItemTemplate" type="PanelContainer" parent="."]
+[node name="SkinItemTemplate" type="Control" parent="." unique_id=878784802]
 visible = false
-custom_minimum_size = Vector2(240, 100)
+custom_minimum_size = Vector2(240, 120)
 layout_mode = 0
 offset_left = 20.0
 offset_top = 500.0
 offset_right = 260.0
-offset_bottom = 600.0
+offset_bottom = 620.0
+size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SkinItemTemplate"]
-layout_mode = 2
+[node name="ItemBG" type="NinePatchRect" parent="SkinItemTemplate"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xn0n2")
+region_rect = Rect2(0, 0, 64, 64)
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 9
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkinItemTemplate" unique_id=1096183019]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 5
 
-[node name="NameLabel" type="Label" parent="SkinItemTemplate/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="SkinItemTemplate/VBoxContainer" unique_id=1296695392]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
 text = "스킨 이름"
 
-[node name="DescriptionLabel" type="Label" parent="SkinItemTemplate/VBoxContainer"]
+[node name="DescriptionLabel" type="Label" parent="SkinItemTemplate/VBoxContainer" unique_id=2097051002]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 14
 text = "스킨 설명"
 
-[node name="TexturePreview" type="TextureRect" parent="SkinItemTemplate/VBoxContainer"]
+[node name="TexturePreview" type="TextureRect" parent="SkinItemTemplate/VBoxContainer" unique_id=361001178]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ButtonContainer" type="HBoxContainer" parent="SkinItemTemplate/VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="SkinItemTemplate/VBoxContainer" unique_id=2076951049]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="PriceContainer" type="Control" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+[node name="PriceContainer" type="Control" parent="SkinItemTemplate/VBoxContainer/ButtonContainer" unique_id=841553100]
 custom_minimum_size = Vector2(80, 30)
 layout_mode = 2
 
-[node name="price_background" type="TextureRect" parent="SkinItemTemplate/VBoxContainer/ButtonContainer/PriceContainer"]
+[node name="price_background" type="TextureRect" parent="SkinItemTemplate/VBoxContainer/ButtonContainer/PriceContainer" unique_id=443302288]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,7 +174,7 @@ texture = ExtResource("3_price_bg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PriceLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer/PriceContainer"]
+[node name="PriceLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer/PriceContainer" unique_id=667301072]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -162,34 +187,32 @@ text = "🪙 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+[node name="Spacer" type="Control" parent="SkinItemTemplate/VBoxContainer/ButtonContainer" unique_id=540618168]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BuyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
+[node name="BuyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer" unique_id=735094119]
 custom_minimum_size = Vector2(60, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "구매"
 
-[node name="ApplyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
-visible = false
+[node name="ApplyButton" type="Button" parent="SkinItemTemplate/VBoxContainer/ButtonContainer" unique_id=229462024]
 custom_minimum_size = Vector2(60, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "적용"
 
-[node name="AppliedLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer"]
-visible = false
+[node name="AppliedLabel" type="Label" parent="SkinItemTemplate/VBoxContainer/ButtonContainer" unique_id=814280975]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 1, 0.3, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "✓ 적용됨"
 
-[node name="InventoryButton" type="Button" parent="."]
+[node name="InventoryButton" type="Button" parent="." unique_id=1841154078]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -206,8 +229,8 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 20
 text = "인벤토리"
 
-[node name="InventoryPanel" type="Panel" parent="."]
-visible = false
+[node name="InventoryPanel" type="NinePatchRect" parent="." unique_id=1959839194]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -216,8 +239,14 @@ offset_top = -51.0
 offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_xn0n2")
+region_rect = Rect2(0, 0, 64, 64)
+patch_margin_left = 7
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 9
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InventoryPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InventoryPanel" unique_id=594524332]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -230,35 +259,35 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="Sprite1Label" type="Label" parent="InventoryPanel/VBoxContainer"]
+[node name="Sprite1Label" type="Label" parent="InventoryPanel/VBoxContainer" unique_id=940671312]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "캐릭터 스킨"
 
-[node name="Sprite1Grid" type="GridContainer" parent="InventoryPanel/VBoxContainer"]
+[node name="Sprite1Grid" type="GridContainer" parent="InventoryPanel/VBoxContainer" unique_id=1600324129]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 5
 
-[node name="Sprite2Label" type="Label" parent="InventoryPanel/VBoxContainer"]
+[node name="Sprite2Label" type="Label" parent="InventoryPanel/VBoxContainer" unique_id=2027136947]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.8, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "도구 스킨"
 
-[node name="Sprite2Grid" type="GridContainer" parent="InventoryPanel/VBoxContainer"]
+[node name="Sprite2Grid" type="GridContainer" parent="InventoryPanel/VBoxContainer" unique_id=1967853230]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 5
 
-[node name="BackButton" type="Button" parent="InventoryPanel"]
+[node name="BackButton" type="Button" parent="InventoryPanel" unique_id=693935465]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

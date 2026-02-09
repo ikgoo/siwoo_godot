@@ -7,10 +7,14 @@ extends Node2D
 var is_character_inside : bool = false
 @onready var normal_sound = $normal_sound
 @onready var good_sound = $good_sound
+@onready var dirt_sound_1: AudioStreamPlayer = $dirt_sound_1
+@onready var dirt_sound_2: AudioStreamPlayer = $dirt_sound_2
 
 # 오디오 풀링 시스템
 var normal_sound_pool: Array[AudioStreamPlayer] = []
 var good_sound_pool: Array[AudioStreamPlayer] = []
+var dirt_sound_pool_1: Array[AudioStreamPlayer] = []
+var dirt_sound_pool_2: Array[AudioStreamPlayer] = []
 const AUDIO_POOL_SIZE: int = 5  # 풀 크기
 
 # 카메라 고정 관련 변수
@@ -169,6 +173,7 @@ func complete_mining():
 		money_gained *= 2
 	
 	Globals.money += money_gained
+	Globals.rock_mined.emit(money_gained)
 	
 	now_time = 0
 	
@@ -179,11 +184,11 @@ func complete_mining():
 	
 	# 떠오르는 텍스트 생성 (x3이면 특별, x2이면 크리티컬)
 	if is_x3:
-		spawn_floating_text_jackpot("+💎" + str(money_gained) + "!!")
+		spawn_floating_text_jackpot("+" + str(money_gained) + "!!")
 	elif is_x2:
-		spawn_floating_text_critical("+💎" + str(money_gained) + "!")
+		spawn_floating_text_critical("+" + str(money_gained) + "!")
 	else:
-		spawn_floating_text("+💎" + str(money_gained))
+		spawn_floating_text("+" + str(money_gained))
 
 # 프로그레스바 색상 업데이트 (초록 → 노랑 → 빨강) + 애니메이션
 func update_progress_color():
@@ -315,6 +320,33 @@ func _init_audio_pool():
 			player.bus = good_sound.bus
 			add_child(player)
 			good_sound_pool.append(player)
+	
+	# dirt_sound_1 풀 생성
+	if dirt_sound_1 and dirt_sound_1.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = dirt_sound_1.stream
+			player.volume_db = dirt_sound_1.volume_db
+			player.bus = "SFX"
+			add_child(player)
+			dirt_sound_pool_1.append(player)
+	
+	# dirt_sound_2 풀 생성
+	if dirt_sound_2 and dirt_sound_2.stream:
+		for i in range(AUDIO_POOL_SIZE):
+			var player = AudioStreamPlayer.new()
+			player.stream = dirt_sound_2.stream
+			player.volume_db = dirt_sound_2.volume_db
+			player.bus = "SFX"
+			add_child(player)
+			dirt_sound_pool_2.append(player)
+
+# 두 흙 사운드 중 랜덤으로 하나 재생
+func _play_random_dirt_sound():
+	if randi() % 2 == 0:
+		_play_from_pool(dirt_sound_pool_1)
+	else:
+		_play_from_pool(dirt_sound_pool_2)
 
 # 풀에서 사용 가능한 플레이어 찾아서 재생
 func _play_from_pool(pool: Array[AudioStreamPlayer]):
@@ -328,7 +360,8 @@ func _play_from_pool(pool: Array[AudioStreamPlayer]):
 
 # 떠오르는 텍스트 생성
 func spawn_floating_text(text: String):
-	_play_from_pool(normal_sound_pool)
+	# 두 흙 사운드 중 랜덤 재생
+	_play_random_dirt_sound()
 	# floating_text.gd의 정적 함수 사용
 	var floating_text_script = load("res://floating_text.gd")
 	if floating_text_script:

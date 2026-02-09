@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3iup24b62ol2"]
+[gd_scene format=3 uid="uid://d3iup24b62ol2"]
 
 [ext_resource type="Script" uid="uid://cpdo3u3cff3ub" path="res://auto_scene.gd" id="1_auto_scene"]
 [ext_resource type="FontFile" uid="uid://dqloen3424vrx" path="res://Galmuri9.ttf" id="2_font"]
@@ -21,7 +21,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="AutoScene" type="Control"]
+[node name="AutoScene" type="Control" unique_id=88532877]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_auto_scene")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1055550843]
 texture_filter = 1
 layout_mode = 0
 offset_left = 433.0
@@ -46,7 +46,7 @@ patch_margin_top = 16
 patch_margin_right = 16
 patch_margin_bottom = 16
 
-[node name="BackButton" type="Button" parent="."]
+[node name="BackButton" type="Button" parent="." unique_id=1782387432]
 layout_mode = 0
 offset_left = 450.0
 offset_top = 648.0
@@ -56,7 +56,7 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
 text = "<-"
 
-[node name="setting" type="Button" parent="."]
+[node name="setting" type="Button" parent="." unique_id=743172138]
 layout_mode = 0
 offset_left = 734.0
 offset_top = 647.0
@@ -66,7 +66,7 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
 text = "설정"
 
-[node name="shop_button" type="Button" parent="."]
+[node name="shop_button" type="Button" parent="." unique_id=870804786]
 layout_mode = 0
 offset_left = 519.0
 offset_top = 649.0
@@ -76,19 +76,19 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 40
 text = "상점"
 
-[node name="shop_menu" parent="." instance=ExtResource("3_8jip5")]
+[node name="shop_menu" parent="." unique_id=334230988 instance=ExtResource("3_8jip5")]
 layout_mode = 1
 offset_left = 540.0
 offset_top = 68.0
 offset_right = 846.0
 offset_bottom = -204.0
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=574674980]
 position = Vector2(593, 571)
 scale = Vector2(3, 3)
 region_rect = Rect2(32, 0, 32, 32)
 
-[node name="CenterContainer" type="VBoxContainer" parent="."]
+[node name="CenterContainer" type="VBoxContainer" parent="." unique_id=143154248]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 8
@@ -105,7 +105,7 @@ grow_vertical = 2
 mouse_filter = 0
 theme_override_constants/separation = 30
 
-[node name="AutoMoneyLabel" type="Label" parent="CenterContainer"]
+[node name="AutoMoneyLabel" type="Label" parent="CenterContainer" unique_id=955895939]
 texture_filter = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -114,13 +114,13 @@ theme_override_font_sizes/font_size = 50
 text = " 0"
 horizontal_alignment = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2039614652]
 position = Vector2(712, 544)
 scale = Vector2(5, 5)
 flip_h = true
 region_rect = Rect2(39, 32, 18, 32)
 
-[node name="SettingPanel" type="PanelContainer" parent="."]
+[node name="SettingPanel" type="PanelContainer" parent="." unique_id=655567267]
 visible = false
 layout_mode = 0
 offset_left = 440.0
@@ -129,18 +129,18 @@ offset_right = 840.0
 offset_bottom = 480.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="MarginContainer" type="MarginContainer" parent="SettingPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="SettingPanel" unique_id=28032492]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SettingPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingPanel/MarginContainer" unique_id=190470777]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="TitleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=1241777843]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -148,14 +148,14 @@ theme_override_font_sizes/font_size = 24
 text = "설정"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=1704248167]
 layout_mode = 2
 
-[node name="UIScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="UIScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=1703487416]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="UIScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+[node name="UIScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer" unique_id=733047186]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
@@ -163,14 +163,14 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "UI 크기"
 
-[node name="UIScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+[node name="UIScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer" unique_id=1105763101]
 custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "-"
 
-[node name="UIScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+[node name="UIScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer" unique_id=715616696]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -180,18 +180,18 @@ theme_override_font_sizes/font_size = 18
 text = "1.0x"
 horizontal_alignment = 1
 
-[node name="UIScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer"]
+[node name="UIScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/UIScaleContainer" unique_id=1361840728]
 custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "+"
 
-[node name="CharScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="CharScaleContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=359123050]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="CharScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+[node name="CharScaleLabel" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer" unique_id=149789207]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
@@ -199,14 +199,14 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "캐릭터 크기"
 
-[node name="CharScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+[node name="CharScaleMinus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer" unique_id=1735588088]
 custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "-"
 
-[node name="CharScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+[node name="CharScaleValue" type="Label" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer" unique_id=700243577]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -216,28 +216,28 @@ theme_override_font_sizes/font_size = 18
 text = "1.0x"
 horizontal_alignment = 1
 
-[node name="CharScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer"]
+[node name="CharScalePlus" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/CharScaleContainer" unique_id=1266330763]
 custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "+"
 
-[node name="HSeparator2" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=1779436998]
 layout_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="SettingPanel/MarginContainer/VBoxContainer" unique_id=1922733674]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 20
 
-[node name="ApplyButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="ApplyButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=11370815]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
 text = "적용"
 
-[node name="CloseButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="CloseButton" type="Button" parent="SettingPanel/MarginContainer/VBoxContainer/ButtonContainer" unique_id=743982661]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 18
