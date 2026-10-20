@@ -66,11 +66,9 @@ func _on_area_2d_body_entered(body):
 	gust()
 	timer.start()
 	flying = false
-
-#돌풍 화살: 강공격이 닿은 곳 주변 적 띄우기
 func gust():
 	if big and Gamemaneger.gust > 0:
-		Gamemaneger.launch_around(global_position)
+		Gamemaneger.launch(global_position)
 		big = false
 
 #5초뒤 삭제

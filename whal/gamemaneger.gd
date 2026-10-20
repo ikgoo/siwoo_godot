@@ -235,16 +235,13 @@ var ex = 0
 var plus_hp = 0
 var plus_hp_round = 0
 var mobs = []
-#돌풍 화살 개수(강공격 주변 적 띄우기)
 var gust = 0
-const GUST_RANGE = 70.0
-const GUST_POWER = 350.0
 
-#pos 주변 화면에 보이는 적 띄우기
-func launch_around(pos : Vector2):
+
+func launch(pos : Vector2):
 	for m in mobs:
-		if is_instance_valid(m) and not m.is_dead and m.global_position.distance_to(pos) < GUST_RANGE:
-			m.velocity.y = -GUST_POWER
+		if is_instance_valid(m) and not m.is_dead and m.global_position.distance_to(pos) < 70:
+			m.velocity.y = -350
 
 func getting_hurt(mob,boss:bool,head:bool,damage_much:int):
 	var dam : float = damage_much * (1.0 + plusdamage / 100.0 + damage_add / 100.0)

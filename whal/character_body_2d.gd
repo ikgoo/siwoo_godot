@@ -160,10 +160,9 @@ func _physics_process(delta):
 		facing_right = !facing_right
 		collision_shape_2d.position.x = collision_shape_2d.position.x * -1
 	move_and_slide()
-	#추락: 내리꽂히다 땅에 닿으면 주변 데미지
 	if slamming and is_on_floor():
 		slamming = false
-		land_slam()
+		Gamemaneger.getting_hurt(self,false,false,20)
 
 #추락 아이템으로 내리꽂기
 const SLAM_POWER = 900.0
@@ -175,11 +174,7 @@ func slam():
 	slamming = true
 	velocity.y = SLAM_POWER
 
-func land_slam():
-	for m in Gamemaneger.mobs:
-		if is_instance_valid(m) and not m.is_dead and m.global_position.distance_to(global_position) < SLAM_RANGE:
-			Gamemaneger.getting_hurt(m, false, false, SLAM_DAMAGE)
-			m.hurt(null, true)
+
 
 func _process(delta):
 	#죽는중이면 아무것도 안함

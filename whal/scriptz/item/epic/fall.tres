@@ -1,7 +1,7 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" format=3 uid="uid://deuvr1aenulwu"]
 
-[ext_resource type="Script" path="res://scriptz/item/script/fall.gd" id="1_fall"]
-[ext_resource type="Texture2D" path="res://image/airbone.png" id="2_fall"]
+[ext_resource type="Script" uid="uid://bssxcgk4xp6e4" path="res://scriptz/item/script/fall.gd" id="1_fall"]
+[ext_resource type="Texture2D" uid="uid://cjswwwrmrv8ir" path="res://image/fall.png" id="2_nfy7u"]
 
 [resource]
 script = ExtResource("1_fall")
@@ -9,5 +9,5 @@ name = "Fall"
 real_tmi = "Slams airborne enemies on screen to the ground, damaging nearby enemies on landing"
 can_use = true
 cool = 8.0
-texture = ExtResource("2_fall")
+texture = ExtResource("2_nfy7u")
 rarity = "epic"

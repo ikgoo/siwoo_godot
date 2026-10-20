@@ -1800,7 +1800,6 @@ region_rect = Rect2(0, 0, 1920, 384)
 environment = SubResource("Environment_oysan")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1751447765]
-visible = false
 color = Color(0, 0, 0, 1)
 
 [node name="spawn" type="Marker2D" parent="." unique_id=1582147727]
