@@ -1,0 +1,18 @@
+~ start
+Nathan: [[엄|이거제!|왐마]]
+나진우는?
+- 멍청이
+	Nathan: 맞긴해 ㅇㅇ
+- 발로나보다 못함
+	Nathan: 나진우 티어 플라스틱임 ㅇㅇ 
+- 이시우는 멍청이다
+	Nathan: 뭐래는거야 너 간첩이지?
+	- 네
+		Nathan: 죽어라!!!!
+		set Gamemaneger.hp = 0
+	- 아니오
+		Nathan: 아니라고? 간첩이 아니면 이말은하지않아!!! 죽어라 !!!
+		set Gamemaneger.hp = 0
+- Start again => start
+- End the conversation => END
+=> END

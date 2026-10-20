@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://dqdf7xjfxwy6x"]
+
+[ext_resource type="Script" path="res://text_ui.gd" id="1_txtui"]
+[ext_resource type="Texture2D" uid="uid://8j3iy8h32nvd" path="res://polis_sanctuary.png" id="1_rspnv"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="2_a35av"]
+[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="3_dlabel"]
+[ext_resource type="Script" uid="uid://bb52rsfwhkxbn" path="res://addons/dialogue_manager/dialogue_responses_menu.gd" id="4_resmenu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ww2y"]
+texture = ExtResource("1_rspnv")
+texture_margin_left = 40.0
+texture_margin_top = 40.0
+texture_margin_right = 40.0
+texture_margin_bottom = 40.0
+
+[sub_resource type="Gradient" id="Gradient_en1kw"]
+offsets = PackedFloat32Array(0, 0.01, 0.50409836, 0.99, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 100
+
+[node name="text_UI" type="CanvasLayer" unique_id=1868301228]
+layer = 100
+script = ExtResource("1_txtui")
+
+[node name="Balloon" type="Control" parent="." unique_id=1121558904]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Balloon" unique_id=436711946]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 161.0
+offset_top = 448.0
+offset_right = -161.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_8ww2y")
+
+[node name="CharacterLabel" type="RichTextLabel" parent="Balloon" unique_id=1462206047]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 186.0
+offset_top = 460.0
+offset_right = -859.0
+offset_bottom = -158.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("2_a35av")
+bbcode_enabled = true
+text = "CHARACTER"
+fit_content = true
+scroll_active = false
+
+[node name="DialogueLabel" parent="Balloon" unique_id=1669978216 instance=ExtResource("3_dlabel")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 216.0
+offset_top = 485.0
+offset_right = -283.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_a35av")
+text = ""
+
+[node name="Line2D" type="Line2D" parent="Balloon" unique_id=1391498306]
+z_index = 1
+points = PackedVector2Array(165, 482, 569.5, 482, 964, 482)
+width = 3.0
+gradient = SubResource("Gradient_en1kw")
+
+[node name="ResponsesMenu" type="VBoxContainer" parent="Balloon" unique_id=966297223 node_paths=PackedStringArray("response_template")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -350.0
+offset_right = 290.0
+offset_bottom = -210.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 2
+alignment = 1
+script = ExtResource("4_resmenu")
+response_template = NodePath("ResponseExample")
+
+[node name="ResponseExample" type="Button" parent="Balloon/ResponsesMenu" unique_id=914537232]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_a35av")
+text = "Response example"
+
+[connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
+[connection signal="response_selected" from="Balloon/ResponsesMenu" to="." method="_on_responses_menu_response_selected"]

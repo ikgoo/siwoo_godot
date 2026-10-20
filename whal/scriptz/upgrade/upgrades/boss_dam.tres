@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="upgrade" format=3 uid="uid://yco504rbuwue"]
+
+[ext_resource type="Script" uid="uid://b7xjr4lgtaglf" path="res://scriptz/upgrade/upgrade.gd" id="1_kcm87"]
+[ext_resource type="Texture2D" uid="uid://cjxul6u8j5jif" path="res://16x16.png" id="2_icon"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("2_icon")
+region = Rect2(32, 1200, 16, 16)
+
+[resource]
+script = ExtResource("1_kcm87")
+name = "boss damage"
+tmi = "Attack power dealt to the boss increases by x%"
+icon = SubResource("AtlasTexture_icon")
+price = Array[int]([2000, 3000, 4500, 6000, 8000])
+upgrade_much = Array[int]([20, 30, 45, 60, 70])
+metadata/_custom_type_script = "uid://b7xjr4lgtaglf"

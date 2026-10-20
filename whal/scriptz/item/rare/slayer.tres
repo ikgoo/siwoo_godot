@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3 uid="uid://bph3jlulhwp3y"]
+
+[ext_resource type="Script" uid="uid://c8sdms4vxmsoo" path="res://scriptz/item/script/slayer.gd" id="1_0pipw"]
+[ext_resource type="Texture2D" uid="uid://dovctaslcyb7d" path="res://scriptz/items/New Piskel (17).png" id="2_0pipw"]
+
+[resource]
+script = ExtResource("1_0pipw")
+name = "slayer"
+tmi = "exterminate everything"
+real_tmi = "Summon the samurai and unleash the sword energy twice"
+can_use = true
+cool = 7.0
+texture = ExtResource("2_0pipw")
+rarity = "rare"
+metadata/_custom_type_script = "uid://boiak7aphf1kj"

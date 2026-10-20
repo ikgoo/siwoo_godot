@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dfk82u4j2lhqa"]
+
+[ext_resource type="Texture2D" uid="uid://8j3iy8h32nvd" path="res://polis_sanctuary.png" id="1_csceu"]
+[ext_resource type="Script" uid="uid://bgubcgfug8qff" path="res://item_button.gd" id="2_otroy"]
+[ext_resource type="Texture2D" uid="uid://cxrm6vyq2xg58" path="res://scriptz/items/New Piskel (12).png" id="3_p2a4r"]
+
+[node name="item_button" type="NinePatchRect" unique_id=946015919]
+z_index = 1
+texture_filter = 1
+custom_minimum_size = Vector2(40, 40)
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_csceu")
+region_rect = Rect2(0, 0, 96, 96)
+script = ExtResource("2_otroy")
+
+[node name="Button" type="Button" parent="." unique_id=1213079164]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+flat = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1407948164]
+position = Vector2(20, 20)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_p2a4r")
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

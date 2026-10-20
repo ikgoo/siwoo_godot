@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3 uid="uid://fyr6d060a58n"]
+
+[ext_resource type="Script" uid="uid://cds6l3gakyo56" path="res://scriptz/item/script/airbone.gd" id="1_sje5n"]
+[ext_resource type="Texture2D" uid="uid://bajonn433gbih" path="res://image/airbone.png" id="2_sje5n"]
+
+[resource]
+script = ExtResource("1_sje5n")
+name = "heavy string"
+real_tmi = "+20% damage when enemy is on air"
+texture = ExtResource("2_sje5n")
+rarity = "rare"
+damage_add = 30
+big_arrow_add = 3

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://cnobmx3o505kr"]
+
+[ext_resource type="Texture2D" uid="uid://cp14uesd2ep45" path="res://scriptz/items/New Piskel (9).png" id="1_niign"]
+[ext_resource type="Script" uid="uid://co3lgs8hxnetu" path="res://smoke.gd" id="2_ca0x4"]
+
+[sub_resource type="Curve" id="Curve_ve33x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_or208"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_dmili"]
+curve_x = SubResource("Curve_ve33x")
+curve_y = SubResource("Curve_or208")
+
+[sub_resource type="Curve" id="Curve_ca0x4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2708333, 1), 0.0, 0.0, 0, 0, Vector2(0.703125, 0.6629214), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_en1kw"]
+curve = SubResource("Curve_ca0x4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ww2y"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(40, 20, 1)
+angle_min = -360.0
+angle_max = 360.00003
+spread = 180.0
+initial_velocity_min = -20.0
+initial_velocity_max = 20.0
+directional_velocity_min = -20.000015
+directional_velocity_max = 19.999983
+directional_velocity_curve = SubResource("CurveXYZTexture_dmili")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_en1kw")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(100, 60)
+
+[node name="smoke" type="GPUParticles2D" unique_id=1902959778]
+self_modulate = Color(1, 1, 1, 0.8)
+z_index = 2
+texture_filter = 1
+emitting = false
+amount = 600
+texture = ExtResource("1_niign")
+lifetime = 5.0
+one_shot = true
+explosiveness = 1.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_8ww2y")
+script = ExtResource("2_ca0x4")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2086243659]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=400492592]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

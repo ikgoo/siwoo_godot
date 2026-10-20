@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Scroll" format=3 uid="uid://dnw5t8k1yvbq6"]
+
+[ext_resource type="Script" uid="uid://boiak7aphf1kj" path="res://scriptz/item/scroll.gd" id="1_scroll"]
+[ext_resource type="Texture2D" uid="uid://cp14uesd2ep45" path="res://scriptz/items/New Piskel (9).png" id="2_chs3o"]
+
+[resource]
+script = ExtResource("1_scroll")
+name = "bandage"
+tmi = "The blood stops"
+real_tmi = "Restores 40 HP"
+texture = ExtResource("2_chs3o")
+rarity = "normal"
+hp_add = 40

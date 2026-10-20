@@ -1,0 +1,14 @@
+[gd_resource type="Resource" format=3 uid="uid://c80qoquyvodai"]
+
+[ext_resource type="Script" uid="uid://bdunubokq7ovo" path="res://scriptz/item/script/reversed.gd" id="1_pb60o"]
+[ext_resource type="Texture2D" uid="uid://banw1pr427u0j" path="res://scriptz/items/reversed.png" id="2_oy8t7"]
+
+[resource]
+script = ExtResource("1_pb60o")
+name = "Reversed"
+tmi = "A cornered beast bites hardest."
+real_tmi = "When using the skill, damage +50% for 4 seconds"
+can_use = true
+cool = 12.0
+texture = ExtResource("2_oy8t7")
+rarity = "mistic"

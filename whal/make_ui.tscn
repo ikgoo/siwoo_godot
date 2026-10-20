@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://b6rklr61kqusi"]
+
+[ext_resource type="Script" uid="uid://dso7uans0l375" path="res://make_ui.gd" id="1_rnm2y"]
+[ext_resource type="Texture2D" uid="uid://ucguvsd4ca2d" path="res://assembly.png" id="1_u614d"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="5_ahpkn"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="6_nhgtm"]
+[ext_resource type="Texture2D" uid="uid://56ogl6dkmbu8" path="res://scriptz/3-4.png" id="7_0vft0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4vra3"]
+texture = ExtResource("6_nhgtm")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3yofn"]
+texture = ExtResource("7_0vft0")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(1, 0.85, 0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10ex1"]
+texture = ExtResource("7_0vft0")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(1, 0.85, 0.5, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_en1kw"]
+font = ExtResource("5_ahpkn")
+
+[sub_resource type="LabelSettings" id="LabelSettings_dmili"]
+font = ExtResource("5_ahpkn")
+font_color = Color(1, 0.21268043, 0.15969583, 1)
+
+[node name="make_ui" type="Control" unique_id=905285489]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_rnm2y")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=878990474]
+z_index = 1
+layout_mode = 0
+offset_left = 378.0
+offset_top = 182.0
+offset_right = 638.0
+offset_bottom = 222.0
+columns = 6
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=2137976079]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -255.0
+offset_top = -161.0
+offset_right = 255.0
+offset_bottom = 161.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_u614d")
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1616403263]
+texture_filter = 1
+position = Vector2(728, 240)
+
+[node name="make" type="Button" parent="." unique_id=1670933263]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 0
+offset_left = 671.00006
+offset_top = 415.00003
+offset_right = 966.00006
+offset_bottom = 494.00003
+scale = Vector2(0.4, 0.4)
+theme_override_colors/font_color = Color(0.34356895, 0.9831694, 0.2732551, 1)
+theme_override_fonts/font = ExtResource("5_ahpkn")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_4vra3")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3yofn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_10ex1")
+theme_override_styles/focus = SubResource("StyleBoxTexture_4vra3")
+text = "make"
+expand_icon = true
+
+[node name="name" type="Label" parent="." unique_id=375625735]
+texture_filter = 1
+layout_mode = 0
+offset_left = 669.0
+offset_top = 273.0
+offset_right = 787.0
+offset_bottom = 307.0
+theme_override_font_sizes/font_size = 24
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="rarity" type="Label" parent="." unique_id=1439761956]
+texture_filter = 1
+layout_mode = 0
+offset_left = 640.0
+offset_top = 302.0
+offset_right = 816.0
+offset_bottom = 325.0
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="price" type="Label" parent="." unique_id=1892129086]
+texture_filter = 1
+layout_mode = 0
+offset_left = 640.0
+offset_top = 350.0
+offset_right = 816.0
+offset_bottom = 373.0
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="can" type="Label" parent="." unique_id=1868480296]
+texture_filter = 1
+layout_mode = 0
+offset_left = 640.0
+offset_top = 398.0
+offset_right = 816.0
+offset_bottom = 421.0
+label_settings = SubResource("LabelSettings_dmili")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="real_tmi" type="RichTextLabel" parent="." unique_id=916383643]
+layout_mode = 0
+offset_left = 653.0
+offset_top = 328.0
+offset_right = 820.0
+offset_bottom = 368.0
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+scroll_active = false
+
+[node name="tmi" type="RichTextLabel" parent="." unique_id=2124531170]
+modulate = Color(1, 1, 1, 0.55)
+layout_mode = 0
+offset_left = 664.0
+offset_top = 368.0
+offset_right = 800.0
+offset_bottom = 394.0
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+scroll_active = false
+
+[connection signal="button_down" from="make" to="." method="_on_make_button_down"]

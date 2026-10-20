@@ -1,0 +1,362 @@
+[gd_scene format=3 uid="uid://f21sqyt6vh72"]
+
+[ext_resource type="Script" uid="uid://csvax1ui8bc2" path="res://interface.gd" id="1_iface"]
+[ext_resource type="Texture2D" uid="uid://8j3iy8h32nvd" path="res://polis_sanctuary.png" id="3_pt1ru"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="4_0noqu"]
+[ext_resource type="Texture2D" uid="uid://56ogl6dkmbu8" path="res://scriptz/3-4.png" id="4_4rbkc"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="4_font"]
+
+[sub_resource type="Theme" id="Theme_iface"]
+default_font = ExtResource("4_font")
+default_font_size = 16
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_slot"]
+texture = ExtResource("4_0noqu")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pt1ru"]
+texture = ExtResource("4_4rbkc")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(1, 0.85, 0.5, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_slot_hover"]
+texture = ExtResource("4_4rbkc")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+modulate_color = Color(1, 0.85, 0.5, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("4_font")
+
+[node name="interface" type="Control" unique_id=1468493503]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_iface")
+script = ExtResource("1_iface")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1010700258]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -226.0
+offset_top = -183.5
+offset_right = 350.0
+offset_bottom = 183.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_pt1ru")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="key_binder" type="NinePatchRect" parent="NinePatchRect" unique_id=1961217481]
+visible = false
+z_index = 1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.69754
+offset_top = -46.0
+offset_right = 128.69754
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_pt1ru")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="Label" type="Label" parent="NinePatchRect/key_binder" unique_id=454258541]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.5
+offset_top = -21.0
+offset_right = 94.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "press a key "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="not_active" type="NinePatchRect" parent="NinePatchRect" unique_id=741178731]
+visible = false
+z_index = 1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -30.0
+offset_right = 110.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_pt1ru")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="Label" type="Label" parent="NinePatchRect/not_active" unique_id=1502129382]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -94.5
+offset_top = -21.0
+offset_right = 94.5
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "This item isn't active item"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="title" type="Label" parent="." unique_id=1273126795]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 166.0
+offset_right = 936.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 24
+text = "INVENTORY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1954371320]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -120.0
+offset_right = 120.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="slot" type="Button" parent="GridContainer" unique_id=1000000000]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot2" type="Button" parent="GridContainer" unique_id=1000000002]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot3" type="Button" parent="GridContainer" unique_id=1000000003]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot4" type="Button" parent="GridContainer" unique_id=1000000004]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot5" type="Button" parent="GridContainer" unique_id=1000000005]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot6" type="Button" parent="GridContainer" unique_id=1000000006]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot7" type="Button" parent="GridContainer" unique_id=1000000007]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot8" type="Button" parent="GridContainer" unique_id=1000000008]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="slot9" type="Button" parent="GridContainer" unique_id=1000000009]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+expand_icon = true
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1613905296]
+texture_filter = 1
+layout_mode = 0
+offset_left = 755.0
+offset_top = 173.0
+offset_right = 851.0
+offset_bottom = 269.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="name" type="Label" parent="." unique_id=1146281364]
+layout_mode = 0
+offset_left = 741.0
+offset_top = 273.0
+offset_right = 859.0
+offset_bottom = 297.0
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="rarity" type="Label" parent="." unique_id=1834283580]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 302.0
+offset_right = 888.0
+offset_bottom = 325.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="real_tmi" type="RichTextLabel" parent="." unique_id=1737495012]
+texture_filter = 1
+layout_mode = 0
+offset_left = 725.0
+offset_top = 328.0
+offset_right = 892.0
+offset_bottom = 368.0
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="skill_set" type="Button" parent="." unique_id=1383671499]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 0
+offset_left = 751.0
+offset_top = 423.0
+offset_right = 1045.9999
+offset_bottom = 495.0
+scale = Vector2(0.4, 0.4)
+theme_override_colors/font_color = Color(0.22332573, 0.96651834, 0.29737303, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+text = "skill set"
+expand_icon = true
+
+[node name="break" type="Button" parent="." unique_id=1481799520]
+texture_filter = 1
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 0
+offset_left = 751.0
+offset_top = 391.0
+offset_right = 1046.0
+offset_bottom = 463.0
+scale = Vector2(0.4, 0.4)
+theme_override_colors/font_color = Color(0.9998775, 0.37813458, 0.3101958, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_slot")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pt1ru")
+theme_override_styles/hover = SubResource("StyleBoxTexture_slot_hover")
+theme_override_styles/focus = SubResource("StyleBoxTexture_slot")
+text = "break"
+expand_icon = true
+
+[node name="full" type="Label" parent="." unique_id=377306975]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_left = 401.0
+offset_top = 472.0
+offset_right = 746.0
+offset_bottom = 488.0
+text = "The inventory is full.Click to replace the item"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="active" type="Timer" parent="." unique_id=1907344750]
+
+[connection signal="pressed" from="skill_set" to="." method="_on_skill_set_pressed"]
+[connection signal="button_down" from="break" to="." method="_on_break_button_down"]
+[connection signal="timeout" from="active" to="." method="_on_active_timeout"]

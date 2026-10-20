@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://c88rcc70u46kv"]
+
+[ext_resource type="Script" uid="uid://d2fmhlnixm4io" path="res://ex.gd" id="1_e7xa4"]
+[ext_resource type="Texture2D" uid="uid://c8o7vysjys5aj" path="res://image/1.png" id="2_dmxut"]
+[ext_resource type="Texture2D" uid="uid://besg63nx57sis" path="res://image/2.png" id="3_0rxkk"]
+[ext_resource type="Texture2D" uid="uid://bl6cx8f58oifb" path="res://image/3.png" id="4_hbgxg"]
+[ext_resource type="Texture2D" uid="uid://dk0oi82ric8gc" path="res://image/4.png" id="5_1gcu5"]
+[ext_resource type="Texture2D" uid="uid://wnaums7fxi7s" path="res://image/5.png" id="6_l5kxl"]
+[ext_resource type="Texture2D" uid="uid://bfcqsblofrjix" path="res://image/6.png" id="7_dcf4x"]
+[ext_resource type="Texture2D" uid="uid://doabwgwbcl7oj" path="res://image/7.png" id="8_kvmdb"]
+[ext_resource type="Texture2D" uid="uid://bo1pafksj371l" path="res://image/8.png" id="9_jghaa"]
+[ext_resource type="Texture2D" uid="uid://bpjid15e2gd65" path="res://image/9.png" id="10_hsf2m"]
+[ext_resource type="Texture2D" uid="uid://cpn0ht5lr0pru" path="res://image/10.png" id="11_eu58j"]
+[ext_resource type="Texture2D" uid="uid://5ub1aly8aouv" path="res://image/11.png" id="12_8nq61"]
+[ext_resource type="Texture2D" uid="uid://djyaiwk51q0lm" path="res://image/12.png" id="13_8tgx3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8ww2y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_dmxut")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_0rxkk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hbgxg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1gcu5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_l5kxl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_dcf4x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kvmdb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jghaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_hsf2m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_eu58j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_8nq61")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8tgx3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_7hpv5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_1pp7o"]
+resource_name = "ex"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.2, 0.3, 0.40000004, 0.5, 0.6, 0.70000005, 0.8, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.99),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"ex"
+}, {
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3mi75"]
+_data = {
+&"RESET": SubResource("Animation_7hpv5"),
+&"ex": SubResource("Animation_1pp7o")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(56, 54)
+
+[node name="ex" type="Node2D" unique_id=1730005696]
+script = ExtResource("1_e7xa4")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2032268826]
+texture_filter = 1
+scale = Vector2(0.15234375, 0.15234375)
+sprite_frames = SubResource("SpriteFrames_8ww2y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=935162247]
+libraries/ = SubResource("AnimationLibrary_3mi75")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=146176148]
+collision_layer = 0
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=547259869]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

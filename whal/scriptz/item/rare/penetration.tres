@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3 uid="uid://dxf6jawc1xvkq"]
+
+[ext_resource type="Script" uid="uid://c7o5w32pupfjl" path="res://scriptz/item/script/penetration.gd" id="1_46y5o"]
+[ext_resource type="Texture2D" uid="uid://js7vhcip3ex2" path="res://scriptz/items/penetration.png" id="2_46y5o"]
+
+[resource]
+script = ExtResource("1_46y5o")
+name = "Piercing arrow"
+tmi = "One arrow does not stop at one."
+real_tmi = "Pierces one more enemy.Damage increased by 10%"
+texture = ExtResource("2_46y5o")
+rarity = "rare"
+damage_add = 10

@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://dijrdjophp6lq"]
+
+[ext_resource type="Script" uid="uid://dakxq1c1dqa4x" path="res://goal.gd" id="1_417rf"]
+[ext_resource type="Texture2D" uid="uid://c05gfbtm6ls0y" path="res://scriptz/items/New Piskel (1).png" id="2_4lp4l"]
+[ext_resource type="Texture2D" uid="uid://cwpben0owdrkr" path="res://scriptz/items/New Piskel (2).png" id="3_msc04"]
+[ext_resource type="Texture2D" uid="uid://28kfutlhwnmb" path="res://scriptz/items/New Piskel (3).png" id="4_noofu"]
+[ext_resource type="Texture2D" uid="uid://bhip46vtclc6" path="res://typewriter_buttons1.png" id="5_gsvnj"]
+[ext_resource type="Texture2D" uid="uid://c8e6n3a3kg7k8" path="res://typewriter_buttons_hovered.png" id="6_cwm7g"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="7_kupjj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(191, 112)
+
+[sub_resource type="Curve" id="Curve_dmili"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1418919, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_gsvnj"]
+curve = SubResource("Curve_dmili")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ww2y"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10, 10, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+initial_velocity_min = -1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, -20, 0)
+scale_min = 0.19999999
+scale_max = 0.19999999
+alpha_curve = SubResource("CurveTexture_gsvnj")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj0nl"]
+atlas = ExtResource("5_gsvnj")
+region = Rect2(192, 0, 12, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrken"]
+atlas = ExtResource("6_cwm7g")
+region = Rect2(192, 0, 12, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kupjj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sj0nl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrken")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6asa1"]
+font = ExtResource("7_kupjj")
+font_size = 13
+
+[node name="scroll_table" type="Area2D" unique_id=1890589976]
+collision_layer = 64
+script = ExtResource("1_417rf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=849061086]
+shape = SubResource("RectangleShape2D_8ww2y")
+debug_color = Color(1, 1, 1, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=723464913]
+texture_filter = 1
+texture = ExtResource("2_4lp4l")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1170140565]
+texture_filter = 1
+position = Vector2(0, -19)
+scale = Vector2(0.41666666, 0.41666666)
+texture = ExtResource("3_msc04")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1512526985]
+position = Vector2(0, -14)
+amount = 30
+texture = ExtResource("4_noofu")
+process_material = SubResource("ParticleProcessMaterial_8ww2y")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=783772147]
+visible = false
+z_index = 4
+texture_filter = 1
+position = Vector2(-31, 33)
+sprite_frames = SubResource("SpriteFrames_kupjj")
+
+[node name="Label2" type="Label" parent="AnimatedSprite2D2" unique_id=922525631]
+texture_filter = 1
+offset_left = -13.799999
+offset_top = -7.200001
+offset_right = 80.2
+offset_bottom = 15.799999
+text = "get item"
+label_settings = SubResource("LabelSettings_6asa1")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

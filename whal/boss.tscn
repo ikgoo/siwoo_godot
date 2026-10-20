@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dewdvar5u07w5"]
+
+[ext_resource type="PackedScene" uid="uid://bkh3x15a0cmso" path="res://character_body_2d.tscn" id="1_6xxrv"]
+[ext_resource type="Script" uid="uid://3v4o4c3dwhnl" path="res://boss.gd" id="1_ry61v"]
+[ext_resource type="PackedScene" uid="uid://btdao8beg1028" path="res://bosu.tscn" id="3_skx2t"]
+[ext_resource type="Script" uid="uid://ednrtmxtvdvq" path="res://camera_2d.gd" id="4_bcam"]
+[ext_resource type="PackedScene" uid="uid://dobvoc0svoo6" path="res://ui.tscn" id="5_bui"]
+[ext_resource type="PackedScene" uid="uid://f21sqyt6vh72" path="res://interface.tscn" id="6_bif"]
+[ext_resource type="PackedScene" uid="uid://c2w8f3eix3ahe" path="res://boss_ui.tscn" id="8_ef0k6"]
+[ext_resource type="PackedScene" uid="uid://dcv3ddoct57fe" path="res://map_b.tscn" id="8_ry61v"]
+[ext_resource type="AudioStream" uid="uid://dtdagilkmrkye" path="res://sound/backgounds/dungeon.wav" id="9_ry61v"]
+
+[sub_resource type="Animation" id="Animation_kles1"]
+resource_name = "boss"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_etj48"]
+_data = {
+&"boss": SubResource("Animation_kles1")
+}
+
+[node name="boss" type="Node2D" unique_id=438097917]
+script = ExtResource("1_ry61v")
+
+[node name="CharacterBody2D" parent="." unique_id=1680050025 instance=ExtResource("1_6xxrv")]
+position = Vector2(-655, 486)
+
+[node name="bosu" parent="." unique_id=1722440979 instance=ExtResource("3_skx2t")]
+position = Vector2(59, 654)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1241140472]
+zoom = Vector2(1.5, 1.5)
+script = ExtResource("4_bcam")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1899458609]
+
+[node name="UI" parent="CanvasLayer" unique_id=1297161634 instance=ExtResource("5_bui")]
+metadata/_edit_lock_ = true
+
+[node name="interface" parent="CanvasLayer" unique_id=1468493503 instance=ExtResource("6_bif")]
+visible = false
+
+[node name="boss_UI" parent="CanvasLayer" unique_id=1065681718 instance=ExtResource("8_ef0k6")]
+
+[node name="TileMapLayer" parent="." unique_id=1372114214 instance=ExtResource("8_ry61v")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1354133415]
+stream = ExtResource("9_ry61v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1491130309]
+libraries/ = SubResource("AnimationLibrary_etj48")
+
+[node name="boss_t" type="Timer" parent="." unique_id=2102250187]
+wait_time = 5.0
+
+[connection signal="timeout" from="boss_t" to="." method="_on_boss_t_timeout"]

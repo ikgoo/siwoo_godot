@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scriptz/item/script/gust.gd" id="1_gust"]
+[ext_resource type="Texture2D" path="res://image/airbone.png" id="2_gust"]
+
+[resource]
+script = ExtResource("1_gust")
+name = "Gust arrow"
+real_tmi = "Strong attack launches nearby enemies into the air"
+texture = ExtResource("2_gust")
+rarity = "rare"

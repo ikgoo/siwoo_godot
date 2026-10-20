@@ -1,0 +1,729 @@
+[gd_scene format=3 uid="uid://dobvoc0svoo6"]
+
+[ext_resource type="Script" uid="uid://cxsho3eb3rbi6" path="res://ui.gd" id="1_fyqef"]
+[ext_resource type="Texture2D" uid="uid://chiqx8phtl8l" path="res://5-2.png" id="2_hpbar"]
+[ext_resource type="PackedScene" uid="uid://2vkagl7qxqe3" path="res://dead_ui.tscn" id="3_waa4j"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="4_font"]
+[ext_resource type="Texture2D" uid="uid://ucguvsd4ca2d" path="res://assembly.png" id="4_waa4j"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="5_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://8j3iy8h32nvd" path="res://polis_sanctuary.png" id="6_ok7cu"]
+[ext_resource type="Texture2D" uid="uid://dxpmr6f5soa6x" path="res://scriptz/items/New Piskel (16).png" id="8_waa4j"]
+[ext_resource type="PackedScene" uid="uid://b7uey2f84uesf" path="res://esc_menu.tscn" id="9_ok7cu"]
+[ext_resource type="PackedScene" uid="uid://f21sqyt6vh72" path="res://interface.tscn" id="10_irxef"]
+[ext_resource type="Texture2D" uid="uid://qtg67sl38qqf" path="res://scriptz/items/piece.png" id="11_e2l4f"]
+[ext_resource type="PackedScene" uid="uid://b6rklr61kqusi" path="res://make_ui.tscn" id="12_n5rqp"]
+[ext_resource type="PackedScene" uid="uid://bcj32gmvqhxmu" path="res://minimap.tscn" id="13_gs482"]
+[ext_resource type="AudioStream" uid="uid://byjh4ex1brc0v" path="res://sound/sfx/click.ogg" id="14_7rqds"]
+[ext_resource type="AudioStream" uid="uid://b5wdqx3x0i4" path="res://sound/sfx/close.ogg" id="15_nvb2n"]
+[ext_resource type="AudioStream" uid="uid://g2fb6v6fw1rr" path="res://sound/sfx/open.wav" id="16_os5c7"]
+
+[sub_resource type="Theme" id="Theme_ui"]
+default_font = ExtResource("4_font")
+default_font_size = 16
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font_color = Color(1, 0.46101677, 0.3927373, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpbg"]
+texture = ExtResource("2_hpbar")
+texture_margin_left = 8.0
+texture_margin_top = 3.0
+texture_margin_right = 8.0
+texture_margin_bottom = 3.0
+modulate_color = Color(0.28, 0.28, 0.28, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpfill"]
+texture = ExtResource("2_hpbar")
+texture_margin_left = 8.0
+texture_margin_top = 3.0
+texture_margin_right = 8.0
+texture_margin_bottom = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_8ww2y"]
+
+[sub_resource type="Animation" id="Animation_fyqef"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("scroll_popup:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(771, 186)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("scroll_popup:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fadeblack"]
+resource_name = "fade_black"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_m6e0p"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.16666667, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_nltto"]
+resource_name = "show_in"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("scroll_popup:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.30778593, 1),
+"update": 0,
+"values": [Vector2(771, 226), Vector2(771, 186)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("scroll_popup:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.3415101, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_27fn8"]
+_data = {
+&"RESET": SubResource("Animation_fyqef"),
+&"fade_black": SubResource("Animation_fadeblack"),
+&"fade_out": SubResource("Animation_m6e0p"),
+&"show_in": SubResource("Animation_nltto")
+}
+
+[node name="UI" type="Control" unique_id=1297161634]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ui")
+script = ExtResource("1_fyqef")
+
+[node name="weapon_panel3" type="NinePatchRect" parent="." unique_id=1119806238]
+texture_filter = 1
+layout_mode = 0
+offset_left = 13.0
+offset_top = 11.0
+offset_right = 262.0
+offset_bottom = 136.0
+texture = ExtResource("4_waa4j")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="GridContainer" type="GridContainer" parent="weapon_panel3" unique_id=1877397446]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -118.5
+offset_top = -56.5
+offset_right = 197.5
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.1, 1.1)
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 2
+columns = 4
+
+[node name="Button" type="Button" parent="weapon_panel3/GridContainer" unique_id=1025630179]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="1" type="TextureRect" parent="weapon_panel3/GridContainer/Button" unique_id=1140143835]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.5
+offset_top = 9.0
+offset_right = 10.5
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool1" type="Label" parent="weapon_panel3/GridContainer/Button" unique_id=960442729]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button2" type="Button" parent="weapon_panel3/GridContainer" unique_id=1528152378]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="2" type="TextureRect" parent="weapon_panel3/GridContainer/Button2" unique_id=1506838371]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21000001
+anchor_top = 0.18
+anchor_right = 0.81000006
+anchor_bottom = 0.78000003
+offset_right = 19.999996
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool2" type="Label" parent="weapon_panel3/GridContainer/Button2" unique_id=1545874874]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button3" type="Button" parent="weapon_panel3/GridContainer" unique_id=1876743976]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="3" type="TextureRect" parent="weapon_panel3/GridContainer/Button3" unique_id=2031009878]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -13.5
+offset_top = -15.0
+offset_right = 34.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool3" type="Label" parent="weapon_panel3/GridContainer/Button3" unique_id=1084375144]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button4" type="Button" parent="weapon_panel3/GridContainer" unique_id=1107088080]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="4" type="TextureRect" parent="weapon_panel3/GridContainer/Button4" unique_id=1062567004]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.5
+offset_top = -15.0
+offset_right = 33.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool4" type="Label" parent="weapon_panel3/GridContainer/Button4" unique_id=268578842]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button5" type="Button" parent="weapon_panel3/GridContainer" unique_id=559757531]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="5" type="TextureRect" parent="weapon_panel3/GridContainer/Button5" unique_id=682097798]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.5
+offset_top = -14.0
+offset_right = 33.5
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool5" type="Label" parent="weapon_panel3/GridContainer/Button5" unique_id=1698173911]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button6" type="Button" parent="weapon_panel3/GridContainer" unique_id=425031179]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="6" type="TextureRect" parent="weapon_panel3/GridContainer/Button6" unique_id=1756062645]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.5
+offset_top = -15.0
+offset_right = 33.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool6" type="Label" parent="weapon_panel3/GridContainer/Button6" unique_id=266021783]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button7" type="Button" parent="weapon_panel3/GridContainer" unique_id=9374225]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="7" type="TextureRect" parent="weapon_panel3/GridContainer/Button7" unique_id=1543683686]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.5
+offset_top = -15.0
+offset_right = 33.5
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool7" type="Label" parent="weapon_panel3/GridContainer/Button7" unique_id=840824028]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="Button8" type="Button" parent="weapon_panel3/GridContainer" unique_id=864526188]
+texture_filter = 1
+custom_minimum_size = Vector2(50, 50)
+custom_maximum_size = Vector2(72, 72)
+layout_mode = 2
+icon = ExtResource("5_ok7cu")
+flat = true
+expand_icon = true
+
+[node name="8" type="TextureRect" parent="weapon_panel3/GridContainer/Button8" unique_id=988958663]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.5
+offset_top = -14.0
+offset_right = 33.5
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+
+[node name="cool8" type="Label" parent="weapon_panel3/GridContainer/Button8" unique_id=915473443]
+layout_mode = 0
+offset_left = 23.5
+offset_top = 32.0
+offset_right = 63.5
+offset_bottom = 48.0
+text = "3.0"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="weapon_panel2" type="NinePatchRect" parent="." unique_id=1907095085]
+texture_filter = 1
+layout_mode = 0
+offset_left = 4.0
+offset_top = 517.0
+offset_right = 378.0
+offset_bottom = 644.0
+texture = ExtResource("5_ok7cu")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1992072372]
+texture_filter = 1
+layout_mode = 0
+offset_left = 23.0
+offset_top = 599.0
+offset_right = 359.0
+offset_bottom = 627.0
+theme_override_styles/background = SubResource("StyleBoxTexture_hpbg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_hpfill")
+show_percentage = false
+
+[node name="hp_label" type="Label" parent="ProgressBar" unique_id=1837264051]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="." unique_id=674130401]
+layout_mode = 0
+offset_left = -72.0
+offset_top = 530.0
+offset_right = 164.0
+offset_bottom = 565.0
+text = "5/10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="money" type="Label" parent="." unique_id=1165329715]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 569.0
+offset_right = 309.0
+offset_bottom = 604.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="money2" type="Label" parent="." unique_id=1199107727]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 569.0
+offset_right = 381.0
+offset_bottom = 604.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="piece" type="Label" parent="." unique_id=17021088]
+layout_mode = 0
+offset_left = 195.0
+offset_top = 541.0
+offset_right = 304.0
+offset_bottom = 576.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BigCoolBar" type="ProgressBar" parent="." unique_id=1134687504]
+texture_filter = 1
+layout_mode = 0
+offset_left = 23.0
+offset_top = 580.0
+offset_right = 197.0
+offset_bottom = 593.0
+theme_override_styles/background = SubResource("StyleBoxTexture_hpbg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_hpfill")
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="." unique_id=614117222]
+layout_mode = 0
+offset_left = -69.0
+offset_top = 552.0
+offset_right = 167.0
+offset_bottom = 587.0
+text = "10/60"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="scroll_popup" type="Control" parent="." unique_id=1477105620]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_left = 771.0
+offset_top = 186.0
+offset_right = 1109.0
+offset_bottom = 433.99994
+mouse_filter = 2
+
+[node name="bg" type="NinePatchRect" parent="scroll_popup" unique_id=1195833074]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_ok7cu")
+patch_margin_left = 30
+patch_margin_top = 30
+patch_margin_right = 30
+patch_margin_bottom = 30
+
+[node name="icon" type="TextureRect" parent="scroll_popup" unique_id=605894718]
+texture_filter = 1
+layout_mode = 0
+offset_left = 33.0
+offset_top = 80.0
+offset_right = 113.0
+offset_bottom = 160.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="item_name" type="Label" parent="scroll_popup" unique_id=1962374281]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 43.0
+offset_right = 294.0
+offset_bottom = 76.0
+theme_override_font_sizes/font_size = 24
+text = "소바 ai드론봇"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="rarity" type="Label" parent="scroll_popup" unique_id=886312455]
+texture_filter = 1
+layout_mode = 0
+offset_left = 36.0
+offset_top = 83.0
+offset_right = 380.0
+offset_bottom = 105.0
+text = "normal"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="real_tmi" type="RichTextLabel" parent="scroll_popup" unique_id=1094463895]
+layout_mode = 0
+offset_left = 135.0
+offset_top = 107.0
+offset_right = 306.0
+offset_bottom = 202.0
+mouse_filter = 2
+bbcode_enabled = true
+text = "먹으면 바로 오딘5개가 갈겨서 죽는다		"
+scroll_active = false
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=1278432884]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(739.75, 327.75)
+scale = Vector2(1480.5, 656.5)
+mesh = SubResource("BoxMesh_8ww2y")
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=974981680]
+visible = false
+layout_mode = 0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 1477.0
+offset_bottom = 686.0
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2131635159]
+libraries/ = SubResource("AnimationLibrary_27fn8")
+
+[node name="dead_ui" parent="." unique_id=28248809 instance=ExtResource("3_waa4j")]
+visible = false
+layout_mode = 1
+
+[node name="NewPiskel(16)" type="Sprite2D" parent="." unique_id=1943303968]
+texture_filter = 1
+position = Vector2(217, 583)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_waa4j")
+
+[node name="NewPiskel(16)2" type="Sprite2D" parent="." unique_id=1248282093]
+modulate = Color(1, 0.5372549, 0.3019608, 1)
+texture_filter = 1
+position = Vector2(289, 583)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_waa4j")
+
+[node name="esc_menu" parent="." unique_id=124786644 instance=ExtResource("9_ok7cu")]
+visible = false
+layout_mode = 1
+
+[node name="interface" parent="." unique_id=1468493503 instance=ExtResource("10_irxef")]
+visible = false
+layout_mode = 1
+
+[node name="Piece" type="Sprite2D" parent="." unique_id=316937213]
+texture_filter = 1
+position = Vector2(217, 556)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("11_e2l4f")
+
+[node name="make_ui" parent="." unique_id=905285489 instance=ExtResource("12_n5rqp")]
+visible = false
+layout_mode = 1
+
+[node name="minimap" parent="." unique_id=1806010872 instance=ExtResource("13_gs482")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.84900004
+anchor_bottom = 0.26900002
+offset_left = -0.048034668
+offset_bottom = -0.31201172
+grow_horizontal = 1
+
+[node name="click" type="AudioStreamPlayer" parent="." unique_id=1269532312]
+stream = ExtResource("14_7rqds")
+pitch_scale = 1.2
+
+[node name="close" type="AudioStreamPlayer" parent="." unique_id=1611459309]
+stream = ExtResource("15_nvb2n")
+pitch_scale = 1.2
+
+[node name="open" type="AudioStreamPlayer" parent="." unique_id=803398948]
+stream = ExtResource("16_os5c7")
+pitch_scale = 3.5

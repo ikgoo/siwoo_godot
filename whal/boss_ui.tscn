@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://c2w8f3eix3ahe"]
+
+[ext_resource type="Script" uid="uid://b3jnkg0mbpbnp" path="res://boss_ui.gd" id="1_es4pf"]
+[ext_resource type="Texture2D" uid="uid://dpy3qjo10y50q" path="res://HUD_Boss.png" id="2_6pgwh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_or208"]
+atlas = ExtResource("2_6pgwh")
+region = Rect2(0, 7, 80, 17)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ve33x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_51r3t"]
+atlas = ExtResource("2_6pgwh")
+region = Rect2(3, 27, 74, 2)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_en1kw"]
+texture = SubResource("AtlasTexture_51r3t")
+
+[node name="boss_UI" type="Control" unique_id=1065681718]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_es4pf")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1757866271]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -162.35294
+offset_top = 26.0
+offset_right = 162.3529
+offset_bottom = 95.0
+grow_horizontal = 2
+texture = SubResource("AtlasTexture_or208")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=563100001]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 74.0
+offset_right = 280.0
+offset_bottom = 86.857155
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+theme_override_styles/background = SubResource("StyleBoxTexture_ve33x")
+theme_override_styles/fill = SubResource("StyleBoxTexture_en1kw")
+max_value = 1500.0
+value = 60.0
+show_percentage = false

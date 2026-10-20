@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3 uid="uid://3npxgafptol1"]
+
+[ext_resource type="Script" uid="uid://cdsbhnb0ystt1" path="res://scriptz/item/script/smoke.gd" id="1_smoke"]
+[ext_resource type="Texture2D" uid="uid://cp14uesd2ep45" path="res://scriptz/items/New Piskel (9).png" id="2_smoke"]
+
+[resource]
+script = ExtResource("1_smoke")
+name = "smoke"
+tmi = "If it can’t be seen, it’s as if it doesn’t exist."
+real_tmi = "When using a skill, creates a smoke screen at that location"
+can_use = true
+cool = 8.0
+texture = ExtResource("2_smoke")
+rarity = "rare"
+metadata/_custom_type_script = "uid://boiak7aphf1kj"

@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://2vkagl7qxqe3"]
+
+[ext_resource type="Texture2D" uid="uid://ucguvsd4ca2d" path="res://assembly.png" id="1_03ff1"]
+[ext_resource type="Script" uid="uid://cni6qvo6b2tn7" path="res://dead_ui.gd" id="1_8tys7"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="2_8tys7"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="3_ktwwx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("2_8tys7")
+font_size = 40
+
+[node name="dead_ui" type="Control" unique_id=28248809]
+z_index = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -2.0
+offset_right = 6.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_8tys7")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=733329238]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -165.0
+offset_right = 140.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_03ff1")
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="Label" type="Label" parent="NinePatchRect" unique_id=909317045]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -137.5
+offset_right = 100.0
+offset_bottom = -86.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+text = "You died"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="." unique_id=1592060411]
+z_index = 1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 455.5238
+offset_top = 301.0
+offset_right = -462.0
+offset_bottom = -294.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_ktwwx")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="Button" type="Button" parent="NinePatchRect2" unique_id=1202102563]
+z_index = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -21.0
+offset_right = 110.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_8tys7")
+theme_override_font_sizes/font_size = 25
+text = "respawn"
+flat = true
+
+[node name="NinePatchRect3" type="NinePatchRect" parent="." unique_id=770543716]
+z_index = 1
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 455.5238
+offset_top = 365.0
+offset_right = -462.0
+offset_bottom = -231.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_ktwwx")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="Button2" type="Button" parent="NinePatchRect3" unique_id=289305992]
+z_index = 3
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -21.0
+offset_right = 110.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_8tys7")
+theme_override_font_sizes/font_size = 25
+text = "go to title"
+flat = true
+
+[connection signal="pressed" from="NinePatchRect2/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="NinePatchRect3/Button2" to="." method="_on_button_2_pressed"]

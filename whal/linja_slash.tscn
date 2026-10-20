@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://darpwh46l7a0q"]
+
+[ext_resource type="Script" uid="uid://chxo87nf5xml4" path="res://linja_slash.gd" id="1_t7tj7"]
+[ext_resource type="Texture2D" uid="uid://boc1ivnvce1p" path="res://Fire.png" id="2_hlnpc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxq43"]
+atlas = ExtResource("2_hlnpc")
+region = Rect2(0, 0, 16, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clm0x"]
+atlas = ExtResource("2_hlnpc")
+region = Rect2(16, 0, 16, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqrtn"]
+atlas = ExtResource("2_hlnpc")
+region = Rect2(32, 0, 16, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8ww2y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxq43")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clm0x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iqrtn")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(16, 28)
+
+[node name="linja_slash" type="Node2D" unique_id=797520638]
+scale = Vector2(2.4, 2.4)
+script = ExtResource("1_t7tj7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1329849625]
+texture_filter = 1
+position = Vector2(0, -14.166668)
+sprite_frames = SubResource("SpriteFrames_8ww2y")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1058150591]
+position = Vector2(0, -14.166668)
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=752215025]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[node name="Timer" type="Timer" parent="." unique_id=142388633]
+wait_time = 3.0
+autostart = true
+
+[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

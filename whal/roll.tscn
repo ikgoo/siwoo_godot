@@ -1,0 +1,211 @@
+[gd_scene format=3 uid="uid://kowdymeynsne"]
+
+[ext_resource type="Script" uid="uid://7yahb4n3tyil" path="res://roll.gd" id="1_vrgdt"]
+[ext_resource type="PackedScene" uid="uid://cje7q7fo7p3yi" path="res://roll_effect.tscn" id="2_ft62e"]
+[ext_resource type="Texture2D" uid="uid://borscxf788u5o" path="res://ntile015.png" id="3_gk5yo"]
+[ext_resource type="Texture2D" uid="uid://cdcwi6eie1eb4" path="res://tile015.png" id="4_ak4fk"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="5_j3jrc"]
+[ext_resource type="Texture2D" uid="uid://bhip46vtclc6" path="res://typewriter_buttons1.png" id="6_v48tw"]
+[ext_resource type="Texture2D" uid="uid://c8e6n3a3kg7k8" path="res://typewriter_buttons_hovered.png" id="7_oxuqx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(126, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj0nl"]
+atlas = ExtResource("6_v48tw")
+region = Rect2(192, 0, 12, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrken"]
+atlas = ExtResource("7_oxuqx")
+region = Rect2(192, 0, 12, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0iuom"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sj0nl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrken")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sn0d1"]
+font = ExtResource("5_j3jrc")
+font_size = 13
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_en1kw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_gk5yo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ak4fk")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_1rgyp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D2:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_gk5yo"]
+resource_name = "no_m"
+step = 0.01
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.99),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"l_on"
+}, {
+"args": [],
+"method": &"l_off"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_h3sk0"]
+resource_name = "on"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D2:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bxxp5"]
+_data = {
+&"RESET": SubResource("Animation_1rgyp"),
+&"no_m": SubResource("Animation_gk5yo"),
+&"on": SubResource("Animation_h3sk0")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("5_j3jrc")
+font_size = 8
+font_color = Color(1, 0.51025575, 0.44386888, 1)
+
+[node name="roll" type="Node2D" unique_id=1989593943]
+script = ExtResource("1_vrgdt")
+
+[node name="roll_e" parent="." unique_id=1517886578 instance=ExtResource("2_ft62e")]
+scale = Vector2(0.4, 0.4)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=302873364]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=31780859]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1758655501]
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="." unique_id=192085935]
+visible = false
+z_index = 4
+texture_filter = 1
+position = Vector2(-39, 33)
+sprite_frames = SubResource("SpriteFrames_0iuom")
+
+[node name="Label2" type="Label" parent="AnimatedSprite2D2" unique_id=1335190134]
+texture_filter = 1
+offset_left = -13.799999
+offset_top = -7.200001
+offset_right = 80.2
+offset_bottom = 15.799999
+text = "roll item"
+label_settings = SubResource("LabelSettings_sn0d1")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=793540761]
+visible = false
+z_index = 4
+texture_filter = 1
+position = Vector2(-39, 49)
+sprite_frames = SubResource("SpriteFrames_en1kw")
+
+[node name="Label" type="Label" parent="AnimatedSprite2D" unique_id=1300287285]
+texture_filter = 1
+offset_left = -4.200001
+offset_top = -7.200001
+offset_right = 89.8
+offset_bottom = 15.799999
+text = "make item"
+label_settings = SubResource("LabelSettings_sn0d1")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1923149095]
+libraries/ = SubResource("AnimationLibrary_bxxp5")
+
+[node name="Timer" type="Timer" parent="." unique_id=1519567933]
+one_shot = true
+
+[node name="Label" type="Label" parent="." unique_id=252275370]
+visible = false
+offset_left = -71.0
+offset_top = -49.0
+offset_right = 71.0
+offset_bottom = -26.0
+text = "not enough money"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="upgrade" format=3 uid="uid://d3c8h0dre21cv"]
+
+[ext_resource type="Script" uid="uid://b7xjr4lgtaglf" path="res://scriptz/upgrade/upgrade.gd" id="1_cktfb"]
+[ext_resource type="Texture2D" uid="uid://cjxul6u8j5jif" path="res://16x16.png" id="2_icon"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("2_icon")
+region = Rect2(128, 1248, 16, 16)
+
+[resource]
+script = ExtResource("1_cktfb")
+name = "First upgrade"
+tmi = "The bow that gives you hope(It doesn't do anything)"
+icon = SubResource("AtlasTexture_icon")
+price = Array[int]([0])
+upgrade_much = Array[int]([0])
+metadata/_custom_type_script = "uid://b7xjr4lgtaglf"

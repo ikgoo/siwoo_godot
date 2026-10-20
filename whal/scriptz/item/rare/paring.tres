@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3 uid="uid://buttkvmfcgtvk"]
+
+[ext_resource type="Script" uid="uid://cjgqqmt8g5kck" path="res://scriptz/item/script/paring.gd" id="1_jeq7t"]
+[ext_resource type="Texture2D" uid="uid://xsgk8itjpx7y" path="res://scriptz/items/New Piskel (13).png" id="2_jeq7t"]
+
+[resource]
+script = ExtResource("1_jeq7t")
+name = "Genji Sword"
+tmi = "Are you confident, Ma? Come right away! (in 1 second) Huh... Damn, I lost.. I can't let this go... grr"
+real_tmi = "When using the skill, you can parry attacks for 0.2 seconds"
+can_use = true
+cool = 0.2
+texture = ExtResource("2_jeq7t")
+rarity = "normal"
+hp_add = 40
+metadata/_custom_type_script = "uid://boiak7aphf1kj"

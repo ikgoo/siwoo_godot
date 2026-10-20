@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Scroll" format=3 uid="uid://c7yhk2vd0nls8"]
+
+[ext_resource type="Script" uid="uid://boiak7aphf1kj" path="res://scriptz/item/scroll.gd" id="1_1vivy"]
+[ext_resource type="Texture2D" uid="uid://b0eli33fu0n8p" path="res://New Piskel (8).png" id="2_6o0lb"]
+
+[resource]
+script = ExtResource("1_1vivy")
+name = "Hunter's Talisman"
+tmi = "Something carved from a beast’s bone."
+real_tmi = "Max HP +30, Arrow Damage +40%, Spare Arrows +20"
+texture = ExtResource("2_6o0lb")
+rarity = "epic"
+max_hp_add = 30
+damage_add = 40
+arrow_add = 20

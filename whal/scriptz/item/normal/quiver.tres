@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Scroll" format=3 uid="uid://b1qvr7k2xdn40"]
+
+[ext_resource type="Script" uid="uid://boiak7aphf1kj" path="res://scriptz/item/scroll.gd" id="1_scroll"]
+[ext_resource type="Texture2D" uid="uid://cxrm6vyq2xg58" path="res://scriptz/items/New Piskel (12).png" id="2_eflck"]
+
+[resource]
+script = ExtResource("1_scroll")
+name = "Feather quiver"
+tmi = "A barrel made so you can stuff in more arrows."
+real_tmi = "Preliminary Arrow +30, Ammo Reloaded by One Draw +5"
+texture = ExtResource("2_eflck")
+rarity = "normal"
+arrow_add = 30
+quiver_add = 5

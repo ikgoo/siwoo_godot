@@ -1,0 +1,14 @@
+[gd_resource type="Resource" format=3 uid="uid://beaax2u1dkrqw"]
+
+[ext_resource type="Script" uid="uid://ct4lhlsl4nwkb" path="res://scriptz/item/script/blood_debt.gd" id="1_6rf3c"]
+[ext_resource type="Texture2D" uid="uid://bthpxgcxlwpkl" path="res://New Piskel (20).png" id="2_51oks"]
+
+[resource]
+script = ExtResource("1_6rf3c")
+name = "Unstable explosion"
+tmi = "Handle with care. Or don't."
+real_tmi = "When using a skill, your next arrow becomes an explosive arrow"
+can_use = true
+cool = 9.0
+texture = ExtResource("2_51oks")
+rarity = "epic"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Scroll" format=3 uid="uid://ba3jf6mp8xua1"]
+
+[ext_resource type="Script" uid="uid://boiak7aphf1kj" path="res://scriptz/item/scroll.gd" id="1_scroll"]
+[ext_resource type="Texture2D" uid="uid://kmbtp8nq7lgs" path="res://scriptz/items/New Piskel (10).png" id="2_utuyi"]
+
+[resource]
+script = ExtResource("1_scroll")
+name = "heavy string"
+tmi = "Because it is hard to pull, it goes far."
+real_tmi = "Arrow damage +30%, strong attack reserve arrow +3"
+texture = ExtResource("2_utuyi")
+rarity = "rare"
+damage_add = 30
+big_arrow_add = 3

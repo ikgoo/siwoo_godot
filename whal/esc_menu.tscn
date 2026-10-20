@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://b7uey2f84uesf"]
+
+[ext_resource type="Script" uid="uid://cypcnkujgfwca" path="res://esc_menu.gd" id="1_3jj7u"]
+[ext_resource type="Texture2D" uid="uid://ucguvsd4ca2d" path="res://assembly.png" id="2_jdvki"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="3_kjw2m"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="4_ateoh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_en1kw"]
+font = ExtResource("4_ateoh")
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("4_ateoh")
+font_size = 24
+
+[node name="esc_menu" type="Control" unique_id=124786644]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3jj7u")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1087579221]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 493.40012
+offset_top = 162.00002
+offset_right = -506.59998
+offset_bottom = -279.0769
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("2_jdvki")
+region_rect = Rect2(0, 0, 96, 96)
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="resume" type="Button" parent="NinePatchRect" unique_id=965720563]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 61.5
+offset_right = 59.0
+offset_bottom = 90.5
+grow_horizontal = 2
+flat = true
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="NinePatchRect/resume" unique_id=375282839]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 118.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_kjw2m")
+region_rect = Rect2(1, 1, 94, 94)
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Label2" type="Label" parent="NinePatchRect/resume" unique_id=1042865874]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.5
+offset_top = -12.0
+offset_right = 56.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "resume"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="go_to_title" type="Button" parent="NinePatchRect" unique_id=18404414]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 97.5
+offset_right = 59.0
+offset_bottom = 126.5
+grow_horizontal = 2
+flat = true
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="NinePatchRect/go_to_title" unique_id=351229406]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 118.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_kjw2m")
+region_rect = Rect2(1, 1, 94, 94)
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Label3" type="Label" parent="NinePatchRect/go_to_title" unique_id=490140886]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.5
+offset_top = -12.0
+offset_right = 56.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "go to title"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="quit" type="Button" parent="NinePatchRect" unique_id=2060532633]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -59.0
+offset_top = 133.5
+offset_right = 59.0
+offset_bottom = 162.5
+grow_horizontal = 2
+flat = true
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="NinePatchRect/quit" unique_id=46584011]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 118.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_kjw2m")
+region_rect = Rect2(1, 1, 94, 94)
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Label3" type="Label" parent="NinePatchRect/quit" unique_id=1173780158]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -56.5
+offset_top = -12.0
+offset_right = 56.5
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "quit game"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="NinePatchRect" unique_id=636025238]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 20.0
+offset_right = 20.0
+offset_bottom = 43.0
+grow_horizontal = 2
+text = "esc menu"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+
+[connection signal="button_down" from="NinePatchRect/resume" to="." method="_on_resume_button_down"]
+[connection signal="button_down" from="NinePatchRect/go_to_title" to="." method="_on_go_to_title_button_down"]
+[connection signal="button_down" from="NinePatchRect/quit" to="." method="_on_quit_button_down"]

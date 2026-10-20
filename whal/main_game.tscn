@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://d37m568xe67tb"]
+
+[ext_resource type="Script" uid="uid://camcj8qh5ce1f" path="res://main_game.gd" id="1_6bm6p"]
+[ext_resource type="PackedScene" uid="uid://bkh3x15a0cmso" path="res://character_body_2d.tscn" id="3_dugkq"]
+[ext_resource type="Script" uid="uid://ednrtmxtvdvq" path="res://camera_2d.gd" id="5_dugkq"]
+[ext_resource type="PackedScene" uid="uid://bd8xk3nqvt7ma" path="res://dust.tscn" id="5_f52ns"]
+[ext_resource type="PackedScene" uid="uid://dobvoc0svoo6" path="res://ui.tscn" id="6_2pltu"]
+[ext_resource type="AudioStream" uid="uid://busap5vee7usy" path="res://sound/backgounds/main.wav" id="6_f52ns"]
+[ext_resource type="Texture2D" uid="uid://qaqi0avvdlb1" path="res://32x32 textures (52).png" id="11_02kkc"]
+
+[node name="main game" type="Node2D" unique_id=20191462]
+script = ExtResource("1_6bm6p")
+
+[node name="CharacterBody2D" parent="." unique_id=39261657 instance=ExtResource("3_dugkq")]
+position = Vector2(299, 94)
+collision_mask = 2
+
+[node name="PointLight2D2" type="PointLight2D" parent="CharacterBody2D" unique_id=665175627]
+energy = 0.5
+texture = ExtResource("11_02kkc")
+texture_scale = 20.0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1241140472]
+zoom = Vector2(1.5, 1.5)
+script = ExtResource("5_dugkq")
+
+[node name="dust" parent="Camera2D" unique_id=1409277366 instance=ExtResource("5_f52ns")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1899458609]
+
+[node name="UI" parent="CanvasLayer" unique_id=1297161634 instance=ExtResource("6_2pltu")]
+metadata/_edit_lock_ = true
+
+[node name="map_holder" type="Node2D" parent="." unique_id=39255964]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1565856609]
+stream = ExtResource("6_f52ns")
+volume_db = 4.0
+bus = &"music"
+playback_type = 1

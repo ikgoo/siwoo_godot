@@ -1,0 +1,990 @@
+[gd_scene format=3 uid="uid://bypme11gq1q81"]
+
+[ext_resource type="Script" uid="uid://bs80rupmjbfq" path="res://setting.gd" id="1_vtcyg"]
+[ext_resource type="Texture2D" uid="uid://ucguvsd4ca2d" path="res://assembly.png" id="2_lbmn8"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="3_c6stm"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="4_bqu2q"]
+[ext_resource type="Texture2D" uid="uid://benr0y01er6ft" path="res://New Piskel (3).png" id="5_fguwx"]
+[ext_resource type="Texture2D" uid="uid://o7h3fo2161pp" path="res://New Piskel (4).png" id="6_jftqs"]
+[ext_resource type="Texture2D" uid="uid://d6i6cx1n6jrr" path="res://New Piskel (5).png" id="7_v62b3"]
+[ext_resource type="Texture2D" uid="uid://chjdj6xal2usl" path="res://scriptz/items/New Piskel (7).png" id="8_62e02"]
+[ext_resource type="Texture2D" uid="uid://cbxrsflj6cwxo" path="res://scriptz/items/New Piskel (6).png" id="9_0b1ha"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("4_bqu2q")
+font_size = 20
+
+[sub_resource type="Theme" id="Theme_8ww2y"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_or208"]
+color = Color(0.41981313, 0.41981313, 0.4198131, 1)
+thickness = 6
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_m5ona"]
+color = Color(1, 1, 1, 1)
+thickness = 6
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ve33x"]
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_en1kw"]
+font = ExtResource("4_bqu2q")
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_dmili"]
+font = ExtResource("4_bqu2q")
+font_size = 70
+
+[node name="setting" type="Control" unique_id=594929632]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vtcyg")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=131419986]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -476.3972
+offset_top = -299.0
+offset_right = 476.39722
+offset_bottom = 299.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_lbmn8")
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="sound" type="NinePatchRect" parent="NinePatchRect" unique_id=577958237]
+texture_filter = 1
+layout_mode = 0
+offset_left = 100.0
+offset_top = 20.0
+offset_right = 267.0
+offset_bottom = 79.0
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="s_b" type="Button" parent="NinePatchRect/sound" unique_id=1551767425]
+layout_mode = 1
+offset_right = 167.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "sound"
+flat = true
+
+[node name="exit" type="NinePatchRect" parent="NinePatchRect" unique_id=1894876729]
+texture_filter = 1
+layout_mode = 0
+offset_left = 894.3972
+offset_top = 20.0
+offset_right = 928.3972
+offset_bottom = 52.0
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="exit" type="Button" parent="NinePatchRect/exit" unique_id=833958172]
+texture_filter = 1
+layout_mode = 1
+offset_left = 5.0
+offset_top = 2.0
+offset_right = 30.0
+offset_bottom = 34.0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "x"
+flat = true
+
+[node name="keys" type="NinePatchRect" parent="NinePatchRect" unique_id=367137166]
+texture_filter = 1
+layout_mode = 0
+offset_left = 685.794
+offset_top = 20.0
+offset_right = 852.794
+offset_bottom = 79.0
+texture = ExtResource("3_c6stm")
+region_rect = Rect2(0, 0, 96, 96)
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="k_b" type="Button" parent="NinePatchRect/keys" unique_id=307250290]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -167.0
+offset_bottom = 59.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "keys"
+flat = true
+
+[node name="UI" type="NinePatchRect" parent="NinePatchRect" unique_id=1771644564]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.50021
+offset_top = -279.0
+offset_right = 83.499756
+offset_bottom = -220.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="u_b" type="Button" parent="NinePatchRect/UI" unique_id=1510217636]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -83.5
+offset_right = 83.5
+offset_bottom = 59.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "UI"
+flat = true
+
+[node name="sound_menu" type="Control" parent="NinePatchRect" unique_id=1018172085]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="NinePatchRect/sound_menu" unique_id=2117200528]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 150.0
+offset_right = 372.0
+offset_bottom = 173.0
+text = "Master"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="master" type="HSlider" parent="NinePatchRect/sound_menu" unique_id=1274846335]
+texture_filter = 1
+layout_mode = 0
+offset_left = 147.39719
+offset_top = 182.0
+offset_right = 771.79443
+offset_bottom = 198.0
+theme = SubResource("Theme_8ww2y")
+theme_override_icons/grabber = ExtResource("5_fguwx")
+theme_override_icons/grabber_highlight = ExtResource("6_jftqs")
+theme_override_icons/grabber_disabled = ExtResource("5_fguwx")
+theme_override_icons/tick = ExtResource("7_v62b3")
+theme_override_styles/slider = SubResource("StyleBoxLine_or208")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_m5ona")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_ve33x")
+value = 100.0
+
+[node name="Label2" type="Label" parent="NinePatchRect/sound_menu" unique_id=1484213486]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 210.0
+offset_right = 372.0
+offset_bottom = 233.0
+text = "Music"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="music" type="HSlider" parent="NinePatchRect/sound_menu" unique_id=649723050]
+texture_filter = 1
+layout_mode = 0
+offset_left = 147.397
+offset_top = 242.0
+offset_right = 771.7942
+offset_bottom = 258.0
+theme = SubResource("Theme_8ww2y")
+theme_override_icons/grabber = ExtResource("5_fguwx")
+theme_override_icons/grabber_highlight = ExtResource("6_jftqs")
+theme_override_icons/grabber_disabled = ExtResource("5_fguwx")
+theme_override_icons/tick = ExtResource("7_v62b3")
+theme_override_styles/slider = SubResource("StyleBoxLine_or208")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_m5ona")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_ve33x")
+value = 100.0
+
+[node name="Label3" type="Label" parent="NinePatchRect/sound_menu" unique_id=2063047489]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 270.0
+offset_right = 372.0
+offset_bottom = 293.0
+text = "Sound Effects"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="sfx" type="HSlider" parent="NinePatchRect/sound_menu" unique_id=162157442]
+texture_filter = 1
+layout_mode = 0
+offset_left = 147.397
+offset_top = 302.0
+offset_right = 771.7942
+offset_bottom = 318.0
+theme = SubResource("Theme_8ww2y")
+theme_override_icons/grabber = ExtResource("5_fguwx")
+theme_override_icons/grabber_highlight = ExtResource("6_jftqs")
+theme_override_icons/grabber_disabled = ExtResource("5_fguwx")
+theme_override_icons/tick = ExtResource("7_v62b3")
+theme_override_styles/slider = SubResource("StyleBoxLine_or208")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_m5ona")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_ve33x")
+value = 100.0
+
+[node name="Label4" type="Label" parent="NinePatchRect/sound_menu" unique_id=248847130]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 330.0
+offset_right = 372.0
+offset_bottom = 353.0
+text = "UI"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="UI" type="HSlider" parent="NinePatchRect/sound_menu" unique_id=1234549487]
+texture_filter = 1
+layout_mode = 0
+offset_left = 147.397
+offset_top = 362.0
+offset_right = 771.7942
+offset_bottom = 378.0
+theme = SubResource("Theme_8ww2y")
+theme_override_icons/grabber = ExtResource("5_fguwx")
+theme_override_icons/grabber_highlight = ExtResource("6_jftqs")
+theme_override_icons/grabber_disabled = ExtResource("5_fguwx")
+theme_override_icons/tick = ExtResource("7_v62b3")
+theme_override_styles/slider = SubResource("StyleBoxLine_or208")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_m5ona")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_ve33x")
+value = 100.0
+
+[node name="UI_menu" type="Control" parent="NinePatchRect" unique_id=1970733990]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="Label3" type="Label" parent="NinePatchRect/UI_menu" unique_id=2085815442]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 150.0
+offset_right = 372.0
+offset_bottom = 173.0
+text = "Full Screen"
+label_settings = SubResource("LabelSettings_8ww2y")
+
+[node name="CheckBox" type="CheckBox" parent="NinePatchRect/UI_menu" unique_id=1194332218]
+layout_mode = 0
+offset_left = 147.39719
+offset_top = 182.0
+offset_right = 171.39719
+offset_bottom = 206.0
+theme_override_icons/checked = ExtResource("8_62e02")
+theme_override_icons/unchecked = ExtResource("9_0b1ha")
+
+[node name="keys_menu" type="Control" parent="NinePatchRect" unique_id=358357401]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="NinePatchRect4" type="NinePatchRect" parent="NinePatchRect/keys_menu" unique_id=1918402074]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -213.50021
+offset_top = -179.0
+offset_right = -46.500244
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="basic_b" type="Button" parent="NinePatchRect/keys_menu/NinePatchRect4" unique_id=1331588373]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -83.5
+offset_right = 83.5
+offset_bottom = 59.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "Basic"
+flat = true
+
+[node name="NinePatchRect5" type="NinePatchRect" parent="NinePatchRect/keys_menu" unique_id=8177246]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 46.499756
+offset_top = -179.0
+offset_right = 213.49976
+offset_bottom = -120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="skills_b" type="Button" parent="NinePatchRect/keys_menu/NinePatchRect5" unique_id=1540795324]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -83.5
+offset_right = 83.5
+offset_bottom = 59.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "Skills"
+flat = true
+
+[node name="skill" type="Control" parent="NinePatchRect/keys_menu" unique_id=1114396143]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="2" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=126676213]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 403.99997
+offset_top = 227.0
+offset_right = 508.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+flat = true
+
+[node name="2" type="Label" parent="NinePatchRect/keys_menu/skill/2" unique_id=2011333647]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.602783
+offset_top = -17.0
+offset_right = 13.397217
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "W"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="5" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=1088245842]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 403.99997
+offset_top = 327.0
+offset_right = 508.0
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="5" type="Label" parent="NinePatchRect/keys_menu/skill/5" unique_id=1948036990]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "F"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="8" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=1865654528]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 403.99997
+offset_top = 427.0
+offset_right = 508.0
+offset_bottom = 531.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="8" type="Label" parent="NinePatchRect/keys_menu/skill/8" unique_id=1688163676]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "X"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="4" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=471742295]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 254.0
+offset_top = 327.0
+offset_right = 358.0
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="4" type="Label" parent="NinePatchRect/keys_menu/skill/4" unique_id=1000156663]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "R"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="1" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=175731682]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 254.0
+offset_top = 227.0
+offset_right = 358.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="1" type="Label" parent="NinePatchRect/keys_menu/skill/1" unique_id=1505510287]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Q"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="7" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=1683498755]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 254.0
+offset_top = 427.0
+offset_right = 358.0
+offset_bottom = 531.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="7" type="Label" parent="NinePatchRect/keys_menu/skill/7" unique_id=1080198125]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "C"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="3" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=798397901]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 554.0
+offset_top = 227.0
+offset_right = 658.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="3" type="Label" parent="NinePatchRect/keys_menu/skill/3" unique_id=1595402686]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "E"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="6" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=267160938]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 554.0
+offset_top = 327.0
+offset_right = 658.0
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="6" type="Label" parent="NinePatchRect/keys_menu/skill/6" unique_id=617144015]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "V"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="9" type="Button" parent="NinePatchRect/keys_menu/skill" unique_id=517375849]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 554.0
+offset_top = 427.0
+offset_right = 658.0
+offset_bottom = 531.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("2_lbmn8")
+
+[node name="9" type="Label" parent="NinePatchRect/keys_menu/skill/9" unique_id=178912928]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.5
+offset_top = -20.0
+offset_right = 12.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Z"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+
+[node name="basic" type="Control" parent="NinePatchRect/keys_menu" unique_id=2040469037]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Label6" type="Label" parent="NinePatchRect/keys_menu/basic" unique_id=1843831049]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 252.897
+offset_top = 267.5
+offset_right = 359.897
+offset_bottom = 290.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Left"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+
+[node name="NinePatchRect6" type="NinePatchRect" parent="NinePatchRect/keys_menu/basic/Label6" unique_id=64159466]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0002
+offset_top = -29.5
+offset_right = 50.0002
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="left" type="Button" parent="NinePatchRect/keys_menu/basic/Label6/NinePatchRect6" unique_id=1852077593]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.999817
+offset_top = -59.0
+offset_right = 37.999817
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "a"
+flat = true
+
+[node name="Label9" type="Label" parent="NinePatchRect/keys_menu/basic" unique_id=1393323883]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 252.897
+offset_top = 367.5
+offset_right = 359.897
+offset_bottom = 390.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Jump"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+
+[node name="NinePatchRect7" type="NinePatchRect" parent="NinePatchRect/keys_menu/basic/Label9" unique_id=1724490262]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0002
+offset_top = -28.0
+offset_right = 50.0002
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="jump" type="Button" parent="NinePatchRect/keys_menu/basic/Label9/NinePatchRect7" unique_id=1883999375]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.999817
+offset_top = -59.0
+offset_right = 37.999817
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "space"
+flat = true
+
+[node name="Label7" type="Label" parent="NinePatchRect/keys_menu/basic" unique_id=526251866]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 552.897
+offset_top = 267.5
+offset_right = 659.897
+offset_bottom = 290.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Right"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+
+[node name="NinePatchRect7" type="NinePatchRect" parent="NinePatchRect/keys_menu/basic/Label7" unique_id=325883391]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.99977
+offset_top = -32.0
+offset_right = 50.000626
+offset_bottom = 70.25
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="right" type="Button" parent="NinePatchRect/keys_menu/basic/Label7/NinePatchRect7" unique_id=813044859]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.999817
+offset_top = -59.0
+offset_right = 37.999817
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "d"
+flat = true
+
+[node name="Label8" type="Label" parent="NinePatchRect/keys_menu/basic" unique_id=1710449694]
+y_sort_enabled = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 552.897
+offset_top = 367.5
+offset_right = 659.897
+offset_bottom = 390.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Dash"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+
+[node name="NinePatchRect8" type="NinePatchRect" parent="NinePatchRect/keys_menu/basic/Label8" unique_id=1510466680]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -28.0
+offset_right = 50.000397
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c6stm")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="dash" type="Button" parent="NinePatchRect/keys_menu/basic/Label8/NinePatchRect8" unique_id=1437596585]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.999817
+offset_top = -59.0
+offset_right = 37.999817
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("4_bqu2q")
+theme_override_font_sizes/font_size = 24
+text = "shift"
+flat = true
+
+[node name="key_binding" type="NinePatchRect" parent="NinePatchRect/keys_menu" unique_id=1604892310]
+visible = false
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -224.65558
+offset_top = -47.0
+offset_right = 224.65552
+offset_bottom = 47.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_lbmn8")
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="key_binding" type="Label" parent="NinePatchRect/keys_menu/key_binding" unique_id=1564484311]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -197.0
+offset_top = -35.5
+offset_right = 197.0
+offset_bottom = 35.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "press a key"
+label_settings = SubResource("LabelSettings_dmili")
+
+[connection signal="button_down" from="NinePatchRect/sound/s_b" to="." method="_on_s_b_button_down"]
+[connection signal="button_down" from="NinePatchRect/exit/exit" to="." method="_on_exit_button_down"]
+[connection signal="button_down" from="NinePatchRect/keys/k_b" to="." method="_on_k_b_button_down"]
+[connection signal="button_down" from="NinePatchRect/UI/u_b" to="." method="_on_u_b_button_down"]
+[connection signal="drag_ended" from="NinePatchRect/sound_menu/master" to="." method="_on_master_drag_ended"]
+[connection signal="value_changed" from="NinePatchRect/sound_menu/master" to="." method="_on_master_value_changed"]
+[connection signal="drag_ended" from="NinePatchRect/sound_menu/music" to="." method="_on_music_drag_ended"]
+[connection signal="value_changed" from="NinePatchRect/sound_menu/music" to="." method="_on_music_value_changed"]
+[connection signal="drag_ended" from="NinePatchRect/sound_menu/sfx" to="." method="_on_sfx_drag_ended"]
+[connection signal="value_changed" from="NinePatchRect/sound_menu/sfx" to="." method="_on_sfx_value_changed"]
+[connection signal="drag_ended" from="NinePatchRect/sound_menu/UI" to="." method="_on_ui_drag_ended"]
+[connection signal="value_changed" from="NinePatchRect/sound_menu/UI" to="." method="_on_ui_value_changed"]
+[connection signal="toggled" from="NinePatchRect/UI_menu/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="button_down" from="NinePatchRect/keys_menu/NinePatchRect4/basic_b" to="." method="_on_basic_b_button_down"]
+[connection signal="button_down" from="NinePatchRect/keys_menu/NinePatchRect5/skills_b" to="." method="_on_skills_b_button_down"]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/2" to="." method="_on__pressed" binds= [2]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/5" to="." method="_on__pressed" binds= [5]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/8" to="." method="_on__pressed" binds= [8]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/4" to="." method="_on__pressed" binds= [4]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/1" to="." method="_on__pressed" binds= [1]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/7" to="." method="_on__pressed" binds= [7]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/3" to="." method="_on__pressed" binds= [3]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/6" to="." method="_on__pressed" binds= [6]]
+[connection signal="pressed" from="NinePatchRect/keys_menu/skill/9" to="." method="_on__pressed" binds= [9]]
+[connection signal="button_down" from="NinePatchRect/keys_menu/basic/Label6/NinePatchRect6/left" to="." method="_on_left_button_down"]
+[connection signal="button_down" from="NinePatchRect/keys_menu/basic/Label9/NinePatchRect7/jump" to="." method="_on_jump_button_down"]
+[connection signal="button_down" from="NinePatchRect/keys_menu/basic/Label7/NinePatchRect7/right" to="." method="_on_right_button_down"]
+[connection signal="button_down" from="NinePatchRect/keys_menu/basic/Label8/NinePatchRect8/dash" to="." method="_on_dash_button_down"]

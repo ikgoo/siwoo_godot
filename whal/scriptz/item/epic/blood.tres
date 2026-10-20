@@ -1,0 +1,12 @@
+[gd_resource type="Resource" format=3 uid="uid://bnvxn2m0m6ana"]
+
+[ext_resource type="Script" uid="uid://ct4lhlsl4nwkb" path="res://scriptz/item/script/blood_debt.gd" id="1_ybinl"]
+[ext_resource type="Texture2D" uid="uid://m707f6fq4ugg" path="res://scriptz/blood.png" id="2_ybinl"]
+
+[resource]
+script = ExtResource("1_ybinl")
+name = "Blood Debt"
+tmi = "Once it turns red, it does not turn white again."
+real_tmi = "Recover 1% of damage dealt as HP"
+texture = ExtResource("2_ybinl")
+rarity = "epic"

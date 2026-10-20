@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Scroll" format=3 uid="uid://c4mx8nq3wprt2"]
+
+[ext_resource type="Script" uid="uid://boiak7aphf1kj" path="res://scriptz/item/scroll.gd" id="1_scroll"]
+[ext_resource type="Texture2D" uid="uid://be53w4tfrdlx6" path="res://scriptz/items/New Piskel (11).png" id="2_rpwfk"]
+
+[resource]
+script = ExtResource("1_scroll")
+name = "Iron tip"
+tmi = "I ground the stone tip with a metal tip."
+real_tmi = "Arrow Damage +35%"
+texture = ExtResource("2_rpwfk")
+rarity = "normal"
+damage_add = 35

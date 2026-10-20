@@ -1,0 +1,285 @@
+[gd_scene format=3 uid="uid://bqerdycboe8g7"]
+
+[ext_resource type="Script" uid="uid://cuqkxrot18euq" path="res://upgrade_ui.gd" id="1_i04x0"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="1_j3xiq"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="2_1wvqi"]
+[ext_resource type="Texture2D" uid="uid://8j3iy8h32nvd" path="res://polis_sanctuary.png" id="3_i04x0"]
+[ext_resource type="Texture2D" uid="uid://dxpmr6f5soa6x" path="res://scriptz/items/New Piskel (16).png" id="5_6fdi4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ww2y"]
+font = ExtResource("2_1wvqi")
+
+[sub_resource type="LabelSettings" id="LabelSettings_u8xvj"]
+font = ExtResource("2_1wvqi")
+font_color = Color(0, 0.95316285, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fn3gv"]
+font = ExtResource("2_1wvqi")
+font_color = Color(0.99999374, 0.3678366, 0.29987648, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_i04x0"]
+font = ExtResource("2_1wvqi")
+
+[sub_resource type="LabelSettings" id="LabelSettings_icixs"]
+font = ExtResource("2_1wvqi")
+font_color = Color(0.9411765, 0.79607844, 0.15686275, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_en1kw"]
+font = ExtResource("2_1wvqi")
+
+[node name="upgrade_ui" type="Control" unique_id=1830884035]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_i04x0")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=614796955]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 361.0
+offset_top = -201.0
+offset_right = 551.0
+offset_bottom = 201.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_j3xiq")
+region_rect = Rect2(0, 0, 96, 96)
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="name" type="Label" parent="NinePatchRect" unique_id=975418689]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 108.0
+offset_right = 84.0
+offset_bottom = 131.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="tmi" type="Label" parent="NinePatchRect" unique_id=1428766426]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 140.0
+offset_right = 84.0
+offset_bottom = 163.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="money" type="Label" parent="NinePatchRect" unique_id=926855543]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -132.0
+offset_top = -52.0
+offset_right = 36.0
+offset_bottom = 21.0
+grow_horizontal = 2
+text = "current money:"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="money2" type="Label" parent="NinePatchRect" unique_id=1197329281]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -12.0
+offset_top = -52.0
+offset_right = 156.0
+offset_bottom = 21.0
+grow_horizontal = 2
+text = "100"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="line" type="Label" parent="NinePatchRect" unique_id=1425431256]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 177.0
+offset_right = 84.0
+offset_bottom = 250.0
+grow_horizontal = 2
+text = "________________"
+label_settings = SubResource("LabelSettings_8ww2y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="now_level" type="Label" parent="NinePatchRect" unique_id=635378384]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 212.0
+offset_right = 84.0
+offset_bottom = 285.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_u8xvj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="next level" type="Label" parent="NinePatchRect" unique_id=1174208796]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 252.0
+offset_right = 84.0
+offset_bottom = 325.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_fn3gv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="price" type="Label" parent="NinePatchRect" unique_id=505786226]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 292.0
+offset_right = 84.0
+offset_bottom = 365.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_i04x0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="max_level" type="Label" parent="NinePatchRect" unique_id=35764406]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_top = 236.0
+offset_right = 84.0
+offset_bottom = 309.0
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_icixs")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="NinePatchRect" unique_id=1391008424]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.0
+offset_top = 11.0
+offset_right = 49.0
+offset_bottom = 109.0
+grow_horizontal = 2
+texture = ExtResource("3_i04x0")
+
+[node name="icon" type="TextureRect" parent="NinePatchRect/NinePatchRect" unique_id=799692818]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 7.0
+offset_right = -7.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="NinePatchRect" unique_id=1260760293]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -71.0
+offset_top = 342.0
+offset_right = 71.0
+offset_bottom = 386.0
+grow_horizontal = 2
+texture = ExtResource("1_j3xiq")
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+
+[node name="Button" type="Button" parent="NinePatchRect/NinePatchRect2" unique_id=524256913]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="Label" type="Label" parent="NinePatchRect/NinePatchRect2" unique_id=2110565992]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "upgrade"
+label_settings = SubResource("LabelSettings_en1kw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect" unique_id=196477016]
+texture_filter = 1
+layout_mode = 0
+offset_left = 119.0
+offset_top = -28.0
+offset_right = 167.0
+offset_bottom = 20.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_6fdi4")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=369667999]
+texture_filter = 1
+layout_mode = 0
+offset_left = 980.0
+offset_top = 438.0
+offset_right = 1028.0
+offset_bottom = 486.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_6fdi4")
+
+[connection signal="pressed" from="NinePatchRect/NinePatchRect2/Button" to="." method="_on_button_pressed"]

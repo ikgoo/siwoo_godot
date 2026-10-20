@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# 업로드 제외
+/.claude/
+/M4A1 pack.zip
+/*.hwp
+/*.docx
+/*.pdf
+# 빌드 원본(용량 제한) - zip으로 올림
+/lunartic.exe
+/lunartic.console.exe
+/lunartic.pck

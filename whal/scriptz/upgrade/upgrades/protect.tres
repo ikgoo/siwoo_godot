@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="upgrade" format=3 uid="uid://dyk5d5s73sbsn"]
+
+[ext_resource type="Script" uid="uid://b7xjr4lgtaglf" path="res://scriptz/upgrade/upgrade.gd" id="1_3kvii"]
+[ext_resource type="Texture2D" uid="uid://cjxul6u8j5jif" path="res://16x16.png" id="2_icon"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("2_icon")
+region = Rect2(64, 1280, 16, 16)
+
+[resource]
+script = ExtResource("1_3kvii")
+name = "protect"
+tmi = "The damage you take decreases"
+icon = SubResource("AtlasTexture_icon")
+price = Array[int]([350, 600, 1000, 1200])
+upgrade_much = Array[int]([10, 20, 30, 35])
+metadata/_custom_type_script = "uid://b7xjr4lgtaglf"

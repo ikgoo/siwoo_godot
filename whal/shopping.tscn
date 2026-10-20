@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d1253b5yb1uar"]
+
+[ext_resource type="Script" uid="uid://dmx53y3i1u0s8" path="res://shopping.gd" id="1_i8oa6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(80, 80)
+
+[node name="shopping" type="Node2D" unique_id=1051396803]
+script = ExtResource("1_i8oa6")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=444106312]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2125282911]
+shape = SubResource("RectangleShape2D_8ww2y")

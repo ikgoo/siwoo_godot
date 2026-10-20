@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bf7xgeafghf1m"]
+
+[node name="golem_mob" type="CharacterBody2D" unique_id=949558692]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1766171177]

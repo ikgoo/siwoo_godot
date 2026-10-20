@@ -1,0 +1,510 @@
+[gd_scene format=3 uid="uid://dn5l678744h1q"]
+
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="1_305eq"]
+[ext_resource type="Script" uid="uid://5hyrhruc8nho" path="res://start_ui.gd" id="1_startui"]
+[ext_resource type="FontFile" uid="uid://d06cypidw8reh" path="res://DancingScript-VariableFont_wght.ttf" id="2_305eq"]
+[ext_resource type="PackedScene" uid="uid://bypme11gq1q81" path="res://setting.tscn" id="4_xbqdw"]
+[ext_resource type="AudioStream" uid="uid://dtdagilkmrkye" path="res://sound/backgounds/dungeon.wav" id="5_nia15"]
+
+[sub_resource type="Gradient" id="Gradient_3sk5c"]
+offsets = PackedFloat32Array(0, 0.71481484, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0.14044744, 0.14044744, 0.14044744, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8ww2y"]
+gradient = SubResource("Gradient_3sk5c")
+
+[sub_resource type="LabelSettings" id="LabelSettings_exit"]
+font = ExtResource("1_305eq")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_option"]
+font = ExtResource("1_305eq")
+font_size = 25
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8ww2y"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lmy80"]
+font = ExtResource("1_305eq")
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_nia15"]
+font = ExtResource("1_305eq")
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_en1kw"]
+font = ExtResource("2_305eq")
+font_size = 80
+shadow_size = 10
+shadow_color = Color(0.13077217, 0.13077211, 0.13077211, 1)
+
+[sub_resource type="Environment" id="Environment_8ww2y"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 5.79
+glow_bloom = 0.21
+glow_hdr_scale = 4.0
+glow_hdr_luminance_cap = 256.0
+
+[sub_resource type="Curve" id="Curve_xbqdw"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0.031531528, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_nia15"]
+curve = SubResource("Curve_xbqdw")
+
+[sub_resource type="Curve" id="Curve_2eaa6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xxup4"]
+curve = SubResource("Curve_2eaa6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ww2y"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(600, 1, 1)
+angle_min = 90.000015
+angle_max = 90.000015
+angle_curve = SubResource("CurveTexture_nia15")
+gravity = Vector3(0, -200, 0)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_xxup4")
+
+[sub_resource type="Animation" id="Animation_3sk5c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xbqdw"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ani_end"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nia15"]
+_data = {
+&"RESET": SubResource("Animation_3sk5c"),
+&"fade_in": SubResource("Animation_xbqdw")
+}
+
+[sub_resource type="Animation" id="Animation_nia15"]
+resource_name = "start_come"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("start:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.26794365, 1),
+"update": 0,
+"values": [Vector2(78, 264), Vector2(128, 264)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("start/Label:label_settings:font_size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.2588163, 1),
+"update": 0,
+"values": [25, 30]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_start"]
+_data = {
+&"start_come": SubResource("Animation_nia15")
+}
+
+[sub_resource type="Animation" id="Animation_2eaa6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("option:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(78, 404)]
+}
+
+[sub_resource type="Animation" id="Animation_option"]
+resource_name = "option_come"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("option:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.26794365, 1),
+"update": 0,
+"values": [Vector2(78, 404), Vector2(128, 404)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("option/Label2:label_settings:font_size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.2588163, 1),
+"update": 0,
+"values": [25, 30]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_option"]
+_data = {
+&"RESET": SubResource("Animation_2eaa6"),
+&"option_come": SubResource("Animation_option")
+}
+
+[sub_resource type="Animation" id="Animation_xxup4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("exit:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(78, 496)]
+}
+
+[sub_resource type="Animation" id="Animation_exit"]
+resource_name = "exit_come"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("exit:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.26794365, 1),
+"update": 0,
+"values": [Vector2(78, 496), Vector2(128, 496)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("exit/Label3:label_settings:font_size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.2588163, 1),
+"update": 0,
+"values": [25, 30]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_exit"]
+_data = {
+&"RESET": SubResource("Animation_xxup4"),
+&"exit_come": SubResource("Animation_exit")
+}
+
+[sub_resource type="Animation" id="Animation_1rre5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("start_t:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(78, 336)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("start_t/Label:label_settings:font_size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [25]
+}
+
+[sub_resource type="Animation" id="Animation_5trad"]
+resource_name = "start_t_open"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("start_t:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.35355344, 1),
+"update": 0,
+"values": [Vector2(78, 336), Vector2(128, 336)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("start_t/Label:label_settings:font_size")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.35355344, 1),
+"update": 0,
+"values": [25, 30]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1rre5"]
+_data = {
+&"RESET": SubResource("Animation_1rre5"),
+&"start_t_open": SubResource("Animation_5trad")
+}
+
+[node name="start_ui" type="Control" unique_id=588784460]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_startui")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1108356009]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1282.5856
+offset_top = 1.1294918
+offset_right = 777.4523
+offset_bottom = 660.3817
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+mouse_filter = 2
+texture = SubResource("GradientTexture1D_8ww2y")
+
+[node name="exit" type="Button" parent="." unique_id=2071319885]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 78.0
+offset_top = -152.0
+offset_right = 371.0
+offset_bottom = -94.00037
+grow_vertical = 0
+flat = true
+
+[node name="Label3" type="Label" parent="exit" unique_id=820267934]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "exit"
+label_settings = SubResource("LabelSettings_exit")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="option" type="Button" parent="." unique_id=337132730]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 78.0
+offset_top = -244.0
+offset_right = 371.0
+offset_bottom = -186.0
+grow_vertical = 0
+flat = true
+
+[node name="Label2" type="Label" parent="option" unique_id=1409230467]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "option"
+label_settings = SubResource("LabelSettings_option")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start" type="Button" parent="." unique_id=1717585056]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 78.0
+offset_top = -384.0
+offset_right = 371.0
+offset_bottom = -326.0
+grow_vertical = 0
+action_mode = 0
+icon = SubResource("ViewportTexture_8ww2y")
+flat = true
+
+[node name="Label" type="Label" parent="start" unique_id=1458039205]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "start"
+label_settings = SubResource("LabelSettings_lmy80")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start_t" type="Button" parent="." unique_id=1995374006]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 78.0
+offset_top = -312.0
+offset_right = 371.0
+offset_bottom = -254.0
+grow_vertical = 0
+action_mode = 0
+icon = SubResource("ViewportTexture_8ww2y")
+flat = true
+
+[node name="Label" type="Label" parent="start_t" unique_id=310660592]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "start tutorial"
+label_settings = SubResource("LabelSettings_nia15")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." unique_id=1986157414]
+texture_filter = 1
+layout_mode = 0
+offset_left = 147.0
+offset_top = 124.0
+offset_right = 731.0
+offset_bottom = 256.0
+text = "LUNARTIC"
+label_settings = SubResource("LabelSettings_en1kw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=487966426]
+environment = SubResource("Environment_8ww2y")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=405663432]
+position = Vector2(558, 668)
+amount = 50
+lifetime = 2.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_8ww2y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=287621449]
+libraries/ = SubResource("AnimationLibrary_nia15")
+
+[node name="start_ani" type="AnimationPlayer" parent="." unique_id=415085081]
+libraries/ = SubResource("AnimationLibrary_start")
+
+[node name="option_ani" type="AnimationPlayer" parent="." unique_id=1775127334]
+libraries/ = SubResource("AnimationLibrary_option")
+
+[node name="exit_ani" type="AnimationPlayer" parent="." unique_id=1058048261]
+libraries/ = SubResource("AnimationLibrary_exit")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1066238478]
+z_index = 100
+layout_mode = 0
+offset_left = -59.0
+offset_top = -36.0
+offset_right = 1302.0
+offset_bottom = 893.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="setting" parent="." unique_id=594929632 instance=ExtResource("4_xbqdw")]
+visible = false
+layout_mode = 1
+mouse_filter = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=875462563]
+stream = ExtResource("5_nia15")
+volume_db = 4.0
+bus = &"music"
+playback_type = 1
+
+[node name="start_t_ani" type="AnimationPlayer" parent="." unique_id=1346408876]
+libraries/ = SubResource("AnimationLibrary_1rre5")
+
+[connection signal="mouse_entered" from="exit" to="." method="_on_exit_mouse_entered"]
+[connection signal="mouse_exited" from="exit" to="." method="_on_exit_mouse_exited"]
+[connection signal="pressed" from="exit" to="." method="_on_exit_pressed"]
+[connection signal="mouse_entered" from="option" to="." method="_on_option_mouse_entered"]
+[connection signal="mouse_exited" from="option" to="." method="_on_option_mouse_exited"]
+[connection signal="pressed" from="option" to="." method="_on_option_pressed"]
+[connection signal="mouse_entered" from="start" to="." method="_on_start_mouse_entered"]
+[connection signal="mouse_exited" from="start" to="." method="_on_start_mouse_exited"]
+[connection signal="pressed" from="start" to="." method="_on_start_pressed"]
+[connection signal="button_down" from="start_t" to="." method="_on_start_t_button_down"]
+[connection signal="mouse_entered" from="start_t" to="." method="_on_start_t_mouse_entered"]
+[connection signal="mouse_exited" from="start_t" to="." method="_on_start_t_mouse_exited"]

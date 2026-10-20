@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3 uid="uid://h6bgqlklh2kd"]
+
+[ext_resource type="Script" uid="uid://c8tg45cx4wthd" path="res://scriptz/item/script/legendary_item.gd" id="1_l0khe"]
+[ext_resource type="Texture2D" uid="uid://b0eli33fu0n8p" path="res://New Piskel (8).png" id="2_r4xgv"]
+
+[resource]
+script = ExtResource("1_l0khe")
+name = "legendary item"
+tmi = "This is so good that even Aaron Keller would do backdubbling and shout, “Goddam this is pearl fakut!!!??!!” It’s the ultimate item"
+real_tmi = "Arrow damage +0.00001%, HP +1, movement speed on the ground 1/10 (10x in midair)"
+texture = ExtResource("2_r4xgv")
+rarity = "mistic"
+metadata/_custom_type_script = "uid://boiak7aphf1kj"

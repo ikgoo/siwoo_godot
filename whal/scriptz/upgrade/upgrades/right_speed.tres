@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="upgrade" format=3 uid="uid://dwabcbf2ta5ir"]
+
+[ext_resource type="Script" uid="uid://b7xjr4lgtaglf" path="res://scriptz/upgrade/upgrade.gd" id="1_4c7lj"]
+[ext_resource type="Texture2D" uid="uid://cjxul6u8j5jif" path="res://16x16.png" id="2_icon"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icon"]
+atlas = ExtResource("2_icon")
+region = Rect2(16, 1264, 16, 16)
+
+[resource]
+script = ExtResource("1_4c7lj")
+name = "charge speed"
+tmi = "Right-click charging speed increases"
+icon = SubResource("AtlasTexture_icon")
+price = Array[int]([500, 1500, 2000, 2500, 3000])
+upgrade_much = Array[int]([10, 20, 30, 40, 50])
+metadata/_custom_type_script = "uid://b7xjr4lgtaglf"

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bsgcitd6m84bb"]
+
+[ext_resource type="Texture2D" uid="uid://0f81xcxomynf" path="res://bg_mid_960x384_1.png" id="1_07rix"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6wet6"]
+load_path = "res://.godot/imported/bg_far_960x384.png-3e431676ad2b8ee322f6d9d65a025206.ctex"
+
+[node name="parallax" type="Node2D" unique_id=897752190]
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=1349251797]
+scroll_scale = Vector2(0.1, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=352930693]
+texture = SubResource("CompressedTexture2D_6wet6")
+
+[node name="Parallax2D2" type="Parallax2D" parent="." unique_id=1802162045]
+scroll_scale = Vector2(0.1, 0.1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D2" unique_id=2052444475]
+texture = ExtResource("1_07rix")

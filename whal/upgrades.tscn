@@ -1,0 +1,476 @@
+[gd_scene format=3 uid="uid://dr0p7xt5byq"]
+
+[ext_resource type="Script" uid="uid://cjpenno7sk08t" path="res://upgrades.gd" id="1_alr6r"]
+[ext_resource type="Texture2D" uid="uid://b07jfrvw8buj7" path="res://simple.png" id="2_ba88x"]
+[ext_resource type="PackedScene" uid="uid://bqerdycboe8g7" path="res://upgrade_ui.tscn" id="2_u8xvj"]
+[ext_resource type="Texture2D" uid="uid://qaqi0avvdlb1" path="res://32x32 textures (52).png" id="3_ba88x"]
+[ext_resource type="Texture2D" uid="uid://cjxul6u8j5jif" path="res://16x16.png" id="3_fn3gv"]
+[ext_resource type="FontFile" uid="uid://ckw14wh1mb6f0" path="res://Minecraft.ttf" id="6_icixs"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_u8xvj"]
+load_path = "res://.godot/imported/16x16.png-52bfe0790b9bc659cc4279a5e357de10.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_myp64"]
+font = ExtResource("6_icixs")
+font_size = 45
+
+[sub_resource type="LabelSettings" id="LabelSettings_l7sqa"]
+font = ExtResource("6_icixs")
+
+[node name="upgrades" type="Node2D" unique_id=1662035011]
+script = ExtResource("1_alr6r")
+
+[node name="f" type="Sprite2D" parent="." unique_id=1723371911]
+texture_filter = 1
+position = Vector2(216, 0)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="f" type="Button" parent="f" unique_id=1143344240]
+offset_left = -48.00003
+offset_top = -47.999977
+offset_right = 47.99997
+offset_bottom = 48.000023
+flat = true
+
+[node name="unupgraded" type="Sprite2D" parent="f" unique_id=1156291102]
+scale = Vector2(5.1428604, 5.1428604)
+texture = ExtResource("3_fn3gv")
+region_enabled = true
+region_rect = Rect2(64, 1392, 16, 16)
+
+[node name="upgraded" type="Sprite2D" parent="f" unique_id=1140148049]
+visible = false
+scale = Vector2(5.1428604, 5.1428604)
+texture = ExtResource("3_fn3gv")
+region_enabled = true
+region_rect = Rect2(128, 1248, 16, 16)
+
+[node name="1" type="Line2D" parent="f" unique_id=1058101838]
+z_index = -1
+position = Vector2(-370.2857, 0)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(0, 0, 200, 0)
+width = 2.0
+
+[node name="hp_1" type="Sprite2D" parent="." unique_id=202240924]
+texture_filter = 1
+position = Vector2(624, -101)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="hp" type="Button" parent="hp_1" unique_id=472476575]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+
+[node name="unupgraded2" type="Sprite2D" parent="hp_1" unique_id=1142527582]
+scale = Vector2(5.1428604, 5.1428604)
+texture = ExtResource("3_fn3gv")
+region_enabled = true
+region_rect = Rect2(64, 1376, 16, 16)
+
+[node name="upgraded2" type="Sprite2D" parent="hp_1" unique_id=211760821]
+visible = false
+position = Vector2(-0.00012207031, 1.5258789e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = ExtResource("3_fn3gv")
+region_enabled = true
+region_rect = Rect2(128, 1232, 16, 16)
+
+[node name="2_u" type="Line2D" parent="hp_1" unique_id=1297974099]
+z_index = -1
+position = Vector2(-1042.2858, 173.14285)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(200, 0, 400, -100)
+width = 2.0
+
+[node name="Line2D4" type="Line2D" parent="hp_1/2_u" unique_id=278699066]
+points = PackedVector2Array(400, -100, 600, -100)
+width = 2.0
+
+[node name="d_1" type="Sprite2D" parent="." unique_id=1081559189]
+texture_filter = 1
+position = Vector2(624, 99)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="crit" type="Button" parent="d_1" unique_id=1699188203]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+
+[node name="unupgraded7" type="Sprite2D" parent="d_1" unique_id=1351789530]
+position = Vector2(-0.00048828125, 0)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(0, 1408, 16, 16)
+
+[node name="upgraded7" type="Sprite2D" parent="d_1" unique_id=1114505592]
+visible = false
+position = Vector2(-0.00061035156, -9.1552734e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(64, 1264, 16, 16)
+
+[node name="2_d" type="Line2D" parent="d_1" unique_id=237821025]
+z_index = -1
+position = Vector2(-1042.2858, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(200, 0, 400, 100)
+width = 2.0
+
+[node name="Line2D5" type="Line2D" parent="d_1/2_d" unique_id=1719530336]
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="d_2" type="Sprite2D" parent="." unique_id=294279302]
+texture_filter = 1
+position = Vector2(824, 99)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="money" type="Button" parent="d_2" unique_id=1441887792]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -48.0
+offset_right = -48.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="unupgraded5" type="Sprite2D" parent="d_2" unique_id=878386122]
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(160, 1424, 16, 16)
+
+[node name="upgraded5" type="Sprite2D" parent="d_2" unique_id=27179187]
+visible = false
+position = Vector2(-0.00012207031, -9.1552734e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(224, 1280, 16, 16)
+
+[node name="3_d" type="Line2D" parent="d_2" unique_id=2134469351]
+z_index = -1
+position = Vector2(-1028.5714, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="d_3" type="Sprite2D" parent="." unique_id=1634608475]
+texture_filter = 1
+position = Vector2(1024, 99)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="speed" type="Button" parent="d_3" unique_id=1160920232]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="unupgraded3" type="Sprite2D" parent="d_3" unique_id=720867790]
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(64, 1424, 16, 16)
+
+[node name="upgraded3" type="Sprite2D" parent="d_3" unique_id=1663302992]
+visible = false
+position = Vector2(-0.00012207031, -7.6293945e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(128, 1280, 16, 16)
+
+[node name="4_d" type="Line2D" parent="d_3" unique_id=1294255497]
+z_index = -1
+position = Vector2(-1028.5714, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="d_s" type="Sprite2D" parent="." unique_id=1193281228]
+texture_filter = 1
+position = Vector2(1024, 195)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="unupgraded7" type="Sprite2D" parent="d_s" unique_id=1369417186]
+position = Vector2(0, -1.5258789e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(224, 1328, 16, 16)
+
+[node name="upgraded7" type="Sprite2D" parent="d_s" unique_id=849813616]
+visible = false
+position = Vector2(-0.00012207031, -3.0517578e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(32, 1200, 16, 16)
+
+[node name="boss_dam" type="Button" parent="d_s" unique_id=2072018721]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="3_dd" type="Line2D" parent="d_s" unique_id=870088543]
+z_index = -1
+position = Vector2(-685.71423, -169.71428)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(200, 0, 400, 100)
+width = 2.0
+
+[node name="d_4" type="Sprite2D" parent="." unique_id=2025511168]
+texture_filter = 1
+position = Vector2(1224, 99)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="right_speed" type="Button" parent="d_4" unique_id=766146052]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="unupgraded6" type="Sprite2D" parent="d_4/right_speed" unique_id=1094559941]
+position = Vector2(48, 48.000015)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(208, 1392, 16, 16)
+
+[node name="upgraded6" type="Sprite2D" parent="d_4/right_speed" unique_id=1817598893]
+visible = false
+position = Vector2(47.999878, 47.99991)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(16, 1264, 16, 16)
+
+[node name="5_d" type="Line2D" parent="d_4" unique_id=191427157]
+z_index = -1
+position = Vector2(-1028.5713, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 584.7702, 100, 600, 100)
+width = 2.0
+
+[node name="hp_4" type="Sprite2D" parent="." unique_id=861311720]
+texture_filter = 1
+position = Vector2(1223.9999, -101)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="unupgraded5" type="Sprite2D" parent="hp_4" unique_id=408842598]
+position = Vector2(0.00012207031, -1.5258789e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(0, 1424, 16, 16)
+
+[node name="upgraded5" type="Sprite2D" parent="hp_4" unique_id=247678813]
+visible = false
+position = Vector2(0, -9.1552734e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(64, 1280, 16, 16)
+
+[node name="protect" type="Button" parent="hp_4" unique_id=2132477702]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="5_u" type="Line2D" parent="hp_4" unique_id=6119348]
+z_index = -1
+position = Vector2(-1028.5713, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="hp_3" type="Sprite2D" parent="." unique_id=714630720]
+texture_filter = 1
+position = Vector2(1024, -101)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="4_u" type="Line2D" parent="hp_3" unique_id=784142436]
+z_index = -1
+position = Vector2(-1028.5713, -169.71423)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="armor" type="Button" parent="hp_3" unique_id=188979332]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="unupgraded4" type="Sprite2D" parent="hp_3" unique_id=1353959482]
+position = Vector2(0, -1.5258789e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(48, 1392, 16, 16)
+
+[node name="upgraded4" type="Sprite2D" parent="hp_3" unique_id=222466427]
+visible = false
+position = Vector2(-0.00024414063, -0.00010681152)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(112, 1248, 16, 16)
+
+[node name="hp_s" type="Sprite2D" parent="." unique_id=1690899860]
+texture_filter = 1
+position = Vector2(1024, 3.0000095)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="respwan" type="Button" parent="hp_s" unique_id=1650172745]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="unupgraded6" type="Sprite2D" parent="hp_s" unique_id=1320853306]
+position = Vector2(0, -4.2915344e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(32, 1312, 16, 16)
+
+[node name="upgraded6" type="Sprite2D" parent="hp_s" unique_id=811180883]
+visible = false
+position = Vector2(-0.00012207031, -8.392334e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(96, 1168, 16, 16)
+
+[node name="3_ud" type="Line2D" parent="hp_s" unique_id=2028816382]
+z_index = -1
+position = Vector2(-685.71423, -169.7143)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(200, 0, 400, 100)
+width = 2.0
+
+[node name="hp_2" type="Sprite2D" parent="." unique_id=746746153]
+texture_filter = 1
+position = Vector2(824, -101)
+scale = Vector2(0.5833333, 0.5833333)
+texture = ExtResource("2_ba88x")
+
+[node name="gaksung" type="Button" parent="hp_2" unique_id=1506890173]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="unupgraded4" type="Sprite2D" parent="hp_2" unique_id=1027451132]
+position = Vector2(0.00024414063, -4.5776367e-05)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(224, 1408, 16, 16)
+
+[node name="upgraded4" type="Sprite2D" parent="hp_2" unique_id=1996773402]
+visible = false
+position = Vector2(0.00012207031, -0.00018310547)
+scale = Vector2(5.1428604, 5.1428604)
+texture = SubResource("CompressedTexture2D_u8xvj")
+region_enabled = true
+region_rect = Rect2(32, 1280, 16, 16)
+
+[node name="3_u" type="Line2D" parent="hp_2" unique_id=1195604349]
+z_index = -1
+position = Vector2(-1028.5714, -169.71423)
+scale = Vector2(1.7142857, 1.7142857)
+points = PackedVector2Array(400, 100, 600, 100)
+width = 2.0
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1360950559]
+position = Vector2(0, 2.999938)
+scale = Vector2(2.3675, 1.68375)
+texture = ExtResource("3_ba88x")
+texture_scale = 50.0
+metadata/_edit_lock_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1191210649]
+
+[node name="upgrade_ui" parent="CanvasLayer" unique_id=1830884035 instance=ExtResource("2_u8xvj")]
+visible = false
+
+[node name="price2" type="Label" parent="CanvasLayer" unique_id=1476208505]
+visible = false
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -84.0
+offset_right = 84.0
+offset_bottom = 73.0
+grow_horizontal = 2
+text = "upgrades"
+label_settings = SubResource("LabelSettings_myp64")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="current_m" type="Label" parent="CanvasLayer" unique_id=1742412254]
+visible = false
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -101.5
+offset_top = 32.0
+offset_right = 101.5
+offset_bottom = 105.0
+grow_horizontal = 2
+text = "click the rect to upgrade"
+label_settings = SubResource("LabelSettings_l7sqa")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="f/f" to="." method="_on_f_pressedl" binds= [0]]
+[connection signal="pressed" from="hp_1/hp" to="." method="_on_f_pressedl" binds= [1]]
+[connection signal="pressed" from="d_1/crit" to="." method="_on_f_pressedl" binds= [6]]
+[connection signal="pressed" from="d_2/money" to="." method="_on_f_pressedl" binds= [7]]
+[connection signal="pressed" from="d_3/speed" to="." method="_on_f_pressedl" binds= [8]]
+[connection signal="pressed" from="d_s/boss_dam" to="." method="_on_f_pressedl" binds= [9]]
+[connection signal="pressed" from="d_4/right_speed" to="." method="_on_f_pressedl" binds= [10]]
+[connection signal="pressed" from="hp_4/protect" to="." method="_on_f_pressedl" binds= [5]]
+[connection signal="pressed" from="hp_3/armor" to="." method="_on_f_pressedl" binds= [3]]
+[connection signal="pressed" from="hp_s/respwan" to="." method="_on_f_pressedl" binds= [4]]
+[connection signal="pressed" from="hp_2/gaksung" to="." method="_on_f_pressedl" binds= [2]]

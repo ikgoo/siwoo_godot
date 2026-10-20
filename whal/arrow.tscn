@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://d4m6lntb3lf2l"]
+
+[ext_resource type="Script" uid="uid://d0g4qac451dmr" path="res://arrow.gd" id="1_acd0x"]
+[ext_resource type="Texture2D" uid="uid://cl5db3fiwi1s6" path="res://scriptz/Arows1.png" id="2_acd0x"]
+[ext_resource type="Script" uid="uid://b36wla56w4mmb" path="res://line_2d.gd" id="3_i4m3f"]
+[ext_resource type="AudioStream" uid="uid://cvhi1kg71j7pr" path="res://sound/sfx/hit.ogg" id="4_6a6ax"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6uxrl"]
+blend_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6a6ax"]
+atlas = ExtResource("2_acd0x")
+region = Rect2(6, 5, 19, 5)
+
+[sub_resource type="Curve" id="Curve_en1kw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.68, 0.56499994), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww2y"]
+size = Vector2(12, 2)
+
+[node name="arrow" type="CharacterBody2D" unique_id=595835839]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_acd0x")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1397410969]
+texture_filter = 1
+material = SubResource("CanvasItemMaterial_6uxrl")
+scale = Vector2(0.63157886, 0.39999995)
+texture = SubResource("AtlasTexture_6a6ax")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1722584011]
+top_level = true
+points = PackedVector2Array(0, 0, 0, 10)
+width = 1.0
+width_curve = SubResource("Curve_en1kw")
+script = ExtResource("3_i4m3f")
+max_line = 10
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2102892151]
+collision_layer = 4
+collision_mask = 2
+
+[node name="collision_shape_2d2" type="CollisionShape2D" parent="Area2D" unique_id=2028955257]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[node name="Area2D2" type="Area2D" parent="." unique_id=2002724261]
+collision_layer = 4
+collision_mask = 400
+
+[node name="collision_shape_2d2" type="CollisionShape2D" parent="Area2D2" unique_id=739886050]
+shape = SubResource("RectangleShape2D_8ww2y")
+
+[node name="Timer" type="Timer" parent="." unique_id=1959369471]
+wait_time = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1819519793]
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=18005040]
+collision_mask = 144
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=587472729]
+stream = ExtResource("4_6a6ax")
+volume_db = 24.0
+bus = &"sfx"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="area_entered" from="Area2D2" to="." method="_on_area_2d_2_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
